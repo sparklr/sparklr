@@ -52,7 +52,6 @@ exports.run = function(request, response, uri, sessionid) {
 
 			userobj.following = userobj.following.split(",").filter(function(e) { return e; });
 			userobj.followers = userobj.followers.split(",").filter(function(e) { return e; });
-
 			if (request.method == "POST") {
 				console.log(postBody);
 				var postObject;
@@ -67,6 +66,9 @@ exports.run = function(request, response, uri, sessionid) {
 						Post.post(userobj.id, postObject, function (err) {
 							sendObject(response,null);
 						});
+					break;
+					case "comment":
+						Post.postComment(userobj.id, postObject);
 					break;
 				}
 			} else {

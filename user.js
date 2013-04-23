@@ -17,6 +17,10 @@ exports.getUserProfile = function(userid,callback) {
 	database.query("SELECT * FROM `users` WHERE `id` = " + parseInt(userid), callback);
 }
 
+exports.getUserProfileByUsername = function(username,callback) {
+	database.query("SELECT * FROM `users` WHERE `username` = " + database.escape(username), callback);
+}
+
 exports.getMassUserDisplayName = function(following,callback) {
 	var querystr = "SELECT `displayname`, `username`, `id` FROM `users` WHERE `id` IN (";
 	for (var i = 0; i < following.length - 1; i++)
