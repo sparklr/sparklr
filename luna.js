@@ -12,7 +12,7 @@ var work = require("./work");
 
 global.salt = "yumyumyum";
 global.commonHost = "http://192.168.1.128/p18/static/"
-
+global.staticHost = "http://192.168.1.128/p18/data/";
 
 database.init({
 	host: "localhost",
@@ -31,9 +31,10 @@ http.createServer(function(request,response) {
 	} else {
 		if (sessionid != null && sessionid != "") {
 			var s = sessionid.split(",");
+			
 			user.verifyAuth(s[0],s[1], function(success,userobj) {
 				if (success)
-					frontend.run(userobj,request,response);
+					frontend.run(userobj,request,response,sessionid);
 				else
 					external.run(request,response);
 			});

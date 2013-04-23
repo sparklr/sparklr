@@ -17,19 +17,24 @@ exports.getUserProfile = function(userid,callback) {
 	database.query("SELECT * FROM `users` WHERE `id` = " + parseInt(userid), callback);
 }
 
-exports.getMassUserDisplayName = function(userid,callback) {
-	exports.getFollowing(userid, function(following) {
+exports.getMassUserDisplayName = function(following,callback) {
+	var querystr = "SELECT `displayname`, `username`, `id` FROM `users` WHERE `id` IN (";
+	for (var i = 0; i < following.length - 1; i++)
+		querystr += "'" + following[i] + "',";
+	querystr += "'" + following[following.length - 1] + "')";
 
-		var querystr = "SELECT `displayname`, `id` FROM `users` WHERE `id` IN (";
-		for (var i = 0; i < following.length; i++)
-			querystr += "'" + following[i] + "',";
-		querystr += "'" + userid + "')";
-		
-		database.query(querystr, function(err,rows) {
-			callback(rows);
-		});
+	database.query(querystr, callback);
+}
 
-	});
+exports.getOnlineFriends = function(friends, callback) {
+	var querystr = "SELECT `id` FROM `users` WHERE `id` IN (";
+
+	for (var i = 0; i < friends.length - 1; i++)
+		querystr += "'" + parseInt(friends[i]) + "',";
+	querystr += "'" + parseInt(friends[friends.length - 1]) + "')";
+	querystr += " AND `lastseen` > " + Math.floor(((new Date).getTime() / 1000) - 60);
+
+	database.query(querystr, callback);
 }
 
 exports.getFollowers = function(userid,callback) {
