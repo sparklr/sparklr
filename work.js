@@ -26,6 +26,20 @@ exports.run = function(request, response, uri, sessionid) {
 			return;
 	}
 
+	var postBody = "";
+	var dataComplete = false;
+	request.on("data", function(data) {
+		postBody += data;
+		if (postBody.length > 1e5) {
+			postBody = null;
+			response.writeHead(413);
+			request.connection.destroy();
+		}
+	});
+	request.on("end", function() {
+		dataComplete = true;
+	});
+
 	if (sessionid != null) {
 		var s = sessionid.split(",");
 		user.verifyAuth(s[0],s[1], function(success, userobj) {
@@ -39,6 +53,23 @@ exports.run = function(request, response, uri, sessionid) {
 			userobj.following = userobj.following.split(",").filter(function(e) { return e; });
 			userobj.followers = userobj.followers.split(",").filter(function(e) { return e; });
 
+			if (request.method == "POST") {
+				console.log(postBody);
+				var postObject;
+				try {
+					postObject = JSON.parse(postBody);
+				} catch (e) {
+					response.writeHead(404, "fix this");
+				}
+				//TODO: verify data is done sending
+				switch (fragments[2]) {
+					case "post":
+						Post.post(userobj.id, postObject, function (err) {
+							sendObject(response,null);
+						});
+					break;
+				}
+			} else {
 			//if (user.getAuthkey(userobj) != request.headers.xauthkey) 
 			switch (fragments[2]) {
 				case "post":
@@ -135,6 +166,7 @@ case "user":
 					response.end();
 					break;
 			}
+}
 		});
 	}
 }
