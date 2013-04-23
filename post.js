@@ -13,3 +13,12 @@ exports.getCommentCounts = function(posts, callback) {
 	database.query(query, callback);
 }
 
+exports.post = function(user, data, callback) {
+	var querystr = "INSERT INTO `timeline` (`from`, `time`, `message`, `public`) VALUES ("
+	querystr += parseInt(user) + ",";
+	querystr += Math.floor((new Date).getTime() / 1000) + ",";
+	querystr += database.escape(data.body) + ",";
+	querystr += "1";
+	querystr += ");";
+	database.query(querystr,callback);
+}
