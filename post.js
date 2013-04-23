@@ -1,4 +1,6 @@
 var database = require("./database");
+var Notification = require("./notification");
+var User = require("./user");
 
 exports.getComments = function(postid, callback) {
 	database.query("SELECT * FROM comments WHERE postid=" + parseInt(postid), callback);
@@ -20,5 +22,57 @@ exports.post = function(user, data, callback) {
 	querystr += database.escape(data.body) + ",";
 	querystr += "1";
 	querystr += ");";
-	database.query(querystr,callback);
+	database.query(querystr,function(err,rows) {
+		processMentions(data.body, user, rows.insertId);
+		callback(err,rows);
+	});//callback);
+	//processMentions(data.body, user, );
+}
+exports.postComment = function(user, data, callback) {
+	database.getObject("timeline", data.id, function(err, rows) {
+		if (rows.length < 1) {
+			callback(false);
+			return false;
+		}
+		if (rows[0].from != data.to) {
+			callback(false);
+			return false;
+		}
+
+		var query = "INSERT INTO `comments` (`postid`, `from`, `message`, `time`) ";
+		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+database.escape(data.comment) + "," +  Math.floor((new Date).getTime() / 1000) + ")";
+
+		database.query(query, callback);
+
+		query = "SELECT DISTINCT `from` FROM `comments` WHERE postid = " + parseInt(data.id);
+		database.query(query, function(err,rows) {
+			var notified = false;
+			for (i in rows) {
+				if (rows[i].from == data.to) {
+					notified = true;
+				}
+				Notification.addUserNotification(rows[i].from, "", data.id, user, 1);
+			}
+
+			if (!notified) {
+				Notification.addUserNotification(data.to, "", data.id, user, 1);
+			}
+		});
+
+		processMentions(data.comment, user, data.id);
+
+	});
+}
+
+function processMentions(post, mentioner, postid) {
+	var matches = post.toString().match(/@([\w-]+)/gi);
+	for (i in matches) {
+		var user = matches[i].substring(1);
+		User.getUserProfileByUsername(user, function(err,rows) {
+			if (rows.length > 0) {
+				Notification.addUserNotification(mentioner, "", postid, rows[0].id, Notification.N_REPOST);
+				console.log("Notifying " + rows[0].id);
+			}
+		});
+	}
 }
