@@ -36,6 +36,9 @@ exports.run = function(request, response, uri, sessionid) {
 				return;
 			}
 
+			userobj.following = userobj.following.split(",").filter(function(e) { return e; });
+			userobj.followers = userobj.followers.split(",").filter(function(e) { return e; });
+
 			//if (user.getAuthkey(userobj) != request.headers.xauthkey) 
 			switch (fragments[2]) {
 				case "post":
@@ -58,9 +61,74 @@ exports.run = function(request, response, uri, sessionid) {
 					});
 					break;
 				case "friends":
-					var obj = { followers: userobj.followers.split(","), following: userobj.following.split(",") }
+					var obj = { followers: userobj.followers, following: userobj.following }
 					sendObject(response,obj);
 				case "stream":
+					var stream = parseInt(fragments[3]);
+					var from;
+					if (stream === 0) {
+						from = userobj.following;
+						from.push(userobj.id);
+					} else {
+						from = stream;
+					}
+
+					database.getStream("timeline", { from: from }, function(err, rows) {
+						console.log(err);
+						sendObject(response,rows);
+					});
+					break;
+				case "photos":
+					var from = userobj.following;
+						from.push(userobj.id);
+
+					database.getStream("timeline", { from: from, type: 1 }, function(err, rows) {
+						sendObject(response,rows);
+					});
+					break;
+case "user":
+					var userid = parseInt(fragments[3]);
+					database.getObject("users", userid, function (err,users) {
+						var profile = users[0];
+						if (profile.private) {
+							if (userid != userobj.id && (userobj.following.indexOf(userid) == -1 || userobj.followers.indexOf(userid) == -1)) {
+								return do403(response, "not friends");  
+							} 
+						}
+						
+						var obj = { user: profile.id,
+									handle: profile.username,
+									avatarid: profile.avatarid,
+									following: (userobj.followers.indexOf(profile.id) != -1),
+									name: profile.displayname,
+									bio: profile.bio };
+
+						var table = (fragments[4] == "board" ? "boards" : "timeline");
+						var args = { from: [profile.id] };
+						
+						if (fragments[4] == "photos") {
+							args.type = 1;
+						}
+
+						database.getStream(table, args, function(err,rows) {
+								obj.timeline = rows;
+								if (table == "boards") 
+									sendObject(response,obj);
+								else {
+									Post.getCommentCounts(rows, function(err,rows) {
+										obj.commentcounts = rows;
+										sendObject(response, obj);
+									});
+								}
+							});
+					});
+					break;
+				case "chat":
+					var from = parseInt(fragments[3]);
+					database.getStream("messages", { from: [from], to: userobj.id }, function(err,rows) {
+						sendObject(response, rows);
+					});
+					break;
 				default:
 					response.writeHead(404);
 					response.write("I don't know what you're talking about: " + fragments[2]);

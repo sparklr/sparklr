@@ -5,28 +5,22 @@
 		<link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
 		<link rel='stylesheet' href='{global.commonHost}/app.css'>
 		<require page.js,data.js,timeline.js,user.js,photos.js,location.js,chat.js,ui.js,notification.js,profile.js,templates.js,app.js>
-		<?php 
-			if (!TEST_MODE) {
-		?>
-		<?php
-			}
-		?>
 		<script>
-			var AUTHKEY = "<?=getUserAuthKey()?>";
-			var STATICHOST = "<?=$STATIC_IMG_HOST?>";
-			var COMMONHOST = "{COMMONHOST}";
-			var curUser = "<?=$_SESSION['P_usr']?>";
+			var AUTHKEY = "{authkey}";
+			var STATICHOST = "{global.staticHost}";
+			var COMMONHOST = "{global.commonHost}";
+			var curUser = "{user.id}";
 		</script>
 	</head>
 	<body>
 		<iframe name='datapusher' id='datapusher' style='display:none':></iframe>
 		<div id='header'>
 			<div id='navigation'>
-				<img src='{COMMONHOST}/logo.png' id='logo' onClick='location.href="#";'>
+				<img src='{global.commonHost}/logo.png' id='logo' onClick='location.href="#";'>
 				<a href='#/' class='home'></a>
 				<a href='#/friends' class='people'></a>
 				<a href='#/photos' class='photos'></a>
-				<a href="#/user/<?=$me?>"><img src='<?php echo $STATIC_IMG_HOST . "/thumb/" . $_SESSION['P_usr']; ?>' width=45 height=45></a>
+				<a href="#/user/{user.id}"><img src='{global.staticHost}/thumb/{user.id}' width=45 height=45></a>
 				<input type='text' id='searchbox' placeholder='search' onkeydown='isEnter(event,search)'>
 			</div>
 		</div>
@@ -39,7 +33,18 @@
 					<div id='friendslist'></div>
 				</div>
 			</div>
-
+			
 			<div id='notificationlist'></div>
+			<script>
+				addTimelineArray(<! timelineStream ->, 0);
+				var DISPLAYNAMES = <! displayNames ->;
+				var USERHANDLES = <! userHandles ->;
+				document.addEventListener("load", function() {
+				updateCommentCounts(<! commentCounts ->) }, true);
+				
+				
+				var FRIENDS = <! friends ->;
+				updateFriendsList();
+			</script>
 	</body>
 </html>
