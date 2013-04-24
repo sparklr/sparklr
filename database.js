@@ -32,12 +32,17 @@ exports.getStream = function(table, args, callback) {
 			query += parseInt(args.from[i]) + ",";
 		query += parseInt(args.from[args.from.length - 1]);
 		query += ") ";
+		if (args.to) {
+			query += "AND `to` = " + parseInt(args.to) + " ";
+		}
+
+	} else { 
+		if (args.to) {
+			query += "`to` = " + parseInt(args.to) + " ";
+		}
 	}
 	if (args.type) {
 		query += "AND `type` = " + parseInt(args.type) + " ";
-	}
-	if (args.to) {
-		query += "AND `to` = " + parseInt(args.to) + " ";
 	}
 	if (args.since)
 	{

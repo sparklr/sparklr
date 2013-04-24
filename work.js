@@ -1,8 +1,9 @@
 // Main ranch
 var user = require("./user");
 var Post = require("./post");
+var util = require("util");
+var events = require("events");
 var database = require("./database");
-
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
@@ -110,7 +111,6 @@ exports.run = function(request, response, uri, sessionid) {
 					}
 
 					database.getStream("timeline", { from: from }, function(err, rows) {
-						console.log(err);
 						sendObject(response,rows);
 					});
 					break;
@@ -165,6 +165,9 @@ case "user":
 						sendObject(response, rows);
 					});
 					break;
+				case "beacon":
+					doBeacon(uri, response, userobj);
+					break;
 				default:
 					response.writeHead(404);
 					response.write("I don't know what you're talking about: " + fragments[2]);
@@ -185,5 +188,51 @@ function sendObject(response,obj) {
 function do403(response, info) {
 	response.writeHead(403);
 	response.write(JSON.stringify({ success: false, info: info }));
+	response.end();
+}
+function doBeacon(uri, response, userobj) {
+	var data = [];
+
+	var stream = parseInt(uri.query.stream);
+
+	var subscribed;
+	if (stream == 0) {
+		subscribed = userobj.following;
+		subscribed.push(userobj.id);
+	} else {
+		subscribed = [stream];
+	}
+
+	var since = parseInt(uri.query.since);
+	var notificationsSince = parseInt(uri.query.n);
+
+	var updateChecker = setInterval( function () { 
+	database.getStream("timeline", { from: subscribed, since: since }, function(err,rows) {
+		if (rows.length > 0) {
+			emitBeacon(response, { type: 0, data: rows });
+			clearInterval(updateChecker);
+		}
+	});
+
+	database.getStream("notifications", { to: userobj.id, since: notificationsSince }, function(err,rows) {
+		if (rows.length > 0) {
+			emitBeacon(response, { type: 1, data: rows });
+			clearInterval(updateChecker);
+		}
+
+	});
+	}, 1000);
+
+	Post.evt.on("post", function (data) {
+		if (subscribed.indexOf(data.from) != -1) {
+			//emitBeacon(response, { type: 0, data: [data] });
+		}
+	});
+}
+
+function emitBeacon(response, data) {
+	response.writeHead(200);
+	console.log(data);
+	response.write(JSON.stringify(data));
 	response.end();
 }
