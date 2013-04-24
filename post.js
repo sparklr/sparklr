@@ -1,6 +1,10 @@
 var database = require("./database");
 var Notification = require("./notification");
 var User = require("./user");
+var events = require("events");
+var util = require("util");
+
+exports.evt = new events.EventEmitter;
 
 exports.getComments = function(postid, callback) {
 	database.query("SELECT * FROM comments WHERE postid=" + parseInt(postid), callback);
@@ -15,18 +19,27 @@ exports.getCommentCounts = function(posts, callback) {
 	database.query(query, callback);
 }
 
+
 exports.post = function(user, data, callback) {
+	data.time = Math.floor((new Date).getTime() / 1000);
+	data.from = user;
+
 	var querystr = "INSERT INTO `timeline` (`from`, `time`, `message`, `public`) VALUES ("
 	querystr += parseInt(user) + ",";
-	querystr += Math.floor((new Date).getTime() / 1000) + ",";
+	querystr += data.time + ",";
 	querystr += database.escape(data.body) + ",";
 	querystr += "1";
 	querystr += ");";
 	database.query(querystr,function(err,rows) {
 		processMentions(data.body, user, rows.insertId);
+		data.message = data.body;
+		data.id = rows.insertId;
+
+		exports.evt.emit("post", data);
 		callback(err,rows);
 	});//callback);
 	//processMentions(data.body, user, );
+	//
 }
 exports.postComment = function(user, data, callback) {
 	database.getObject("timeline", data.id, function(err, rows) {
