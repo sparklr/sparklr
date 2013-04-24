@@ -67,6 +67,9 @@ exports.run = function(request, response, uri, sessionid) {
 							sendObject(response,null);
 						});
 					break;
+					case "repost":
+						Post.repost(userobj.id, postObject.id, postObject.reply);
+					break;
 					case "comment":
 						Post.postComment(userobj.id, postObject);
 					break;

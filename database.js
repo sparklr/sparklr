@@ -53,3 +53,23 @@ exports.getStream = function(table, args, callback) {
 	exports.query(query, callback);
 }
 
+exports.postObject = function(table, obj, callback) {
+	console.log(obj);
+	
+	var query = "INSERT INTO " + mysql.escapeId(table) + " (";
+	for (key in obj) {
+		if (!obj.hasOwnProperty(key)) continue;
+		query += mysql.escapeId(key) + ",";
+	}
+	query = query.substring(0,query.length - 1) + ") VALUES (";
+	for (key in obj) {
+		if (!obj.hasOwnProperty(key)) continue;
+		if (obj[key] == null)
+			query += "null,";
+		else 
+			query += exports.escape(obj[key].toString()) + ",\n";
+	}
+	query = query.substring(0,query.length - 1) + ")";
+	console.log(query);
+	exports.query(query,callback);
+}
