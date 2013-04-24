@@ -64,6 +64,35 @@ exports.postComment = function(user, data, callback) {
 	});
 }
 
+exports.repost = function(user, postid, reply) {
+	database.getObject('timeline', postid, function(err,rows) {
+		console.log(err);
+		if (rows.length < 1) return;
+
+		var post = rows[0];
+		var msg;
+
+		if (post.origid != null) {
+			console.log("Has origid " + post.origid);
+
+			msg = post.message;
+		} else {
+			msg = "[" + post.from + "] " + post.message;
+		}
+		if (reply != "") {
+			msg += "\n[" + user + "] " + reply;
+		}
+		post.id = null;
+		post.message = msg;
+		post.from = user;
+		post.time = Math.floor((new Date).getTime() / 1000);
+
+		database.postObject('timeline', post, function(err,rows) {
+			console.log(err);
+		});
+	});
+}
+
 function processMentions(post, mentioner, postid) {
 	var matches = post.toString().match(/@([\w-]+)/gi);
 	for (i in matches) {
