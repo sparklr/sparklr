@@ -99,8 +99,6 @@ exports.run = function(request, response, uri, sessionid) {
 						}
 						});
 
-
-
 						counter++;
 						if (counter > 30) {
 							clearInterval(interval);
@@ -225,10 +223,28 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "delete":
 			switch (fragments[3]) {
 				case "notification":
-					database.deleteObject("notifications", { to: userobj.id, id: fragments[4] }, function() {
-	sendObject(response,{});
-}				);
+					database.deleteObject("notifications", 
+					{ to: userobj.id, id: fragments[4] },
+					function() {
+						sendObject(response,{});
+					});
 				break;
+				case "post":
+					database.deleteObject("timeline", 
+					{ from: userobj.id, id: fragments[4] },
+					function() {
+						sendObject(response,{});
+					});
+				break;
+				case "comment":
+					database.deleteObject("comments", 
+					{ from: userobj.id, id: fragments[4] },
+					function() {
+						sendObject(response,{});
+					});
+				break;
+
+
 			}
 			break;
 		default:
@@ -247,65 +263,5 @@ function sendObject(response,obj) {
 function do403(response, info) {
 	response.writeHead(403);
 	response.write(JSON.stringify({ success: false, info: info }));
-	response.end();
-}
-function doBeacon(uri, response, userobj) {
-	var data = [];
-	var fragments = uri.pathname.split("/");
-
-	var id = parseInt(uri.query.id);
-	
-	var since = parseInt(uri.query.since);
-	var notificationsSince = parseInt(uri.query.n);
-	var to;
-	var updateChecker = setInterval(function () { 
-
-		if (fragments[3] == "stream") {
-	
-			var subscribed;
-			if (stream == 0) {
-				subscribed = userobj.following;
-				subscribed.push(userobj.id);
-			} else {
-				subscribed = [stream];
-			}
-	
-			database.getStream("timeline", { from: subscribed, since: since }, function(err,rows) {
-				if (rows.length > 0) {
-					emitBeacon(response, { type: 0, data: rows });
-					clearInterval(updateChecker);
-				}
-			});
-			
-		}
-
-		if (fragments[3] == "post") {
-			console.log(id);
-			Post.getComments(id, function(err,rows) {
-				if (rows.length > 0) {
-					emitBeacon(response, { data: rows });
-				}
-			});
-		}
-
-		database.getStream("notifications", { to: [userobj.id], since: notificationsSince }, function(err,rows) {
-			if (rows.length > 0) {
-				emitBeacon(response, { notifications: rows });
-				clearInterval(updateChecker);
-			}
-
-		});
-	}, 1000);
-
-	Post.evt.on("post", function (data) {
-		if (subscribed.indexOf(data.from) != -1) {
-			//emitBeacon(response, { type: 0, data: [data] });
-		}
-	});
-}
-
-function emitBeacon(response, data) {
-	response.writeHead(200);
-	response.write(JSON.stringify(data));
 	response.end();
 }
