@@ -65,120 +65,179 @@ exports.run = function(request, response, uri, sessionid) {
 				switch (fragments[2]) {
 					case "post":
 						Post.post(userobj.id, postObject, function (err) {
-							sendObject(response,null);
+							sendObject(response,{});
 						});
 					break;
 					case "repost":
 						Post.repost(userobj.id, postObject.id, postObject.reply);
+						sendObject(response,{});
 					break;
 					case "comment":
 						Post.postComment(userobj.id, postObject);
+						sendObject(response,{});
+					break;
+					case "chat":
+					database.postObject("messages", { from: userobj.id, to: parseInt(postObject.to), time: Math.floor((new Date).getTime() / 1000), message: postObject.message }, function(err,data) {
+						sendObject(response,{});
+					});
 					break;
 				}
 			} else {
-			//if (user.getAuthkey(userobj) != request.headers.xauthkey) 
-			switch (fragments[2]) {
-				case "post":
-					//TODO: privacy
-					database.getObject("users", fragments[3], function(err,users) { 
-						database.getObject("timeline", fragments[4], function(err,posts) {
-							if (err || !obj)
-								console.log(err);
-							var obj = posts[0];
-							if (obj.from != users[0].id)
-								return do403(response, "User ID and post ID do not match");
-
-							obj.fromhandle = users[0].username;
-							
-							Post.getComments(obj.id, function(err,comments) {
-								obj.comments = comments;
-								sendObject(response,obj);
-							});	
+				if (uri.pathname.indexOf("/beacon") !== -1) {
+					var counter = 0;
+					var interval = setInterval(function() {
+						processGetRequest(request, response, uri, sessionid, userobj, function (data) {
+							if (data.length > 0) {
+								sendObject(response, { data: data });
+								clearInterval(interval);
+							}
 						});
-					});
-					break;
-				case "friends":
-					var obj = { followers: userobj.followers, following: userobj.following }
-					sendObject(response,obj);
-				case "stream":
-					var stream = parseInt(fragments[3]);
-					var from;
-					if (stream === 0) {
-						from = userobj.following;
-						from.push(userobj.id);
-					} else {
-						from = stream;
-					}
+						database.getStream("notifications", { to: [userobj.id], since: uri.query.n }, function(err,rows) {
+						if (rows.length > 0) {
+							sendObject(response, { notifications: rows });
+							clearInterval(interval);
+						}
+						});
 
-					database.getStream("timeline", { from: from }, function(err, rows) {
-						sendObject(response,rows);
-					});
-					break;
-				case "photos":
-					var from = userobj.following;
-						from.push(userobj.id);
 
-					database.getStream("timeline", { from: from, type: 1 }, function(err, rows) {
-						sendObject(response,rows);
-					});
-					break;
-case "user":
-					var userid = parseInt(fragments[3]);
-					database.getObject("users", userid, function (err,users) {
-						var profile = users[0];
-						if (profile.private) {
-							if (userid != userobj.id && (userobj.following.indexOf(userid) == -1 || userobj.followers.indexOf(userid) == -1)) {
-								return do403(response, "not friends");  
-							} 
+
+						counter++;
+						if (counter > 30) {
+							clearInterval(interval);
+							sendObject(response,[]);
 						}
 						
-						var obj = { user: profile.id,
-									handle: profile.username,
-									avatarid: profile.avatarid,
-									following: (userobj.followers.indexOf(profile.id) != -1),
-									name: profile.displayname,
-									bio: profile.bio };
+					}, 1000);
 
-						var table = (fragments[4] == "board" ? "boards" : "timeline");
-						var args = { from: [profile.id] };
-						
-						if (fragments[4] == "photos") {
-							args.type = 1;
-						}
+				} else { 
+					processGetRequest(request, response, uri, sessionid, userobj, function(data) { 
+						sendObject(response,data);
+					});
 
-						database.getStream(table, args, function(err,rows) {
-								obj.timeline = rows;
-								if (table == "boards") 
-									sendObject(response,obj);
-								else {
-									Post.getCommentCounts(rows, function(err,rows) {
-										obj.commentcounts = rows;
-										sendObject(response, obj);
-									});
-								}
-							});
-					});
-					break;
-				case "chat":
-					var from = parseInt(fragments[3]);
-					database.getStream("messages", { from: [from], to: userobj.id }, function(err,rows) {
-						sendObject(response, rows);
-					});
-					break;
-				case "beacon":
-					doBeacon(uri, response, userobj);
-					break;
-				default:
-					response.writeHead(404);
-					response.write("I don't know what you're talking about: " + fragments[2]);
-					response.end();
-					break;
+				}
 			}
-}
 		});
 	}
 }
+function processGetRequest(request, response, uri, sessionid, userobj, callback) {
+	var fragments = uri.pathname.split("/");
+	switch (fragments[2]) {
+		case "post":
+			//TODO: privacy
+			database.getObject("users", fragments[3], function(err,users) { 
+				database.getObject("timeline", fragments[4], function(err,posts) {
+					if (err || !obj)
+					console.log(err);
+				var obj = posts[0];
+				if (obj.from != users[0].id)
+					return do403(response, "User ID and post ID do not match");
 
+				obj.fromhandle = users[0].username;
+
+				Post.getComments(obj.id, 0, function(err,comments) {
+					obj.comments = comments;
+					callback(obj);
+				});	
+				});
+			});
+			break;
+		case "comments":
+			var since = uri.query.since || 0;
+			Post.getComments(fragments[3], since, function(err,comments) {
+				callback(comments);
+			});	
+			break;
+		case "friends":
+			var obj = { followers: userobj.followers, following: userobj.following }
+			callback(obj);
+		case "stream":
+			var stream = parseInt(fragments[3]);
+			var from;
+			if (stream === 0) {
+				from = userobj.following.slice(0); // get a copy, not a reference
+				from.push(userobj.id);
+			} else {
+				from = stream;
+			}
+			var args = { from: from  };
+			if (uri.query.since) {
+				args.since = uri.query.since;
+			}
+
+			database.getStream("timeline", args, function(err, rows) {
+				callback(rows);
+			});
+			break;
+		case "photos":
+			var from = userobj.following;
+			from.push(userobj.id);
+
+			database.getStream("timeline", { from: from, type: 1 }, function(err, rows) {
+				callback(rows);
+			});
+			break;
+		case "user":
+			var userid = parseInt(fragments[3]);
+			database.getObject("users", userid, function (err,users) {
+				var profile = users[0];
+				if (profile.private) {
+					if (userid != userobj.id && (userobj.following.indexOf(userid) == -1 || userobj.followers.indexOf(userid) == -1)) {
+						return do403(response, "not friends");  
+					} 
+				}
+
+				var obj = { user: profile.id,
+					handle: profile.username,
+				avatarid: profile.avatarid,
+				following: (userobj.followers.indexOf(profile.id) != -1),
+				name: profile.displayname,
+				bio: profile.bio };
+
+				var table = (fragments[4] == "board" ? "boards" : "timeline");
+				var args = { from: [profile.id] };
+
+				if (fragments[4] == "photos") {
+					args.type = 1;
+				}
+
+				database.getStream(table, args, function(err,rows) {
+					obj.timeline = rows;
+					if (table == "boards") 
+					sendObject(response,obj);
+					else {
+						Post.getCommentCounts(rows, function(err,rows) {
+							obj.commentcounts = rows;
+							callback(rows);
+						});
+					}
+				});
+			});
+			break;
+		case "chat":
+			var from = parseInt(fragments[3]);
+			var since = uri.query.since || 0;
+			var starttime = uri.query.starttime || 0;
+
+			database.getStream("messages", { from: [from, userobj.id], to: [userobj.id, from], since: since, starttime: starttime }, function(err,rows) {
+				callback(rows);
+			});
+			break;
+		case "delete":
+			switch (fragments[3]) {
+				case "notification":
+					database.deleteObject("notifications", { to: userobj.id, id: fragments[4] }, function() {
+	sendObject(response,{});
+}				);
+				break;
+			}
+			break;
+		default:
+			response.writeHead(404);
+			response.write("I don't know what you're talking about: " + fragments[2]);
+			response.end();
+			break;
+	}
+}
 function sendObject(response,obj) {
 	response.writeHead(200);
 	response.write(JSON.stringify(obj));
@@ -192,35 +251,50 @@ function do403(response, info) {
 }
 function doBeacon(uri, response, userobj) {
 	var data = [];
+	var fragments = uri.pathname.split("/");
 
-	var stream = parseInt(uri.query.stream);
-
-	var subscribed;
-	if (stream == 0) {
-		subscribed = userobj.following;
-		subscribed.push(userobj.id);
-	} else {
-		subscribed = [stream];
-	}
-
+	var id = parseInt(uri.query.id);
+	
 	var since = parseInt(uri.query.since);
 	var notificationsSince = parseInt(uri.query.n);
+	var to;
+	var updateChecker = setInterval(function () { 
 
-	var updateChecker = setInterval( function () { 
-	database.getStream("timeline", { from: subscribed, since: since }, function(err,rows) {
-		if (rows.length > 0) {
-			emitBeacon(response, { type: 0, data: rows });
-			clearInterval(updateChecker);
+		if (fragments[3] == "stream") {
+	
+			var subscribed;
+			if (stream == 0) {
+				subscribed = userobj.following;
+				subscribed.push(userobj.id);
+			} else {
+				subscribed = [stream];
+			}
+	
+			database.getStream("timeline", { from: subscribed, since: since }, function(err,rows) {
+				if (rows.length > 0) {
+					emitBeacon(response, { type: 0, data: rows });
+					clearInterval(updateChecker);
+				}
+			});
+			
 		}
-	});
 
-	database.getStream("notifications", { to: userobj.id, since: notificationsSince }, function(err,rows) {
-		if (rows.length > 0) {
-			emitBeacon(response, { type: 1, data: rows });
-			clearInterval(updateChecker);
+		if (fragments[3] == "post") {
+			console.log(id);
+			Post.getComments(id, function(err,rows) {
+				if (rows.length > 0) {
+					emitBeacon(response, { data: rows });
+				}
+			});
 		}
 
-	});
+		database.getStream("notifications", { to: [userobj.id], since: notificationsSince }, function(err,rows) {
+			if (rows.length > 0) {
+				emitBeacon(response, { notifications: rows });
+				clearInterval(updateChecker);
+			}
+
+		});
 	}, 1000);
 
 	Post.evt.on("post", function (data) {
@@ -232,7 +306,6 @@ function doBeacon(uri, response, userobj) {
 
 function emitBeacon(response, data) {
 	response.writeHead(200);
-	console.log(data);
 	response.write(JSON.stringify(data));
 	response.end();
 }
