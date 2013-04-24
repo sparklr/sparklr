@@ -6,8 +6,12 @@ var util = require("util");
 
 exports.evt = new events.EventEmitter;
 
-exports.getComments = function(postid, callback) {
-	database.query("SELECT * FROM comments WHERE postid=" + parseInt(postid), callback);
+exports.getComments = function(postid, since, callback) {
+	var query = "SELECT * FROM comments WHERE postid=" + parseInt(postid);
+	if (since != 0) {
+		query += " AND time > " + parseInt(since);
+	}
+	database.query(query, callback);
 }
 
 exports.getCommentCounts = function(posts, callback) {
@@ -64,11 +68,11 @@ exports.postComment = function(user, data, callback) {
 				if (rows[i].from == data.to) {
 					notified = true;
 				}
-				Notification.addUserNotification(rows[i].from, "", data.id, user, 1);
+				Notification.addUserNotification(rows[i].from, data.comment, data.id, user, 1);
 			}
 
 			if (!notified) {
-				Notification.addUserNotification(data.to, "", data.id, user, 1);
+				Notification.addUserNotification(data.to, data.comment, data.id, user, 1);
 			}
 		});
 

@@ -26,7 +26,7 @@ http.createServer(function(request,response) {
 	var cookies = new Cookies(request,response);
 	var sessionid = cookies.get("D");
 	
-	if (requesturi.pathname.indexOf("/work") !== -1) {
+	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		work.run(request,response,requesturi,sessionid);
 	} else {
 		if (sessionid != null && sessionid != "") {
