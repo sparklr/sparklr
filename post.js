@@ -23,6 +23,18 @@ exports.getCommentCounts = function(posts, callback) {
 	database.query(query, callback);
 }
 
+exports.getCommentCountsByStream = function(from, since, callback) {
+	var query = "SELECT COUNT(`postid`), `postid` FROM `comments` WHERE `postid` IN (";
+	query += "select `id` from `timeline` where `from` in ("
+	for (var i = 0; i < from.length - 1; i++)
+		query += parseInt(from[i]) + ",";
+	query += from[from.length - 1] + ") order by `time` desc ) ";
+	query += "AND `time` > " + parseInt(since);
+	query += " GROUP BY `postid` ORDER BY `time` DESC LIMIT 30";
+	console.log(query);
+	database.query(query, callback);
+}
+
 
 exports.post = function(user, data, callback) {
 	data.time = Math.floor((new Date).getTime() / 1000);

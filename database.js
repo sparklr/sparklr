@@ -63,7 +63,7 @@ exports.getStream = function(table, args, callback) {
 	}
 	
 	query += ") ORDER BY `time` DESC LIMIT 30";
-	//console.log(query);
+	console.log(query);
 	exports.query(query, callback);
 }
 
@@ -101,3 +101,14 @@ exports.deleteObject = function(table, obj, callback) {
 	exports.query(querystr, callback);
 }
 
+exports.updateObject = function(table, obj, callback) {
+	var query = "UPDATE " + mysql.escapeId(table) + " SET ";
+	for (key in obj) {
+		if (!obj.hasOwnProperty(key)) continue;
+		if (typeof(obj[key]) == "object" && obj[key]) obj[key] = obj[key].join(",");
+		query += mysql.escapeId(key) + " = " + mysql.escape(obj[key]) + ",";
+	}
+	query = query.substring(0,query.length-1);
+	query += " WHERE `id` = " + parseInt(obj.id);
+	exports.query(query,callback);
+}
