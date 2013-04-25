@@ -4,6 +4,7 @@ var Post = require("./post");
 var util = require("util");
 var events = require("events");
 var database = require("./database");
+var async = require("async");
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
@@ -87,7 +88,8 @@ exports.run = function(request, response, uri, sessionid) {
 					var counter = 0;
 					var interval = setInterval(function() {
 						processGetRequest(request, response, uri, sessionid, userobj, function (data) {
-							if (data.length > 0) {
+							console.log(data);
+							if (data.length != 0) {
 								sendObject(response, { data: data });
 								clearInterval(interval);
 							}
@@ -118,6 +120,15 @@ exports.run = function(request, response, uri, sessionid) {
 	}
 }
 function processGetRequest(request, response, uri, sessionid, userobj, callback) {
+	var sendResponse = function(err) {
+		if (err && typeof(err) != "undefined") {
+			response.writeHead(400);
+			response.write(JSON.stringify({error: true, err: err}));
+		} else {
+			response.writeHead(200);
+		}
+		response.end();
+	}
 	var fragments = uri.pathname.split("/");
 	switch (fragments[2]) {
 		case "post":
@@ -155,15 +166,22 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				from = userobj.following.slice(0); // get a copy, not a reference
 				from.push(userobj.id);
 			} else {
-				from = stream;
+				from = [stream];
 			}
 			var args = { from: from  };
 			if (uri.query.since) {
 				args.since = uri.query.since;
 			}
-
+			//TODO: parallel 
+			
 			database.getStream("timeline", args, function(err, rows) {
-				callback(rows);
+				console.log(err);
+				var obj = { timeline: rows }
+				Post.getCommentCountsByStream(from, args.since || 0, function(err,rows) {
+					console.log(err);
+					obj.commentcounts = rows;
+					callback(obj);
+				});
 			});
 			break;
 		case "photos":
@@ -175,7 +193,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			});
 			break;
 		case "user":
-			var userid = parseInt(fragments[3]);
+			var userid = fragments[3];
 			database.getObject("users", userid, function (err,users) {
 				var profile = users[0];
 				if (profile.private) {
@@ -186,10 +204,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 				var obj = { user: profile.id,
 					handle: profile.username,
-				avatarid: profile.avatarid,
-				following: (userobj.followers.indexOf(profile.id) != -1),
-				name: profile.displayname,
-				bio: profile.bio };
+					avatarid: profile.avatarid,
+					following: (userobj.followers.indexOf(profile.id) != -1),
+					name: profile.displayname,
+					bio: profile.bio };
 
 				var table = (fragments[4] == "board" ? "boards" : "timeline");
 				var args = { from: [profile.id] };
@@ -205,7 +223,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					else {
 						Post.getCommentCounts(rows, function(err,rows) {
 							obj.commentcounts = rows;
-							callback(rows);
+							callback(obj);
 						});
 					}
 				});
@@ -220,6 +238,42 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				callback(rows);
 			});
 			break;
+		case "follow":
+			var tofollow = fragments[3];
+			if (userobj.following.indexOf(tofollow) == -1) { 
+				userobj.following.push(tofollow);
+				async.parallel([ function(callback) { database.updateObject("users", userobj, callback); },
+						function(callback) {
+							database.getObject("users", tofollow, function(err,rows) {
+								var otheruser = rows[0];
+								otheruser.followers += "," + userobj.id;
+								database.updateObject("users", otheruser, callback);
+							});
+						}], sendResponse);
+			} else {
+				sendResponse();
+			}
+		break;
+		case "unfollow":
+			var tofollow = fragments[3];
+			if (userobj.following.indexOf(tofollow) != -1) { 
+				userobj.following.splice(userobj.following.indexOf(tofollow),1);
+
+				async.parallel([ function(callback) { database.updateObject("users", userobj, callback); },
+						function(callback) {
+							database.getObject("users", tofollow, function(err,rows) {
+								var otheruser = rows[0];
+								
+								otheruser.followers = otheruser.followers.split(",");
+								otheruser.followers.splice(otheruser.followers.indexOf(userobj.id),1);
+								database.updateObject("users", otheruser, callback);
+							});
+						}], sendResponse);
+
+			} else {
+				sendResponse();
+			}
+		break;
 		case "delete":
 			switch (fragments[3]) {
 				case "notification":
@@ -254,14 +308,17 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 	}
 }
+
 function sendObject(response,obj) {
 	response.writeHead(200);
 	response.write(JSON.stringify(obj));
 	response.end();
 	console.log(">>" + JSON.stringify(obj));
 }
+
 function do403(response, info) {
 	response.writeHead(403);
-	response.write(JSON.stringify({ success: false, info: info }));
+	response.write(JSON.stringify({ error: true, info: info }));
 	response.end();
 }
+
