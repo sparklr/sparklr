@@ -5,6 +5,7 @@ var util = require("util");
 var events = require("events");
 var database = require("./database");
 var async = require("async");
+var toolbox = require("./toolbox");
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
@@ -79,6 +80,12 @@ exports.run = function(request, response, uri, sessionid) {
 					break;
 					case "chat":
 					database.postObject("messages", { from: userobj.id, to: parseInt(postObject.to), time: Math.floor((new Date).getTime() / 1000), message: postObject.message }, function(err,data) {
+						sendObject(response,{});
+					});
+					break;
+					case "board":
+					database.postObject("boards", { from: userobj.id, color: 0, to: parseInt(postObject.to), time: toolbox.time(), message: postObject.message }, function (err, data) {
+						console.log(err);
 						sendObject(response,{});
 					});
 					break;
@@ -211,9 +218,13 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 				var table = (fragments[4] == "board" ? "boards" : "timeline");
 				var args = { from: [profile.id] };
-
+				
 				if (fragments[4] == "photos") {
 					args.type = 1;
+				}
+				if (table == "boards") {
+					args.from = null;
+					args.to = [profile.id];
 				}
 
 				database.getStream(table, args, function(err,rows) {
@@ -229,6 +240,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				});
 			});
 			break;
+		case "board":
+			database.getStream("boards", { to: [fragments[3]], since: uri.query.since || 0 }, function(err,rows) {
+				callback(rows);
+			});
 		case "chat":
 			var from = parseInt(fragments[3]);
 			var since = uri.query.since || 0;
@@ -302,18 +317,23 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			}
 			break;
 		default:
-			response.writeHead(404);
+			/*response.writeHead(404);
 			response.write("I don't know what you're talking about: " + fragments[2]);
 			response.end();
+			*/
 			break;
 	}
 }
 
 function sendObject(response,obj) {
+	try { 
 	response.writeHead(200);
 	response.write(JSON.stringify(obj));
 	response.end();
 	console.log(">>" + JSON.stringify(obj));
+	} catch (e) {
+		// disconnected
+	}
 }
 
 function do403(response, info) {
