@@ -63,7 +63,7 @@ exports.getStream = function(table, args, callback) {
 	}
 	
 	query += ") ORDER BY `time` DESC LIMIT 30";
-	console.log(query);
+	//console.log(query);
 	exports.query(query, callback);
 }
 

@@ -44,8 +44,9 @@ http.createServer(function(request,response) {
 	}
 
 }).listen(8080);
-
+/*
 process.on('uncaughtException', function(err) {
   console.log(err);
   console.trace();
 });
+*/
