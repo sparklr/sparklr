@@ -30,14 +30,14 @@ exports.run = function(user, request, response, sessionid) {
 	html = "<!-- Instancy-Luna Prototype -->" + html;
 
 
+	user.following = user.following.split(",").filter(function(e) { return e; });
+	user.followers = user.followers.split(",").filter(function(e) { return e; });
+
 	var friends = [];
 	for (i in user.following) {
 		if (user.followers.indexOf(user.following[i]) !== -1)
 			friends.push(user.following[i]);
 	}
-
-	user.following = user.following.split(",").filter(function(e) { return e; });
-	user.followers = user.followers.split(",").filter(function(e) { return e; });
 
 	var from = user.following;
 	from.push(user.id);
@@ -80,6 +80,7 @@ exports.run = function(user, request, response, sessionid) {
 			function (callback) { 	
 				User.getOnlineFriends(friends, function(err,onlinefriends) {
 					var friendsObj = {};
+					console.log(friends);
 					for (i in friends) {
 						friendsObj[friends[i]] = false;
 					}
