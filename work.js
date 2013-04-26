@@ -253,6 +253,17 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				callback(rows);
 			});
 			break;
+		case "username":
+			var users = fragments[3].split(",");
+			var query = "SELECT `username`,`id` FROM `users` WHERE id IN (";
+			for (var i = 0; i < users.length; i++) {
+				users[i] = parseInt(users[i]);
+			}
+			query += users.join(",") + ")";
+			database.query(query, function(err,rows) {
+				callback(rows);
+			});
+		break;
 		case "follow":
 			var tofollow = fragments[3];
 			if (userobj.following.indexOf(tofollow) == -1) { 
