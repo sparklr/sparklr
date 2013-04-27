@@ -42,7 +42,8 @@ exports.run = function(user, request, response, sessionid) {
 	var from = user.following;
 	from.push(user.id);
 
-	async.parallel([			function (callback) { 
+	async.parallel([
+		function (callback) { 
 				database.getStream("timeline", { from: from }, function(err,stream) {
 					var timelineStream;
 					timelineStream = JSON.stringify(stream);
@@ -58,7 +59,6 @@ exports.run = function(user, request, response, sessionid) {
 					});
 
 				});
-
 			},
 			function (callback) { 
 				User.getMassUserDisplayName(from, function (err, names) {

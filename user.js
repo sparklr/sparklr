@@ -1,4 +1,5 @@
 var database = require("./database");
+var toolbox = require("./toolbox");
 var md5 = require("./md5");
 
 var CACHE_DISPLAYNAME = [];
@@ -59,4 +60,9 @@ exports.trySignin = function(user,pass,callback) {
 		if (rows.length < 1) return callback(false);
 		callback (rows[0].password == md5.hash(pass), rows[0]);
 	});
+}
+
+exports.updateActivity = function(userobj) {
+	userobj.lastseen = toolbox.time();
+	database.updateObject("users", userobj);
 }
