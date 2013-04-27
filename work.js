@@ -92,6 +92,8 @@ exports.run = function(request, response, uri, sessionid) {
 				}
 			} else {
 				if (uri.pathname.indexOf("/beacon") !== -1) {
+					user.updateActivity(userobj);
+
 					var counter = 0;
 					var interval = setInterval(function() {
 						processGetRequest(request, response, uri, sessionid, userobj, function (data) {
@@ -166,6 +168,17 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "friends":
 			var obj = { followers: userobj.followers, following: userobj.following }
 			callback(obj);
+		case "onlinefriends":
+			var friends = [];
+			for (i in userobj.following) {
+				if (userobj.followers.indexOf(userobj.following[i]) !== -1)
+					friends.push(userobj.following[i]);
+			}
+
+			user.getOnlineFriends(friends, function(err,onlinefriends) {
+				callback(onlinefriends);
+			});
+			break;
 		case "stream":
 			var stream = parseInt(fragments[3]);
 			var from;
@@ -183,7 +196,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			
 			database.getStream("timeline", args, function(err, rows) {
 				console.log(err);
-				var obj = { timeline: rows }
+				var obj = { timeline: rows, length: rows.length }
 				Post.getCommentCountsByStream(from, args.since || 0, function(err,rows) {
 					console.log(err);
 					obj.commentcounts = rows;
@@ -338,10 +351,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 function sendObject(response,obj) {
 	try { 
-	response.writeHead(200);
-	response.write(JSON.stringify(obj));
-	response.end();
-	console.log(">>" + JSON.stringify(obj));
+		response.writeHead(200);
+		response.write(JSON.stringify(obj));
+		response.end();
+		console.log(">>" + JSON.stringify(obj));
 	} catch (e) {
 		// disconnected
 	}

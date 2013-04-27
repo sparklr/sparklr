@@ -104,8 +104,11 @@ exports.updateObject = function(table, obj, callback) {
 	var query = "UPDATE " + mysql.escapeId(table) + " SET ";
 	for (key in obj) {
 		if (!obj.hasOwnProperty(key)) continue;
-		if (typeof(obj[key]) == "object" && obj[key]) obj[key] = obj[key].join(",");
-		query += mysql.escapeId(key) + " = " + mysql.escape(obj[key]) + ",";
+		if (typeof(obj[key]) == "object" && obj[key]) {
+			query += mysql.escapeId(key) + " = " + mysql.escape(obj[key].join(",")) + ",";
+		} else {
+			query += mysql.escapeId(key) + " = " + mysql.escape(obj[key]) + ",";
+		}
 	}
 	query = query.substring(0,query.length-1);
 	query += " WHERE `id` = " + parseInt(obj.id);
