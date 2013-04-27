@@ -11,7 +11,11 @@ exports.verifyAuth = function(userid,authkey,callback) {
 }
 
 exports.getAuthkey = function(user) {
-	return md5.hash(user.username + ":" + user.authkey + global.salt);
+	return md5.hash(user.id + ":" + user.password + global.salt);
+}
+
+exports.generatePass = function(pass) {
+	return md5.hash(pass); //TODO: salt
 }
 
 exports.getUserProfile = function(userid,callback) {
@@ -58,7 +62,8 @@ exports.trySignin = function(user,pass,callback) {
 	database.query("SELECT * FROM `users` WHERE `username` = " + database.escape(user) + " OR `email` = " + database.escape(user) + ";", function(err,rows) 
 	{
 		if (rows.length < 1) return callback(false);
-		callback (rows[0].password == md5.hash(pass), rows[0]);
+		//callback(true, rows[0]);
+		callback (rows[0].password == exports.generatePass(pass), rows[0]);
 	});
 }
 

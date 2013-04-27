@@ -89,6 +89,47 @@ exports.run = function(request, response, uri, sessionid) {
 						sendObject(response,{});
 					});
 					break;
+					case "settings":
+						var result = true; 
+						var message = "";
+						userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
+						if (postObject.email != userobj.email) {
+							userobj.emailverified = 0;
+						}
+						userobj.email = postObject.email;
+						if (postObject.displayname.length > 30) {
+							message = "That display name is a little long...";
+							result = false;
+						} else { 
+							userobj.displayname = postObject.displayname;
+						}
+						user.getUserProfileByUsername(userobj.username, function(err,res) {
+							if (res && res.length > 0 && res[0].id != userobj.id) {
+								result = false;
+								message = "That username is taken :c";
+							} else {
+								database.updateObject("users", userobj);
+							}
+
+							sendObject(response, { success: result, message: message });
+						});
+					break;
+					case "password":
+						var result = { result: false, message: "" }; 
+						var oldpass = user.generatePass(postObject.password);
+						var newpass = user.generatePass(postObject.newpassword);
+
+						console.log(userobj.password);
+						if (userobj.password == oldpass) {
+							result.result = true;
+							userobj.password = newpass;
+							database.updateObject("users", userobj);
+							result.authkey = user.getAuthkey(userobj);
+						} else {
+							result.message = "Incorrect current password.";
+						}
+						sendObject(response, result);
+						break;
 				}
 			} else {
 				if (uri.pathname.indexOf("/beacon") !== -1) {
@@ -313,6 +354,19 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				sendResponse();
 			}
 		break;
+		case "settings":
+			userobj.password = null;
+			callback(userobj);
+		break;
+		case "checkusername":
+			user.getUserProfileByUsername(fragments[3], function(err,rows) {
+				if (rows && rows.length > 0 && rows[0].id != userobj.id) {
+					callback(false);
+				} else {
+					callback(true);
+				}
+		});
+			break;
 		case "delete":
 			switch (fragments[3]) {
 				case "notification":
