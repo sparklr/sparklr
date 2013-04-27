@@ -128,7 +128,7 @@ function processMentions(post, mentioner, postid) {
 		var user = matches[i].substring(1);
 		User.getUserProfileByUsername(user, function(err,rows) {
 			if (rows.length > 0) {
-				Notification.addUserNotification(mentioner, "", postid, rows[0].id, Notification.N_REPOST);
+				Notification.addUserNotification(rows[0].id, "", postid, mentioner, Notification.N_MENTION);
 				console.log("Notifying " + rows[0].id);
 			}
 		});
