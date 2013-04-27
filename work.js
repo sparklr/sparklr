@@ -111,7 +111,7 @@ exports.run = function(request, response, uri, sessionid) {
 								database.updateObject("users", userobj);
 							}
 
-							sendObject(response, { success: result, message: message });
+							sendObject(response, { result: result, message: message });
 						});
 					break;
 					case "password":
@@ -128,6 +128,12 @@ exports.run = function(request, response, uri, sessionid) {
 						} else {
 							result.message = "Incorrect current password.";
 						}
+						sendObject(response, result);
+						break;
+					case "privacy":
+						var result = { result: true, message: "" }; 
+						userobj.private = (postObject.private ? 1 : 0);
+						database.updateObject("users", userobj);
 						sendObject(response, result);
 						break;
 				}
