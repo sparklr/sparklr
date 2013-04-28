@@ -31,19 +31,19 @@ exports.getCommentCountsByStream = function(from, since, callback) {
 	query += from[from.length - 1] + ") order by `time` desc ) ";
 	query += "AND `time` > " + parseInt(since);
 	query += " GROUP BY `postid` ORDER BY `time` DESC LIMIT 30";
-	console.log(query);
 	database.query(query, callback);
 }
-
 
 exports.post = function(user, data, callback) {
 	data.time = Math.floor((new Date).getTime() / 1000);
 	data.from = user;
 
-	var querystr = "INSERT INTO `timeline` (`from`, `time`, `message`, `public`) VALUES ("
+	var querystr = "INSERT INTO `timeline` (`from`, `time`, `message`, `meta`, `type`, `public`) VALUES ("
 	querystr += parseInt(user) + ",";
 	querystr += data.time + ",";
 	querystr += database.escape(data.body) + ",";
+	querystr += database.escape(data.img) + ",";
+	querystr += (data.img ? 1 : 0) + ",";
 	querystr += "1";
 	querystr += ");";
 	database.query(querystr,function(err,rows) {

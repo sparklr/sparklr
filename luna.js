@@ -13,6 +13,7 @@ var work = require("./work");
 global.salt = "yumyumyum";
 global.commonHost = "http://192.168.1.128/p18/static/"
 global.staticHost = "http://192.168.1.128/p18/data/";
+global.storageDir = "C:\\Users\\Jaxbot\\Documents\\www\\p18\\data\\storage";
 
 database.init({
 	host: "localhost",

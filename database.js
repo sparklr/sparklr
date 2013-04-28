@@ -78,7 +78,7 @@ exports.postObject = function(table, obj, callback) {
 	for (key in obj) {
 		if (!obj.hasOwnProperty(key)) continue;
 		if (obj[key] == null)
-			query += "null,";
+			query += "null,\n";
 		else 
 			query += exports.escape(obj[key].toString()) + ",\n";
 	}
