@@ -101,7 +101,7 @@ exports.run = function(request, response, uri, sessionid) {
 							message = "That display name is a little long...";
 							result = false;
 						} else { 
-							userobj.displayname = postObject.displayname;
+							userobj.displayname = postObject.displayname.replace(/(\<|\>)/g, "");
 						}
 						user.getUserProfileByUsername(userobj.username, function(err,res) {
 							if (res && res.length > 0 && res[0].id != userobj.id) {
@@ -135,6 +135,16 @@ exports.run = function(request, response, uri, sessionid) {
 						userobj.private = (postObject.private ? 1 : 0);
 						database.updateObject("users", userobj);
 						sendObject(response, result);
+						break;
+					case "profile":
+						if (postObject.displayname.length < 30) {
+							userobj.displayname = postObject.displayname.replace(/(\<|\>)/g, "");
+						}
+						if (postObject.bio.length < 300) { 
+							userobj.bio = postObject.bio.replace(/(\<|\>)/g, "");
+						}
+						database.updateObject("users", userobj);
+						sendObject(response, {});
 						break;
 				}
 			} else {
