@@ -285,6 +285,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		database.getStream("timeline", args, function(err, rows) {
 			var obj = { timeline: rows, length: rows.length }
 			Post.getCommentCountsByStream(from, args.since || 0, function(err,rows) {
+				obj.length = rows.length || obj.timeline.length;
 				obj.commentcounts = rows;
 				callback(obj);
 			});
@@ -425,7 +426,6 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			},
 			function (callback) { 
 				var query = "SELECT * FROM `timeline` WHERE `message` LIKE " + database.escape(q) + " ORDER BY `time` DESC LIMIT 30";
-				console.log(query);
 			database.query(query, function(err,rows) {
 				if (rows && rows.length > 0) {
 					results.posts = rows;
