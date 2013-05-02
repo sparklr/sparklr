@@ -1,0 +1,28 @@
+<script>
+	var s = location.hash.split("/");
+	curChatUser = s[2];
+</script>
+
+<div class='contentwrapper'>
+	<div style='background-image: url({STATICHOST}/users/{curChatUser}); margin: -5px -5px; width: 578px;' class='profileheader'>
+		<p class='headertitle fadein'><a href='#/user/{curChatUser}'>{ getDisplayName(curChatUser) }</a></p>
+</div>
+<div class='fadein'>
+	<p>
+		<div id='scrollUpContent'>
+		</div>
+		<img src='{STATICHOST}/thumb/{curUser}' class='avatar'>
+		<textarea id='composer' onkeydown='isEnter(event,sendChatMessage)' autofocus="autofocus"></textarea>
+	</p>
+</div>
+</div>
+<script>
+	setTimeout(function() { 
+		for (var i = data.length - 1; i >= 0; i--) {
+			addChatMessage(data[i].from, data[i].message, data[i].time, false);
+		}
+
+		currentPageType = "CHAT";
+		setupScrollHandler();
+}, 0);
+</script>

@@ -1,0 +1,8 @@
+Options +FollowSymlinks
+RewriteEngine On
+
+
+RewriteRule ^invite/?$ pages/invite.php [L]
+RewriteRule ^invite/([A-Za-z0-9_.,-]+)/?$ pages/invite.php?id=$1 [L]
+
+ErrorDocument 404 /error404.php

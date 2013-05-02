@@ -1,0 +1,69 @@
+<div class='contentwrapper'>
+	<h2>settings</h2>
+	<div id='sidebar_links'>
+		<a href='#/settings'>General</a>
+		<a href='#/settings/password'>Change Password</a>
+		<a href='#/settings/privacy'>Privacy</a>
+	</div>
+
+	<form class='settings' method='POST' target='datapusher' id='form_settings' onSubmit='updateAccountSettings();return false;void(0);'>
+		<% if (fragments[2] == "confirm") %>
+		<% endif %>
+		<% if (fragments[2] == "resend") %>
+		<% endif %>
+		<% if (fragments[2] == "password") %>
+		<fieldset>
+			<label>Current password</label>
+			<input type='password' name='currentpassword'> 
+		</fieldset>
+		<fieldset>
+			<label>New password</label>
+			<input type='password' name='password1'>
+		</fieldset>
+		<fieldset>
+			<label>Confirm password</label>
+			<input type='password' name='password2' onBlur='checkPasswords(this.value,password1.value);'>
+		</fieldset>
+		<% endif %>
+		<% if (fragments[2] == "privacy") %>
+		<fieldset>
+			<input type='radio' name='private' id='public' value='0'<% if (!data.private) %>checked<% endif %>>
+			<label for='public' class='radio'><b>Public</b><br>
+				<p>Anyone can see anything.</p>
+			</label>
+		</fieldset>
+		<fieldset>
+			<input type='radio' name='private' id='private' value='1'<% if (data.private) %>checked<% endif %>>
+			<label for='private' class='radio'><b>Private</b><br>
+				<p>Only mutuals can see profile, posts, and respond to you.<br>
+				</p>
+			</label>
+		</fieldset>
+		<% endif %>
+		<% if (fragments[2] == "account") %>	
+		echo "<b>Account Deletion</b><br>Once your account is removed, there's no going back.<br><br>";
+		echo "Type your password below to confirm:<br><input type='password' name='delete'><br><br>";
+		echo "<b>Warning: The button below is the point of no return<br></b>";
+		<% endif %>
+		<% if (!fragments[2]) %>
+		<fieldset>
+			<label>Username</label>
+			<input type='text' name='username' value='{data.username}' onKeyUp='checkUsername(this.value)'>
+			<br><span id='username_callback' class='error'></span>
+		</fieldset>
+		<fieldset>
+			<label>Display name</label>
+			<input type='text' name='displayname' value='{data.displayname}'>
+		</fieldset>
+		<fieldset>
+			<label>Email</label>
+			<input type='text' name='email' value='{data.email}'>
+		</fieldset>
+		<% endif %>
+		<input type='submit' id='savesettings' value='Save Settings'>
+		<span id='settings_result'></span>
+	</form>
+</div>
+<script>
+	USERHANDLES[curUser] = data.username;
+</script>

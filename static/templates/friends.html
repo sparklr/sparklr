@@ -1,0 +1,39 @@
+<div class='contentwrapper'>
+<div style='float:right'>
+	<input type='button' value='Invite' onClick='inviteFriend();'>
+</div>
+
+<h2>following</h2>
+<br>
+<script>
+	console.log(data);
+	var renderUser = function (user) {
+		var html = "";
+</script>
+<div class='friend fadein' onClick='location.href="#/user/{user}";' style='background-image: url({STATICHOST}/users/{user});-webkit-animation-duration: {(Math.random() * 1.5)}s'><div style='position: absolute; bottom: 2px; right: 5px;'>
+		<% if (data.followers.indexOf(user) != -1) %>
+		<img src="{COMMONHOST}/star.png" title='Mutual Follower ♥'/>
+		<% endif %>
+</div><span>{getDisplayName(user) }</span></div>
+<script>
+		return html;
+	};
+
+	for (var i = 0; i < data.following.length; i++) {
+		html += renderUser(data.following[i]);
+	}
+</script>
+<h2>followers</h2>
+<script>
+	var foundFollower = false;
+	for (var i = 0; i < data.followers.length; i++) { 
+		if (data.following.indexOf(data.followers[i]) == -1) {
+			html += renderUser(data.followers[i]);
+			foundFollower = true;
+		}
+	}
+</script>
+<% if (!foundFollower) %>
+	All your followers are mutual. c:
+<% endif %>
+</div>
