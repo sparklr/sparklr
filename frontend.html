@@ -36,15 +36,13 @@
 			
 			<div id='notificationlist'></div>
 			<script>
-				addTimelineArray(<! timelineStream ->, 0);
 				var DISPLAYNAMES = <! displayNames ->;
 				var USERHANDLES = <! userHandles ->;
-				document.addEventListener("load", function() {
-				updateCommentCounts(<! commentCounts ->) }, true);
-				
-				
+			
 				var FRIENDS = <! friends ->;
-				updateFriendsList();
+				var payload = { timelineStream: <! timelineStream ->,
+								commentCounts: <! commentCounts -> };
+				app(payload);
 			</script>
 	</body>
 </html>
