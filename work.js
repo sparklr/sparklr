@@ -401,7 +401,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		break;
 		case "settings":
 			userobj.password = null;
-		callback(userobj);
+			callback(userobj);
 		break;
 		case "checkusername":
 			user.getUserProfileByUsername(fragments[3], function(err,rows) {
@@ -412,6 +412,31 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			}
 		});
 		break;
+		case "search":
+			var results = {};
+			var q = "%" + unescape(fragments[3]) + "%";
+			async.parallel([ function(callback) { 
+			database.query("SELECT `username`, `id` FROM `users` WHERE `username` LIKE " + database.escape(q) + " ORDER BY `lastseen` DESC LIMIT 30" , function(err,rows) {
+			if (rows && rows.length > 0) {
+				results.users = rows;
+			}
+			callback(err);
+		}); 
+			},
+			function (callback) { 
+				var query = "SELECT * FROM `timeline` WHERE `message` LIKE " + database.escape(q) + " ORDER BY `time` DESC LIMIT 30";
+				console.log(query);
+			database.query(query, function(err,rows) {
+				if (rows && rows.length > 0) {
+					results.posts = rows;
+				}
+				callback(err);
+			});
+			}], function(err) {
+				//TODO: error handling
+				callback(results);
+			});
+			break;
 		case "delete":
 			switch (fragments[3]) {
 			case "notification":
