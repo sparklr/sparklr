@@ -1,0 +1,66 @@
+<script>
+	USERHANDLES[data.from] = data.fromhandle;
+</script>
+
+<div class='contentwrapper'>
+	<% if (data.type == 1) %>
+	<div class='picturepost' onClick='showImage("{ data.meta }");' style='background-image: url({STATICHOST}/storage/images/{data.meta}_thumb.jpg);'></div>
+	<% endif %>
+
+	<div id='event_{data.id}' class='fadein' style='padding: 7px; margin: -5px' onClick='showEvent({data.id})'>
+		<div style='display:inline-block;float:left;height:100%'>
+			<img class='avatar' src='{getAvatar(data.from)}'>
+		</div>
+		<div class='rightcontrols'>
+			<div class='time' data-time='{data.time}'></div>
+		</div> 
+		<a href='#/user/{data.from}'>{getDisplayName(data.from)}</a><br>
+		{processPost(data)}
+		<br>
+	</div>
+	<hr>
+	<div id='responseholder'>
+		<div id='comments_{data.id}' style='padding:5px;'></div>
+		<div class='fadein' style='padding:5px;'>
+			<img src='{getAvatar(curUser)}' class='avatar'>
+			<textarea id='composer' onkeydown='isEnter(event,postComment);' placeholder='Respond...'></textarea>
+		</div>
+	</div>
+
+	<div id='reblogholder' class='fadein' style='display:none;min-height:100px'>
+		<div class='fadein' style='padding:5px;'>
+			<img src='{getAvatar(curUser)}' class='avatar'>
+			<textarea id='repostcomment' onkeydown='isEnter(event,publishRepost);' class='composer' placeholder='Share something (optional)'></textarea>
+		</div>
+		<input type='button' value='Repost to Followers' style='float: right' onClick='publishRepost();'>
+	</div>
+</div>
+
+<div id='sidebar_links'>
+	<a href='javascript:repost("{data.id}");'>Repost</a>
+	<% if (data.from == curUser) %>
+	<a href='javascript:deletePost("{data.id}");'>Delete</a>
+	<% endif %>
+</div>
+
+<script>
+	currentPageType = "POST";
+	subscribedStream = data.id;
+	currentPostBy = data.from;
+	setTimeout(function() { 
+	for (var i = 0; i < data.comments.length; i++) {
+		renderComment(data.comments[i]);
+	}
+	
+	currentComments = data.comments;
+
+
+	if (location.hash.indexOf("new") != -1) 
+		_g('composer').focus();
+	
+	if (location.hash.indexOf("repost") != -1) 
+		repost(data.id);
+	}, 0);
+
+</script>
+

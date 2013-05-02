@@ -1,0 +1,19 @@
+#ignore the globals file
+backend/globals.php
+
+#image, etc storage
+data/
+
+#OS junk
+Thumbs.db
+*.swp
+*.swo
+ctags.tmp
+tags
+/nbproject/private/
+/nbproject/
+
+p18.js/
+
+#compiled stuff
+static/out

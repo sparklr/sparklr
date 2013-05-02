@@ -1,0 +1,59 @@
+//The current page type, i.e. stream, chat
+var currentPageType;
+
+var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost"];
+
+var PAGEHANDLERS = [];
+
+var homepage = function() {
+	renderTimeline();
+	publicStream = true;
+	subscribedStream = 0;
+
+	for (var i = 0; i < timelineEvents[0].length; i++) {
+		addTimelineEvent(timelineEvents[0][i]);
+	}
+
+	var args = location.hash.split("/");
+	if (args[1] == "mention") {
+		var composer = _g("composer");
+
+		composer.value = "@" + args[2] + " ";
+		composer.focus();
+		composer.selectionStart = composer.value.length;
+	}
+}
+
+// Error pages
+var ERROR_ACCESS_DENIED = "<h2>Sorry</h2>You don't have permission to see that page.";
+var ERROR_NOT_AVAILABLE = "<h2>Uh oh</h2>That page, person, or scarce resource is no longer available.<br>In fact, it's entirely possible that it never existed.";
+
+function updatePages(loaded) {
+
+	document.body.ondrop = document.body.ondragover = document.body.ondragenter = function (e) { dropPrevent(e); }
+	
+	//Dismiss notifications
+	handleNotifications();
+
+	//fix height
+	_g("frame").style.minHeight = "640px";
+
+	var s = location.hash.split("/");
+
+	for (i = 0; i < definedPages.length; i++) {
+		if (definedPages[i] == s[1]) {
+				renderPageFromTemplate();
+				//ajaxGet("pages/" + definedPages[i] + ".php" + ((s.length > 2) ? ("?args=" + location.hash.substring(1)) : ""),null,renderPageFromTemplate);
+			return true;
+		}
+	}
+
+	//page not found, go home
+	if (typeof(loaded) != "undefined") {
+		//reset sidebar
+		_g("sidebar").innerHTML = "";
+		homepage();
+	}
+
+}
+

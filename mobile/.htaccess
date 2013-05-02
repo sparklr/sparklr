@@ -1,0 +1,6 @@
+Options +FollowSymlinks
+RewriteEngine On
+
+RewriteRule ^((.*).js)/?$ dobblish/dobblish.php?f=../$1 [L]
+RewriteRule ^pages/(.*)/?$ ../frontend/pages/$1 [L]
+RewriteRule ^work/(.*)/?$ ../frontend/work/$1 [L]
