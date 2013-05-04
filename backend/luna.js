@@ -5,7 +5,6 @@ var http = require("http");
 var Cookies = require("cookies");
 
 var frontend = require("./frontend");
-var external = require("./external");
 var database = require("./database");
 var user = require("./user");
 var work = require("./work");
@@ -37,10 +36,10 @@ http.createServer(function(request,response) {
 				if (success)
 					frontend.run(userobj,request,response,sessionid);
 				else
-					external.run(request,response);
+					frontend.showExternalPage(request,response);
 			});
 		} else {
-			external.run(request,response);
+			frontend.showExternalPage(request,response);
 		}
 	}
 
