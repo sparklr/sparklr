@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Instancy</title>
+		<link rel='stylesheet' href='{global.commonHost}/external.css'>
+        <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+        <script src='{global.commonHost}/external.js'></script>
+		<script src='{global.commonHost}/ui.js'></script>
+		<script src='{global.commonHost}/user.js'></script>
+		<script src='{global.commonHost}/data.js'></script>
+		<script src='{global.commonHost}/timeline.js'></script>
+		<script>
+			var STATICHOST = "{global.staticHost}";
+			var AUTHKEY, curUser;
+		</script>
+    </head>
+    <body>
+        <div id='signin'>
+            <a href='#/signin'>sign in</a>
+		</div>
+		<div id='content'>
+		</div>
+        <div id='staticcontent'>
+            <div id='logo'></div>	
+            <div id='info'>
+                <span>Instancy is in closed preview.</span><br><br>
+                Request an invite
+                <form target='worker' action='work/informme.php' method='POST' onSubmit='go.value="..."'>
+                    <input type='text' name='email' id='email' placeholder='email address' class='t1' autofocus='autofocus'>
+                    <input type='submit' value='?' name='go' class='s1'>
+                </form>
+            </div>
+            <div id='loginform'>
+                <div id='forgotcallback'></div>
+                <form target='worker' onSubmit='trySignin(username,password); void(0);'>
+                    <input type='text' name='username' id='username' placeholder='email or username' class='t1' autofocus='autofocus'>
+                    <input type='password' name='password' placeholder='password' class='t1'>
+                    <input type='submit' value='?' name='go' class='s1'>
+                </form>
+                <div id='forgot'><a href='#/signin/forgot'>Forgot?</a></div>
+                <a href='#'>Don't have an account?</a>
+            </div>	
+        </div>
+        <script>
+            //if (document.cookie.indexOf("D") != -1)
+              //  location.href='#signin';
+        </script>
+    </body>
+</html>

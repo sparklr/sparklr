@@ -122,9 +122,7 @@ function trySignin(username, password) {
 		}
 	}
 	
-	xhr.open("POST", "work/signin.php");
-	xhr.setRequestHeader("X-U", username.value);
-	xhr.setRequestHeader("X-P", password.value);
+	xhr.open("POST", "work/signin/" + username.value + "/" + password.value);
 	xhr.send(null);
 }
 

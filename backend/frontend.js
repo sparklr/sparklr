@@ -6,10 +6,16 @@ var User = require("./user");
 var async = require("async");
 
 var frontendTemplate = "";
+var externalTemplate = "";
 
-fs.readFile("../p18/static/templates/headers_test.html", function(err,data) {
+fs.readFile("../static/templates/headers_test.html", function(err,data) {
 	eval(templates.parse(data.toString()));
 	frontendTemplate = html + "<body>";
+});
+
+fs.readFile("../static/templates/external.html", function(err,data) {
+	eval(templates.parse(data.toString()));
+	externalTemplate = html;
 });
 
 exports.run = function(user, request, response, sessionid) {
@@ -82,5 +88,11 @@ exports.run = function(user, request, response, sessionid) {
 				response.write(html);
 				response.end();
 			});
+}
+
+exports.showExternalPage = function(request,response) {
+	response.writeHead(200);
+	response.write(externalTemplate);
+	response.end();
 }
 
