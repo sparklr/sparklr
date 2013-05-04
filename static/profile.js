@@ -192,7 +192,6 @@ function editProfile() {
 		_g("userDisplayName").setAttribute("contenteditable", true);
 		_g("userBio").setAttribute("contenteditable", true);
 		_g("userTip").style.display = "inline-block";
-		_g("editBtn").title = "Idk";
 		_g("editBtn").innerHTML = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
@@ -241,5 +240,9 @@ function showPrivateUser(user) {
 	}
 	html += "</div>";
 	_g("content").innerHTML = html;
+}
+
+function showMePage() {
+	location.href = '#/user/' + curUser;
 }
 

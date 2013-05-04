@@ -43,17 +43,14 @@ function updatePages(loaded) {
 	for (i = 0; i < definedPages.length; i++) {
 		if (definedPages[i] == s[1]) {
 				renderPageFromTemplate();
-				//ajaxGet("pages/" + definedPages[i] + ".php" + ((s.length > 2) ? ("?args=" + location.hash.substring(1)) : ""),null,renderPageFromTemplate);
 			return true;
 		}
 	}
 
 	//page not found, go home
-	if (typeof(loaded) != "undefined") {
-		//reset sidebar
-		_g("sidebar").innerHTML = "";
-		homepage();
-	}
+	//reset sidebar
+	_g("sidebar").innerHTML = "";
+	homepage();
 
 }
 
