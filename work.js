@@ -276,7 +276,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		} else {
 			from = [stream];
 		}
-		var args = { from: from  };
+		var args = { from: from };
 		if (uri.query.since) {
 			args.since = uri.query.since;
 		}
