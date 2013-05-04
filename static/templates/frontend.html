@@ -1,0 +1,20 @@
+<div id='header'>
+	<div id='navigation'>
+		<img src='{COMMONHOST}/logo.png' id='logo' onClick='location.href="#";'>
+		<a href='#/' class='home'></a>
+		<a href='#/friends' class='people'></a>
+		<a href='#/photos' class='photos'></a>
+		<a href="#/user/{curUser}"><img src='{STATICHOST}/thumb/{curUser}' width=45 height=45></a>
+		<input type='text' id='searchbox' placeholder='search' onkeydown='isEnter(event,search)'>
+	</div>
+</div>
+
+<div id='frame'>
+	<div id='content'></div>
+	<div id='sidebarwrapper'>
+		<div id='sidebar'></div>
+		<div id='friendslist'></div>
+	</div>
+</div>
+
+<div id='notificationlist'></div>
