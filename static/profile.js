@@ -109,8 +109,10 @@ function addBoardItem(item, append) {
 	}
 	realignBoard();
 
-	if (lastBoardTime < item.time)
+	if (lastBoardTime < item.time) {
 		lastBoardTime = item.time;
+		console.log(item.time);
+	}
 	if (oldestBoardTime > item.time) 
 		oldestBoardTime = item.time;
 }

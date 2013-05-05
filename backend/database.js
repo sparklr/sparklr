@@ -81,7 +81,7 @@ exports.postObject = function(table, obj, callback) {
 	var query = "INSERT INTO " + exports.escapeId(table) + " (";
 	for (key in obj) {
 		if (!obj.hasOwnProperty(key)) continue;
-		query += exports.escape(key) + ",";
+		query += exports.escapeId(key) + ",";
 	}
 	query = query.substring(0,query.length - 1) + ") VALUES (";
 	for (key in obj) {

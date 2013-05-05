@@ -155,9 +155,9 @@ function updateCommentCount(id, count, append) {
 		if (timelineEvents[subscribedStream][i].id == id)
 		{ 
 			if (append) 
-				timelineEvents[subscribedStream][i].commentcount += count;
+				timelineEvents[subscribedStream][i].commentcount += parseInt(count);
 			else 
-				timelineEvents[subscribedStream][i].commentcount = count;
+				timelineEvents[subscribedStream][i].commentcount = parseInt(count);
 			ele.innerHTML = timelineEvents[subscribedStream][i].commentcount;
 			break;
 		}
@@ -194,13 +194,25 @@ function fetchOlderPosts() {
 	var query;
 	
 	if (currentPageType == "BOARD")
-		query = "work/page.php?stream=" + subscribedStream + "&board=" + oldestBoardTime;
+		query = "work/board/" + subscribedStream + "?starttime=" + oldestBoardTime;
 	else
-		query = "work/page.php?stream=" + subscribedStream + "&page=" + timelineEvents[subscribedStream][0].time;
+		query = "work/stream/" + subscribedStream + "?starttime=" + timelineEvents[subscribedStream][0].time;
 	if (currentPageType == "PHOTO")
 		query += "&photo";
 
-	ajaxGet(query);
+	ajaxGet(query,null,function(data) {
+		if (data.timeline) { 
+		addTimelineArray(data.timeline,subscribedStream,true);
+		for (var i = data.timeline.length - 1; i > 0 ; i--) {
+			addTimelineEvent(data.timeline[i], true);
+		}
+		updateCommentCounts(data.commentcounts);
+		lastUpdateTime = Math.floor((new Date).getTime() / 1000);
+		}
+		else {
+			addBoardItems(data,true);
+		}
+	});
 }
 
 function renderTimeline() {
