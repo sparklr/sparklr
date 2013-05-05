@@ -230,22 +230,39 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 	switch (fragments[2]) {
 		case "post":
 			//TODO: privacy
-			database.getObject("users", fragments[3], function(err,users) { 
-			database.getObject("timeline", fragments[4], function(err,posts) {
-				if (err || !obj)
-					console.log(err);
+			var users;
+			var posts;
+			var comments;
+
+			async.parallel([
+				function (callback) {
+					database.getObject("users", fragments[3], function(err,res) { 
+						users = res;
+						callback(err);
+					});
+				},
+				function (callback) {
+					database.getObject("timeline", fragments[4], function(err,res) {
+						posts = res;
+						callback(err);
+					});
+				},
+				function (callback) {
+					Post.getComments(fragments[3], 0, function(err,res) {
+						comments = res;
+						callback(err);
+					});	
+				}
+			], function(err) {
 				var obj = posts[0];
 				if (obj.from != users[0].id)
 					return do403(response, "User ID and post ID do not match");
 
 				obj.fromhandle = users[0].username;
 
-				Post.getComments(obj.id, 0, function(err,comments) {
-					obj.comments = comments;
-					callback(obj);
-				});	
+				obj.comments = comments;
+				callback(obj);
 			});
-		});
 		break;
 		case "comments":
 			var since = uri.query.since || 0;
@@ -478,7 +495,6 @@ function sendObject(response,obj) {
 		response.writeHead(200);
 		response.write(JSON.stringify(obj));
 		response.end();
-		console.log(">>" + JSON.stringify(obj));
 	} catch (e) {
 		// disconnected
 	}
