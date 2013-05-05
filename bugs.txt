@@ -9,6 +9,14 @@
                                                          \/__/
 
 TODO:
+Luna changes:
+* Fix all external stuff
+*** Invites
+*** Forgot pass
+*** Registration
+* Error handling
+* Fetch older posts
+
 * Improve OOBE?
 * Profile backgrounds/customization
 * "Like"

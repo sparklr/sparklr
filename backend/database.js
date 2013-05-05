@@ -1,31 +1,40 @@
-var mysql = require("mysql");
+var mysql = require("mysql-libmysqlclient");
 
 var connection = null;
 
 exports.init = function(args) {
-	this.connection = mysql.createConnection(args);
-	this.connection.connect(function(err) {
-		if (err) {
-			throw err;
-		}
-	});
+	this.connection = mysql.createConnectionSync();
+	this.connection.connectSync(args.host, args.user, args.password, args.database);
+	if (!this.connection.connectedSync()) {
+		throw new Exception();
+	}
 }
 
 exports.escape = function(str) {
-	return this.connection.escape(str);
+	return "'" + this.connection.escapeSync(str) + "'";
+}
+
+exports.escapeId = function(str) {
+	return "`" + this.connection.escapeSync(str) + "`";
 }
 
 exports.query = function(query, callback) {
-	this.connection.query(query, callback);
+	this.connection.query(query, function(err,res) {
+		if (err) return callback(err);
+		if (res.fetchAll)
+			res.fetchAll(callback);
+		else
+			if (callback) callback(err,res);
+	});
 }
 
 exports.getObject = function(table, id, callback) {
-	var query = "SELECT * FROM " + mysql.escapeId(table) + " WHERE id=" + parseInt(id);
+	var query = "SELECT * FROM " + exports.escapeId(table) + " WHERE id=" + parseInt(id);
 	exports.query(query, callback);
 }
 
 exports.getStream = function(table, args, callback) {
-	var query = "SELECT * FROM " + mysql.escapeId(table) + " WHERE (";
+	var query = "SELECT * FROM " + exports.escapeId(table) + " WHERE (";
 	if (args.from) {
 		query += "`from` IN (";
 		for (var i = 0; i < args.from.length - 1; i++)
@@ -69,10 +78,10 @@ exports.getStream = function(table, args, callback) {
 exports.postObject = function(table, obj, callback) {
 	console.log(obj);
 	
-	var query = "INSERT INTO " + mysql.escapeId(table) + " (";
+	var query = "INSERT INTO " + exports.escapeId(table) + " (";
 	for (key in obj) {
 		if (!obj.hasOwnProperty(key)) continue;
-		query += mysql.escapeId(key) + ",";
+		query += exports.escape(key) + ",";
 	}
 	query = query.substring(0,query.length - 1) + ") VALUES (";
 	for (key in obj) {
@@ -88,7 +97,7 @@ exports.postObject = function(table, obj, callback) {
 }
 
 exports.deleteObject = function(table, obj, callback) {
-	var querystr = "DELETE FROM " + mysql.escapeId(table) + " WHERE ";
+	var querystr = "DELETE FROM " + exports.escapeId(table) + " WHERE ";
 	if (obj.to) {
 		querystr += " `to` = " + parseInt(obj.to);
 	}
@@ -101,13 +110,13 @@ exports.deleteObject = function(table, obj, callback) {
 }
 
 exports.updateObject = function(table, obj, callback) {
-	var query = "UPDATE " + mysql.escapeId(table) + " SET ";
+	var query = "UPDATE " + exports.escapeId(table) + " SET ";
 	for (key in obj) {
 		if (!obj.hasOwnProperty(key)) continue;
 		if (typeof(obj[key]) == "object" && obj[key]) {
-			query += mysql.escapeId(key) + " = " + mysql.escape(obj[key].join(",")) + ",";
+			query += exports.escapeId(key.toString()) + " = " + exports.escape(obj[key].join(",")) + ",";
 		} else {
-			query += mysql.escapeId(key) + " = " + mysql.escape(obj[key]) + ",";
+			query += exports.escapeId(key.toString()) + " = " + exports.escape(obj[key].toString()) + ",";
 		}
 	}
 	query = query.substring(0,query.length-1);
