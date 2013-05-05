@@ -297,11 +297,14 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		if (uri.query.since) {
 			args.since = uri.query.since;
 		}
+		if (uri.query.starttime) {
+			args.starttime = uri.query.starttime;
+		}
 		//TODO: parallel 
 
 		database.getStream("timeline", args, function(err, rows) {
 			var obj = { timeline: rows, length: rows.length }
-			Post.getCommentCountsByStream(from, args.since || 0, function(err,rows) {
+			Post.getCommentCountsByStream(from, args.since || 0, args.starttime || 0, function(err,rows) {
 				obj.length = rows.length || obj.timeline.length;
 				obj.commentcounts = rows;
 				callback(obj);
@@ -358,9 +361,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		});
 		break;
 		case "board":
-			database.getStream("boards", { to: [fragments[3]], since: uri.query.since || 0 }, function(err,rows) {
+			database.getStream("boards", { to: [fragments[3]], since: uri.query.since || 0, starttime: uri.query.starttime || 0 }, function(err,rows) {
 			callback(rows);
 		});
+		break;
 		case "chat":
 			var from = parseInt(fragments[3]);
 		var since = uri.query.since || 0;
