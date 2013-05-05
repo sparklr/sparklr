@@ -9,17 +9,9 @@ var database = require("./database");
 var user = require("./user");
 var work = require("./work");
 
-global.salt = "yumyumyum";
-global.commonHost = "http://192.168.1.128/p18/static/"
-global.staticHost = "http://192.168.1.128/p18/data/";
-global.storageDir = "C:\\Users\\Jaxbot\\Documents\\www\\p18\\data\\storage";
+require("./config");
 
-database.init({
-	host: "localhost",
-	user: "root",
-	password: "",
-	database: "p18"
-});
+database.init(global.database);
 
 http.createServer(function(request,response) {
 	var requesturi = url.parse(request.url, true);
