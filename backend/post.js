@@ -42,7 +42,12 @@ exports.post = function(user, data, callback) {
 	querystr += parseInt(user) + ",";
 	querystr += data.time + ",";
 	querystr += database.escape(data.body) + ",";
-	querystr += database.escape(data.img) + ",";
+
+	var meta = "";
+	if (data.img)
+		meta = data.img;
+
+	querystr += database.escape(meta) + ",";
 	querystr += (data.img ? 1 : 0) + ",";
 	querystr += "1";
 	querystr += ");";
@@ -51,7 +56,6 @@ exports.post = function(user, data, callback) {
 		data.message = data.body;
 		data.id = rows.insertId;
 
-		exports.evt.emit("post", data);
 		callback(err,rows);
 	});//callback);
 	//processMentions(data.body, user, );
