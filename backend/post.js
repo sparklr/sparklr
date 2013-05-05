@@ -11,6 +11,8 @@ exports.getComments = function(postid, since, callback) {
 	if (since != 0) {
 		query += " AND time > " + parseInt(since);
 	}
+	// For some odd reason, this actually decreases execution time.
+	query += " ORDER BY `time` DESC";
 	database.query(query, callback);
 }
 
