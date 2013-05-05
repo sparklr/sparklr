@@ -1,0 +1,19 @@
+# Needed for npm :-(
+.idea
+
+*~
+build
+mysql_bindings.node
+node_modules
+
+npm-install-stamp
+devdependencies-stamp
+webkit-devtools-agent-stamp
+
+*.gcda
+*.gcno
+*.gcov
+
+valgrind.log
+*.dat
+*.png
