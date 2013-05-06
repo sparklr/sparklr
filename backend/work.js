@@ -268,7 +268,48 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		}
 		response.end();
 	}
+
 	var fragments = uri.pathname.split("/");
+
+	switch (fragments[2]) {
+		case "friends":
+			var obj = {
+				followers: userobj.followers,
+				following: userobj.following
+			}
+			callback(obj);
+		case "onlinefriends":
+			var friends = [];
+			for (i in userobj.following) {
+				if (userobj.followers.indexOf(userobj.following[i]) !== -1)
+					friends.push(userobj.following[i]);
+			}
+
+			user.getOnlineFriends(friends, function(err, onlinefriends) {
+				callback(onlinefriends);
+			});
+			break;
+		case "photos":
+			var from = userobj.following;
+			from.push(userobj.id);
+
+			database.getStream("timeline", {
+				from: from,
+				type: 1
+			}, function(err, rows) {
+				callback(rows);
+			});
+			break;
+		case "settings":
+			userobj.password = null;
+			callback(userobj);
+			break;
+		default:
+			if (fragments.length < 4) {
+				return do400(response, 400, "Missing arguments");
+			}
+	}
+
 	switch (fragments[2]) {
 		case "post":
 			//TODO: privacy
@@ -298,7 +339,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			], function(err) {
 				var obj = posts[0];
 				if (obj.from != users[0].id)
-					return do403(response, "User ID and post ID do not match");
+					return do400(response, 400, "User ID and post ID do not match");
 
 				obj.fromhandle = users[0].username;
 
@@ -310,23 +351,6 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			var since = uri.query.since || 0;
 			Post.getComments(fragments[3], since, function(err, comments) {
 				callback(comments);
-			});
-			break;
-		case "friends":
-			var obj = {
-				followers: userobj.followers,
-				following: userobj.following
-			}
-			callback(obj);
-		case "onlinefriends":
-			var friends = [];
-			for (i in userobj.following) {
-				if (userobj.followers.indexOf(userobj.following[i]) !== -1)
-					friends.push(userobj.following[i]);
-			}
-
-			user.getOnlineFriends(friends, function(err, onlinefriends) {
-				callback(onlinefriends);
 			});
 			break;
 		case "stream":
@@ -361,24 +385,13 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				});
 			});
 			break;
-		case "photos":
-			var from = userobj.following;
-			from.push(userobj.id);
-
-			database.getStream("timeline", {
-				from: from,
-				type: 1
-			}, function(err, rows) {
-				callback(rows);
-			});
-			break;
 		case "user":
 			var userid = fragments[3];
 			database.getObject("users", userid, function(err, users) {
 				var profile = users[0];
 				if (profile.private) {
 					if (userid != userobj.id && (userobj.following.indexOf(userid) == -1 || userobj.followers.indexOf(userid) == -1)) {
-						return do403(response, "not friends");
+						return do400(response, 403, "not friends");
 					}
 				}
 
@@ -495,10 +508,6 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				sendResponse();
 			}
 			break;
-		case "settings":
-			userobj.password = null;
-			callback(userobj);
-			break;
 		case "checkusername":
 			user.getUserProfileByUsername(fragments[3], function(err, rows) {
 				callback(rows && rows.length > 0 && rows[0].id != userobj.id);
@@ -577,8 +586,8 @@ function sendObject(response, obj) {
 	}
 }
 
-function do403(response, info) {
-	response.writeHead(403);
+function do400(response, code, info) {
+	response.writeHead(code);
 	response.write(JSON.stringify({
 		error: true,
 		info: info

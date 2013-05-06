@@ -9,11 +9,25 @@ var database = require("./database");
 var user = require("./user");
 var work = require("./work");
 
+var domain = require("domain");
+
 require("./config");
 
 database.init(global.database);
 
 http.createServer(function(request,response) {
+	var d = domain.create();
+	d.add(request);
+	d.add(response);
+
+	d.on("error", function(err) {
+		console.log("uh oh");
+		response.writeHead(500);
+		response.write(err.toString());
+		response.end();
+	});
+	d.enter();
+	d.run(function() { 
 	var requesturi = url.parse(request.url, true);
 	var cookies = new Cookies(request,response);
 	var sessionid = cookies.get("D");
@@ -34,6 +48,7 @@ http.createServer(function(request,response) {
 			frontend.showExternalPage(request,response);
 		}
 	}
+	});
 
 }).listen(8080);
 /*
