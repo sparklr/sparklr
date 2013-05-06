@@ -59,7 +59,8 @@ exports.getStream = function(table, args, callback) {
 
 		}
 	}
-	if (args.type) {
+	if (args.type)
+	{
 		query += ") AND (`type` = " + parseInt(args.type) + " ";
 	}
 	if (args.since)
@@ -123,3 +124,4 @@ exports.updateObject = function(table, obj, callback) {
 	query += " WHERE `id` = " + parseInt(obj.id);
 	exports.query(query,callback);
 }
+

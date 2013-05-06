@@ -17,42 +17,45 @@ exports.handleUpload = function(data, userobj, args, callback) {
 		outfile += "avatars\\" + userobj.id;
 	else
 		outfile += "images\\" + imgid;
+
 	var outthumb = outfile + "_thumb.jpg";
 	outfile += ".jpg";
 
 	fs.writeFile(tmpfile, data.substring(data.indexOf(",") + 1), "base64", function(err) {
 		if (err) callback(err);
-		
+
 		async.parallel([
-			   function(callback) {
-					makeThumb(tmpfile, outthumb, args, callback);
-				},
-				function(callback) {
-					resizeImage(tmpfile, outfile, callback);
-				}], function(err) {
-					callback(err, imgid);
-				});
+			function(callback) {
+				makeThumb(tmpfile, outthumb, args, callback);
+			},
+			function(callback) {
+				resizeImage(tmpfile, outfile, callback);
+			}
+		], function(err) {
+			callback(err, imgid);
+		});
 	});
 }
 
 function resizeImage(input, output, callback) {
 	var process = spawn("convert", [input, "-resize", "800x800", output]);
-	process.on("close", function (code) {
+	process.on("close", function(code) {
 		callback(code);
 	});
 }
 
 function makeThumb(input, output, size, callback) {
-	var process = spawn("convert", [input, 
+	var process = spawn("convert", [input,
 						"-thumbnail",
 						size.width + "x" + size.height + "^",
 						"-crop",
 						size.width + "x" + size.height + "+0+0",
-						output]);
-	process.stderr.on("data", function (data) {
+						output
+	]);
+	process.stderr.on("data", function(data) {
 		console.log("Err: " + data);
 	});
-	process.on("close", function (code) {
+	process.on("close", function(code) {
 		callback(code);
 	});
 }

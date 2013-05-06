@@ -1,6 +1,5 @@
 var database = require("./database");
 var toolbox = require("./toolbox");
-var md5 = require("./md5");
 
 var CACHE_DISPLAYNAME = [];
 
@@ -11,11 +10,11 @@ exports.verifyAuth = function(userid,authkey,callback) {
 }
 
 exports.getAuthkey = function(user) {
-	return md5.hash(user.id + ":" + user.password + global.salt);
+	return toolbox.hash(user.id + ":" + user.password + global.salt);
 }
 
 exports.generatePass = function(pass) {
-	return md5.hash(pass); //TODO: salt
+	return toolbox.hash(pass); //TODO: salt
 }
 
 exports.getUserProfile = function(userid,callback) {
