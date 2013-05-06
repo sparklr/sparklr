@@ -15,7 +15,6 @@ Luna changes:
 *** Forgot pass
 *** Registration
 * Error handling
-* Fetch older posts
 
 * Improve OOBE?
 * Profile backgrounds/customization

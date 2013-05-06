@@ -8,23 +8,24 @@ var async = require("async");
 var frontendTemplate = "";
 var externalTemplate = "";
 
-fs.readFile("../static/templates/headers_test.html", function(err,data) {
+fs.readFile("../static/templates/headers_test.html", function(err, data) {
 	eval(templates.parse(data.toString()));
 	frontendTemplate = html + "<body>";
 });
 
-fs.readFile("../static/templates/external.html", function(err,data) {
+fs.readFile("../static/templates/external.html", function(err, data) {
 	eval(templates.parse(data.toString()));
 	externalTemplate = html;
 });
 
 exports.run = function(user, request, response, sessionid) {
-	response.writeHead(200, { "Content-type": "text/html" });
+	response.writeHead(200, {
+		"Content-type": "text/html"
+	});
 	var sessiondata = sessionid.split(",");
 	var authkey = sessiondata[1];
 
 	var html = frontendTemplate;
-
 
 	user.following = user.following.split(",").filter(function(e) { return e; });
 	user.followers = user.followers.split(",").filter(function(e) { return e; });
@@ -41,58 +42,57 @@ exports.run = function(user, request, response, sessionid) {
 	var payload = {};
 
 	async.parallel([
-		function (callback) { 
-				database.getStream("timeline", { from: from }, function(err,stream) {
-					payload.timelineStream = stream;
-					Post.getCommentCounts(stream, function(err,rows) {
-
-						payload.commentCounts = rows;
-
-						callback();
-					});
-
-				});
-			},
-			function (callback) { 
-				User.getMassUserDisplayName(from, function (err, names) {
-					var displayNames = {};
-					var userHandles = {};
-
-					for (name in names) {
-						displayNames[names[name].id] = names[name].displayname;
-						userHandles[names[name].id] = names[name].username;
-					}
-
-					payload.displayNames = displayNames;
-					payload.userHandles = userHandles;
-
+		function(callback) {
+			database.getStream("timeline", {
+				from: from
+			}, function(err, stream) {
+				payload.timelineStream = stream;
+				Post.getCommentCounts(stream, function(err, rows) {
+					payload.commentCounts = rows;
 					callback();
 				});
 
-			},
-			function (callback) { 	
-				User.getOnlineFriends(friends, function(err,onlinefriends) {
-					var friendsObj = {};
-					for (i in friends) {
-						friendsObj[friends[i]] = false;
-					}
-					for (i in onlinefriends) {
-						friendsObj[onlinefriends[i].id] = true;
-					}
-					payload.friends = friendsObj;
-
-					callback();
-				});
-			}], function () {
-				html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
-				response.write(html);
-				response.end();
 			});
+		},
+		function(callback) {
+			User.getMassUserDisplayName(from, function(err, names) {
+				var displayNames = {};
+				var userHandles = {};
+
+				for (name in names) {
+					displayNames[names[name].id] = names[name].displayname;
+					userHandles[names[name].id] = names[name].username;
+				}
+
+				payload.displayNames = displayNames;
+				payload.userHandles = userHandles;
+
+				callback();
+			});
+		},
+		function(callback) {
+			User.getOnlineFriends(friends, function(err, onlinefriends) {
+				var friendsObj = {};
+				for (i in friends) {
+					friendsObj[friends[i]] = false;
+				}
+				for (i in onlinefriends) {
+					friendsObj[onlinefriends[i].id] = true;
+				}
+				payload.friends = friendsObj;
+
+				callback();
+			});
+		}
+	], function() {
+		html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
+		response.write(html);
+		response.end();
+	});
 }
 
-exports.showExternalPage = function(request,response) {
+exports.showExternalPage = function(request, response) {
 	response.writeHead(200);
 	response.write(externalTemplate);
 	response.end();
 }
-
