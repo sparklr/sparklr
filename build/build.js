@@ -12,9 +12,7 @@ fs.readdir("../static/templates", function(err, files) {
 		var id = files[i].split(".");
 			id = id[0];
 
-		console.log("TemplateID: " + id);
 		data = templateFormatter.t(data.toString());
-		
 		// escape 
 		data = data.replace(/\\/g, "\\\\");
 		data = data.replace(/\"/g, "\\\"");
