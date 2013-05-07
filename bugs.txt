@@ -16,6 +16,9 @@ Luna changes:
 *** Registration
 * Error handling
 
+Luna bugs:
+* Avatar?
+
 * Improve OOBE?
 * Profile backgrounds/customization
 * "Like"
