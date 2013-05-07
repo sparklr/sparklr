@@ -10,6 +10,7 @@ exports.verifyAuth = function(userid,authkey,callback) {
 }
 
 exports.getAuthkey = function(user) {
+	if (!user) return false;
 	return toolbox.hash(user.id + ":" + user.password + global.salt);
 }
 
