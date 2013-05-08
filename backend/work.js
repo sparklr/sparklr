@@ -215,35 +215,31 @@ exports.run = function(request, response, uri, sessionid) {
 					user.updateActivity(userobj);
 
 					var counter = 0;
-					var interval = setInterval(function() {
-						processGetRequest(request, response, uri, sessionid, userobj, function(data) {
-							if (data.length != 0) {
-								sendObject(response, {
-									data: data
-								});
-								clearInterval(interval);
-							}
-						});
-						database.getStream("notifications", {
-							to: [userobj.id],
-							since: uri.query.n
-						}, function(err, rows) {
-							if (rows.length > 0) {
-								sendObject(response, {
-									notifications: rows
-								});
-								clearInterval(interval);
-							}
-						});
+					var obj = {};
 
-						counter++;
-						if (counter > 30) {
-							clearInterval(interval);
-							sendObject(response, []);
+					async.parallel([
+						function(callback) {
+							processGetRequest(request, response, uri, sessionid, userobj, function(data) {
+								if (data.length != 0) {
+									obj.data = data;
+								}
+								callback();
+							});
+						},
+						function(callback) {
+							database.getStream("notifications", {
+								to: [userobj.id],
+								since: uri.query.n
+							}, function(err, rows) {
+								if (rows.length > 0) {
+									obj.notifications = rows;
+								}
+								callback();
+							});
 						}
-
-					}, 1000);
-
+					], function(err) {
+						sendObject(response,obj);
+					});
 				} else {
 					processGetRequest(request, response, uri, sessionid, userobj, function(data) {
 						sendObject(response, data);
@@ -331,7 +327,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					});
 				},
 				function(callback) {
-					Post.getComments(fragments[3], 0, function(err, res) {
+					Post.getComments(fragments[4], 0, function(err, res) {
 						comments = res;
 						callback(err);
 					});

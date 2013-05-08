@@ -120,7 +120,6 @@ function renderComment(comment) {
 function getLastCommentTime() {
 	if (currentComments.length == 0)
 		return 0;
-
 	return currentComments[currentComments.length - 1].time;
 }
 
