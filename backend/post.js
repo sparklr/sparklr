@@ -30,7 +30,10 @@ exports.getCommentCountsByStream = function(from, since, starttime, callback) {
 	query += "select `id` from `timeline` where `from` in ("
 	for (var i = 0; i < from.length - 1; i++)
 		query += parseInt(from[i]) + ",";
-	query += from[from.length - 1] + ") and `time` < " + parseInt(starttime) + " order by `time` desc ) ";
+	query += from[from.length - 1] + ") ";
+	if (starttime != 0) 
+		query += "and `time` < " + parseInt(starttime) + " ";
+	query += "order by `time` desc ) ";
 	query += "AND `time` > " + parseInt(since);
 	query += " GROUP BY `postid` ORDER BY `time` DESC LIMIT 30";
 	database.query(query, callback);

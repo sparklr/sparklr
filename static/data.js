@@ -12,7 +12,7 @@ function ajaxGet(url, data, callback) {
 			ajaxCooldown[url] = 0;
 			if (xhr.status == 200) {
 				var data = xhr.responseText;
-				callback(JSON.parse(data));
+				callback(JSON.parse(data),xhr);
                 hideBanner("statusmsg_ajaxerror");
 			} else {
 				//awk
@@ -46,13 +46,14 @@ function pollData() {
 			if (currentPageType == "PHOTO")
 			query += "&photo";
 
-			callback = function(data) {
+			callback = function(data,xhr) {
 				addTimelineArray(data.timeline,subscribedStream);
 				for (var i = 0; i < data.timeline.length; i++) {
 					addTimelineEvent(data.timeline[i], 0);
 				}
 				updateCommentCounts(data.commentcounts);
-				lastUpdateTime = Math.floor((new Date).getTime() / 1000);
+				var t = Date.parse(xhr.getResponseHeader("date")) / 1000;
+				lastUpdateTime = t;
 			}
 		break;
 		case "BOARD":
@@ -73,13 +74,13 @@ function pollData() {
 
 	query += "&n=" + lastNotificationTime;
 
-	ajaxGet("beacon" + query,null, function(data) {
+	ajaxGet("beacon" + query,null, function(data,xhr) {
 		if (data.notifications) {
 		 	for (var i=0;i<data.notifications.length;i++) {
 				addNotification(data.notifications[i]);
 			}
 		}
-		callback(data.data);
+		callback(data.data,xhr);
 	});
 }
 
