@@ -26,6 +26,10 @@ exports.getUserProfileByUsername = function(username,callback) {
 	database.query("SELECT * FROM `users` WHERE `username` = " + database.escape(username), callback);
 }
 
+exports.getUserProfileByAnything = function(query,callback) {
+	database.query("SELECT * FROM `users` WHERE `email` = " + database.escape(query) + " OR `username` = " + database.escape(query), callback);
+}
+
 exports.getMassUserDisplayName = function(following,callback) {
 	var querystr = "SELECT `displayname`, `username`, `id` FROM `users` WHERE `id` IN (";
 	for (var i = 0; i < following.length - 1; i++)
@@ -70,4 +74,11 @@ exports.trySignin = function(user,pass,callback) {
 exports.updateActivity = function(userobj) {
 	userobj.lastseen = toolbox.time();
 	database.updateObject("users", userobj);
+}
+
+exports.resetPassword = function(userobj) {
+	var token = exports.generatePass((Math.random() * 1000).toString());
+	userobj.password = "RESET:" + token; //placeholder. TODO: replace with real pass gen
+	database.updateObject("users", userobj);
+	return token;
 }

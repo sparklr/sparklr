@@ -97,20 +97,8 @@ function updateAvatar(user, avatarid) {
 	AVATAR_IDS[user] = avatarid;
 }
 
-function avatarUploadCallback(files) {
-	var reader = new FileReader();
-	reader.onload = function(e) { uploadAvatar(e); }
-	reader.readAsDataURL(files[0]);
-}
-
-function uploadAvatar(e) {
-	var data = [];
-	data["img"] = e.target.result;
-	ajaxGet("work/uploadavatar.php", data);
-}
-
 function signOff() {
-	ajaxGet("work/logout.php");
+	ajaxGet("work/signoff", null, function() { location.href='/'; });
 }
 
 function inviteFriend() {

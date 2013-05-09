@@ -32,13 +32,13 @@ http.createServer(function(request,response) {
 	var requesturi = url.parse(request.url, true);
 	var cookies = new Cookies(request,response);
 	var sessionid = cookies.get("D");
-	var s = sessionid.split(",");
 	
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		work.run(request,response,requesturi,sessionid);
 	} else {
 		if (sessionid != null && sessionid != "") {
-			
+			var s = sessionid.split(",");
+
 			user.verifyAuth(s[0],s[1], function(success,userobj) {
 				if (success)
 					frontend.run(userobj,request,response,sessionid);

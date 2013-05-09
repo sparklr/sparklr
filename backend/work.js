@@ -15,6 +15,7 @@ exports.run = function(request, response, uri, sessionid) {
 			response.writeHead(200, {
 				"Set-Cookie": "D=; Path=/"
 			});
+			response.write("true");
 			response.end();
 			return;
 		case "signin":
@@ -30,6 +31,47 @@ exports.run = function(request, response, uri, sessionid) {
 					response.writeHead(403);
 					response.end();
 				}
+			});
+			return;
+		case "forgot":
+			user.getUserProfileByAnything(fragments[3], function(err,rows) {
+				if (rows && rows.length > 0) {
+					var token = user.resetPassword(rows[0]);
+					console.log("Pretending to email token " + token + " to " + rows[0].email);
+					sendObject(response,1);
+				} else {
+					sendObject(response,0);
+				}
+			});
+			return;
+		case "reset":
+			user.getUserProfileByAnything(fragments[3], function(err,rows) {
+				if (rows && rows.length > 0) {
+					if (rows[0].password == "RESET:" + fragments[4]) {
+						if (fragments[5].length < 3) {
+							sendObject(response, 0);
+						} else {
+							rows[0].password = user.generatePass(fragments[5]);
+							database.updateObject("users", rows[0], function(err,data) {
+								if (err) {
+									sendObject(response, -1);
+								} else {
+									response.writeHead(200, {
+										"Set-Cookie": "D=" + rows[0].id + "," + user.getAuthkey(rows[0]) + "; Path=/"
+									});
+									response.end("1");
+								}
+							});
+						}
+					} else {
+						sendObject(response, -2);
+					}
+				}
+		});
+		return;
+		case "requestinvite":
+			database.postObject("newsletter", { email: fragments[3] }, function(err,data) {
+				sendObject(response, err == null);
 			});
 			return;
 	}
