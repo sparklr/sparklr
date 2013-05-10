@@ -11,13 +11,9 @@
 TODO:
 Luna changes:
 * Fix all external stuff
-*** Invites
-*** Forgot pass
 *** Registration
 * Error handling
-
-Luna bugs:
-* Avatar?
+* Email system 
 
 * Improve OOBE?
 * Profile backgrounds/customization
