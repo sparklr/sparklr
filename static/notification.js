@@ -32,11 +32,12 @@ function addNotification(notification) {
 	switch (parseInt(notification.type)) {
 		case 1: //commented on post 
 			body = "commented:<br>" + notification.body + "<br><br>";
-			action = function() { location.href= "#/post/" + notification.from + "/" + notification.action + "/new"; }
+			
+			action = function() { location.href= "#/post/" + notification.action + "/new"; }
 		break;
 		case 2: //mentioned
 			body = "mentioned you.<br><br>";
-			action = function() { location.href = "#/post/" + notification.from + "/" + notification.action; }
+			action = function() { location.href = "#/post/" + notification.action; }
 		break;
 		case 4: //wrote on board 
 			body = "posted on your board:<br>" + notification.body + "<br><br>";
@@ -44,7 +45,7 @@ function addNotification(notification) {
 		break;
 		case 6: // repost
 			body = "reposted your post.<br><br>";
-			action = function() { location.href = "#/post/" + notification.from + "/" + notification.action; }
+			action = function() { location.href = "#/post/" + notification.action; }
 		break;
 		case 3: //chat
 			setUserAttention(notification.from, true);
@@ -94,7 +95,7 @@ function handleNotifications() {
 		if (!currentNotifications[id]) continue;
 		var s = location.hash.split("/");
 
-		if (s[1] == "post" && s[3] == currentNotifications[id].action && [N_EVENT, N_MENTION, N_REPOST].indexOf(parseInt(currentNotifications[id].type)) != -1) {
+		if (s[1] == "post" && s[2] == currentNotifications[id].action && [N_EVENT, N_MENTION, N_REPOST].indexOf(parseInt(currentNotifications[id].type)) != -1) {
 			dismissNotification(id);
 			continue;
 		}

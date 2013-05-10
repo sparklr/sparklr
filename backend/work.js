@@ -357,29 +357,19 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 			async.parallel([
 				function(callback) {
-					database.getObject("users", fragments[3], function(err, res) {
-						users = res;
-						callback(err);
-					});
-				},
-				function(callback) {
-					database.getObject("timeline", fragments[4], function(err, res) {
+					database.getObject("timeline", fragments[3], function(err, res) {
 						posts = res;
 						callback(err);
 					});
 				},
 				function(callback) {
-					Post.getComments(fragments[4], 0, function(err, res) {
+					Post.getComments(fragments[3], 0, function(err, res) {
 						comments = res;
 						callback(err);
 					});
 				}
 			], function(err) {
 				var obj = posts[0];
-				if (obj.from != users[0].id)
-					return do400(response, 400, "User ID and post ID do not match");
-
-				obj.fromhandle = users[0].username;
 
 				obj.comments = comments;
 				callback(obj);

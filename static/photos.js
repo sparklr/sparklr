@@ -9,7 +9,7 @@ function showPhotosPage(data) {
 		var author = data.photos[i].from;
 		var id = data.photos[i].id;
 		for (var u = 0; u < images.length; u++) {
-			html  += "<div class='photos fadein' onClick='location.href=\"#/post/" + author + "/" + id + "\";' style='background: url(" + STATICHOST + "/storage/images/" + images[u] + "_thumb.jpg);'><div class='lucille'>" + getDisplayName(author) + "</div></div>";
+			html  += "<div class='photos fadein' onClick='location.href=\"#/post/" + id + "\";' style='background: url(" + STATICHOST + "/storage/images/" + images[u] + "_thumb.jpg);'><div class='lucille'>" + getDisplayName(author) + "</div></div>";
 		}
 	}
 	

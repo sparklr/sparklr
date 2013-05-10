@@ -11,7 +11,7 @@ function addTimelineEvent(item,append) {
 	
 	ev.className = "timelineitem fadein";
 	ev.id = "event_" + item.id;
-	ev.onclick = function() { location.href = "#/post/" + item.from + "/" + item.id; }
+	ev.onclick = function() { location.href = "#/post/" + item.id; }
 
 	eval(getTemplate("timelineitem"));
 
@@ -57,7 +57,7 @@ function showEvent(id,args) {
 
 	for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
 		if (timelineEvents[subscribedStream][i].id == id) {
-			location.href = "#/post/" + timelineEvents[subscribedStream][i].from + "/" + id + "/" + args;
+			location.href = "#/post/" + id + "/" + args;
 		}
 	}
 }
