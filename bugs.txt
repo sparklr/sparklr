@@ -14,7 +14,7 @@ Luna changes:
 *** Registration
 * Error handling
 * Email system 
-
+:e 
 * Improve OOBE?
 * Profile backgrounds/customization
 * "Like"
