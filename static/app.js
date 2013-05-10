@@ -46,7 +46,9 @@ var app = function(payload) {
 
 	addTimelineArray(payload.timelineStream, 0);
 }
-var s = document.cookie.substring(2).split(",");
+
+var s = document.cookie;
+s = s.substring(s.indexOf("D=") + 2).split(",");
 curUser = s[0];
 AUTHKEY = s[1];
 
