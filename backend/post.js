@@ -17,6 +17,10 @@ exports.getComments = function(postid, since, callback) {
 }
 
 exports.getCommentCounts = function(posts, callback) {
+	if (posts.length < 1) {
+		callback(null,[]);
+		return;
+	}
 	var query = "SELECT COUNT(`postid`), `postid` FROM `comments` WHERE `postid` IN (";
 	for (var i = 0; i < posts.length - 1; i++)
 		query += parseInt(posts[i].id) + ",";
