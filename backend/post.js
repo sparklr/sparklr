@@ -102,7 +102,7 @@ exports.postComment = function(user, data, callback) {
 	});
 }
 
-exports.repost = function(user, postid, reply) {
+exports.repost = function(user, postid, reply, callback) {
 	database.getObject('timeline', postid, function(err,rows) {
 		console.log(err);
 		if (rows.length < 1) return;
@@ -111,8 +111,6 @@ exports.repost = function(user, postid, reply) {
 		var msg;
 
 		if (post.origid != null) {
-			console.log("Has origid " + post.origid);
-
 			msg = post.message;
 		} else {
 			msg = "[" + post.from + "] " + post.message;
@@ -126,7 +124,9 @@ exports.repost = function(user, postid, reply) {
 		post.time = Math.floor((new Date).getTime() / 1000);
 
 		database.postObject('timeline', post, function(err,rows) {
-			console.log(err);
+			callback(err,rows);
+			if (!err)
+				Notification.addUserNotification(post.from, "", rows.insertId, user, Notification.N_REPOST);
 		});
 	});
 }
