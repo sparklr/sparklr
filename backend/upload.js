@@ -10,13 +10,13 @@ exports.handleUpload = function(data, userobj, args, callback) {
 	id++;
 	var imgid = start + "_" + id.toString(36);
 
-	var tmpfile = os.tmpdir() + "\\upload_" + imgid;
+	var tmpfile = os.tmpdir() + "/upload_" + imgid;
 
-	var outfile = global.storageDir + "\\";
+	var outfile = global.storageDir + "/";
 	if (args.avatar)
-		outfile += "avatars\\" + userobj.id;
+		outfile += "avatars/" + userobj.id;
 	else
-		outfile += "images\\" + imgid;
+		outfile += "images/" + imgid;
 
 	var outthumb = outfile + "_thumb.jpg";
 	outfile += ".jpg";
