@@ -8,13 +8,16 @@
                                                          /\___/
                                                          \/__/
 
+BUGS:
+* Photos don't work when no photos
+
 TODO:
 Luna changes:
 * Fix all external stuff
 *** Registration
 * Error handling
 * Email system 
-:e 
+
 * Improve OOBE?
 * Profile backgrounds/customization
 * "Like"

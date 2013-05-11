@@ -7,6 +7,7 @@ var database = require("./database");
 var async = require("async");
 var toolbox = require("./toolbox");
 var upload = require("./upload");
+var Notification = require("./notification");
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
@@ -136,8 +137,11 @@ exports.run = function(request, response, uri, sessionid) {
 						}
 						break;
 					case "repost":
-						Post.repost(userobj.id, postObject.id, postObject.reply);
-						sendObject(response, {});
+						Post.repost(userobj.id, postObject.id, postObject.reply, function (err) {
+							if (err)
+								return do400(response, 500);
+							sendObject(response, {});
+						});
 						break;
 					case "comment":
 						Post.postComment(userobj.id, postObject);
@@ -150,6 +154,9 @@ exports.run = function(request, response, uri, sessionid) {
 							time: toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
+							if (err)
+								return do400(response, 500);
+							Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
 							sendObject(response, {});
 						});
 						break;
@@ -161,7 +168,11 @@ exports.run = function(request, response, uri, sessionid) {
 							time: toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
-							console.log(err);
+							Notification.addUserNotification(parseInt(postObject.to),
+															 postObject.message,
+															 data.insertId,
+															 userobj.id,
+															 Notification.N_BOARD);
 							sendObject(response, {});
 						});
 						break;
