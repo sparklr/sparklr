@@ -102,7 +102,16 @@ function signOff() {
 }
 
 function inviteFriend() {
-	showPopup("<form target='datapusher' method='POST' action='work/invite.php'><input type='text' class='t1' id='inviteField' name='to' autofocus='true' placeholder='notjulia@orangemelt.com'><input type='submit' class='s1' value='&gt;'></form>");
+	showPopup("<form onSubmit='inviteUser(to.value);return false;'><input type='text' class='t1' id='inviteField' name='to' autofocus='true' placeholder='notjulia@orangemelt.com'><input type='submit' class='s1' value='&gt;'></form>");
+}
+
+function inviteUser(to) {
+	ajaxGet("work/invite/" + to, null, function(result) {
+		if (result === true) 
+			inviteSuccess();
+		else
+			inviteFailed();
+	});
 }
 
 function inviteFailed() {

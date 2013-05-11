@@ -93,6 +93,37 @@ function forgotPassword() {
 	}
 }
 
+function signUp(username,email,password,errors) {
+	var s = location.hash.split("/");
+
+	if (errors.value != "") return;
+
+	ajaxGet("work/signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + password.value, null, function(data) {
+		if (data.insertId) {
+			trySignin(username,password);
+		} else {
+			callback("Something went wrong!");
+		}
+	});
+}
+
+function checkSignupForm(username,password,errors) {
+	if (username.value != username.value.replace(/[^A-Za-z0-9]/g, "")) {
+		callback("Usernames may only contain letters or numbers");
+		errors.value = 1;
+		return;
+	}
+	ajaxGet("work/checkusername/" + username.value, null, function(data) {
+		if (data) {
+			callback("Sorry, that username has already been taken.");
+			errors.value = 1;
+		} else {
+			callback("");
+			errors.value = "";
+		}
+	});
+}
+
 function callback(message) {
 	_g("callback").style.opacity = 0;
 	setTimeout(function() {

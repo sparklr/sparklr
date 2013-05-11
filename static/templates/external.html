@@ -45,6 +45,17 @@
 		<span>Thank you.</span><br><br>
 		We'll let you know when we have more share.
 	</div>
+	<div data-page="signup">
+		<span>Welcome to Instancy</span><br><br>
+		Let's get started.
+		<form onSubmit='signUp(username,email,password,errors); return false;'>
+			<input type='text' name='username' onblur='checkSignupForm(username,password,errors);' placeholder='username' class='t1' autofocus='autofocus'><br>
+			<input type='email' name='email' placeholder='email' class='t1'><br>
+			<input type='password' name='password' placeholder='password' class='t1'><br>
+			<input type='submit' value='&gt;' name='go' class='s1'>
+			<input type='hidden' name='errors'>
+		</form>
+	</div>
 	<div id='page_default' data-page="info">
 		<span>Instancy is in closed preview.</span><br><br>
 		Request an invite

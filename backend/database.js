@@ -105,7 +105,10 @@ exports.deleteObject = function(table, obj, callback) {
 	if (obj.from) {
 		querystr += " `from` = " + parseInt(obj.from);
 	}
-	querystr += " AND `id` = " + parseInt(obj.id);
+
+	var id = (typeof(obj.id) == "number" ? parseInt(obj.id) : exports.escape(obj.id));
+
+	querystr += " AND `id` = " + id;
 	console.log(querystr);
 	exports.query(querystr, callback);
 }

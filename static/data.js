@@ -10,14 +10,14 @@ function ajaxGet(url, data, callback) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 			ajaxCooldown[url] = 0;
-			if (xhr.status == 200) {
-				var data = xhr.responseText;
-				callback(JSON.parse(data),xhr);
-                hideBanner("statusmsg_ajaxerror");
-			} else {
-				//awk
+			
+			var data = xhr.responseText;
+			callback(JSON.parse(data),xhr);
+			if (xhr.status != 200) {
                 showBanner("Uh oh, an error occured when attempting to talk to the server", "statusmsg_ajaxerror");
-			}
+			} else {
+				hideBanner("statusmsg_ajaxerror");
+			}	
 		}
 	}
 
