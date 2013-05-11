@@ -8,15 +8,17 @@ var async = require("async");
 var frontendTemplate = "";
 var externalTemplate = "";
 
-fs.readFile("../static/templates/headers_test.html", function(err, data) {
-	eval(templates.parse(data.toString()));
-	frontendTemplate = html + "<body>";
-});
+var loadTemplates = function() {
+	fs.readFile("../static/templates/headers_test.html", function(err, data) {
+		eval(templates.parse(data.toString()));
+		frontendTemplate = html + "<body>";
+	});
 
-fs.readFile("../static/templates/external.html", function(err, data) {
-	eval(templates.parse(data.toString()));
-	externalTemplate = html;
-});
+	fs.readFile("../static/templates/external.html", function(err, data) {
+		eval(templates.parse(data.toString()));
+		externalTemplate = html;
+	});
+}();
 
 exports.run = function(user, request, response, sessionid) {
 	response.writeHead(200, {

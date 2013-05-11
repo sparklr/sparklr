@@ -17,3 +17,6 @@ p18.js/
 
 #compiled stuff
 static/out
+
+.tingle.vim
+backend/.tingle.vim

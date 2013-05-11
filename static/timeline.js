@@ -102,9 +102,6 @@ function deleteComment(id,postid) {
 function renderComment(comment) {
 	var commentlist = _g("comments_" + comment.postid);
 
-	// add user, if we don't know them
-	USERHANDLES[comment.from] = comment.fromhandle;
-
 	var e = document.createElement("div");
 
     var html = "<div style='display:inline-block;float:left;height:100%' class='fadein'><img class='avatar' src='" + getAvatar(comment.from) + "'></div> <div class='rightcontrols'><div class='time' style='opacity:0.5' data-time='" + comment.time + "'></div>";
