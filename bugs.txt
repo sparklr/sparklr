@@ -16,7 +16,6 @@ Luna changes:
 * Fix all external stuff
 *** Registration
 * Error handling
-* Email system 
 
 * Improve OOBE?
 * Profile backgrounds/customization
@@ -30,4 +29,6 @@ Luna changes:
 * API
 * Differentiation
 * Better homepage
+
+Testing system.
 

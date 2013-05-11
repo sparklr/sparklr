@@ -8,6 +8,7 @@ var async = require("async");
 var toolbox = require("./toolbox");
 var upload = require("./upload");
 var Notification = require("./notification");
+var Mail = require("./mail");
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
@@ -38,7 +39,9 @@ exports.run = function(request, response, uri, sessionid) {
 			user.getUserProfileByAnything(fragments[3], function(err,rows) {
 				if (rows && rows.length > 0) {
 					var token = user.resetPassword(rows[0]);
-					console.log("Pretending to email token " + token + " to " + rows[0].email);
+
+					Mail.sendMessage(rows[0].id, "forgot", { token: token });
+
 					sendObject(response,1);
 				} else {
 					sendObject(response,0);
