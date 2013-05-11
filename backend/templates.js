@@ -1,3 +1,7 @@
+var fs = require("fs");
+
+var templates = [];
+
 exports.parse = function(data) {
 	var obj = "" + data;
 	obj = obj.replace(/\"/g, "\\\"");
@@ -31,4 +35,14 @@ exports.parse = function(data) {
 
 	return "var html = \"" + obj + "\";";
 
+}
+
+exports.getTemplate = function(template) {
+	if (!templates[template])
+	{
+		var data = fs.readFileSync("templates/" + template + ".html");
+		templates[template] = data;
+	}
+	
+	return templates[template];
 }
