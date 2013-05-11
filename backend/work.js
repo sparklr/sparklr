@@ -26,7 +26,7 @@ exports.run = function(request, response, uri, sessionid) {
 					var sessionid = userobj.id + "," + user.getAuthkey(userobj);
 					console.log(sessionid);
 					response.writeHead(200, {
-						"Set-Cookie": "D=" + sessionid + "; Path=/"
+						"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT"
 					});
 					response.end();
 				} else {
