@@ -78,6 +78,17 @@ exports.run = function(request, response, uri, sessionid) {
 				sendObject(response, err == null);
 			});
 			return;
+		case "signup":
+			user.signupUser(fragments[3], fragments[4], fragments[5], fragments[6], function(err,rows) {
+				if (err) return do400(response, 400, err);
+				sendObject(response, rows);
+			});
+			return;
+		case "checkusername":
+			user.getUserProfileByUsername(fragments[3], function(err, rows) {
+				sendObject(response, rows && rows.length > 0);
+			});
+			return;
 	}
 
 	var postBody = "";
@@ -579,6 +590,14 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			], function(err) {
 				//TODO: error handling
 				callback(results);
+			});
+			break;
+		case "invite":
+			var inviteid = toolbox.hash((Math.random() * 1e5) + userobj.id + fragments[3]);
+			database.postObject("invites", { id: inviteid, from: userobj.id }, function(err,rows) {
+				if (err) return do400(response,500);
+				Mail.sendMessageToEmail(fragments[3], "invite", { invite: inviteid, from: userobj.displayname });
+				sendObject(response,true);
 			});
 			break;
 		case "delete":

@@ -82,3 +82,34 @@ exports.resetPassword = function(userobj) {
 	database.updateObject("users", userobj);
 	return token;
 }
+
+exports.signupUser = function(inviteid, username, email, password, callback) {
+	database.query("SELECT * FROM `invites` WHERE `id` = " + database.escape(inviteid), function(err, inviterows) {
+		if (err) return callback(err);
+		if (!inviterows[0]) return callback(1);
+
+		username = username.replace(/[^A-Za-z0-9]/g, "");
+
+		database.postObject("users", {
+			username: username,
+			password: exports.generatePass(password),
+			email: email,
+			displayname: username,
+			following: inviterows[0].from,
+			followers: inviterows[0].from,
+			emailverified: 0
+		}, function(err, rows) {
+			if (err) return callback(err);
+			callback(err, rows);
+			
+			exports.getUserProfile(inviterows[0].from, function(err, data) {
+				if (err) return false;
+				data[0].following += "," + rows.insertId;
+				data[0].followers += "," + rows.insertId;
+				database.updateObject("users", data[0]);
+			});
+
+			database.deleteObject("invites", inviterows[0]);
+		});
+	});
+}
