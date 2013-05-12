@@ -1,8 +1,5 @@
-#ignore the globals file
-backend/globals.php
-
-#image, etc storage
-data/
+#ignore the config file
+backend/config.js
 
 #OS junk
 Thumbs.db
@@ -10,13 +7,10 @@ Thumbs.db
 *.swo
 ctags.tmp
 tags
-/nbproject/private/
-/nbproject/
-
-p18.js/
 
 #compiled stuff
 static/out
 
 .tingle.vim
 backend/.tingle.vim
+
