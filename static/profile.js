@@ -160,8 +160,8 @@ function realignBoard() {
 function handleStickyNoteKeyDown(e, msg) {
 	if (e == null)
 		e = window.event;
-    if (msg.value.length > 80) {
-        msg.value = msg.value.substring(0,80);
+    if (msg.value.length > 130) {
+        msg.value = msg.value.substring(0,130);
     }
 	if (e.keyCode == 13) {
 		var data = {};
