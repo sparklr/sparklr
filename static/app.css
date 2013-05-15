@@ -804,8 +804,8 @@ span.error {
 div.stickynote { 
 	position: absolute;
 	display: inline-block;
-	width: 190px;
-	height: 190px;
+	width: 235px;
+	height: 235px;
 	padding: 30px;
 	font-size: 20px;
 	color: #242424;
@@ -834,8 +834,8 @@ div.stickynote.blue {
 	background-image: url(sn_b.png);
 }
 div.stickynote textarea {
-	width: 160px;
-	height: 160px;
+	width: 220px;
+	height: 180px;
 	color: #333;
 	background: none;
 	outline: none;
@@ -860,7 +860,7 @@ div.stickynote span {
 div.stickynote div.post {
     display: inline-block;
     word-wrap: break-word;
-    width: 160px;
+    width: 220px;
 }
 
 /* Top banner */
