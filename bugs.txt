@@ -13,8 +13,6 @@ BUGS:
 
 TODO:
 Luna changes:
-* Fix all external stuff
-*** Registration
 * Error handling
 
 * Improve OOBE?
