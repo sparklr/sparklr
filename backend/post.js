@@ -112,6 +112,7 @@ exports.repost = function(user, postid, reply, callback) {
 		if (rows.length < 1) return;
 
 		var post = rows[0];
+		var origfrom = rows[0].from;
 		var msg;
 
 		if (post.origid != null) {
@@ -130,7 +131,7 @@ exports.repost = function(user, postid, reply, callback) {
 		database.postObject('timeline', post, function(err,rows) {
 			callback(err,rows);
 			if (!err)
-				Notification.addUserNotification(post.from, "", rows.insertId, user, Notification.N_REPOST);
+				Notification.addUserNotification(origfrom, "", rows.insertId, user, Notification.N_REPOST);
 		});
 	});
 }
