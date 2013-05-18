@@ -88,6 +88,7 @@ function deletePost(id) {
 			location.href = "#";
 		});
 		timelineEvents[0] = [];
+		lastUpdateTime = 0;
 	});
 }
 

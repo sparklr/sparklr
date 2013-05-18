@@ -14,7 +14,6 @@ BUGS:
 TODO:
 Luna changes:
 * Error handling
-* Page messes up after deleting post
 * Need to improve max post length
 
 * Improve OOBE?

@@ -44,11 +44,11 @@ function pollData() {
 		case "STREAM":
 			query = "/stream/" + subscribedStream + "?since=" + lastUpdateTime;
 			if (currentPageType == "PHOTO")
-			query += "&photo";
+				query += "&photo";
 
 			callback = function(data,xhr) {
 				addTimelineArray(data.timeline,subscribedStream);
-				for (var i = 0; i < data.timeline.length; i++) {
+				for (var i = data.timeline.length - 1; i >= 0; i--) {
 					addTimelineEvent(data.timeline[i], 0);
 				}
 				updateCommentCounts(data.commentcounts);
@@ -80,7 +80,9 @@ function pollData() {
 				addNotification(data.notifications[i]);
 			}
 		}
-		callback(data.data,xhr);
+		if (typeof(data.data) != "undefined") { 
+			callback(data.data,xhr);
+		}
 	});
 }
 
