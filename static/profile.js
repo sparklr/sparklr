@@ -95,7 +95,7 @@ function addBoardItem(item, append) {
 	var ele = document.createElement("div");
 	
 	ele.id = "boarditem_" + item.id;
-	ele.innerHTML = "<div class='post'>" + item.message + "</div><a href='#/user/" + item.from + "'><img src='" + getAvatar(item.from) + "'></a><span class='time_raw' data-time='" + item.time + "'>";
+	ele.innerHTML = "<div class='post'>" + item.message + "</div><a href='#/user/" + item.from + "/board" + "'><img src='" + getAvatar(item.from) + "'></a><span class='time_raw' data-time='" + item.time + "'>";
 
 	var colors = ["yellow", "green", "purple", "blue"];
 	ele.className = "stickynote " + colors[item.color];
@@ -149,10 +149,10 @@ function realignBoard() {
 		children[i].style.top = y +  "px";
 		children[i].style.left = x + "px";
 
-		x += 290;
-		if (x > 290) {
+		x += 310;
+		if (x >310) {
 			x = 0;
-			y += 290;
+			y += 300;
 		}
 	}
 }
