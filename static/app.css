@@ -162,6 +162,9 @@ hr {
     float: left;
     margin-right: 20px;
 }
+.content{
+	padding-bottom: 15px;
+}
 #sidebarwrapper {
     float: right;
     width: 180px;
@@ -697,6 +700,7 @@ textarea {
     font-family: 'Oxygen', sans-serif;
     outline: none;
     resize: none;
+	font-size: 15px;
 }
 
 #scrollUpContent {
