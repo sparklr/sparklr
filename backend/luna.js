@@ -10,13 +10,18 @@ var user = require("./user");
 var work = require("./work");
 
 var domain = require("domain");
-
+var memwatch = require('memwatch');
+var hd = new memwatch.HeapDiff();
+memwatch.on("leak", function(info) {
+	var diff = hd.end();
+	console.log(diff);
+});
 require("./config");
 
 database.init(global.database);
 
 http.createServer(function(request,response) {
-	var d = domain.create();
+/*	var d = domain.create();
 	d.add(request);
 	d.add(response);
 
@@ -26,9 +31,11 @@ http.createServer(function(request,response) {
 		response.writeHead(500);
 		response.write(err.toString());
 		response.end();
+		d.dispose();
 	});
 	d.enter();
 	d.run(function() { 
+	*/
 	var requesturi = url.parse(request.url, true);
 	var cookies = new Cookies(request,response);
 	var sessionid = cookies.get("D");
@@ -49,12 +56,12 @@ http.createServer(function(request,response) {
 			frontend.showExternalPage(request,response);
 		}
 	}
-	});
+//	});
 
 }).listen(8080);
-/*
+
 process.on('uncaughtException', function(err) {
   console.log(err);
   console.trace();
 });
-*/
+
