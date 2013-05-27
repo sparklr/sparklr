@@ -16,9 +16,6 @@ function addNotification(notification) {
 	currentNotifications[notification.id] = notification;
 	
 	handleNotifications();
-	
-	if (notification.fromhandle != "")
-		USERHANDLES[notification.from] = notification.fromhandle;
 
 	if (parseInt(notification.time) > lastNotificationTime)
 		lastNotificationTime = parseInt(notification.time);
