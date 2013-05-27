@@ -22,6 +22,7 @@ var homepage = function() {
 		composer.focus();
 		composer.selectionStart = composer.value.length;
 	}
+	window.scrollTo(0,timelineTop);
 }
 
 // Error pages
@@ -32,6 +33,10 @@ function updatePages(loaded) {
 
 	document.body.ondrop = document.body.ondragover = document.body.ondragenter = function (e) { dropPrevent(e); }
 	
+	//set timeline position
+	if (subscribedStream == 0 && currentPageType == "STREAM")
+		timelineTop = document.body.scrollTop || document.documentElement.scrollTop;
+
 	//Dismiss notifications
 	handleNotifications();
 

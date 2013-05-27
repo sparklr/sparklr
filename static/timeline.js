@@ -1,4 +1,5 @@
 var timelineEvents = [[]];
+var timelineTop = 0;
 var subscribedStream;
 var publicStream = false;
 var currentPostBy;
