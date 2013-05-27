@@ -520,7 +520,9 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "follow":
 			var tofollow = fragments[3];
 			if (userobj.following.indexOf(tofollow) == -1) {
+				tofollow = parseInt(tofollow);
 				userobj.following.push(tofollow);
+
 				async.parallel([
 					function(callback) {
 						database.updateObject("users", userobj, callback);
