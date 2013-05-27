@@ -117,7 +117,7 @@ exports.updateObject = function(table, obj, callback) {
 	var query = "UPDATE " + exports.escapeId(table) + " SET ";
 	for (key in obj) {
 		if (!obj.hasOwnProperty(key)) continue;
-		if (!obj[key]) continue;
+		if (obj[key] == null) continue;
 		if (typeof(obj[key]) == "object") {
 			query += exports.escapeId(key.toString()) + " = " + exports.escape(obj[key].join(",")) + ",";
 		} else {

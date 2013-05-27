@@ -17,9 +17,7 @@ Luna changes:
 * Need to improve max post length
 
 Critical:
-You can follow undefined
 -No "403" for private pages
--Changing private to public is broken
 
 * Improve OOBE?
 * Profile backgrounds/customization
