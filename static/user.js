@@ -49,6 +49,17 @@ function pullHandlesFromServerCallback(handles) {
 	}
 }
 
+function getUserFromHandle(handle, callback) {
+	for (id in USERHANDLES) {
+		if (USERHANDLES[id].toLowerCase() == handle.toLowerCase()) {
+			callback(id);
+			return;
+		}
+	}
+	// we need to fetch it
+	ajaxGet("work/userid/" + handle, null, function (data) { if (!data.error) { callback(data) } });
+}
+
 function addFriend(id, status) {
 	FRIENDS[id] = status;
 }
