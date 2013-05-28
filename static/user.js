@@ -70,11 +70,11 @@ function setNewMessage(id, status) {
 }
 
 function follow(id) {
-	ajaxGet("work/follow/"+id);	
+	ajaxGet("work/follow/"+id, null, function() { location.href += "/#"; });	
 }
 
 function unfollow(id) {
-	ajaxGet("work/unfollow/"+id);
+	ajaxGet("work/unfollow/"+id, null, function() { location.href += "/#"; });
 }
 
 function mention(handle) {

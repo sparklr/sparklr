@@ -1,4 +1,28 @@
 <script>
+	if (data.error) {
+		if (data.info.notFriends) {
+			</script>
+				<div class='contentwrapper'>
+					<div style='text-align:center'>
+						<img src='{getAvatar(fragments[2])}'>
+					</div>
+					<b>{getUserHandle(fragments[2])}</b> has a <b>private profile</b>.<br>
+					In order to view this page, you and {getUserHandle(fragments[2])} must both be following each other.
+					<br><br>
+					<% if (data.info.following) %>
+					You are following {getUserHandle(fragments[2])} and await his/her mutual follow.
+					<br>
+					<input type='button' value='Unfollow' onClick='unfollow({parseInt(fragments[2])})'>
+					<% else %>
+					<input type='button' value='Follow' onClick='follow({parseInt(fragments[2])})'>
+					<% endelse %>
+				</div>
+			<script>
+		} else {
+			showBanner("An unknown error has occurred.", "statusmsg_ajaxerror");
+		}
+	} else {
+
 	DISPLAYNAMES[data.user] = data.name;
 	USERHANDLES[data.user] = data.handle;
 
@@ -77,5 +101,7 @@ setTimeout(function() {
 		}, 0);
 subscribedStream = data.user;
 _g("content").style.minHeight = 0;
+
+	}
 	</script>
 
