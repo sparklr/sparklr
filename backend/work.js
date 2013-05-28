@@ -486,6 +486,20 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				});
 			});
 			break;
+		case "userid":
+			var handle = fragments[3];
+			user.getUserProfileByUsername(handle, function(err,rows) {
+				if (err) {
+					do400(response, 403, err);
+				} else {
+					if (!rows[0]) {
+						do400(response, 404, "User not found");
+					} else {
+						callback(rows[0].id);
+					}
+				}
+			});
+			break;
 		case "board":
 			database.getStream("boards", {
 				to: [fragments[3]],
