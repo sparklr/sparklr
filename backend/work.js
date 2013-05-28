@@ -455,7 +455,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					user: profile.id,
 					handle: profile.username,
 					avatarid: profile.avatarid,
-					following: (userobj.followers.indexOf(profile.id) != -1),
+					following: (userobj.following.indexOf(profile.id.toString()) != -1),
 					name: profile.displayname,
 					bio: profile.bio
 				};
