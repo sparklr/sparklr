@@ -12,9 +12,6 @@ TODO:
 Luna changes:
 * Error handling
 
-Critical:
--No "403" for private pages
-
 * Improve OOBE?
 * Profile backgrounds/customization
 * "Like"

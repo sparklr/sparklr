@@ -444,7 +444,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				var profile = users[0];
 				if (profile.private) {
 					if (userid != userobj.id && (userobj.following.indexOf(userid) == -1 || userobj.followers.indexOf(userid) == -1)) {
-						return do400(response, 403, "not friends");
+						return do400(response, 403, {
+							notFriends: true,
+							following: userobj.following.indexOf(userid) != -1
+						});
 					}
 				}
 
@@ -534,9 +537,9 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 							database.updateObject("users", otheruser, callback);
 						});
 					}
-				], sendResponse);
+				], callback);
 			} else {
-				sendResponse();
+				callback();
 			}
 			break;
 		case "unfollow":
@@ -557,10 +560,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 							database.updateObject("users", otheruser, callback);
 						});
 					}
-				], sendResponse);
+				], callback);
 
 			} else {
-				sendResponse();
+				callback();
 			}
 			break;
 		case "checkusername":
