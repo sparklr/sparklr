@@ -8,13 +8,9 @@
                                                          /\___/
                                                          \/__/
 
-BUGS:
-* Photos don't work when no photos
-
 TODO:
 Luna changes:
 * Error handling
-* Need to improve max post length
 
 Critical:
 -No "403" for private pages
