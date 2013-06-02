@@ -9,6 +9,7 @@ var toolbox = require("./toolbox");
 var upload = require("./upload");
 var Notification = require("./notification");
 var Mail = require("./mail");
+var bcrypt = require("bcrypt");
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
@@ -24,7 +25,7 @@ exports.run = function(request, response, uri, sessionid) {
 			if (!fragments[3] || !fragments[4]) return do400(response,400);
 			user.trySignin(fragments[3], fragments[4], function(result, userobj) {
 				if (result) {
-					var sessionid = userobj.id + "," + user.getAuthkey(userobj);
+					var sessionid = userobj.id + "," + userobj.authkey;
 					console.log(sessionid);
 					response.writeHead(200, {
 						"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT"
@@ -59,16 +60,20 @@ exports.run = function(request, response, uri, sessionid) {
 						if (fragments[5].length < 3) {
 							sendObject(response, 0);
 						} else {
-							rows[0].password = user.generatePass(fragments[5]);
-							database.updateObject("users", rows[0], function(err,data) {
-								if (err) {
-									sendObject(response, -1);
-								} else {
-									response.writeHead(200, {
-										"Set-Cookie": "D=" + rows[0].id + "," + user.getAuthkey(rows[0]) + "; Path=/"
-									});
-									response.end("1");
-								}
+							user.generatePass(fragments[5], function(err,hash) {
+								if (err) return do500(response,err);
+								rows[0].authkey = user.generateAuthkey(rows[0].id);
+								rows[0].password = hash;
+								database.updateObject("users", rows[0], function(err,data) {
+									if (err) {
+										sendObject(response, -1);
+									} else {
+										response.writeHead(200, {
+											"Set-Cookie": "D=" + rows[0].id + "," + rows[0].authkey + "; Path=/"
+										});
+										response.end("1");
+									}
+								});
 							});
 						}
 					} else {
@@ -238,19 +243,23 @@ exports.run = function(request, response, uri, sessionid) {
 							message: ""
 						};
 
-						var oldpass = user.generatePass(postObject.password);
-						var newpass = user.generatePass(postObject.newpassword);
+						bcrypt.compare(postObject.password, userobj.password, function(err, match) {
+							if (err) do500(response, err);
+							if (match) {
+								result.result = true;
+								user.generatePass(postObject.newpassword, function(err,newpass) {
+									userobj.password = newpass;
+									// should we reset the authkey here???
+									database.updateObject("users", userobj);
+									result.authkey = userobj.authkey;
+									sendObject(response, result);
+								});
+							} else {
+								result.message = "Incorrect current password.";
+								sendObject(response, result);
+							}
+						});
 
-						if (userobj.password == oldpass) {
-							result.result = true;
-							userobj.password = newpass;
-							database.updateObject("users", userobj);
-							result.authkey = user.getAuthkey(userobj);
-						} else {
-							result.message = "Incorrect current password.";
-						}
-
-						sendObject(response, result);
 						break;
 					case "privacy":
 						var result = {

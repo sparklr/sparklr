@@ -9,8 +9,6 @@
                                                          \/__/
 
 TODO:
-Luna changes:
-* Error handling
 
 * Improve OOBE?
 * Profile backgrounds/customization

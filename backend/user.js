@@ -1,21 +1,22 @@
 var database = require("./database");
 var toolbox = require("./toolbox");
+var bcrypt = require("bcrypt");
+var crypto = require("crypto");
 
 var CACHE_DISPLAYNAME = [];
 
 exports.verifyAuth = function(userid,authkey,callback) {
 	this.getUserProfile(userid, function(err,rows) {
-		callback(authkey == exports.getAuthkey(rows[0]), rows[0]);
+		callback(authkey == rows[0].authkey, rows[0]);
 	});
 }
 
-exports.getAuthkey = function(user) {
-	if (!user) return false;
-	return toolbox.hash(user.id + ":" + user.password + global.salt);
+exports.generatePass = function(pass,callback) {
+	bcrypt.hash(pass, 11, callback);
 }
 
-exports.generatePass = function(pass) {
-	return toolbox.hash(pass); //TODO: salt
+exports.generateAuthkey = function(user) {
+	return user.toString() + crypto.randomBytes(20).toString("hex");
 }
 
 exports.getUserProfile = function(userid,callback) {
@@ -65,8 +66,11 @@ exports.getFollowing = function(userid,callback) {
 exports.trySignin = function(user,pass,callback) {
 	database.query("SELECT * FROM `users` WHERE `username` = " + database.escape(user) + " OR `email` = " + database.escape(user) + ";", function(err,rows) 
 	{
-		if (rows.length < 1) return callback(false);
-		callback (rows[0].password == exports.generatePass(pass), rows[0]);
+		if (rows.length < 1 || err) return callback(false);
+		bcrypt.compare(pass, rows[0].password, function(err,match) {
+			if (err) return callback(false);
+			callback(match,rows[0]);
+		});
 	});
 }
 
@@ -76,8 +80,8 @@ exports.updateActivity = function(userobj) {
 }
 
 exports.resetPassword = function(userobj) {
-	var token = exports.generatePass((Math.random() * 1000).toString());
-	userobj.password = "RESET:" + token; //placeholder. TODO: replace with real pass gen
+	var token = crypto.randomBytes(30).toString("hex");
+	userobj.password = "RESET:" + token;
 	database.updateObject("users", userobj);
 	return token;
 }
