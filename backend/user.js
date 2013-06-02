@@ -66,7 +66,6 @@ exports.trySignin = function(user,pass,callback) {
 	database.query("SELECT * FROM `users` WHERE `username` = " + database.escape(user) + " OR `email` = " + database.escape(user) + ";", function(err,rows) 
 	{
 		if (rows.length < 1) return callback(false);
-		//callback(true, rows[0]);
 		callback (rows[0].password == exports.generatePass(pass), rows[0]);
 	});
 }
