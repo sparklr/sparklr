@@ -21,6 +21,7 @@ exports.run = function(request, response, uri, sessionid) {
 			response.end();
 			return;
 		case "signin":
+			if (!fragments[3] || !fragments[4]) return do400(response,400);
 			user.trySignin(fragments[3], fragments[4], function(result, userobj) {
 				if (result) {
 					var sessionid = userobj.id + "," + user.getAuthkey(userobj);
@@ -36,6 +37,7 @@ exports.run = function(request, response, uri, sessionid) {
 			});
 			return;
 		case "forgot":
+			if (!fragments[3]) return do400(response,400);
 			user.getUserProfileByAnything(fragments[3], function(err,rows) {
 				if (rows && rows.length > 0) {
 					var token = user.resetPassword(rows[0]);
@@ -49,7 +51,9 @@ exports.run = function(request, response, uri, sessionid) {
 			});
 			return;
 		case "reset":
+			if (!fragments[3]) return do400(response,400);
 			user.getUserProfileByAnything(fragments[3], function(err,rows) {
+				if (err) return do500(response,err);
 				if (rows && rows.length > 0) {
 					if (rows[0].password == "RESET:" + fragments[4]) {
 						if (fragments[5].length < 3) {
@@ -74,18 +78,21 @@ exports.run = function(request, response, uri, sessionid) {
 		});
 		return;
 		case "requestinvite":
-			database.postObject("newsletter", { email: fragments[3] }, function(err,data) {
+			if (!fragments[3]) return do400(response,400);
+			database.postObject("newsletter", { email: fragments[3] }, function(err) {
 				sendObject(response, err == null);
 			});
 			return;
 		case "signup":
+			if (!fragments[6]) return do400(response,400);
 			user.signupUser(fragments[3], fragments[4], fragments[5], fragments[6], function(err,rows) {
-				if (err) return do400(response, 400, err);
 				sendObject(response, rows);
 			});
 			return;
 		case "checkusername":
+			if (!fragments[3]) return do400(response,400);
 			user.getUserProfileByUsername(fragments[3], function(err, rows) {
+				if (err) return do500(response,err);
 				sendObject(response, rows && rows.length > 0);
 			});
 			return;
@@ -108,6 +115,8 @@ exports.run = function(request, response, uri, sessionid) {
 
 	if (sessionid != null) {
 		var s = sessionid.split(",");
+		if (s.length < 2) return do400(response, 400);
+
 		user.verifyAuth(s[0], s[1], function(success, userobj) {
 			if (!success) {
 				console.log(s);
@@ -127,7 +136,7 @@ exports.run = function(request, response, uri, sessionid) {
 				try {
 					postObject = JSON.parse(request.headers['x-data']);
 				} catch (e) {
-					response.writeHead(404, "fix this");
+					return do500(response,e);
 				}
 				switch (fragments[2]) {
 					case "post":
@@ -137,6 +146,7 @@ exports.run = function(request, response, uri, sessionid) {
 									width: 590,
 									height: 350
 								}, function(err, id) {
+									if (err) return do500(response,err);
 									postObject.img = id;
 									Post.post(userobj.id, postObject, function(err) {
 										sendObject(response, {});
@@ -152,8 +162,7 @@ exports.run = function(request, response, uri, sessionid) {
 						break;
 					case "repost":
 						Post.repost(userobj.id, postObject.id, postObject.reply, function (err) {
-							if (err)
-								return do400(response, 500);
+							if (err) return do500(response,err);
 							sendObject(response, {});
 						});
 						break;
@@ -168,8 +177,7 @@ exports.run = function(request, response, uri, sessionid) {
 							time: toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
-							if (err)
-								return do400(response, 500);
+							if (err) return do500(response,err);
 							Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
 							sendObject(response, {});
 						});
@@ -182,6 +190,7 @@ exports.run = function(request, response, uri, sessionid) {
 							time: toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
+							if (err) return do500(response,err);
 							Notification.addUserNotification(parseInt(postObject.to),
 															 postObject.message,
 															 data.insertId,
@@ -209,6 +218,7 @@ exports.run = function(request, response, uri, sessionid) {
 						}
 
 						user.getUserProfileByUsername(userobj.username, function(err, res) {
+							if (err) return do500(response,err);
 							if (res && res.length > 0 && res[0].id != userobj.id) {
 								result = false;
 								message = "That username is taken :c";
@@ -269,6 +279,7 @@ exports.run = function(request, response, uri, sessionid) {
 								height: 50,
 								avatar: true
 							}, function(err, id) {
+								if (err) return do500(response,err);
 								userobj.avatarid = toolbox.time();
 								database.updateObject("users", userobj);
 								sendObject(response, userobj.avatarid);
@@ -298,6 +309,7 @@ exports.run = function(request, response, uri, sessionid) {
 								to: [userobj.id],
 								since: uri.query.n
 							}, function(err, rows) {
+								if (err) return do500(response,err);
 								if (rows.length > 0) {
 									obj.notifications = rows;
 								}
@@ -305,6 +317,7 @@ exports.run = function(request, response, uri, sessionid) {
 							});
 						}
 					], function(err) {
+						if (err) return do500(response,err);
 						sendObject(response,obj);
 					});
 				} else {
@@ -319,19 +332,6 @@ exports.run = function(request, response, uri, sessionid) {
 }
 
 function processGetRequest(request, response, uri, sessionid, userobj, callback) {
-	var sendResponse = function(err) {
-		if (err && typeof(err) != "undefined") {
-			response.writeHead(400);
-			response.write(JSON.stringify({
-				error: true,
-				err: err
-			}));
-		} else {
-			response.writeHead(200);
-		}
-		response.end();
-	}
-
 	var fragments = uri.pathname.split("/");
 
 	switch (fragments[2]) {
@@ -341,6 +341,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				following: userobj.following
 			}
 			callback(obj);
+			break;
 		case "onlinefriends":
 			var friends = [];
 			for (i in userobj.following) {
@@ -349,6 +350,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			}
 
 			user.getOnlineFriends(friends, function(err, onlinefriends) {
+				if (err) return do500(response,err);
+
 				callback(onlinefriends);
 			});
 			break;
@@ -360,6 +363,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				from: from,
 				type: 1
 			}, function(err, rows) {
+				if (err) return do500(response,err);
 				callback(rows);
 			});
 			break;
@@ -368,7 +372,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			callback(userobj);
 			break;
 		default:
-			if (fragments.length < 4) {
+			if (fragments.length < 4 || fragments[3] == "") {
 				return do400(response, 400, "Missing arguments");
 			}
 	}
@@ -394,6 +398,12 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					});
 				}
 			], function(err) {
+				if (err) {
+					return do500(response, err);
+				}
+				if (posts.length < 1) {
+					return do400(response, 404);
+				}
 				var obj = posts[0];
 
 				obj.comments = comments;
@@ -403,11 +413,15 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "comments":
 			var since = uri.query.since || 0;
 			Post.getComments(fragments[3], since, function(err, comments) {
+				if (err) return do500(response,err);
 				callback(comments);
 			});
 			break;
 		case "stream":
 			var stream = parseInt(fragments[3]);
+			if (isNaN(stream)) {
+				return do400(response, 400);
+			}
 			var from;
 			if (stream === 0) {
 				from = userobj.following.slice(0); // get a copy, not a reference
@@ -427,6 +441,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			//TODO: parallel 
 
 			database.getStream("timeline", args, function(err, rows) {
+				if (err) return do500(response,err);
+				
 				var obj = {
 					timeline: rows,
 					length: rows.length
@@ -441,6 +457,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "user":
 			var userid = fragments[3];
 			database.getObject("users", userid, function(err, users) {
+				if (err) return do500(response,err);
+				if (users.length < 1) {
+					return do400(response, 404, "no such user");
+				}
 				var profile = users[0];
 				if (profile.private) {
 					if (userid != userobj.id && (userobj.following.indexOf(userid) == -1 || userobj.followers.indexOf(userid) == -1)) {
@@ -474,11 +494,13 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				}
 
 				database.getStream(table, args, function(err, rows) {
+					if (err) return do500(response,err);
 					obj.timeline = rows;
 					if (table == "boards")
 						sendObject(response, obj);
 					else {
 						Post.getCommentCounts(rows, function(err, rows) {
+							if (err) return do500(response,err);
 							obj.commentcounts = rows;
 							callback(obj);
 						});
@@ -489,14 +511,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "userid":
 			var handle = fragments[3];
 			user.getUserProfileByUsername(handle, function(err,rows) {
-				if (err) {
-					do400(response, 403, err);
-				} else {
-					if (!rows[0]) {
+				if (err) return do500(response,err);
+				if (!rows[0]) {
 						do400(response, 404, "User not found");
-					} else {
-						callback(rows[0].id);
-					}
+				} else {
+					callback(rows[0].id);
 				}
 			});
 			break;
@@ -506,6 +525,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				since: uri.query.since || 0,
 				starttime: uri.query.starttime || 0
 			}, function(err, rows) {
+				if (err) return do500(response,err);
 				callback(rows);
 			});
 			break;
@@ -520,6 +540,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				since: since,
 				starttime: starttime
 			}, function(err, rows) {
+				if (err) return do500(response,err);
 				callback(rows);
 			});
 			break;
@@ -531,6 +552,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			}
 			query += users.join(",") + ")";
 			database.query(query, function(err, rows) {
+				if (err) return do500(response,err);
 				callback(rows);
 			});
 			break;
@@ -546,6 +568,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					},
 					function(callback) {
 						database.getObject("users", tofollow, function(err, rows) {
+							if (err) return do500(response,err);
+							if (rows.length < 1) return do400(response,404);
 							var otheruser = rows[0];
 							otheruser.followers += "," + userobj.id;
 							database.updateObject("users", otheruser, callback);
@@ -567,6 +591,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					},
 					function(callback) {
 						database.getObject("users", tofollow, function(err, rows) {
+							if (err) return do500(response,err);
+							if (rows.length < 1) return do400(response,404);
 							var otheruser = rows[0];
 
 							otheruser.followers = otheruser.followers.split(",");
@@ -582,6 +608,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "checkusername":
 			user.getUserProfileByUsername(fragments[3], function(err, rows) {
+				if (err) return do500(response,err);
 				callback(rows && rows.length > 0 && rows[0].id != userobj.id);
 			});
 			break;
@@ -607,19 +634,22 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					});
 				}
 			], function(err) {
-				//TODO: error handling
+				if (err) return do500(response,err);
 				callback(results);
 			});
 			break;
 		case "invite":
 			var inviteid = toolbox.hash((Math.random() * 1e5) + userobj.id + fragments[3]);
 			database.postObject("invites", { id: inviteid, from: userobj.id }, function(err,rows) {
-				if (err) return do400(response,500);
+				if (err) return do500(response,err);
 				Mail.sendMessageToEmail(fragments[3], "invite", { invite: inviteid, from: userobj.displayname });
 				sendObject(response,true);
 			});
 			break;
 		case "delete":
+			if (fragments.length < 5 || !fragments[4])
+				return do400(response, 400, "Missing arguments");
+
 			switch (fragments[3]) {
 				case "notification":
 					database.deleteObject("notifications", {
@@ -648,10 +678,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			}
 			break;
 		default:
-			/*response.writeHead(404);
-			  response.write("I don't know what you're talking about: " + fragments[2]);
-			  response.end();
-			  */
+			do400(response, 404, "No such API endpoint");
 			break;
 	}
 }
@@ -673,5 +700,14 @@ function do400(response, code, info) {
 		info: info
 	}));
 	response.end();
+}
+
+function do500(response, err) {
+	response.writeHead(500);
+	response.write(JSON.stringify({ error: true }));
+	response.end();
+	
+	console.log(err);
+	console.trace();
 }
 

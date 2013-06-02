@@ -77,8 +77,6 @@ exports.getStream = function(table, args, callback) {
 }
 
 exports.postObject = function(table, obj, callback) {
-	console.log(obj);
-	
 	var query = "INSERT INTO " + exports.escapeId(table) + " (";
 	for (key in obj) {
 		if (!obj.hasOwnProperty(key)) continue;
@@ -93,7 +91,6 @@ exports.postObject = function(table, obj, callback) {
 			query += exports.escape(obj[key].toString()) + ",\n";
 	}
 	query = query.substring(0,query.length - 2) + ")";
-	console.log(query);
 	exports.query(query,callback);
 }
 
@@ -109,7 +106,6 @@ exports.deleteObject = function(table, obj, callback) {
 	var id = (typeof(obj.id) == "number" ? parseInt(obj.id) : exports.escape(obj.id));
 
 	querystr += " AND `id` = " + id;
-	console.log(querystr);
 	exports.query(querystr, callback);
 }
 

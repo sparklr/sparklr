@@ -8,7 +8,7 @@ exports.N_PASS = 5;
 exports.N_REPOST = 6;
 
 exports.addUserNotification = function (user, notification, action, from, type) {
-	//if (user == from) return false;
+	if (user == from) return false;
 
 	var query = "INSERT INTO `notifications` (`from`, `to`, `body`, `action`, `type`, `time`) ";
 	query += "VALUES (";
