@@ -341,7 +341,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				following: userobj.following
 			}
 			callback(obj);
-			break;
+			return;
 		case "onlinefriends":
 			var friends = [];
 			for (i in userobj.following) {
@@ -354,7 +354,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 				callback(onlinefriends);
 			});
-			break;
+			return;
 		case "photos":
 			var from = userobj.following;
 			from.push(userobj.id);
@@ -366,11 +366,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				if (err) return do500(response,err);
 				callback(rows);
 			});
-			break;
+			return;
 		case "settings":
 			userobj.password = null;
 			callback(userobj);
-			break;
+			return;
 		default:
 			if (fragments.length < 4 || fragments[3] == "") {
 				return do400(response, 400, "Missing arguments");
