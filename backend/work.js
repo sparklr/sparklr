@@ -1,15 +1,15 @@
 // Main ranch
-var user = require("./user");
+var User = require("./user");
 var Post = require("./post");
-var util = require("util");
-var events = require("events");
-var database = require("./database");
-var async = require("async");
-var toolbox = require("./toolbox");
-var upload = require("./upload");
 var Notification = require("./notification");
 var Mail = require("./mail");
+var database = require("./database");
+var toolbox = require("./toolbox");
+var upload = require("./upload");
+var util = require("util");
+var events = require("events");
 var bcrypt = require("bcrypt");
+var async = require("async");
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
@@ -22,8 +22,8 @@ exports.run = function(request, response, uri, sessionid) {
 			response.end();
 			return;
 		case "signin":
-			if (!fragments[3] || !fragments[4]) return do400(response,400);
-			user.trySignin(fragments[3], fragments[4], function(result, userobj) {
+			if (!fragments[3] || !fragments[4]) return do400(response, 403);
+			User.trySignin(fragments[3], fragments[4], function(result, userobj) {
 				if (result) {
 					var sessionid = userobj.id + "," + userobj.authkey;
 					console.log(sessionid);
@@ -38,33 +38,35 @@ exports.run = function(request, response, uri, sessionid) {
 			});
 			return;
 		case "forgot":
-			if (!fragments[3]) return do400(response,400);
-			user.getUserProfileByAnything(fragments[3], function(err,rows) {
+			if (!fragments[3]) return do400(response, 400);
+			User.getUserProfileByAnything(fragments[3], function(err, rows) {
 				if (rows && rows.length > 0) {
-					var token = user.resetPassword(rows[0]);
+					var token = User.resetPassword(rows[0]);
 
-					Mail.sendMessage(rows[0].id, "forgot", { token: token });
+					Mail.sendMessage(rows[0].id, "forgot", {
+						token: token
+					});
 
-					sendObject(response,1);
+					sendObject(response, 1);
 				} else {
-					sendObject(response,0);
+					sendObject(response, 0);
 				}
 			});
 			return;
 		case "reset":
-			if (!fragments[3]) return do400(response,400);
-			user.getUserProfileByAnything(fragments[3], function(err,rows) {
-				if (err) return do500(response,err);
+			if (!fragments[3]) return do400(response, 400);
+			User.getUserProfileByAnything(fragments[3], function(err, rows) {
+				if (err) return do500(response, err);
 				if (rows && rows.length > 0) {
 					if (rows[0].password == "RESET:" + fragments[4]) {
 						if (fragments[5].length < 3) {
 							sendObject(response, 0);
 						} else {
-							user.generatePass(fragments[5], function(err,hash) {
-								if (err) return do500(response,err);
-								rows[0].authkey = user.generateAuthkey(rows[0].id);
+							User.generatePass(fragments[5], function(err, hash) {
+								if (err) return do500(response, err);
+								rows[0].authkey = User.generateAuthkey(rows[0].id);
 								rows[0].password = hash;
-								database.updateObject("users", rows[0], function(err,data) {
+								database.updateObject("users", rows[0], function(err, data) {
 									if (err) {
 										sendObject(response, -1);
 									} else {
@@ -80,24 +82,26 @@ exports.run = function(request, response, uri, sessionid) {
 						sendObject(response, -2);
 					}
 				}
-		});
-		return;
+			});
+			return;
 		case "requestinvite":
-			if (!fragments[3]) return do400(response,400);
-			database.postObject("newsletter", { email: fragments[3] }, function(err) {
+			if (!fragments[3]) return do400(response, 400);
+			database.postObject("newsletter", {
+				email: fragments[3]
+			}, function(err) {
 				sendObject(response, err == null);
 			});
 			return;
 		case "signup":
-			if (!fragments[6]) return do400(response,400);
-			user.signupUser(fragments[3], fragments[4], fragments[5], fragments[6], function(err,rows) {
+			if (!fragments[6]) return do400(response, 400);
+			User.signupUser(fragments[3], fragments[4], fragments[5], fragments[6], function(err, rows) {
 				sendObject(response, rows);
 			});
 			return;
 		case "checkusername":
-			if (!fragments[3]) return do400(response,400);
-			user.getUserProfileByUsername(fragments[3], function(err, rows) {
-				if (err) return do500(response,err);
+			if (!fragments[3]) return do400(response, 400);
+			User.getUserProfileByUsername(fragments[3], function(err, rows) {
+				if (err) return do500(response, err);
 				sendObject(response, rows && rows.length > 0);
 			});
 			return;
@@ -122,7 +126,7 @@ exports.run = function(request, response, uri, sessionid) {
 		var s = sessionid.split(",");
 		if (s.length < 2) return do400(response, 400);
 
-		user.verifyAuth(s[0], s[1], function(success, userobj) {
+		User.verifyAuth(s[0], s[1], function(success, userobj) {
 			if (!success) {
 				console.log(s);
 				response.writeHead(403);
@@ -139,9 +143,9 @@ exports.run = function(request, response, uri, sessionid) {
 			if (request.method == "POST") {
 				var postObject;
 				try {
-					postObject = JSON.parse(request.headers['x-data']);
+					postObject = request.headers['x-data'] ? JSON.parse(request.headers['x-data']) : {};
 				} catch (e) {
-					return do500(response,e);
+					return do500(response, e);
 				}
 				switch (fragments[2]) {
 					case "post":
@@ -151,7 +155,7 @@ exports.run = function(request, response, uri, sessionid) {
 									width: 590,
 									height: 350
 								}, function(err, id) {
-									if (err) return do500(response,err);
+									if (err) return do500(response, err);
 									postObject.img = id;
 									Post.post(userobj.id, postObject, function(err) {
 										sendObject(response, {});
@@ -166,8 +170,8 @@ exports.run = function(request, response, uri, sessionid) {
 						}
 						break;
 					case "repost":
-						Post.repost(userobj.id, postObject.id, postObject.reply, function (err) {
-							if (err) return do500(response,err);
+						Post.repost(userobj.id, postObject.id, postObject.reply, function(err) {
+							if (err) return do500(response, err);
 							sendObject(response, {});
 						});
 						break;
@@ -182,7 +186,7 @@ exports.run = function(request, response, uri, sessionid) {
 							time: toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
-							if (err) return do500(response,err);
+							if (err) return do500(response, err);
 							Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
 							sendObject(response, {});
 						});
@@ -195,12 +199,12 @@ exports.run = function(request, response, uri, sessionid) {
 							time: toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
-							if (err) return do500(response,err);
+							if (err) return do500(response, err);
 							Notification.addUserNotification(parseInt(postObject.to),
-															 postObject.message,
-															 data.insertId,
-															 userobj.id,
-															 Notification.N_BOARD);
+								postObject.message,
+								data.insertId,
+								userobj.id,
+								Notification.N_BOARD);
 							sendObject(response, {});
 						});
 						break;
@@ -222,8 +226,8 @@ exports.run = function(request, response, uri, sessionid) {
 							userobj.displayname = postObject.displayname.replace(/(\<|\>)/g, "");
 						}
 
-						user.getUserProfileByUsername(userobj.username, function(err, res) {
-							if (err) return do500(response,err);
+						User.getUserProfileByUsername(userobj.username, function(err, res) {
+							if (err) return do500(response, err);
 							if (res && res.length > 0 && res[0].id != userobj.id) {
 								result = false;
 								message = "That username is taken :c";
@@ -247,7 +251,7 @@ exports.run = function(request, response, uri, sessionid) {
 							if (err) do500(response, err);
 							if (match) {
 								result.result = true;
-								user.generatePass(postObject.newpassword, function(err,newpass) {
+								User.generatePass(postObject.newpassword, function(err, newpass) {
 									userobj.password = newpass;
 									// should we reset the authkey here???
 									database.updateObject("users", userobj);
@@ -288,7 +292,7 @@ exports.run = function(request, response, uri, sessionid) {
 								height: 50,
 								avatar: true
 							}, function(err, id) {
-								if (err) return do500(response,err);
+								if (err) return do500(response, err);
 								userobj.avatarid = toolbox.time();
 								database.updateObject("users", userobj);
 								sendObject(response, userobj.avatarid);
@@ -299,7 +303,7 @@ exports.run = function(request, response, uri, sessionid) {
 				}
 			} else {
 				if (uri.pathname.indexOf("/beacon") !== -1) {
-					user.updateActivity(userobj);
+					User.updateActivity(userobj);
 
 					var counter = 0;
 					var obj = {};
@@ -318,7 +322,7 @@ exports.run = function(request, response, uri, sessionid) {
 								to: [userobj.id],
 								since: uri.query.n
 							}, function(err, rows) {
-								if (err) return do500(response,err);
+								if (err) return do500(response, err);
 								if (rows.length > 0) {
 									obj.notifications = rows;
 								}
@@ -326,8 +330,8 @@ exports.run = function(request, response, uri, sessionid) {
 							});
 						}
 					], function(err) {
-						if (err) return do500(response,err);
-						sendObject(response,obj);
+						if (err) return do500(response, err);
+						sendObject(response, obj);
 					});
 				} else {
 					processGetRequest(request, response, uri, sessionid, userobj, function(data) {
@@ -358,8 +362,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					friends.push(userobj.following[i]);
 			}
 
-			user.getOnlineFriends(friends, function(err, onlinefriends) {
-				if (err) return do500(response,err);
+			User.getOnlineFriends(friends, function(err, onlinefriends) {
+				if (err) return do500(response, err);
 
 				callback(onlinefriends);
 			});
@@ -372,7 +376,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				from: from,
 				type: 1
 			}, function(err, rows) {
-				if (err) return do500(response,err);
+				if (err) return do500(response, err);
 				callback(rows);
 			});
 			return;
@@ -422,7 +426,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "comments":
 			var since = uri.query.since || 0;
 			Post.getComments(fragments[3], since, function(err, comments) {
-				if (err) return do500(response,err);
+				if (err) return do500(response, err);
 				callback(comments);
 			});
 			break;
@@ -450,8 +454,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			//TODO: parallel 
 
 			database.getStream("timeline", args, function(err, rows) {
-				if (err) return do500(response,err);
-				
+				if (err) return do500(response, err);
+
 				var obj = {
 					timeline: rows,
 					length: rows.length
@@ -466,7 +470,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "user":
 			var userid = fragments[3];
 			database.getObject("users", userid, function(err, users) {
-				if (err) return do500(response,err);
+				if (err) return do500(response, err);
 				if (users.length < 1) {
 					return do400(response, 404, "no such user");
 				}
@@ -503,13 +507,13 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				}
 
 				database.getStream(table, args, function(err, rows) {
-					if (err) return do500(response,err);
+					if (err) return do500(response, err);
 					obj.timeline = rows;
 					if (table == "boards")
 						sendObject(response, obj);
 					else {
 						Post.getCommentCounts(rows, function(err, rows) {
-							if (err) return do500(response,err);
+							if (err) return do500(response, err);
 							obj.commentcounts = rows;
 							callback(obj);
 						});
@@ -519,10 +523,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "userid":
 			var handle = fragments[3];
-			user.getUserProfileByUsername(handle, function(err,rows) {
-				if (err) return do500(response,err);
+			User.getUserProfileByUsername(handle, function(err, rows) {
+				if (err) return do500(response, err);
 				if (!rows[0]) {
-						do400(response, 404, "User not found");
+					do400(response, 404, "User not found");
 				} else {
 					callback(rows[0].id);
 				}
@@ -534,7 +538,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				since: uri.query.since || 0,
 				starttime: uri.query.starttime || 0
 			}, function(err, rows) {
-				if (err) return do500(response,err);
+				if (err) return do500(response, err);
 				callback(rows);
 			});
 			break;
@@ -549,7 +553,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				since: since,
 				starttime: starttime
 			}, function(err, rows) {
-				if (err) return do500(response,err);
+				if (err) return do500(response, err);
 				callback(rows);
 			});
 			break;
@@ -561,7 +565,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			}
 			query += users.join(",") + ")";
 			database.query(query, function(err, rows) {
-				if (err) return do500(response,err);
+				if (err) return do500(response, err);
 				callback(rows);
 			});
 			break;
@@ -577,10 +581,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					},
 					function(callback) {
 						database.getObject("users", tofollow, function(err, rows) {
-							if (err) return do500(response,err);
-							if (rows.length < 1) return do400(response,404);
+							if (err) return do500(response, err);
+							if (rows.length < 1) return do400(response, 404);
 							var otheruser = rows[0];
-							otheruser.followers += "," + userobj.id;
+							otherUser.followers += "," + userobj.id;
 							database.updateObject("users", otheruser, callback);
 						});
 					}
@@ -600,12 +604,12 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					},
 					function(callback) {
 						database.getObject("users", tofollow, function(err, rows) {
-							if (err) return do500(response,err);
-							if (rows.length < 1) return do400(response,404);
+							if (err) return do500(response, err);
+							if (rows.length < 1) return do400(response, 404);
 							var otheruser = rows[0];
 
-							otheruser.followers = otheruser.followers.split(",");
-							otheruser.followers.splice(otheruser.followers.indexOf(userobj.id), 1);
+							otherUser.followers = otherUser.followers.split(",");
+							otherUser.followers.splice(otherUser.followers.indexOf(userobj.id), 1);
 							database.updateObject("users", otheruser, callback);
 						});
 					}
@@ -616,8 +620,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			}
 			break;
 		case "checkusername":
-			user.getUserProfileByUsername(fragments[3], function(err, rows) {
-				if (err) return do500(response,err);
+			User.getUserProfileByUsername(fragments[3], function(err, rows) {
+				if (err) return do500(response, err);
 				callback(rows && rows.length > 0 && rows[0].id != userobj.id);
 			});
 			break;
@@ -643,16 +647,22 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					});
 				}
 			], function(err) {
-				if (err) return do500(response,err);
+				if (err) return do500(response, err);
 				callback(results);
 			});
 			break;
 		case "invite":
 			var inviteid = toolbox.hash((Math.random() * 1e5) + userobj.id + fragments[3]);
-			database.postObject("invites", { id: inviteid, from: userobj.id }, function(err,rows) {
-				if (err) return do500(response,err);
-				Mail.sendMessageToEmail(fragments[3], "invite", { invite: inviteid, from: userobj.displayname });
-				sendObject(response,true);
+			database.postObject("invites", {
+				id: inviteid,
+				from: userobj.id
+			}, function(err, rows) {
+				if (err) return do500(response, err);
+				Mail.sendMessageToEmail(fragments[3], "invite", {
+					invite: inviteid,
+					from: userobj.displayname
+				});
+				sendObject(response, true);
 			});
 			break;
 		case "delete":
@@ -713,10 +723,11 @@ function do400(response, code, info) {
 
 function do500(response, err) {
 	response.writeHead(500);
-	response.write(JSON.stringify({ error: true }));
+	response.write(JSON.stringify({
+		error: true
+	}));
 	response.end();
-	
+
 	console.log(err);
 	console.trace();
 }
-
