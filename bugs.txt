@@ -22,6 +22,8 @@ TODO:
 * API
 * Differentiation
 * Better homepage
+* TOS
+* Mobile
 
 Testing system.
 
