@@ -28,7 +28,18 @@ div::-webkit-scrollbar-track {
     border-radius: 2px;
     background: #cecece;
 }
-
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('PT Sans'), local('PTSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v5/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
+}
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('PT Sans Bold'), local('PTSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v5/0XxGQsSc1g4rdRdjJKZrNBsxEYwM7FgeyaSgU71cLG0.woff) format('woff');
+}
 body { 
     color: #fff;
     background: #3F364A;
@@ -38,13 +49,13 @@ body {
     background-repeat: repeat-x;
     margin: 0px;
     padding: 0px;
-    font-family: 'Oxygen', sans-serif;
+	font-family: 'PT Sans', sans-serif;
 }
 
 img { outline: 0 }
 
 a { color: #4F3075; text-decoration: none; outline: 0; }
-a.person { color: #3a3a3a; font-weight: bold }
+a.person { color: #3a3a3a; font-weight: 700 }
 h2 {
     color: #555;
     font-weight: normal;
@@ -190,10 +201,9 @@ div.contentwrapper {
     color: rgba(255,255,255,0.9);;
     display: block;
     margin-bottom: 8px;
-    font-weight: bold;
     opacity: 0.9;
     padding: 5px;
-    font-size: 14px;
+    font-size: 15px;
     border: solid 1px rgba(0,0,0,0.3);
     background: rgba(0,0,0,0.15);
     width: 180px;
@@ -647,7 +657,7 @@ input[type=button], input[type=submit] {
     padding: 5px 5px;
     font-size: 15px;
     opacity: 0.9;
-    font-family: 'Oxygen', sans-serif;
+	font-family: 'PT Sans', sans-serif;
     color: #444;
     cursor: pointer;
     -webkit-transition: all 0.2s ease-in-out;
@@ -700,7 +710,7 @@ textarea {
     padding: 4px;
     height: 40px;
     vertical-align: top;
-    font-family: 'Oxygen', sans-serif;
+	font-family: 'PT Sans', sans-serif;
     outline: none;
     resize: none;
 	font-size: 15px;
@@ -719,7 +729,7 @@ div.time {
     right: 0px;
     float: right;
     margin-right: 5px;
-    font-size: 10px;
+    font-size: 11px;
     -webkit-transition: all 0.1s ease-in-out;
 }
 
@@ -848,7 +858,7 @@ div.stickynote textarea {
 	outline: none;
 	border: none;
 	font-size: 20px;
-	font-family: 'Oxygen', sans-serif;
+	font-family: 'PT Sans', sans-serif;
 	overflow: hidden;
 	resize: none;
 }
