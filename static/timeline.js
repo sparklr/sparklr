@@ -6,6 +6,7 @@ var currentPostBy;
 var currentComments = [];
 var imgAttachments = null;
 var lastUpdateTime = Math.floor((new Date).getTime() / 1000);
+var LIKE_CHAR = "\u261D";
 
 function addTimelineEvent(item,append) {
 	var ev = document.createElement("div");
@@ -105,13 +106,23 @@ function renderComment(comment) {
 	var commentlist = _g("comments_" + comment.postid);
 
 	var e = document.createElement("div");
+	e.className = "comment";
+	comment.like = comment.message == LIKE_CHAR;	
 
-    var html = "<div style='display:inline-block;float:left;height:100%' class='fadein'><img class='avatar' src='" + getAvatar(comment.from) + "'></div> <div class='rightcontrols'><div class='time' style='opacity:0.5' data-time='" + comment.time + "'></div>";
-    
+    var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
+		html += "<img class='avatar' src='" + getAvatar(comment.from) + "'>";
+	html += "</div> <div class='rightcontrols'><div class='time' style='opacity:0.5' data-time='" + comment.time + "'></div>";
+
     if (comment.from == curUser) {
         html += "<br><a class='delete' onClick='deleteComment(\"" + comment.id + "\", \"" + comment.postid + "\");'>x</a>";
     }
-    html += "</div> <a href='#/user/" + comment.from + "'>" + getDisplayName(comment.from) + "</a><br>" + processMedia(escapeHTML(comment.message)) + "</div><br><br>";
+    html += "</div> <a class='person' href='#/user/" + comment.from + "'>" + getDisplayName(comment.from) + "</a>";
+	if (comment.like)
+		html += " likes this<br><br>";
+	else
+		html += "<br><div style='margin-left: 55px;'>" + processMedia(escapeHTML(comment.message)) + "</div>";
+	
+	html += "</div>";
     e.innerHTML += html;
 	commentlist.appendChild(e);
 }
@@ -167,8 +178,8 @@ function updateCommentCounts(counts) {
 	}
 }
 
-function postComment() {
-	var vars = {
+function postComment(vars) {
+	var vars = vars || {
 		to: currentPostBy,
 		id: subscribedStream,
 		comment: _g("composer").value
@@ -179,6 +190,14 @@ function postComment() {
 	ajaxGet("work/comment", vars);
 	pollData();
 	
+}
+
+function likeEvent(id, to, callback) {
+	ajaxGet("work/like", { id: id, to: to }, function() {
+		callback.className += " jiggle";
+		setTimeout(function() { callback.className = callback.className.replace(" jiggle", ""); }, 1000);
+		pollData();
+	});
 }
 
 function getLastPostTime() {

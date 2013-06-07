@@ -179,6 +179,16 @@ exports.run = function(request, response, uri, sessionid) {
 						Post.postComment(userobj.id, postObject);
 						sendObject(response, {});
 						break;
+					case "like":
+						database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(postObject.id) + " AND `from` = " + parseInt(userobj.id) + " AND message = 0xe2989d", function (err, rows) {
+						if (rows.affectedRows > 0) {
+							sendObject(response, {});
+							return;
+						}
+						Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D"});
+							sendObject(response, {});
+					});
+						break;
 					case "chat":
 						database.postObject("messages", {
 							from: userobj.id,
