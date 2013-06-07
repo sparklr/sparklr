@@ -75,7 +75,7 @@ if (cluster.isMaster) {
 
 	process.on('uncaughtException', function(err) {
 		console.log(err);
-		console.trace();
+		console.log(err.stack);
 	});
 }
 

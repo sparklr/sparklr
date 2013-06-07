@@ -190,6 +190,10 @@ function updateAccountSettings() {
 			obj = { private: form.private[0].checked }
 			type = "privacy";
 			break;
+		case "account":
+			obj = { password: form.delete.value }
+			type = "delete";
+			break;
 		default:
 			obj = { username: form.username.value, email: form.email.value, displayname: form.displayname.value }
 			type = "settings";

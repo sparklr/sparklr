@@ -275,6 +275,56 @@ exports.run = function(request, response, uri, sessionid) {
 						database.updateObject("users", userobj);
 						sendObject(response, result);
 						break;
+					case "delete": 
+						var result = {};
+
+						bcrypt.compare(postObject.password, userobj.password, function(err, match) { 
+							if (err) do500(response, err);
+							if (match) {
+								result.result = true;
+								for (var i = 0; i < userobj.followers.length; i++) {
+									database.getObject("users", userobj.followers[i], function(err, rows) {
+										if (err) return;
+										if (rows.length < 1) return;
+										var otherUser = rows[0];
+
+										otherUser.following = otherUser.following.split(",");
+										otherUser.following.splice(otherUser.following.indexOf(userobj.id), 1);
+										database.updateObject("users", otherUser, function() {});
+									});
+								}
+								for (var i = 0; i < userobj.following.length; i++) {
+									database.getObject("users", userobj.following[i], function(err, rows) {
+										if (err) return;
+										if (rows.length < 1) return;
+										var otherUser = rows[0];
+
+										otherUser.followers = otherUser.followers.split(",");
+										otherUser.followers.splice(otherUser.followers.indexOf(userobj.id), 1);
+										database.updateObject("users", otherUser, function() {});
+									});
+								}
+								database.deleteObject("users", { id: userobj.id }, function(err) {
+									if (err) do500(response, err);
+									async.parallel([
+										function(callback) {
+											database.deleteObject("timeline", { from: userobj.id }, callback);
+										},
+										function(callback) {
+											database.deleteObject("comments", { from: userobj.id }, callback);
+										}],
+										function(err) {
+											if (err) do500(response, err);
+											sendObject(response, result);
+										});
+								});
+							} else {
+								result.result = false;
+								result.message = "Incorrect current password.";
+								sendObject(response, result);
+							}
+						});
+						break;
 					case "profile":
 						if (postObject.displayname.length < 30) {
 							userobj.displayname = postObject.displayname.replace(/(\<|\>)/g, "");
@@ -584,7 +634,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 							if (err) return do500(response, err);
 							if (rows.length < 1) return do400(response, 404);
 							var otheruser = rows[0];
-							otherUser.followers += "," + userobj.id;
+							otheruser.followers += "," + userobj.id;
 							database.updateObject("users", otheruser, callback);
 						});
 					}
@@ -606,11 +656,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 						database.getObject("users", tofollow, function(err, rows) {
 							if (err) return do500(response, err);
 							if (rows.length < 1) return do400(response, 404);
-							var otheruser = rows[0];
+							var otherUser = rows[0];
 
 							otherUser.followers = otherUser.followers.split(",");
 							otherUser.followers.splice(otherUser.followers.indexOf(userobj.id), 1);
-							database.updateObject("users", otheruser, callback);
+							database.updateObject("users", otherUser, callback);
 						});
 					}
 				], callback);
