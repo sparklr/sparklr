@@ -28,7 +28,10 @@ function addNotification(notification) {
 	
 	switch (parseInt(notification.type)) {
 		case 1: //commented on post 
-			body = "commented:<br>" + notification.body + "<br><br>";
+			if  (notification.body == LIKE_CHAR) 
+				body = "liked your post.<br><br><br>";
+			else
+				body = "commented:<br>" + notification.body + "<br><br>";
 			
 			action = function() { location.href= "#/post/" + notification.action + "/new"; }
 		break;
