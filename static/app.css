@@ -346,21 +346,19 @@ div.confirm {
 }
 
 #notificationlist div {
-    border: solid 1px #333;
+    border: solid 1px #667;
     background: #fff;
     color: #444;
-    border-radius: 5px;
     padding: 5px;
     margin: 20px 10px;
     cursor: pointer;
     font-size: 13px;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-
+	min-height: 50px;
 }
 
 #notificationlist div:hover {
     background: #efeefa;
-
 }
 
 #notificationlist div .exit {
