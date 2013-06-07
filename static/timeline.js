@@ -110,7 +110,7 @@ function renderComment(comment) {
 	comment.like = comment.message == LIKE_CHAR;	
 
     var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
-		html += "<img class='avatar' src='" + getAvatar(comment.from) + "'>";
+	html += "<img class='littleavatar' src='" + getAvatar(comment.from) + "'>";
 	html += "</div> <div class='rightcontrols'><div class='time' style='opacity:0.5' data-time='" + comment.time + "'></div>";
 
     if (comment.from == curUser) {
@@ -120,7 +120,7 @@ function renderComment(comment) {
 	if (comment.like)
 		html += " likes this<br><br>";
 	else
-		html += "<br><div style='margin-left: 55px;'>" + processMedia(escapeHTML(comment.message)) + "</div>";
+		html += "<br><div style='margin-left: 50px;'>" + processMedia(escapeHTML(comment.message)) + "</div>";
 	
 	html += "</div>";
     e.innerHTML += html;

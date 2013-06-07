@@ -34,6 +34,7 @@
 
 <div id='sidebar_links'>
 	<a href='javascript:repost("{data.id}");'>Repost</a>
+	<a href='javascript:likeEvent("{data.id}", "{data.from}", this);'>Like</a>
 	<% if (data.from == curUser) %>
 	<a href='javascript:deletePost("{data.id}");'>Delete</a>
 	<% endif %>
