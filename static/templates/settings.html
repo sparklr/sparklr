@@ -4,6 +4,7 @@
 		<a href='#/settings'>General</a>
 		<a href='#/settings/password'>Change Password</a>
 		<a href='#/settings/privacy'>Privacy</a>
+		<a href='#/settings/account'>Account</a>
 	</div>
 
 	<form class='settings' method='POST' target='datapusher' id='form_settings' onSubmit='updateAccountSettings();return false;void(0);'>
@@ -41,9 +42,9 @@
 		</fieldset>
 		<% endif %>
 		<% if (fragments[2] == "account") %>	
-		echo "<b>Account Deletion</b><br>Once your account is removed, there's no going back.<br><br>";
-		echo "Type your password below to confirm:<br><input type='password' name='delete'><br><br>";
-		echo "<b>Warning: The button below is the point of no return<br></b>";
+		<b>Account Deletion</b><br>Once your account is removed, there's no going back.<br><br>
+		Type your password below to confirm:<br><input type='password' name='delete'><br><br>
+		<b>Warning: The button below is the point of no return</b><br><br>
 		<% endif %>
 		<% if (!fragments[2]) %>
 		<fieldset>
