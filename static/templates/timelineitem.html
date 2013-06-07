@@ -4,13 +4,14 @@
 
 <div id='commentcount_{ item.id }' class='commentcount' style='opacity:0'>+</div>
 <div class='commentcount repost' style='opacity: 0;' onClick='showEvent("{item.id}","repost");stopBubbling();'><img src='{COMMONHOST}/icons/repost.png'></div>
+<div class='commentcount repost' style='opacity: 0;' onClick='likeEvent("{item.id}","{item.from}", this);stopBubbling();'><img src='{COMMONHOST}/icons/like.png'></div>
 
 <div style='display:inline-block;float:left;height:100%'>
 	<img class='avatar' src='{ getAvatar(item.from) }'>
 </div> 
 <div class='time' data-time='{item.time}'></div>
 	
-<a href='#/user/{ item.from }'>{ getDisplayName(item.from) }</a>
+<a href='#/user/{ item.from }' class='person'>{ getDisplayName(item.from) }</a>
 
 <% if (item.via !== null) %>
  via <a href='#/user/{ item.via }'>@{ getUserHandle(item.via) }</a>
@@ -18,4 +19,4 @@
 
 <h2>@{getUserHandle(item.from)}</h2>
 <div class='content'>{processPost(item)}</div>
-	
+
