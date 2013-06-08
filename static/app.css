@@ -27,7 +27,7 @@ div::-webkit-scrollbar-track {
 }
 
 /* Fonts 
- * -- Why do we need two requests?
+ * TODO: Why do we need two requests?
  */
 @font-face {
   font-family: 'PT Sans';
