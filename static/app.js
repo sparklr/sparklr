@@ -36,14 +36,6 @@ var app = function(payload) {
 
 	updateFriendsList();
 
-	for (var i = 0; i < payload.timelineStream.length; i++) {
-		for (var n = 0; n < payload.commentCounts.length; n++) { 
-			if (payload.timelineStream[i].id == payload.commentCounts[n].postid) {
-				payload.timelineStream[i].commentcount = payload.commentCounts[n]["COUNT(`postid`)"];
-			}
-		}
-	}
-
 	addTimelineArray(payload.timelineStream, 0);
 }
 

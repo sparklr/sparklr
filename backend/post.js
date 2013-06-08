@@ -1,6 +1,7 @@
 var database = require("./database");
 var Notification = require("./notification");
 var User = require("./user");
+var toolbox = require("./toolbox");
 var events = require("events");
 var util = require("util");
 
@@ -13,33 +14,6 @@ exports.getComments = function(postid, since, callback) {
 	}
 	// For some odd reason, this actually decreases execution time.
 	query += " ORDER BY `time` ASC";
-	database.query(query, callback);
-}
-
-exports.getCommentCounts = function(posts, callback) {
-	if (posts.length < 1) {
-		callback(null,[]);
-		return;
-	}
-	var query = "SELECT COUNT(`postid`), `postid` FROM `comments` WHERE `postid` IN (";
-	for (var i = 0; i < posts.length - 1; i++)
-		query += parseInt(posts[i].id) + ",";
-	query += posts[posts.length - 1].id + ") GROUP BY `postid`";
-
-	database.query(query, callback);
-}
-
-exports.getCommentCountsByStream = function(from, since, starttime, callback) {
-	var query = "SELECT COUNT(`postid`), `postid` FROM `comments` WHERE `postid` IN (";
-	query += "select `id` from `timeline` where `from` in ("
-	for (var i = 0; i < from.length - 1; i++)
-		query += parseInt(from[i]) + ",";
-	query += from[from.length - 1] + ") ";
-	if (starttime != 0) 
-		query += "and `time` < " + parseInt(starttime) + " ";
-	query += "order by `time` desc ) ";
-	query += "AND `time` > " + parseInt(since);
-	query += " GROUP BY `postid` ORDER BY `time` DESC LIMIT 30";
 	database.query(query, callback);
 }
 
@@ -85,6 +59,8 @@ exports.postComment = function(user, data, callback) {
 		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+database.escape(data.comment) + "," +  Math.floor((new Date).getTime() / 1000) + ")";
 
 		database.query(query, callback);
+		var count = (rows[0].commentcount + 1 || 1);
+		database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + toolbox.time() + " WHERE id=" + parseInt(data.id));
 
 		query = "SELECT DISTINCT `from` FROM `comments` WHERE postid = " + parseInt(data.id);
 		database.query(query, function(err,rows) {
@@ -104,6 +80,28 @@ exports.postComment = function(user, data, callback) {
 		processMentions(data.comment, user, data.id);
 
 	});
+}
+exports.deleteComment = function(user, id, callback) {
+	database.getObject("comments", id, function(err, rows) {
+		if (err || rows.length < 1) {
+			callback(false);
+			return false;
+		}
+		if (rows[0].from != user) {
+			callback(false);
+			return false;
+		}
+
+		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(user);
+		database.query(query, function(){});
+		var count = (rows[0].commentcount - 1 || 0);
+		database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + toolbox.time() + " WHERE id=" + parseInt(data.id));
+		callback(true);
+	});
+}
+
+exports.updateCommentCount = function(postid, x) {
+	database.query("UPDATE `timeline` SET commentcount = commentcount + " + parseInt(x) + ", modified = " + toolbox.time() + " WHERE id=" + parseInt(postid));
 }
 
 exports.repost = function(user, postid, reply, callback) {

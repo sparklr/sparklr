@@ -182,12 +182,13 @@ exports.run = function(request, response, uri, sessionid) {
 					case "like":
 						database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(postObject.id) + " AND `from` = " + parseInt(userobj.id) + " AND message = 0xe2989d", function (err, rows) {
 						if (rows.affectedRows > 0) {
+							Post.updateCommentCount(postObject.id, -1);
 							sendObject(response, {});
 							return;
 						}
 						Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D"});
 							sendObject(response, {});
-					});
+						});
 						break;
 					case "chat":
 						database.postObject("messages", {
@@ -507,11 +508,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			};
 			if (uri.query.since) {
 				args.since = uri.query.since;
+				args.modified = uri.query.since;
 			}
 			if (uri.query.starttime) {
 				args.starttime = uri.query.starttime;
 			}
-			//TODO: parallel 
 
 			database.getStream("timeline", args, function(err, rows) {
 				if (err) return do500(response, err);
@@ -520,11 +521,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					timeline: rows,
 					length: rows.length
 				}
-				Post.getCommentCountsByStream(from, args.since || 0, args.starttime || 0, function(err, rows) {
-					obj.length = rows.length || obj.timeline.length;
-					obj.commentcounts = rows;
-					callback(obj);
-				});
+				callback(obj);
 			});
 			break;
 		case "user":
@@ -569,15 +566,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				database.getStream(table, args, function(err, rows) {
 					if (err) return do500(response, err);
 					obj.timeline = rows;
-					if (table == "boards")
-						sendObject(response, obj);
-					else {
-						Post.getCommentCounts(rows, function(err, rows) {
-							if (err) return do500(response, err);
-							obj.commentcounts = rows;
-							callback(obj);
-						});
-					}
+					sendObject(response, obj);
 				});
 			});
 			break;
@@ -747,10 +736,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					});
 					break;
 				case "comment":
-					database.deleteObject("comments", {
-						from: userobj.id,
-						id: fragments[4]
-					}, function() {
+					Post.deleteComment(userobj.id, parseInt(fragments[4]), function(err) {
 						sendObject(response, {});
 					});
 					break;

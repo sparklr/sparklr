@@ -49,11 +49,7 @@ exports.run = function(user, request, response, sessionid) {
 				from: from
 			}, function(err, stream) {
 				payload.timelineStream = stream;
-				Post.getCommentCounts(stream, function(err, rows) {
-					payload.commentCounts = rows;
-					callback();
-				});
-
+				callback();
 			});
 		},
 		function(callback) {
