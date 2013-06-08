@@ -6,17 +6,14 @@ html {
 ::-webkit-scrollbar {
     width: 4px;
 }
-
 ::-webkit-scrollbar-track {
     border-radius: 5px;
     background: #2A242E;
 }
-
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
     background: #5A4C64;
 }
-
 div::-webkit-scrollbar {
     width: 5px;
 }
@@ -28,18 +25,24 @@ div::-webkit-scrollbar-track {
     border-radius: 2px;
     background: #cecece;
 }
+
+/* Fonts 
+ * -- Why do we need two requests?
+ */
 @font-face {
   font-family: 'PT Sans';
   font-style: normal;
   font-weight: 400;
   src: local('PT Sans'), local('PTSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v5/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
 }
+
 @font-face {
   font-family: 'PT Sans';
   font-style: normal;
   font-weight: 700;
   src: local('PT Sans Bold'), local('PTSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v5/0XxGQsSc1g4rdRdjJKZrNBsxEYwM7FgeyaSgU71cLG0.woff) format('woff');
 }
+
 body { 
     color: #fff;
     background: #3F364A;
