@@ -124,7 +124,8 @@ exports.repost = function(user, postid, reply, callback) {
 		post.id = null;
 		post.message = msg;
 		post.from = user;
-		post.time = Math.floor((new Date).getTime() / 1000);
+		post.time = toolbox.time();
+		post.commentcount = 0;
 
 		database.postObject('timeline', post, function(err,rows) {
 			callback(err,rows);
