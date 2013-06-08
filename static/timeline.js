@@ -9,8 +9,12 @@ var lastUpdateTime = Math.floor((new Date).getTime() / 1000);
 var LIKE_CHAR = "\u261D";
 
 function addTimelineEvent(item,append) {
+	if (_g("event_" + item.id)) {
+		updateCommentCount(item.id, item.commentcount);
+		return;
+	}
 	var ev = document.createElement("div");
-	
+
 	ev.className = "timelineitem fadein";
 	ev.id = "event_" + item.id;
 	ev.onclick = function() { location.href = "#/post/" + item.id; }
@@ -153,33 +157,16 @@ function addComments(comments) {
 		window.scrollTo(0,0xFFFFFF);
 }
 
-function updateCommentCount(id, count, append) {
+function updateCommentCount(id, count) {
 	var ele = _g("commentcount_" + id);
 	if (ele == null) return; 
 		
 	ele.style.opacity = (count != 0) ? 1 : 0;
-
-
-	for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
-		if (timelineEvents[subscribedStream][i].id == id)
-		{ 
-			if (append) 
-				timelineEvents[subscribedStream][i].commentcount += parseInt(count);
-			else 
-				timelineEvents[subscribedStream][i].commentcount = parseInt(count);
-			ele.innerHTML = timelineEvents[subscribedStream][i].commentcount;
-			break;
-		}
-	}
-}
-function updateCommentCounts(counts) {
-	for (i in counts) {
-		updateCommentCount(counts[i].postid, counts[i]["COUNT(`postid`)"],true);
-	}
+	ele.innerHTML = count || "+";
 }
 
-function postComment(vars) {
-	var vars = vars || {
+function postComment() {
+	var vars = {
 		to: currentPostBy,
 		id: subscribedStream,
 		comment: _g("composer").value
