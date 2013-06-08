@@ -15,8 +15,6 @@ TODO:
 * Photo stream
 * Better error messages
 * Auto purge
-* Server config: Add domain.com/username
-* Loading icons
 * API
 * Differentiation
 * Better homepage
