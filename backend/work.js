@@ -183,7 +183,7 @@ exports.run = function(request, response, uri, sessionid) {
 						database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(postObject.id) + " AND `from` = " + parseInt(userobj.id) + " AND message = 0xe2989d", function (err, rows) {
 						if (rows.affectedRows > 0) {
 							Post.updateCommentCount(postObject.id, -1);
-							sendObject(response, {});
+							sendObject(response, { deleted: true });
 							return;
 						}
 						Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D"});
