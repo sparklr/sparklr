@@ -112,6 +112,13 @@ function renderComment(comment) {
 	var e = document.createElement("div");
 	e.className = "comment";
 	comment.like = comment.message == LIKE_CHAR;	
+	if (comment.like) {
+		if (_g("like_" + comment.from))
+			return;
+		e.id = "like_" + comment.from;
+		if (comment.from == curUser) 
+			_g("likebtn").innerHTML = "Unlike";
+	}
 
     var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
 	html += "<img class='littleavatar' src='" + getAvatar(comment.from) + "'>";
@@ -121,8 +128,9 @@ function renderComment(comment) {
         html += "<br><a class='delete' onClick='deleteComment(\"" + comment.id + "\", \"" + comment.postid + "\");'>x</a>";
     }
     html += "</div> <a class='person' href='#/user/" + comment.from + "'>" + getDisplayName(comment.from) + "</a>";
-	if (comment.like)
+	if (comment.like) {
 		html += " likes this<br><br>";
+	}
 	else
 		html += "<br><div style='margin-left: 50px;'>" + processMedia(escapeHTML(comment.message)) + "</div>";
 	
@@ -180,8 +188,16 @@ function postComment() {
 }
 
 function likeEvent(id, to, callback) {
-	ajaxGet("work/like", { id: id, to: to }, function() {
-		callback.className += " jiggle";
+	ajaxGet("work/like", { id: id, to: to }, function(result) {
+		if (result.deleted && callback.id == "likebtn") {
+			location.href = location.href + "#";
+			return;
+		}
+		if (callback.innerHTML == "Like") 
+			callback.innerHTML = "Unlike";
+		else
+			callback.className += " jiggle";
+		
 		setTimeout(function() { callback.className = callback.className.replace(" jiggle", ""); }, 1000);
 		pollData();
 	});
