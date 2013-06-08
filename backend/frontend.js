@@ -7,11 +7,17 @@ var async = require("async");
 
 var frontendTemplate = "";
 var externalTemplate = "";
+var mobileTemplate = "";
 
 var loadTemplates = function() {
 	fs.readFile("../static/templates/headers_test.html", function(err, data) {
 		eval(templates.parse(data.toString()));
 		frontendTemplate = html + "<body>";
+	});
+
+	fs.readFile("../../p18mobile/static/templates/headers_test.html", function(err, data) {
+		eval(templates.parse(data.toString()));
+		mobileTemplate = html + "<body>";
 	});
 
 	fs.readFile("../static/templates/external.html", function(err, data) {
@@ -27,7 +33,7 @@ exports.run = function(user, request, response, sessionid) {
 	var sessiondata = sessionid.split(",");
 	var authkey = sessiondata[1];
 
-	var html = frontendTemplate;
+	var html = request.url.indexOf("mobile") ? mobileTemplate : frontendTemplate;
 
 	user.following = user.following.split(",").filter(function(e) { return e; });
 	user.followers = user.followers.split(",").filter(function(e) { return e; });
