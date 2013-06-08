@@ -33,7 +33,7 @@ exports.run = function(user, request, response, sessionid) {
 	var sessiondata = sessionid.split(",");
 	var authkey = sessiondata[1];
 
-	var html = request.url.indexOf("mobile") ? mobileTemplate : frontendTemplate;
+	var html = request.url.indexOf("mobile") != -1 ? mobileTemplate : frontendTemplate;
 
 	user.following = user.following.split(",").filter(function(e) { return e; });
 	user.followers = user.followers.split(",").filter(function(e) { return e; });
