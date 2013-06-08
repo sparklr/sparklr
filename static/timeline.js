@@ -226,7 +226,6 @@ function fetchOlderPosts() {
 		for (var i = data.timeline.length - 1; i > 0 ; i--) {
 			addTimelineEvent(data.timeline[i], true);
 		}
-		updateCommentCounts(data.commentcounts);
 		lastUpdateTime = Math.floor((new Date).getTime() / 1000);
 		}
 		else {
