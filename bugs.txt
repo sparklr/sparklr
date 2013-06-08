@@ -12,7 +12,6 @@ TODO:
 
 * Improve OOBE?
 * Profile backgrounds/customization
-* "Like"
 * Photo stream
 * Better error messages
 * Auto purge
