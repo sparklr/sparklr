@@ -1,13 +1,17 @@
 var mysql = require("mysql-libmysqlclient");
 
 var connection = null;
+var isConnecting = false;
 
 exports.init = function(args) {
+	if (this.isConnecting) return;
+	this.isConnecting = true;
 	this.connection = mysql.createConnectionSync();
 	this.connection.connectSync(args.host, args.user, args.password, args.database);
 	if (!this.connection.connectedSync()) {
 		throw new Exception();
 	}
+	this.isConnecting = false;
 }
 
 exports.escape = function(str) {
@@ -19,13 +23,27 @@ exports.escapeId = function(str) {
 }
 
 exports.query = function(query, callback) {
-	this.connection.query(query, function(err,res) {
-		if (err) return callback(err);
-		if (res.fetchAll)
-			res.fetchAll(callback);
-		else
-			if (callback) callback(err,res);
-	});
+	try {
+		this.connection.query(query, function(err,res) {
+			if (err) {
+				if (err.message.indexOf("connect") !== -1 || err.message.indexOf("gone away") !== -1) {
+					exports.init(global.database);
+					exports.query(query, callback);
+					return;
+				}
+				return callback(err);
+			}
+			if (res.fetchAll)
+				res.fetchAll(callback);
+			else
+				if (callback) callback(err,res);
+		});
+	} catch (e) {
+		if (e.message.indexOf("Not connected") !== -1) {
+			exports.init(global.database);
+			exports.query(query, callback);
+		}
+	}
 }
 
 exports.getObject = function(table, id, callback) {
