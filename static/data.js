@@ -15,7 +15,10 @@ function ajaxGet(url, data, callback) {
 			_g("loading").style.opacity = 0;
 
 			var data = xhr.responseText;
-			callback(JSON.parse(data),xhr);
+			try {
+				callback(JSON.parse(data),xhr);
+			} catch (e) {
+			}
 			if (xhr.status != 200) {
                 showBanner("Uh oh, an error occured when attempting to talk to the server", "statusmsg_ajaxerror");
 			} else {
