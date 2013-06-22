@@ -1,6 +1,11 @@
 <div class='contentwrapper'>
+	<script>
+	if (data.type == 1) {
+		data = processPostMeta(data);
+	}
+	</script>
 	<% if (data.type == 1) %>
-	<div class='picturepost' onClick='showImage("{ data.meta }");' style='background-image: url({STATICHOST}/storage/images/{data.meta}_thumb.jpg);'></div>
+	<div class='picturepost' id='picturepost_{data.id}' onClick='showImage("{ data.img }");' style='background-image: url({STATICHOST}/storage/images/{data.img}_thumb.jpg);'></div>
 	<% endif %>
 
 	<div id='event_{data.id}' class='fadein' style='padding: 7px; margin: -5px' onClick='showEvent({data.id})'>
@@ -57,6 +62,8 @@
 	
 	if (location.hash.indexOf("repost") != -1) 
 		repost(data.id);
+
+	renderTags(data);
 	}, 0);
 
 </script>

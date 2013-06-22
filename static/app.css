@@ -500,8 +500,28 @@ div.comment {
 }
 
 #attachment {
-	display: none;
 	background-size: cover;
+	display: none;
+}
+
+#attachment div, div.picturepost div {
+	position: absolute;
+	background: rgba(0,0,0,0.2);
+	height: 22px;
+	display: block;
+	color: #fff;
+	outline: 0;
+	opacity: 0.1;
+	-webkit-transition: all 0.1s ease;
+	padding: 4px;
+}
+
+#attachment div:focus {
+	opacity: 1;
+}
+
+#attachment:hover div, div.picturepost:hover div {
+	opacity: 1;
 }
 
 img.avatar {
