@@ -19,6 +19,10 @@ function addTimelineEvent(item,append) {
 	ev.id = "event_" + item.id;
 	ev.onclick = function() { location.href = "#/post/" + item.id; }
 
+	if (item.type == 1) {
+		item = processPostMeta(item);
+	}
+
 	eval(getTemplate("timelineitem"));
 
 	ev.innerHTML = html;
@@ -28,6 +32,10 @@ function addTimelineEvent(item,append) {
 		parent.appendChild(ev);
 	} else {
 		parent.insertBefore(ev, parent.children[0]);
+	}
+
+	if (item.tags) {
+		renderTags(item);
 	}
 	if (item.commentcount)
 		updateCommentCount(item.id, item.commentcount);
@@ -66,6 +74,29 @@ function showEvent(id,args) {
 			location.href = "#/post/" + id + "/" + args;
 		}
 	}
+}
+
+function processPostMeta(data) {
+	if (data.type == 1) {
+		data.img = data.meta.split(",")[0];
+		if (data.meta.indexOf(",") != -1) {
+			try {
+				data.tags = JSON.parse(data.meta.substring(data.meta.indexOf(",") + 1));
+			} catch (er) { }
+		}
+	}
+
+	return data;
+}
+function renderTags(item) {
+	var post = _g("picturepost_" + item.id);
+	var html = "";
+
+	for (var i = 0; i < item.tags.length; i++) {
+		html += "<div style='top:" + item.tags[i].y + "px;left:" + item.tags[i].x + "px;'>" + item.tags[i].tag + "</div>";
+	}
+
+	post.innerHTML = html;
 }
 
 function repost(id) {
@@ -239,7 +270,43 @@ function renderTimeline() {
 	html += "<div class='picturepost' id='attachment'></div>";
 	html += "<img src='" + getAvatar(curUser) + "' class='avatar'><textarea id='composer' placeholder='Share something...' onkeydown='isEnter(event, postToTimeline);'></textarea></div><div id='timeline_container'></div>";
 	_g("content").innerHTML = html;
-	
+	_g("attachment").onmousedown = function (e) {
+		console.log(e);
+
+		var node = _g("attachment");
+		var x = 0;
+		var y = -(document.body.scrollTop || document.documentElement.scrollTop);
+
+		while (node) {
+			x += node.offsetLeft;
+			y += node.offsetTop;
+			node = node.offsetParent;
+		}
+
+		var region = document.createElement("div");
+		region.setAttribute("contenteditable", true);
+		region.style.top = (e.y - y) + "px";
+		region.style.left = (e.x - x) + "px";
+		_g("attachment").appendChild(region);
+
+		setTimeout(function() { region.focus(); }, 100);
+		region.onkeydown = function(e) {
+			if (e.keyCode == 13) {
+				stopBubbling();
+				region.innerHTML = region.innerText;
+				region.blur();
+				return false;
+			}
+		}
+		region.onblur = function () {
+			if (region.innerText == "") {
+				_g("attachment").removeChild(region);
+				region = null;
+				stopBubbling();
+			}
+		}
+		region.onmousedown = stopBubbling;
+	}
 	currentComments = [];
 
 	document.body.ondrop = function (e) { dropImage(e, uploadStreamImageCallback); }
@@ -257,6 +324,13 @@ function postToTimeline() {
 	if (imgAttachments != null) {
 		_g("attachment").className += " pulse";
 		vars.img = true; 
+		vars.tags = [];
+		var a = _g("attachment").children;
+		for (var i = 0; i < a.length; i++) {
+			vars.tags.push({ x: a[i].style.left.replace("px",""), 
+							 y: a[i].style.top.replace("px",""),
+							 tag: a[i].innerText });
+		}
 	}
 	
 	var xhr = new XMLHttpRequest();

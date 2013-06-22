@@ -29,8 +29,11 @@ exports.post = function(user, data, callback) {
 	var meta = "";
 	if (data.img)
 		meta = data.img;
+	if (data.tags) {
+		meta += "," + JSON.stringify(data.tags);
+	}
 
-	querystr += database.escape(meta) + ",";
+	querystr += (meta ? database.escape(meta) : "\"\"") + ",";
 	querystr += (data.img ? 1 : 0) + ",";
 	querystr += "1";
 	querystr += ");";
