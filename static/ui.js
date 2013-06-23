@@ -113,11 +113,12 @@ function processMedia(text) {
 			match = match.substring(0, 40) + "...";
 		}
 
-		var html = "<a href='" + url + "' target='_blank'>" + match + "</a>";
+		var html = "<a href='" + url + "' target='_blank'>";
 
 		if (url.indexOf(".jpg") != -1 || url.indexOf(".png") != -1 || url.indexOf(".gif") != -1) {
-			html = "<img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"inline-block\";'><br>" + html;
+			html += "<img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"block\";'><br>";
 		}
+		html += match + "</a>";
 
 		return html;
 		});
