@@ -524,6 +524,25 @@ div.comment {
 	opacity: 1;
 }
 
+#suggestionbox {
+	position: absolute;
+	display: none;
+	z-index: 10;
+	background: #fff;
+	border: solid 1px #333;
+	color: #333;
+}
+
+#suggestionbox div {
+	padding: 5px;
+	cursor: pointer;
+}
+
+#suggestionbox div:hover, #suggestionbox div.hover {
+	background: #3F364A;
+	color: #fff;
+}
+
 img.avatar {
     width: 50px;
     height: 50px;

@@ -93,7 +93,11 @@ function renderTags(item) {
 	var html = "";
 
 	for (var i = 0; i < item.tags.length; i++) {
-		html += "<div style='top:" + item.tags[i].y + "px;left:" + item.tags[i].x + "px;'>" + item.tags[i].tag + "</div>";
+		html += "<div style='top:" + item.tags[i].y + "px;left:" + item.tags[i].x + "px;'>";
+		if (item.tags[i].userid) {
+			html += "<a href='#/user/" + item.tags[i].userid + "' onclick='stopBubbling();'><img class='littleavatar' src='" + getAvatar(item.tags[i].userid) + "'></a>";
+		}
+		html += item.tags[i].tag + "</div>";
 	}
 
 	post.innerHTML = html;
@@ -293,9 +297,36 @@ function renderTimeline() {
 		region.onkeydown = function(e) {
 			if (e.keyCode == 13) {
 				stopBubbling();
-				region.innerHTML = region.innerText;
+
+				var selected = selectedSuggestionBoxItem();
+				var userid = selected ? selected.getAttribute("data-id") : "";
+				var html = selected ? selected.innerHTML : region.innerText;
+
+				region.setAttribute("data-tag", selected ? selected.innerText : region.innerText);
+
+				region.innerHTML = html;
 				region.blur();
+				region.setAttribute("data-userid", userid);
 				return false;
+			}
+			if (e.keyCode == 40)  //down
+				suggestionBoxNextItem();
+		}
+		region.onkeyup = function(event) {
+			if (event.keyCode == 38 || event.keyCode == 40) return;
+			var items = {};
+			var found = false;
+			for (id in DISPLAYNAMES) {
+				if (new RegExp(region.innerText, "i").test(DISPLAYNAMES[id])) {
+					items[id] = DISPLAYNAMES[id];
+					found = true;
+				}
+			}
+			showSuggestionBox(found,(e.x),(e.y + 30),items);
+			suggestionBoxCallback = function(id,title) { 
+				region.innerHTML = "<img class='littleavatar' src='" + getAvatar(id) + "'>" +title;
+				region.setAttribute("data-userid", id);
+				region.setAttribute("data-tag", title);
 			}
 		}
 		region.onblur = function () {
@@ -303,7 +334,9 @@ function renderTimeline() {
 				_g("attachment").removeChild(region);
 				region = null;
 				stopBubbling();
+				region.setAttribute("data-tag", region.innerText);
 			}
+			showSuggestionBox(false);
 		}
 		region.onmousedown = stopBubbling;
 	}
@@ -329,8 +362,10 @@ function postToTimeline() {
 		for (var i = 0; i < a.length; i++) {
 			vars.tags.push({ x: a[i].style.left.replace("px",""), 
 							 y: a[i].style.top.replace("px",""),
-							 tag: a[i].innerText });
+							 tag: a[i].getAttribute("data-tag"),
+							 userid: a[i].getAttribute("data-userid"), });
 		}
+		_g("attachment").innerHTML = "";
 	}
 	
 	var xhr = new XMLHttpRequest();
