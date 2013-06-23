@@ -4,10 +4,7 @@ var url = require("url");
 var http = require("http");
 var Cookies = require("cookies");
 
-var frontend = require("./frontend");
 var database = require("./database");
-var user = require("./user");
-var work = require("./work");
 
 var domain = require("domain");
 var cluster = require("cluster");
@@ -22,10 +19,18 @@ require("./config");
 database.init(global.database);
 
 if (cluster.isMaster) {
+	var broker = function(data) {
+		for (i in cluster.workers) {
+			cluster.workers[i].send({ key: data.key, value: data.value });
+		}
+	}
+
 	var numCPUs = require('os').cpus().length;
-	
+
 	for (var i = 0; i < numCPUs; i++) {
-		cluster.fork();
+		var w = cluster.fork();
+		
+		w.on("message", broker);
 	}
 
 	cluster.on("exit", function(worker) {
@@ -33,6 +38,16 @@ if (cluster.isMaster) {
 		cluster.fork();
 	});
 } else {
+	process.on("message", function(data) {
+		global.broker[data.key] = data.value;
+	});
+	global.broker = [];
+	global.broker_set = function(key) {
+		process.send({ key: key, value: global.broker[key] });
+	}
+	var frontend = require("./frontend");
+	var user = require("./user");
+	var work = require("./work");
 	http.createServer(function(request,response) {
 			/*	var d = domain.create();
 				d.add(request);
