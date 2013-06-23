@@ -16,6 +16,7 @@ exports.newPostsWithTag = function(tag,time) {
 exports.processPostTags = function(body, id) {
 	var tagregex =  /\B#([\w-]+)/gi;
 	var tags = body.match(tagregex);
+	if (!tags) return;
 	for (var i = 0; i < tags.length; i++) {
 		tags[i] = tags[i].substring(1);
 

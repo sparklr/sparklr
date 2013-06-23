@@ -365,7 +365,6 @@ function postToTimeline() {
 							 tag: a[i].getAttribute("data-tag"),
 							 userid: a[i].getAttribute("data-userid"), });
 		}
-		_g("attachment").innerHTML = "";
 	}
 	
 	var xhr = new XMLHttpRequest();
@@ -374,7 +373,8 @@ function postToTimeline() {
 		//Complete
 		_g("attachment").style.display = "none";
 		_g("attachment").className = "picturepost";
-		
+		_g("attachment").innerHTML = "";
+
 		imgAttachments = null;
 	}, false);
 	xhr.open("POST", "work/post");
