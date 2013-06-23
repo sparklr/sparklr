@@ -1,6 +1,7 @@
 var database = require("./database");
 var Notification = require("./notification");
 var User = require("./user");
+var Tags = require("./tags");
 var toolbox = require("./toolbox");
 var events = require("events");
 var util = require("util");
@@ -38,6 +39,8 @@ exports.post = function(user, data, callback) {
 	querystr += "1";
 	querystr += ");";
 	database.query(querystr,function(err,rows) {
+		if (err) return callback(err);
+		Tags.processPostTags(data.body, rows.insertId);		
 		processMentions(data.body, user, rows.insertId);
 		data.message = data.body;
 		data.id = rows.insertId;

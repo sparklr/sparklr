@@ -49,6 +49,18 @@ function pollData() {
 	var callback;
 
 	switch (currentPageType) {
+		case "TAG":
+			query = "/tag/" + subscribedStream + "?since=" + lastUpdateTime;
+
+			callback = function(data,xhr) {
+				addTimelineArray(data,subscribedStream);
+				for (var i = data.length - 1; i >= 0; i--) {
+					addTimelineEvent(data[i], 0);
+				}
+				var t = Date.parse(xhr.getResponseHeader("date")) / 1000;
+				lastUpdateTime = t;
+			}
+			break;
 		case "PHOTO":
 		case "STREAM":
 			query = "/stream/" + subscribedStream + "?since=" + lastUpdateTime;
@@ -77,6 +89,9 @@ function pollData() {
 		case "CHAT":
 			query = "/chat/" + curChatUser + "?since=" + getLastChatTime();
 			callback = addChatMessages;
+			break;
+		default:
+			query = "";
 			break;
 	}
 
