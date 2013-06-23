@@ -263,3 +263,45 @@ function dropPrevent(e) {
 	return false;
 }
 
+function showSuggestionBox(show,x,y,items) {
+	var e = _g("suggestionbox");
+	var s = e.style;
+	s.display = show ? "block" : "none";
+	if (!items) return;
+	s.top = y + "px";
+	s.left = x + "px";
+	var html = "";
+	for (i in items) {
+		html += "<div data-id='" + i + "' onmousedown='suggestionBoxCallback(" + i + ",\"" + items[i] + "\");'><img class='littleavatar' src='" + getAvatar(i) + "'>" + items[i] + "</div>";
+	}
+	e.innerHTML = html;
+}
+var suggestionBoxCallback = function() {};
+
+function suggestionBoxNextItem() {
+	var e = _g("suggestionbox");
+	var selected = false;
+	for (i in e.childNodes) {
+		if (e.childNodes[i].className == "hover") {
+			e.childNodes[i].className = "";
+			i = parseInt(i);
+			if (e.childNodes[i + 1]) {
+				e.childNodes[i + 1].className = "hover";
+				selected = true;
+				break;
+			}
+		}
+	}
+	if (!selected) {
+		e.childNodes[0].className = "hover";
+	}
+}
+
+function selectedSuggestionBoxItem() {
+	var e = _g("suggestionbox");
+	for (i in e.childNodes) {
+		if (e.childNodes[i].className == "hover")
+			return e.childNodes[i];
+	}
+	return null;
+}
