@@ -10,16 +10,27 @@
 
 TODO:
 
-* Improve OOBE?
-* Profile backgrounds/customization
-* Photo stream
-* Better error messages
-* Auto purge
-* API
-* Differentiation
-* Better homepage
-* TOS
-* Mobile
+Before private beta, we need:
+- Improved OOBE
+--- Keep current invite system, and I like the auto follow for friends
+--- Add something in to suggest people to follow
+--- Get "Who to follow" back from old PHP version
+--- Add in some quick tips, for stuff such as photos
 
-Testing system.
+- Make sure the software is *stable* 
+--- Needs some massive testing
+
+- Fix search system
+
+- Mobile site!
+
+- Privacy needs to actually do something
+
+- Better homepage
+- TOS
+
+- API
+--- Need to look into OAuth, etc
+
+- Testing system
 

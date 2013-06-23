@@ -77,6 +77,12 @@ exports.getStream = function(table, args, callback) {
 
 		}
 	}
+	if (args.id) {
+		query += "`id` IN (";
+		for (var i = 0; i < args.id.length -1; i++) 
+			query += parseInt(args.id[i]) + ",";
+		query += parseInt(args.id[args.id.length - 1]) + ") ";
+	}
 	if (args.type)
 	{
 		query += ") AND (`type` = " + parseInt(args.type) + " ";
@@ -94,6 +100,7 @@ exports.getStream = function(table, args, callback) {
 	
 	query += ") ORDER BY `time` DESC LIMIT 30";
 	exports.query(query, callback);
+//	console.log(query);
 }
 
 exports.postObject = function(table, obj, callback) {

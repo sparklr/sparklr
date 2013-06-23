@@ -3,6 +3,7 @@ var User = require("./user");
 var Post = require("./post");
 var Notification = require("./notification");
 var Mail = require("./mail");
+var Tags = require("./tags");
 var database = require("./database");
 var toolbox = require("./toolbox");
 var upload = require("./upload");
@@ -712,6 +713,18 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					from: userobj.displayname
 				});
 				sendObject(response, true);
+			});
+			break;
+		case "tag":
+			var tag = fragments[3];
+			var postids = Tags.postsWithTag(tag);
+			var since = uri.query.since;
+			if (postids.length < 1 || (since && !Tags.newPostsWithTag(tag,since))) {
+				return sendObject(response,[]);
+			}
+			database.getStream("timeline", { id: postids, since: since }, function(err,rows) {
+				if (err) do500(response,err);
+				callback(rows);
 			});
 			break;
 		case "delete":
