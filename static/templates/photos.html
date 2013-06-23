@@ -4,7 +4,7 @@
 <script>
 	for (var i = 0; i < data.length; i++) 
 </script>
-<div class='photos fadein' onClick='location.href="#/post/{data[i].from}/{data[i].id}";' style='background: url({STATICHOST}/storage/images/{data[i].meta}_thumb.jpg);'>
+<div class='photos fadein' onClick='location.href="#/post/{data[i].id}";' style='background: url({STATICHOST}/storage/images/{data[i].meta.split(',')[0]}_thumb.jpg);'>
 	<div class='lucille'>
 		{getDisplayName(data[i].from)}
 	</div>

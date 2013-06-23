@@ -93,27 +93,31 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 		if (!inviterows[0]) return callback(1);
 
 		username = username.replace(/[^A-Za-z0-9]/g, "");
+		exports.generatePass(password, function(err,pass) {
 
-		database.postObject("users", {
-			username: username,
-			password: exports.generatePass(password),
-			email: email,
-			displayname: username,
-			following: inviterows[0].from,
-			followers: inviterows[0].from,
-			emailverified: 0
-		}, function(err, rows) {
-			if (err) return callback(err);
-			callback(err, rows);
-			
-			exports.getUserProfile(inviterows[0].from, function(err, data) {
-				if (err) return false;
-				data[0].following += "," + rows.insertId;
-				data[0].followers += "," + rows.insertId;
-				database.updateObject("users", data[0]);
+			database.postObject("users", {
+				username: username,
+				password: pass,
+				email: email,
+				displayname: username,
+				following: inviterows[0].from,
+				followers: inviterows[0].from,
+				emailverified: 0,
+				authkey: exports.generateAuthkey(username),
+				bio: ""
+			}, function(err, rows) {
+				if (err) return callback(err);
+				callback(err, rows);
+				
+				exports.getUserProfile(inviterows[0].from, function(err, data) {
+					if (err) return false;
+					data[0].following += "," + rows.insertId;
+					data[0].followers += "," + rows.insertId;
+					database.updateObject("users", data[0]);
+				});
+
+				database.deleteObject("invites", inviterows[0]);
 			});
-
-			database.deleteObject("invites", inviterows[0]);
 		});
 	});
 }
