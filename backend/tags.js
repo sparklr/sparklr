@@ -1,15 +1,14 @@
 // Handles the in-RAM tags
 var toolbox = require("./toolbox");
 
-var postsWithTag = [];
-var tagUpdateTimes = [];
+var broker = global.broker;
 
 exports.postsWithTag = function(tag) {
-	return postsWithTag[tag] || [];
+	return broker['poststagged_' + tag] || [];
 }
 
 exports.newPostsWithTag = function(tag,time) {
-	if (tagUpdateTimes[tag] && tagUpdateTimes[tag] > time) 
+	if (broker['tagupdated_' + tag] > time) 
 		return true;
 	return false;
 }
@@ -19,12 +18,16 @@ exports.processPostTags = function(body, id) {
 	var tags = body.match(tagregex);
 	for (var i = 0; i < tags.length; i++) {
 		tags[i] = tags[i].substring(1);
-		console.log(tags[i]);
-		if (!postsWithTag[tags[i]])
-			postsWithTag[tags[i]] = [];
-		if (postsWithTag[tags[i]].indexOf(id) != -1) continue;
-		postsWithTag[tags[i]].push(id);
-		tagUpdateTimes[tags[i]] = toolbox.time;
+
+		if (!broker['poststagged_' + tags[i]])
+			broker['poststagged_' + tags[i]] = [];
+
+		if (broker['poststagged_' + tags[i]].indexOf(id) != -1) continue;
+
+		broker['poststagged_' + tags[i]].push(id);
+		broker['tagupdated_' + tags[i]] = toolbox.time();
+		global.broker_set('poststagged_' + tags[i]);
+		global.broker_set('tagupdated_' + tags[i]);
 	}
 }
 
