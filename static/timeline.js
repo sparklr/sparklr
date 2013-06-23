@@ -156,7 +156,7 @@ function renderComment(comment) {
 	}
 
     var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
-	html += "<img class='littleavatar' src='" + getAvatar(comment.from) + "'>";
+	html += "<a href='#/user/" + comment.from + "'><img class='littleavatar' src='" + getAvatar(comment.from) + "'></a>";
 	html += "</div> <div class='rightcontrols'><div class='time' style='opacity:0.5' data-time='" + comment.time + "'></div>";
 
     if (comment.from == curUser) {
