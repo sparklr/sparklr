@@ -33,7 +33,7 @@ function ajaxGet(url, data, callback) {
 	xhr.setRequestHeader("X-X", AUTHKEY);
 
 	if (isPosting) {
-		xhr.setRequestHeader("Content-type", "application/json"); //"x-www-form-urlencoded");
+		xhr.setRequestHeader("Content-type", "application/json");
 		xhr.setRequestHeader("X-DATA", JSON.stringify(data));
 	}
 	
@@ -106,23 +106,6 @@ function pollData() {
 		if (typeof(data.data) != "undefined") { 
 			callback(data.data,xhr);
 		}
-	});
-}
-
-function updateOnlineFriends() {
-	ajaxGet("work/onlinefriends", null, function(data) {
-		for (id in FRIENDS) { 
-			var online = false;
-
-			for (var i = 0; i < data.length; i++) {
-				if (data[i].id == id) {
-				  online = true;
-				}
-			}
-			addFriend(id, online);
-		}
-
-		updateFriendsList();
 	});
 }
 
