@@ -270,10 +270,16 @@ function fetchOlderPosts() {
 }
 
 function renderTimeline() {
-	var html = "<div class='timelineitem'>";
+	var html = "<div class='timelineitem composer'>";
 	html += "<div class='picturepost' id='attachment'></div>";
-	html += "<img src='" + getAvatar(curUser) + "' class='avatar'><textarea id='composer' placeholder='Share something...' onkeydown='isEnter(event, postToTimeline);'></textarea></div><div id='timeline_container'></div>";
+	html += "<img src='" + getAvatar(curUser) + "' class='avatar'><textarea id='composer' placeholder='Share something...' onkeydown='isEnter(event, postToTimeline);'></textarea>";
+	html += "<div class='composercontrols'><input id='attachfile' type='file'></div>";
+	html += "</div><div id='timeline_container'></div>";
 	_g("content").innerHTML = html;
+	_g("attachfile").onchange = function(e) {
+		uploadStreamImageCallback(e.target.files);
+		e.target.value = "";
+	}
 	_g("attachment").onmousedown = function (e) {
 		console.log(e);
 

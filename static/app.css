@@ -543,6 +543,25 @@ div.comment {
 	color: #fff;
 }
 
+div.composercontrols {
+	position:absolute;
+	right: 15px;
+	bottom:15px;
+	opacity: 0;
+	-webkit-transition: all 0.5s ease;
+	background: url(icons/photos.png);
+	display: block;
+	width: 32px;
+	height: 32px;
+}
+div.composercontrols input {
+	width: 32px;
+	height: 32px;
+	opacity: 0;
+}
+div.composer:hover div.composercontrols {
+	opacity: 0.3;
+}
 img.avatar {
     width: 50px;
     height: 50px;
