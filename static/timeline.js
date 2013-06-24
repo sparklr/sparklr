@@ -1,7 +1,6 @@
 var timelineEvents = [[]];
 var timelineTop = 0;
 var subscribedStream;
-var publicStream = false;
 var currentPostBy;
 var currentComments = [];
 var imgAttachments = null;
@@ -13,6 +12,7 @@ function addTimelineEvent(item,append) {
 		updateCommentCount(item.id, item.commentcount);
 		return;
 	}
+
 	var ev = document.createElement("div");
 
 	ev.className = "timelineitem fadein";
@@ -37,10 +37,12 @@ function addTimelineEvent(item,append) {
 	if (item.tags) {
 		renderTags(item);
 	}
-	if (item.commentcount)
+
+	if (item.commentcount) {
 		updateCommentCount(item.id, item.commentcount);
-	else
+	} else {
 		item.commentcount = 0;
+	}
 
 	if (item.time > lastUpdateTime)
 		lastUpdateTime = item.time;

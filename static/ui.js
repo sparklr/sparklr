@@ -195,20 +195,6 @@ function search() {
 	location.href = "/#/search/" + escape(_g("searchbox").value);
 }
 
-function searchResultsCallback(users) {
-	var html = "<div class='contentwrapper'>";
-
-	if (users.length < 1) {
-		html += "<h2>no results</h2>Awh, no results for that. But feel free to use your imagination.";
-	}
-	for(i=0;i<users.length;i++) {
-		html += "<div class='friend fadein' onClick='location.href=\"#/user/" + users[i].id + "\";' style='background-image: url(" + STATICHOST + "/users/" + users[i].id + ");-webkit-animation-duration " + (Math.random() * 1) + "s'><span>" + users[i].name + "</span></div>";
-	}
-
-	html += "</div>";
-	_g("content").innerHTML = html;	
-}
-
 function setSidebar(items) {
 	var html = "";
 	for (var item in items) {

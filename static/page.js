@@ -3,11 +3,8 @@ var currentPageType;
 
 var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost"];
 
-var PAGEHANDLERS = [];
-
 var homepage = function() {
 	renderTimeline();
-	publicStream = true;
 	subscribedStream = 0;
 
 	for (var i = 0; i < timelineEvents[0].length; i++) {
@@ -25,12 +22,7 @@ var homepage = function() {
 	window.scrollTo(0,timelineTop);
 }
 
-// Error pages
-var ERROR_ACCESS_DENIED = "<h2>Sorry</h2>You don't have permission to see that page.";
-var ERROR_NOT_AVAILABLE = "<h2>Uh oh</h2>That page, person, or scarce resource is no longer available.<br>In fact, it's entirely possible that it never existed.";
-
 function updatePages(loaded) {
-
 	document.body.ondrop = document.body.ondragover = document.body.ondragenter = function (e) { dropPrevent(e); }
 	
 	//set timeline position
