@@ -126,8 +126,8 @@ exports.run = function(request, response, uri, sessionid) {
 	if (sessionid != null) {
 		var s = sessionid.split(",");
 		if (s.length < 2) return do400(response, 400);
-
-		User.verifyAuth(s[0], s[1], function(success, userobj) {
+		var authkey_header = request.headers['x-x'];
+		User.verifyAuth(s[0], authkey_header, function(success, userobj) {
 			if (!success) {
 				console.log(s);
 				response.writeHead(403);
