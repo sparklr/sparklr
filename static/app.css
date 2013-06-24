@@ -92,14 +92,6 @@ hr {
     text-align: center;
 }
 
-#footer {
-    margin: auto;
-    width: 400px;
-    text-align: center;
-    font-size: 10px;
-    margin-bottom: 10px;
-}
-
 #navigation {
     display: inline-block;
     width: 810px;
@@ -247,7 +239,7 @@ div.fader {
     top: 0px;
     bottom: 0px;
     background: rgba(0,0,0,0.7);
-    -webkit-transition: all 1s ease;
+    -webkit-transition: all 0.5s ease;
     text-align: center;
 }
 
@@ -293,7 +285,7 @@ div.confirm {
 	margin-left: -250px;
 	margin-top: -125px;
 	z-index: 100;
-	-webkit-transition: all 0.7s ease-in-out;
+	-webkit-transition: all 0.3s ease-in-out;
 	color: #333;
 }
 
@@ -381,9 +373,6 @@ p { outline: none; }
 p[contenteditable=true] {
     background: rgba(0,0,0,0.3);
 }
-p.indent {
-    margin: 0px 5px;
-}
 
 span.header {
     font-size: 24px;
@@ -447,8 +436,7 @@ div.repost {
 
 div.picturepost {
     box-shadow: 0px 0px 4px #000,
-        inset 0px 0px 35px 2px rgba(255,255,255,0.4),
-    inset 0px 0px 2px rgba(255,255,255,0.4);
+    inset 0px 0px 9px rgba(255,255,255,0.4);
     min-height: 335px;
 
     background-repeat: no-repeat;
@@ -652,16 +640,6 @@ div.bgslide {
     -webkit-animation-delay: 0s;
 }
 
-#backgroundScroller {
-    position: fixed;
-    display: block;
-    width: 100%;
-    height: 100%;
-    left: 0px;
-    top: 0px;
-    z-index: -1;
-}
-
 p.headertitle {
     color: white;
     font-size: 28px;
@@ -711,12 +689,11 @@ input[type=button], input[type=submit] {
     color: #444;
     cursor: pointer;
     -webkit-transition: all 0.2s ease-in-out;
-
 }
+
 input[type=button]:hover, input[type=submit]:hover {
     box-shadow: 0px 0px 10px rgba(200,200,250,0.7);
     opacity: 1;
-
 }
 
 input.t1 {
@@ -727,12 +704,13 @@ input.t1 {
     border-radius: 4px;
     border: solid 1px #bbb;
     padding: 2px;
-    }
+}
 
 input.t1:focus {
     box-shadow: 0px 0px 10px #444466;
     outline: none;
-    }
+}
+
 input.s1 {
     width: 50px;
     height: 40px;
@@ -742,18 +720,7 @@ input.s1 {
     background: rgba(255,255,255,1);
     color: #444;
     margin: 3px;
-    }
-
-input.s2 {
-    height: 40px;
-    padding: 2px;
-    border-radius: 2px;
-    border: solid 1px rgba(100,100,100,0.4);
-    font-size: 22px;
-    background: rgba(255,255,255,1);
-    color: #444;
-    margin: 3px;
-    }
+}
 
 textarea {
     width: 500px;
@@ -791,6 +758,7 @@ div.chatmsg .time {
     position: relative;
     opacity: 0;
 }
+
 div.chatmsg {
     display: block;
     min-height: 60px;
@@ -826,21 +794,26 @@ form.settings label {
 	width: 200px;
 	height: 40px;
 }
+
 form.settings label.radio {
 	width: 600px;
 	float: none;
 	height: inherit;
 }
+
 form.settings input[type=radio] {
 	float: left;
 }
+
 form.settings fieldset {
     border: none;
 }
+
 form.settings fieldset input {
 	padding: 5px;
 	font-size: 18px;
 }
+
 form.settings label p {
 	margin: 5px;
 	margin-left: 15px;
@@ -849,6 +822,7 @@ form.settings label p {
 span.ok {
     color: #393;
 }
+
 span.error {
     color: #c33;
 }
@@ -931,7 +905,7 @@ div.stickynote div.post {
 }
 
 
-/* Top banner */
+/* Bottom banner */
 div.banner {
     position: fixed;
     bottom:0px;
