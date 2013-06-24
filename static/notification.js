@@ -1,4 +1,3 @@
-//TODO: needs some serious refactoring
 var lastNotificationTime = 0;
 var currentNotifications = [];
 var notificationCount = 0;

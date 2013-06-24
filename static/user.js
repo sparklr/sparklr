@@ -72,6 +72,23 @@ function updateFriendsList() {
 	_g("friendslist").innerHTML = html;
 }
 
+function updateOnlineFriends() {
+	ajaxGet("work/onlinefriends", null, function(data) {
+		for (id in FRIENDS) { 
+			var online = false;
+
+			for (var i = 0; i < data.length; i++) {
+				if (data[i].id == id) {
+				  online = true;
+				}
+			}
+			addFriend(id, online);
+		}
+
+		updateFriendsList();
+	});
+}
+
 function chatWith(id) {
 	location.href = "#/chat/" + id;
 }

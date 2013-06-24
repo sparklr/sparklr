@@ -36,14 +36,12 @@ function setupScrollHandler() {
 
 function getNewChatMessages() {
 	chat_downloadingOlder = true;
-	console.log("BASELINE:" + chatMessages[0][2]);
 	ajaxGet("work/chat/" + curChatUser + "?starttime=" + chatMessages[0][2], null, function(data) {
 		for (var i = 0; i < data.length; i++) {
 			addChatMessage(data[i].from, data[i].message, data[i].time, true);
 			console.log(data[i].time);
 			console.log(chatMessages[0][2]);
 		}
-		//chat_downloadingOlder = false;
 	});
 }
 
