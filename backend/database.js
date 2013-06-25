@@ -98,7 +98,7 @@ exports.getStream = function(table, args, callback) {
 		query += ") AND (`time` < "+parseInt(args.starttime);
 	}
 	
-	query += ") ORDER BY `time` DESC LIMIT 30";
+	query += ") ORDER BY `time` DESC LIMIT 20";
 	exports.query(query, callback);
 //	console.log(query);
 }
