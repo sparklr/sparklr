@@ -20,3 +20,11 @@
 <div id='notificationlist'></div>
 <div id='loading'></div>
 <div id='suggestionbox'></div>
+<div id='feedback'>
+	<form onsubmit='sendFeedback(desc.value);return false;'>
+		<textarea name='desc'></textarea>
+		<input type='submit' value='Send Feedback'>
+	</form>
+</div>
+<div id='feedbackbtn'><a href='javascript:showFeedbackForm();'>Feedback</a></div>
+

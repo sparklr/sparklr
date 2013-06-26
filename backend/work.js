@@ -362,6 +362,10 @@ exports.run = function(request, response, uri, sessionid) {
 						};
 						dataComplete ? f() : request.on("end", f);
 						break;
+					case "feedback":
+						Mail.sendMessageToEmail("jaxbot@gmail.com", "feedback", postObject, userobj);
+						sendObject(response, true);
+						break;
 				}
 			} else {
 				if (uri.pathname.indexOf("/beacon") !== -1) {
