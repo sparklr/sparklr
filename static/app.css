@@ -932,24 +932,10 @@ div.banner #dismiss {
     float: right;
     cursor: pointer;
 }
-#feedback {
-	position: fixed;
-	right: 10px;
-	bottom: 10px;
-	width: 220px;
-	height: 300px;
-	display: none;
-	border: solid 1px #333;
-	background: #fff;
-}
-#feedback textarea {
-	width: 210px;
-	height: 250px;
-	border: none;
-}
-#feedback input {
-	width: 210px;
-	margin: 4px;
+div.popup textarea {
+	width: 290px;
+	height: 140px;
+	margin: 2px;
 }
 #feedbackbtn {
 	position: fixed;
