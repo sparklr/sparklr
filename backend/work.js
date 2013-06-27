@@ -150,6 +150,8 @@ exports.run = function(request, response, uri, sessionid) {
 				}
 				switch (fragments[2]) {
 					case "post":
+						if (postObject.body.length > 300)
+							return do400(response, 400, "Post too long");
 						if (postObject.img) {
 							var f = function() {
 								upload.handleUpload(postBody, userobj, {

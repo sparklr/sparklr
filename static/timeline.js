@@ -274,9 +274,9 @@ function fetchOlderPosts() {
 function renderTimeline() {
 	var html = "<div class='timelineitem composer'>";
 	html += "<div class='picturepost' id='attachment'></div>";
-	html += "<img src='" + getAvatar(curUser) + "' class='avatar'><textarea id='composer' placeholder='Share something...' onkeydown='isEnter(event, postToTimeline);'></textarea>";
+	html += "<div style='float:left'><img src='" + getAvatar(curUser) + "' class='avatar'><div id='remaining'></div></div><div id='composerframe'><textarea id='composer' placeholder='Share something...' onkeydown='isEnter(event, postToTimeline);expandTextarea(event);' maxlength=300></textarea>";
 	html += "<div class='composercontrols'><input id='attachfile' type='file'></div>";
-	html += "</div><div id='timeline_container'></div>";
+	html += "</div></div><div id='timeline_container'></div>";
 	_g("content").innerHTML = html;
 	_g("attachfile").onchange = function(e) {
 		uploadStreamImageCallback(e.target.files);
@@ -360,7 +360,7 @@ function postToTimeline() {
 		body: _g("composer").value
 	};
 
-	setTimeout('_g("composer").value = "";',0);
+	setTimeout('_g("composer").value = "";expandTextarea({ target: _g("composer") });',0);
 
 	if (imgAttachments != null) {
 		_g("attachment").className += " pulse";
