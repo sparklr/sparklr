@@ -12,10 +12,6 @@ TODO:
 
 Before private beta, we need:
 - Improved OOBE
---- Keep current invite system, and I like the auto follow for friends
---- Add something in to suggest people to follow
---- Get "Who to follow" back from old PHP version
---- Add in some quick tips, for stuff such as photos
 
 - Make sure the software is *stable* 
 --- Needs some massive testing
