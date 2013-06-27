@@ -166,7 +166,6 @@ function getRelativeTime(time) {
 	return str + " ago";
 }
 
-
 function updateUI() { //interval that scans DOM, updates UI
 	var arr = document.getElementsByTagName("*");
 	for (i=0;i<arr.length;i++) {
@@ -189,6 +188,21 @@ function isEnter(e,callback) {
 		e = window.event;
 	if (e.keyCode == 13)
 		callback();
+}
+
+function expandTextarea(e) {
+	if (!e)
+		e = window.event;
+	var l = e.target.value.length;
+	e.target.style.height = (2 + Math.floor((l / 110))) * 20 + "px";
+
+	var r = _g("remaining");
+	var toolong = l > 220;
+
+	r.style.opacity = toolong ? 1 : 0;
+	r.style.display = toolong ? "block" : "none";
+	if (toolong) r.innerHTML = (300 - l);
+	
 }
 
 function search() {
