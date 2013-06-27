@@ -421,7 +421,37 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				followers: userobj.followers,
 				following: userobj.following
 			}
-			callback(obj);
+			var processed = 0;
+			var candidates = [];
+			
+			for (i in userobj.following) {
+				database.getObject("users", userobj.following[i], function(err, users) {
+					processed++;
+					if (!err && users[0] && users[0].following) {
+						users[0].following = users[0].following.split(",");
+						for (n in users[0].following) {
+							var person = users[0].following[n];
+							if (!person || person == userobj.id || userobj.following.indexOf(person) != -1) continue;
+							candidates.push(person);
+						}
+					}
+					if (processed == userobj.following.length)
+						f();
+				});
+			}
+			var f = function() {
+				var results = {};
+				for (i in candidates) {
+					var n = candidates[i];
+					results[n] = results[n] ? results[n] + 1 : 1;
+				}
+				var sorted = Object.keys(results);
+				sorted.sort(function(a,b) {
+					return results[a] < results[b];
+				});
+				obj.recommends = sorted.slice(0,3);
+				callback(obj);
+			}
 			return;
 		case "onlinefriends":
 			var friends = [];

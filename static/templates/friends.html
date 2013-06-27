@@ -38,3 +38,22 @@
 	All your followers are mutual. c:
 <% endif %>
 </div>
+<script>
+	if (data.recommends && data.recommends.length > 0) {
+</script>
+<div id='sidebar_links'>
+	who to follow
+	<div class='friends'>
+		<script>
+			for (var i = 0; i < data.recommends.length; i++) {
+				person = data.recommends[i];
+		</script>
+			<a href='#/user/{person}'><img src='{STATICHOST}/thumb/{person}' class='avatar'>{getDisplayName(person)}</a>
+		<script>
+			}
+		</script>
+	</div>
+</div>
+<script>
+}
+</script>
