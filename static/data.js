@@ -91,7 +91,7 @@ function pollData() {
 			callback = addChatMessages;
 			break;
 		default:
-			query = "";
+			query = "?";
 			break;
 	}
 

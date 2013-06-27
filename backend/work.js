@@ -378,6 +378,7 @@ exports.run = function(request, response, uri, sessionid) {
 
 					async.parallel([
 						function(callback) {
+							if (!uri.pathname.split("/")[2]) return callback(null,{});
 							processGetRequest(request, response, uri, sessionid, userobj, function(data) {
 								if (data.length != 0) {
 									obj.data = data;
