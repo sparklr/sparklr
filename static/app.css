@@ -473,7 +473,7 @@ div.rightcontrols a.delete {
     margin: 2px;
     color: #fff;
     cursor: pointer;
-	background: url(icons/delete.png);
+	background-image: url(icons/delete.png);
 	width: 16px;
 	height: 16px;
     -webkit-transition: all 0.2s ease-in-out;
@@ -547,7 +547,7 @@ div.composercontrols {
 	bottom:15px;
 	opacity: 0;
 	-webkit-transition: all 0.5s ease;
-	background: url(icons/photos.png);
+	background-image: url(icons/photos.png);
 	display: block;
 	width: 32px;
 	height: 32px;
