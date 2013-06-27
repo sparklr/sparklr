@@ -594,6 +594,7 @@ div.photos {
 	position: relative;
 	padding: 0px;
 	background-size: cover !important;
+	cursor: pointer;
 }
 
 div.lucille{
