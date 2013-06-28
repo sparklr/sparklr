@@ -100,7 +100,7 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 				password: pass,
 				email: email,
 				displayname: username,
-				following: inviterows[0].from,
+				following: inviterows[0].from + "," + "4", // auto follow jonathan, just cus
 				followers: inviterows[0].from,
 				emailverified: 0,
 				authkey: exports.generateAuthkey(username),
