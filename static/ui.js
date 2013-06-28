@@ -209,14 +209,6 @@ function search() {
 	location.href = "/#/search/" + escape(_g("searchbox").value);
 }
 
-function setSidebar(items) {
-	var html = "";
-	for (var item in items) {
-		html += "<a href='" + items[item].href + "' id='" + items[item].id + "' class='" + (items[item].highlight ? "star" : "") + "'>" + items[item].value + "</a>";
-	}
-	_g("sidebar").innerHTML = html;
-}
-
 function stopBubbling(e) {
 	if (!e)
 		e = window.event;
