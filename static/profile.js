@@ -3,85 +3,6 @@
 var lastBoardTime = 0;
 var oldestBoardTime = Number.MAX_VALUE;
 
-function showUserPage(data) {
-	DISPLAYNAMES[data.user] = data.name;
-	USERHANDLES[data.user] = data.handle;
-	
-	var isBoard = location.hash.indexOf("/board") != -1;
-	var isPhotos = location.hash.indexOf("/photos") != -1;
-
-	lastBoardTime = 0;
-	oldestBoardTime = Number.MAX_VALUE;
-
-	var html = "";
-
-	if (data.user == curUser){
-		html += "<div id='profileheader' class='profileheader' onDrop='dropImage(event, avatarUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'>";
-	} else {
-		html += "<div class='profileheader' id='profileheader'>";
-	}
-	var sidebaritems = [];
-
-	if (data.user == curUser) {
-		sidebaritems.push({ href: "javascript:editProfile();", id: "editBtn", value: "Edit"});
-		sidebaritems.push({ href: "javascript:accountSettings();", value: "Account Settings"});
-		sidebaritems.push({ href: "javascript:signOff();", value: "Sign off"});
-	} else {
-		sidebaritems.push({ href: "javascript:mention(\"" + data.handle + "\");", value: "Mention" });
-
-		if (data.following) {	
-			sidebaritems.push({ href: "javascript:unfollow(" + data.user + ");", value: "Unfollow" });
-		} else {
-			sidebaritems.push({ href: "javascript:follow(" + data.user + ");", value: "Follow" });
-		}
-	}
-	html += "<p class='headertitle' id='userDisplayName'>" + getDisplayName(data.user) + "</p>";
-	html += "<p class='headersubtitle'>@" + getUserHandle(data.user) + "</p>";
-	html += "<p class='headersubtitle' id='userBio'>" + data.bio + "</p>";
-	html += "<div id='userTip' style='display:none;position:absolute;bottom:10px;left:0px'><p class='headersubtitle'>Drag and drop an image here</p></div>";
-	html += "<div style='position:absolute;bottom:5px;right:3px;'>";
-	html += "<input type='button' value='Posts' onClick='location.href=\"" + "#/user/" + data.user + "/\";'>";
-	html += "<input type='button' value='Board' onClick='location.href=\"" + "#/user/" + data.user + "/board\";'>";
-	html += "<input type='button' value='Photos' onClick='location.href=\"" + "#/user/" + data.user + "/photos\";'>";
-	html += "</div></div>";
-
-
-	if (isBoard) {
-		currentPageType = "BOARD";
-		setTimeout(function() {
-			for (var i=data.boarditems.length-1;i>=0;i--) {
-				addBoardItem(data.boarditems[i], false);
-			}
-			setTimeout(showAddNote, 100);
-		},0);
-		html += "<div id='boardcontainer'></div>";
-	} else {
-		currentPageType = "STREAM";
-
-		if (isPhotos)
-			currentPageType = "PHOTO";
-
-		html += "<div id='timeline_container'></div>";
-		
-		setTimeout(function() {
-		var arr = data.timeline;
-
-		for(var i = arr.length-1; i >= 0; i--) {
-			addTimelineEvent(arr[i]);
-		}
-
-		addTimelineArray(arr,subscribedStream);
-		}, 10);
-	}
-
-	_g("content").innerHTML = html;
-
-	updateHeader(data.user,data.avatarid,subscribedStream != data.user);
-	subscribedStream =  data.user;
-	_g("content").style.minHeight = 0;
-	setSidebar(sidebaritems);
-}
-
 function addBoardItems(items, append) {
 	if (_g("localboarditem") != null)
 		_g("boardcontainer").removeChild(_g("localboarditem"));
@@ -192,12 +113,17 @@ function updateHeader(user, avatarid, animate) {
 function editProfile() {
 	if (_g("editBtn").innerHTML == "Edit") {
 		_g("userDisplayName").setAttribute("contenteditable", true);
-		_g("userBio").setAttribute("contenteditable", true);
+		var bio = _g("userBio");
+		bio.setAttribute("contenteditable", true);
+		bio.innerText = "Bio: " + bio.innerText;
 		_g("userTip").style.display = "inline-block";
 		_g("editBtn").innerHTML = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
-		_g("userBio").setAttribute("contenteditable", false);
+		var bio = _g("userBio");
+		bio.setAttribute("contenteditable", false);
+		if (bio.innerText.substring(0,5) == "Bio: ")
+			bio.innerText = bio.innerText.substring(4);
 		_g("userTip").style.display = "none";
 	
 		var data = { 
