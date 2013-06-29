@@ -17,7 +17,8 @@ exports.run = function(request, response, uri, sessionid) {
 	switch (fragments[2]) {
 		case "signoff":
 			response.writeHead(200, {
-				"Set-Cookie": "D=; Path=/"
+				"Set-Cookie": "D=; Path=/",
+				"Cache-Control": "no-cache"
 			});
 			response.write("true");
 			response.end();
@@ -29,7 +30,8 @@ exports.run = function(request, response, uri, sessionid) {
 					var sessionid = userobj.id + "," + userobj.authkey;
 					console.log(sessionid);
 					response.writeHead(200, {
-						"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT"
+						"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT",
+						"Cache-Control": "no-cache"
 					});
 					response.end();
 				} else {
@@ -800,7 +802,9 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 function sendObject(response, obj) {
 	try {
-		response.writeHead(200);
+		response.writeHead(200, {
+			"Cache-Control": "no-cache"
+		});
 		response.write(JSON.stringify(obj));
 		response.end();
 	} catch (e) {

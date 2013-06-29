@@ -499,7 +499,7 @@ div.comment {
 	display: block;
 	color: #fff;
 	outline: 0;
-	opacity: 0.1;
+	opacity: 0.9;
 	-webkit-transition: all 0.1s ease;
 	padding: 4px;
 }
@@ -588,7 +588,7 @@ img.inlineimage {
 
 div.photos {
 	margin: 2px;
-	width: 188px;
+	width: 285px;
 	height: 200px;
     display: inline-block;
 	position: relative;
@@ -707,6 +707,7 @@ input[type=button], input[type=submit] {
     color: #444;
     cursor: pointer;
     -webkit-transition: all 0.2s ease-in-out;
+	margin: 0px 1px;
 }
 
 input[type=button]:hover, input[type=submit]:hover {
@@ -749,6 +750,7 @@ textarea {
     outline: none;
     resize: none;
 	font-size: 15px;
+	overflow: auto;
 }
 
 #scrollUpContent {

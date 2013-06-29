@@ -213,6 +213,7 @@ function stopBubbling(e) {
 	if (!e)
 		e = window.event;
 	
+	e.cancelBubble = true;
 	e.stopPropagation();
 }
 

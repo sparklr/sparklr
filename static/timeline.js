@@ -17,7 +17,11 @@ function addTimelineEvent(item,append) {
 
 	ev.className = "timelineitem fadein";
 	ev.id = "event_" + item.id;
-	ev.onclick = function() { location.href = "#/post/" + item.id; }
+	ev.onclick = function(e) { 
+					if (!e) e = window.event;
+					if (!e.target.onclick || e.target == ev)
+						location.href = "#/post/" + item.id; 
+				}
 
 	if (item.type == 1) {
 		item = processPostMeta(item);
