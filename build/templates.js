@@ -3,7 +3,7 @@ var fs = require("fs");
 var templateData = "";
 var templateFormatter = require("../static/templates.js");
 
-exports.build = function() {
+exports.build = function(callback) {
 	console.log("Building templates...");
 
 	fs.readdir("../static/templates", function(err, files) {
@@ -23,6 +23,8 @@ exports.build = function() {
 
 		console.log("Writing ../static/out/templates.js");
 		fs.writeFile("../static/out/templates.js", templateData);
+		callback();
 	});
+
 }
 
