@@ -10,10 +10,17 @@ var externalTemplate = "";
 var mobileTemplate = "";
 
 var loadTemplates = function() {
-	fs.readFile("../static/templates/headers_test.html", function(err, data) {
-		eval(templates.parse(data.toString()));
-		frontendTemplate = html + "<body>";
-	});
+	if (!global.liveSite) { 
+		fs.readFile("../static/templates/headers_test.html", function(err, data) {
+			eval(templates.parse(data.toString()));
+			frontendTemplate = html + "<body>";
+		});
+	} else { 
+		fs.readFile("../static/templates/headers_live.html", function(err, data) {
+			eval(templates.parse(data.toString()));
+			frontendTemplate = html + "<body>";
+		});
+	}
 
 	fs.readFile("../../p18mobile/static/templates/headers_test.html", function(err, data) {
 		eval(templates.parse(data.toString()));
