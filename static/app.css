@@ -80,6 +80,10 @@ hr {
     margin-right: 240px;
     margin-left: 10px;
     cursor: pointer;
+	display: inline-block;
+	width: 140px;
+	height: 50px;
+	background-image: url(logo.png);
 }
 
 #header {
@@ -428,10 +432,21 @@ div.timelineitem:hover div.commentcount {
     opacity: 1 !important;
 }
 
-div.repost {
+div.commentcount.icon {
 	margin-right:8px;
 	padding-top: 7px;
 	padding-bottom: 3px;
+	background-repeat: no-repeat;
+	width: 18px;
+	height: 20px;
+}
+
+div.repost {
+	background-image: url(icons/repost.png);
+}
+
+div.like {
+	background-image: url(icons/like.png);
 }
 
 div.picturepost {
@@ -469,7 +484,6 @@ div.rightcontrols div.time {
 }
 div.rightcontrols a.delete {
     float: right;
-    background: #5d4c68;
     margin: 2px;
     color: #fff;
     cursor: pointer;
@@ -695,6 +709,13 @@ div.friend span {
     color: white;
     padding: 4px;
     background: rgba(0,0,0,0.5);
+}
+
+div.friend div.star {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-image: url(star.png);
 }
 
 input[type=button], input[type=submit] {
