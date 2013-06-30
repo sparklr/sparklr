@@ -434,11 +434,10 @@ div.timelineitem:hover div.commentcount {
 
 div.commentcount.icon {
 	margin-right:8px;
-	padding-top: 7px;
-	padding-bottom: 3px;
+	padding:0px;
 	background-repeat: no-repeat;
-	width: 18px;
-	height: 20px;
+	width: 28px;
+	height: 30px;
 }
 
 div.repost {
