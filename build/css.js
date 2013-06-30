@@ -43,16 +43,23 @@ exports.build = function(callback) {
 		});
 
 		var args = [];
+
+		args.push("-background");
+		args.push("none");
+
 		for (i in sorted) { // add each file
 			args.push("../static/" + sorted[i]);
 		}
 
-		args.push("-append");
+		args.push("-tile");
+		args.push("1x");
+		args.push("-geometry");
+		args.push("+0+2");
 
 		var outputFileName = os.tmpdir() + "/p18_sprite.png";
 		args.push(outputFileName);
 
-		exec("convert", args, function(err) {
+		exec("montage", args, function(err) {
 			if (err) {
 				console.log(err);
 				process.exit();
@@ -61,10 +68,10 @@ exports.build = function(callback) {
 			var spritehash = toolbox.sha1(fs.readFileSync(outputFileName));
 
 			css = css.replace(spriteRegex, function(match,img) {
-				var y = 0;
+				var y = 2;
 				for (i in sorted) {
 					if (sorted[i] == img) break;
-					y += imgHeight[sorted[i]];
+					y += imgHeight[sorted[i]] + 4;
 				}
 				return "image: url(" + spritehash + ".png);\nbackground-position: 0px -" + y + "px;";
 			});
