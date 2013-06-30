@@ -119,19 +119,23 @@ exports.repost = function(user, postid, reply, callback) {
 		var origfrom = rows[0].from;
 		var msg;
 
+		console.log(post);
 		if (post.origid != null) {
 			msg = post.message;
 		} else {
 			msg = "[" + post.from + "] " + post.message;
+			post.origid = post.id;
 		}
 		if (reply != "") {
 			msg += "\n[" + user + "] " + reply;
 		}
 		post.id = null;
 		post.message = msg;
+		post.via = post.from;
 		post.from = user;
 		post.time = toolbox.time();
 		post.commentcount = 0;
+		
 
 		database.postObject('timeline', post, function(err,rows) {
 			callback(err,rows);
