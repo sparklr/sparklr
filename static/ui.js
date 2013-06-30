@@ -218,7 +218,7 @@ function stopBubbling(e) {
 }
 
 function updatePageTitle() {
-	var title = "Instancy";
+	var title = "Sparklr";
 	if (newMessageFrom != "") {
 		title = newMessageFrom + " messaged you";
 	}
