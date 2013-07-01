@@ -223,6 +223,8 @@ function postComment() {
 
 	setTimeout('_g("composer").value="";',0);
 
+	if (!vars.comment) return;
+
 	ajaxGet("work/comment", vars);
 	pollData();
 	
