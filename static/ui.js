@@ -223,7 +223,7 @@ function updatePageTitle() {
 		title = newMessageFrom + " messaged you";
 	}
 	if (notificationCount != 0) {
-		title = "(" + notificationCount + ") " + title;
+		title = notificationCount + "* " + title;
 	}
 	setTimeout(function () { window.document.title = title; }, 0);
 }
