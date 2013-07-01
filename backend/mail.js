@@ -29,7 +29,7 @@ exports.sendMessageToEmail = function(to, email, data, user) {
 
 		server.send({
 			text: " ",
-			from: "Instancy <noreply@societyofcode.com>",
+			from: "Sparklr <app@sparklr.me>",
 			to: to,
 			subject: title,
 			attachment: [{
