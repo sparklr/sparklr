@@ -367,6 +367,7 @@ function postToTimeline() {
 	};
 
 	setTimeout('_g("composer").value = "";expandTextarea({ target: _g("composer") });',0);
+	if (!vars.body) return;
 
 	if (imgAttachments != null) {
 		_g("attachment").className += " pulse";
