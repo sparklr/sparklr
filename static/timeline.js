@@ -367,7 +367,6 @@ function postToTimeline() {
 	};
 
 	setTimeout('_g("composer").value = "";expandTextarea({ target: _g("composer") });',0);
-	if (!vars.body) return;
 
 	if (imgAttachments != null) {
 		_g("attachment").className += " pulse";
@@ -380,6 +379,8 @@ function postToTimeline() {
 							 tag: a[i].getAttribute("data-tag"),
 							 userid: a[i].getAttribute("data-userid"), });
 		}
+	} else {
+		if (!vars.body) return;
 	}
 	
 	var xhr = new XMLHttpRequest();
