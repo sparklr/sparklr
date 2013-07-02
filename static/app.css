@@ -46,7 +46,6 @@ div::-webkit-scrollbar-track {
 body { 
     color: #fff;
     background: #3F364A;
-    background-image: -webkit-linear-gradient(top, #574d5d, #3F364A 10%);
 	background-repeat: repeat-x;
     margin: 0px;
     padding: 0px;
@@ -1163,4 +1162,5 @@ div.popup textarea {
 	visibility: hidden;
     opacity: 0;
     -webkit-transition: all 0.5s ease;
+	cursor: pointer;
 }
