@@ -10,9 +10,19 @@ window.addEventListener("hashchange", function() { updatePages() });
 window.addEventListener("load", function() { updatePages(true) });
 
 window.addEventListener("scroll", function() {
+	var doctop = document.body.scrollTop || document.documentElement.scrollTop;
+	var a = _g("scrolltotop");
 	if (scrollDistanceFromBottom() < 600) {
 		fetchOlderPosts();
 	}
+	if (doctop > 1000) {
+		a.style.visibility = "visible";
+        a.style.opacity = 1;
+    }
+    else {
+        a.style.visibility = "hidden";
+        a.style.opacity = 0;
+    }
 });
 
 window.addEventListener("blur", function() {
