@@ -17,6 +17,7 @@ var loadTemplates = function() {
 		});
 	} else { 
 		fs.readFile("../static/templates/headers_live.html", function(err, data) {
+			var cssHash = fs.readFileSync("/var/www/p18_csshash").toString();
 			eval(templates.parse(data.toString()));
 			frontendTemplate = html + "<body>";
 		});

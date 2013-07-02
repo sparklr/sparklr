@@ -46,7 +46,7 @@ div::-webkit-scrollbar-track {
 body { 
     color: #fff;
     background: #3F364A;
-    background-image: -webkit-gradient(linear, left top, left 300, color-stop(0%,#574d5d), color-stop(100%,#3F364A));
+    background-image: -webkit-linear-gradient(top, #574d5d, #3F364A 10%);
 	background-repeat: repeat-x;
     margin: 0px;
     padding: 0px;
@@ -1033,6 +1033,11 @@ div.popup textarea {
     -webkit-animation-duration: 0.4s;
     -webkit-animation-timing-function: linear;
     -webkit-animation-delay: 0s;
+    animation-name: fadein;
+    animation-iteration-count: 1;
+    animation-duration: 0.4s;
+    animation-timing-function: linear;
+    animation-delay: 0s;
 }
 
 @-webkit-keyframes popin {
@@ -1055,7 +1060,7 @@ div.popup textarea {
     }
 }
 
-@-webkit-keyframes fadein {
+@keyframes fadein {
     0% {
         opacity: 0;
     }
