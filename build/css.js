@@ -85,7 +85,7 @@ exports.build = function(callback) {
 	};
 
 	var buildCSSPrefixes = function() {
-		var prefixes = ["", "-moz-", "-ms-", "-webkit-"];
+		var prefixes = ["", "-webkit-"];
 		var prefix = "";
 		var propertyRegex = /\-webkit\-(.*)\;/g;
 
@@ -94,13 +94,15 @@ exports.build = function(callback) {
 			result += prefix + property + ";\n";
 			return result;
 		};
+
 		var lines = css.split("\n");
 		for (var i = 0; i < lines.length; i++) {
 			if (lines[i].substring(0,9) == "@-webkit-" && lines[i].indexOf("{") != -1) {
 				var parens = 1;
 				var content = "";
-				var l = i + 1;
+				var l = i;
 				while (parens != 0) {
+					l++;
 					for (var c = 0; c < lines[l].length; c++) { // never gets old 
 						if (lines[l][c] == "{")
 							parens += 1;
@@ -109,8 +111,7 @@ exports.build = function(callback) {
 					}
 					if (parens != 0)
 						content += lines[l] + "\n";
-					l++;
-					if (!lines[l]) break;
+					if (l >= lines.length) break;
 				}
 				var property = lines[i].replace("@-webkit-","");
 				var newdata = "";
