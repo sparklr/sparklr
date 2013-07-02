@@ -183,6 +183,30 @@ function scrollDistanceFromBottom() {
 	return diff = document.documentElement.scrollHeight - (doctop + window.innerHeight);
 }
 
+function scrollToTop() {
+	scrollTo(document.body.scrollTop ? document.body : document.documentElement, 0, 500);
+}
+ 
+function scrollTo(element, to, duration) {
+    var initial = element.scrollTop,
+        delta = to - initial,
+        curtime = 0,
+        step = 20;
+       
+    var animate = function() {        
+        curtime += step;
+       
+        if (curtime == duration)
+            return element.scrollTop = initial + delta;
+        else
+            element.scrollTop = initial + delta * (1 - Math.pow(2.5, -10 * curtime / duration));
+       
+        setTimeout(animate, step);
+    };
+    animate();
+}
+
+
 function isEnter(e,callback) {
 	if (!e)
 		e = window.event;
