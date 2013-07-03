@@ -32,6 +32,9 @@ function updatePages(loaded) {
 	//Dismiss notifications
 	handleNotifications();
 
+	//Page reload, thus scroll height has changed
+	scrollHandler();
+
 	//fix height
 	_g("frame").style.minHeight = "640px";
 
