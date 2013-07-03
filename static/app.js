@@ -9,7 +9,7 @@ setInterval("updateOnlineFriends();", 20000);
 window.addEventListener("hashchange", function() { updatePages() });
 window.addEventListener("load", function() { updatePages(true) });
 
-window.addEventListener("scroll", function() {
+var scrollHandler = function() {
 	var doctop = document.body.scrollTop || document.documentElement.scrollTop;
 	var a = _g("scrolltotop");
 	if (scrollDistanceFromBottom() < 600) {
@@ -23,7 +23,9 @@ window.addEventListener("scroll", function() {
         a.style.visibility = "hidden";
         a.style.opacity = 0;
     }
-});
+}
+
+window.addEventListener("scroll", scrollHandler);
 
 window.addEventListener("blur", function() {
 	pageActive = false;
