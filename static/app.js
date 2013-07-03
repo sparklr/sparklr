@@ -11,10 +11,11 @@ window.addEventListener("load", function() { updatePages(true) });
 
 var scrollHandler = function() {
 	var doctop = document.body.scrollTop || document.documentElement.scrollTop;
-	var a = _g("scrolltotop");
 	if (scrollDistanceFromBottom() < 600) {
 		fetchOlderPosts();
 	}
+	var a = _g("scrolltotop");
+	if (!a) return; // sometimes this is null?? TODO, look into that
 	if (doctop > 1000) {
 		a.style.visibility = "visible";
         a.style.opacity = 1;
