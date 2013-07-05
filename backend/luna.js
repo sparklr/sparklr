@@ -1,24 +1,10 @@
-// An experiment
-
-var url = require("url");
-var http = require("http");
-var Cookies = require("cookies");
-
-var database = require("./database");
-
-var domain = require("domain");
 var cluster = require("cluster");
-var memwatch = require('memwatch');
-var hd = new memwatch.HeapDiff();
-memwatch.on("leak", function(info) {
-	var diff = hd.end();
-	console.log(diff);
-});
-require("./config");
-
-database.init(global.database);
 
 if (cluster.isMaster) {
+	console.log("As for our destination, the wind will guide us!");
+	console.log("PID: " + process.pid);
+	require("fs").writeFile("../../luna.pid", process.pid);
+
 	var broker = function(data) {
 		for (i in cluster.workers) {
 			cluster.workers[i].send({ key: data.key, value: data.value });
@@ -33,64 +19,40 @@ if (cluster.isMaster) {
 		w.on("message", broker);
 	}
 
-	cluster.on("exit", function(worker) {
-		console.log(worker);
-		cluster.fork();
+	cluster.on("exit", function(worker, code) {
+		console.log("Debug: Worker exitted with code: " + code);
+		if (code != 0)
+			cluster.fork();
 	});
-} else {
-	process.on("message", function(data) {
-		global.broker[data.key] = data.value;
-	});
-	global.broker = [];
-	global.broker_set = function(key) {
-		process.send({ key: key, value: global.broker[key] });
-	}
-	var frontend = require("./frontend");
-	var user = require("./user");
-	var work = require("./work");
-	http.createServer(function(request,response) {
-			/*	var d = domain.create();
-				d.add(request);
-				d.add(response);
 
-				d.on("error", function(err) {
-				console.log(err);
-				console.log(err.stack);
-				response.writeHead(500);
-				response.write(err.toString());
-				response.end();
-				d.dispose();
-				});
-				d.enter();
-				d.run(function() { 
-				*/
-		var requesturi = url.parse(request.url, true);
-		var cookies = new Cookies(request,response);
-		var sessionid = cookies.get("D");
+	process.on("SIGUSR2", function() {
+		console.log("Reloading app...");
 
-		if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
-			work.run(request,response,requesturi,sessionid);
-		} else {
-			if (sessionid != null && sessionid != "") {
-				var s = sessionid.split(",");
+		delete require.cache;
 
-				user.verifyAuth(s[0],s[1], function(success,userobj) {
-					if (success)
-						frontend.run(userobj,request,response,sessionid);
-					else
-						frontend.showExternalPage(request,response);
-				});
-			} else {
-				frontend.showExternalPage(request,response);
+		var workersKilled = 0;
+		var workerIds = Object.keys(cluster.workers);
+
+		var shutdownWorker = function() {
+			if (workersKilled == workerIds.length) {
+				console.log("Reloading complete.");
+				return;
 			}
+
+			console.log("Debug: Disconnecting " + workerIds[workersKilled]);
+
+			cluster.workers[workerIds[workersKilled]].disconnect();
+			var newWorker = cluster.fork();
+			newWorker.on("listening", function() {
+				console.log("Debug: Replacement online.");
+				workersKilled++;
+				shutdownWorker();
+			});
 		}
-		//	});
-
-	}).listen(8080);
-
-	process.on('uncaughtException', function(err) {
-		console.log(err);
-		console.log(err.stack);
+		shutdownWorker();
 	});
+
+} else {
+	var backend = require("./backend");
 }
 
