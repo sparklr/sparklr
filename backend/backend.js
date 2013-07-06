@@ -21,7 +21,11 @@ database.init(global.database);
 
 var server = http.createServer(function(request,response) {
 	var requesturi = url.parse(request.url, true);
-	var sessionid = request.headers["cookie"].match(/D\=(.*)\;?/)[1];
+	var sessionid;
+	if (request.headers["cookie"]) {
+		var d = request.headers["cookie"].match(/D\=(.*)\;?/);
+		sessionid = d ? d[1] : "";
+	}
 
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		work.run(request,response,requesturi,sessionid);

@@ -20,15 +20,13 @@ exports.run = function(request, response, uri, sessionid) {
 				"Set-Cookie": "D=; Path=/",
 				"Cache-Control": "no-cache"
 			});
-			response.write("true");
-			response.end();
+			response.end("true");
 			return;
 		case "signin":
 			if (!fragments[3] || !fragments[4]) return do400(response, 403);
 			User.trySignin(fragments[3], fragments[4], function(result, userobj) {
 				if (result) {
 					var sessionid = userobj.id + "," + userobj.authkey;
-					console.log(sessionid);
 					response.writeHead(200, {
 						"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT",
 						"Cache-Control": "no-cache"
@@ -282,14 +280,9 @@ exports.run = function(request, response, uri, sessionid) {
 
 						break;
 					case "privacy":
-						var result = {
-							result: true,
-							message: ""
-						};
-
 						userobj.private = (postObject.private ? 1 : 0);
 						Database.updateObject("users", userobj);
-						sendObject(response, result);
+						sendObject(response, { result: true, message: "" });
 						break;
 					case "delete": 
 						var result = {};
