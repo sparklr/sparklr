@@ -2,28 +2,26 @@ var cluster = require("cluster");
 
 var url = require("url");
 var http = require("http");
-var Cookies = require("cookies");
 
 var frontend = require("./frontend");
 var user = require("./user");
 var work = require("./work");
 var database = require("./database");
+require("./config");
 
 var memwatch = require('memwatch');
 var hd = new memwatch.HeapDiff();
 memwatch.on("leak", function(info) {
-	var diff = hd.end();
-	console.log(diff);
+	console.log("My memory is leaking, so I'm sacrificing myself for the greater good.");
+	process.exit(1);
 });
 
-require("./config");
 
 database.init(global.database);
 
 var server = http.createServer(function(request,response) {
 	var requesturi = url.parse(request.url, true);
-	var cookies = new Cookies(request,response);
-	var sessionid = cookies.get("D");
+	var sessionid = request.headers["cookie"].match(/D\=(.*)\;?/)[1];
 
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		work.run(request,response,requesturi,sessionid);

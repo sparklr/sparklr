@@ -4,9 +4,9 @@ var Post = require("./post");
 var Notification = require("./notification");
 var Mail = require("./mail");
 var Tags = require("./tags");
-var database = require("./database");
-var toolbox = require("./toolbox");
-var upload = require("./upload");
+var Database = require("./database");
+var Toolbox = require("./toolbox");
+var Upload = require("./upload");
 var util = require("util");
 var events = require("events");
 var bcrypt = require("bcrypt");
@@ -69,7 +69,7 @@ exports.run = function(request, response, uri, sessionid) {
 								if (err) return do500(response, err);
 								rows[0].authkey = User.generateAuthkey(rows[0].id);
 								rows[0].password = hash;
-								database.updateObject("users", rows[0], function(err, data) {
+								Database.updateObject("users", rows[0], function(err, data) {
 									if (err) {
 										sendObject(response, -1);
 									} else {
@@ -89,7 +89,7 @@ exports.run = function(request, response, uri, sessionid) {
 			return;
 		case "requestinvite":
 			if (!fragments[3]) return do400(response, 400);
-			database.postObject("newsletter", {
+			Database.postObject("newsletter", {
 				email: fragments[3]
 			}, function(err) {
 				sendObject(response, err == null);
@@ -156,7 +156,7 @@ exports.run = function(request, response, uri, sessionid) {
 							return do400(response, 400, "Post too long");
 						if (postObject.img) {
 							var f = function() {
-								upload.handleUpload(postBody, userobj, {
+								Upload.handleUpload(postBody, userobj, {
 									width: 590,
 									height: 350
 								}, function(err, id) {
@@ -185,7 +185,7 @@ exports.run = function(request, response, uri, sessionid) {
 						sendObject(response, {});
 						break;
 					case "like":
-						database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(postObject.id) + " AND `from` = " + parseInt(userobj.id) + " AND message = 0xe2989d", function (err, rows) {
+						Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(postObject.id) + " AND `from` = " + parseInt(userobj.id) + " AND message = 0xe2989d", function (err, rows) {
 						if (rows.affectedRows > 0) {
 							Post.updateCommentCount(postObject.id, -1);
 							sendObject(response, { deleted: true });
@@ -196,10 +196,10 @@ exports.run = function(request, response, uri, sessionid) {
 						});
 						break;
 					case "chat":
-						database.postObject("messages", {
+						Database.postObject("messages", {
 							from: userobj.id,
 							to: parseInt(postObject.to),
-							time: toolbox.time(),
+							time: Toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
 							if (err) return do500(response, err);
@@ -208,11 +208,11 @@ exports.run = function(request, response, uri, sessionid) {
 						});
 						break;
 					case "board":
-						database.postObject("boards", {
+						Database.postObject("boards", {
 							from: userobj.id,
 							color: 0,
 							to: parseInt(postObject.to),
-							time: toolbox.time(),
+							time: Toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
 							if (err) return do500(response, err);
@@ -248,7 +248,7 @@ exports.run = function(request, response, uri, sessionid) {
 								result = false;
 								message = "That username is taken :c";
 							} else {
-								database.updateObject("users", userobj);
+								Database.updateObject("users", userobj);
 							}
 
 							sendObject(response, {
@@ -270,7 +270,7 @@ exports.run = function(request, response, uri, sessionid) {
 								User.generatePass(postObject.newpassword, function(err, newpass) {
 									userobj.password = newpass;
 									// should we reset the authkey here???
-									database.updateObject("users", userobj);
+									Database.updateObject("users", userobj);
 									result.authkey = userobj.authkey;
 									sendObject(response, result);
 								});
@@ -288,7 +288,7 @@ exports.run = function(request, response, uri, sessionid) {
 						};
 
 						userobj.private = (postObject.private ? 1 : 0);
-						database.updateObject("users", userobj);
+						Database.updateObject("users", userobj);
 						sendObject(response, result);
 						break;
 					case "delete": 
@@ -299,35 +299,35 @@ exports.run = function(request, response, uri, sessionid) {
 							if (match) {
 								result.result = true;
 								for (var i = 0; i < userobj.followers.length; i++) {
-									database.getObject("users", userobj.followers[i], function(err, rows) {
+									Database.getObject("users", userobj.followers[i], function(err, rows) {
 										if (err) return;
 										if (rows.length < 1) return;
 										var otherUser = rows[0];
 
 										otherUser.following = otherUser.following.split(",");
 										otherUser.following.splice(otherUser.following.indexOf(userobj.id), 1);
-										database.updateObject("users", otherUser, function() {});
+										Database.updateObject("users", otherUser, function() {});
 									});
 								}
 								for (var i = 0; i < userobj.following.length; i++) {
-									database.getObject("users", userobj.following[i], function(err, rows) {
+									Database.getObject("users", userobj.following[i], function(err, rows) {
 										if (err) return;
 										if (rows.length < 1) return;
 										var otherUser = rows[0];
 
 										otherUser.followers = otherUser.followers.split(",");
 										otherUser.followers.splice(otherUser.followers.indexOf(userobj.id), 1);
-										database.updateObject("users", otherUser, function() {});
+										Database.updateObject("users", otherUser, function() {});
 									});
 								}
-								database.deleteObject("users", { id: userobj.id }, function(err) {
+								Database.deleteObject("users", { id: userobj.id }, function(err) {
 									if (err) do500(response, err);
 									async.parallel([
 										function(callback) {
-											database.deleteObject("timeline", { from: userobj.id }, callback);
+											Database.deleteObject("timeline", { from: userobj.id }, callback);
 										},
 										function(callback) {
-											database.deleteObject("comments", { from: userobj.id }, callback);
+											Database.deleteObject("comments", { from: userobj.id }, callback);
 										}],
 										function(err) {
 											if (err) do500(response, err);
@@ -348,19 +348,19 @@ exports.run = function(request, response, uri, sessionid) {
 						if (postObject.bio.length < 300) {
 							userobj.bio = postObject.bio.replace(/(\<|\>)/g, "");
 						}
-						database.updateObject("users", userobj);
+						Database.updateObject("users", userobj);
 						sendObject(response, {});
 						break;
 					case "avatar":
 						var f = function() {
-							upload.handleUpload(postBody, userobj, {
+							Upload.handleUpload(postBody, userobj, {
 								width: 50,
 								height: 50,
 								avatar: true
 							}, function(err, id) {
 								if (err) return do500(response, err);
-								userobj.avatarid = toolbox.time();
-								database.updateObject("users", userobj);
+								userobj.avatarid = Toolbox.time();
+								Database.updateObject("users", userobj);
 								sendObject(response, userobj.avatarid);
 							});
 						};
@@ -389,7 +389,7 @@ exports.run = function(request, response, uri, sessionid) {
 							});
 						},
 						function(callback) {
-							database.getStream("notifications", {
+							Database.getStream("notifications", {
 								to: [userobj.id],
 								since: uri.query.n
 							}, function(err, rows) {
@@ -428,7 +428,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			var candidates = [];
 			
 			for (i in userobj.following) {
-				database.getObject("users", userobj.following[i], function(err, users) {
+				Database.getObject("users", userobj.following[i], function(err, users) {
 					processed++;
 					if (!err && users[0] && users[0].following) {
 						users[0].following = users[0].following.split(",");
@@ -473,7 +473,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			var from = userobj.following;
 			from.push(userobj.id);
 
-			database.getStream("timeline", {
+			Database.getStream("timeline", {
 				from: from,
 				type: 1
 			}, function(err, rows) {
@@ -500,7 +500,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 			async.parallel([
 				function(callback) {
-					database.getObject("timeline", fragments[3], function(err, res) {
+					Database.getObject("timeline", fragments[3], function(err, res) {
 						posts = res;
 						callback(err);
 					});
@@ -554,7 +554,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				args.starttime = uri.query.starttime;
 			}
 
-			database.getStream("timeline", args, function(err, rows) {
+			Database.getStream("timeline", args, function(err, rows) {
 				if (err) return do500(response, err);
 
 				var obj = {
@@ -566,7 +566,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "user":
 			var userid = fragments[3];
-			database.getObject("users", userid, function(err, users) {
+			Database.getObject("users", userid, function(err, users) {
 				if (err) return do500(response, err);
 				if (users.length < 1) {
 					return do400(response, 404, "no such user");
@@ -603,7 +603,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					args.to = [profile.id];
 				}
 
-				database.getStream(table, args, function(err, rows) {
+				Database.getStream(table, args, function(err, rows) {
 					if (err) return do500(response, err);
 					obj.timeline = rows;
 					sendObject(response, obj);
@@ -622,7 +622,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			});
 			break;
 		case "board":
-			database.getStream("boards", {
+			Database.getStream("boards", {
 				to: [fragments[3]],
 				since: uri.query.since || 0,
 				starttime: uri.query.starttime || 0
@@ -636,7 +636,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			var since = uri.query.since || 0;
 			var starttime = uri.query.starttime || 0;
 
-			database.getStream("messages", {
+			Database.getStream("messages", {
 				from: [from, userobj.id],
 				to: [userobj.id, from],
 				since: since,
@@ -653,7 +653,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				users[i] = parseInt(users[i]);
 			}
 			query += users.join(",") + ")";
-			database.query(query, function(err, rows) {
+			Database.query(query, function(err, rows) {
 				if (err) return do500(response, err);
 				callback(rows);
 			});
@@ -666,15 +666,15 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 				async.parallel([
 					function(callback) {
-						database.updateObject("users", userobj, callback);
+						Database.updateObject("users", userobj, callback);
 					},
 					function(callback) {
-						database.getObject("users", tofollow, function(err, rows) {
+						Database.getObject("users", tofollow, function(err, rows) {
 							if (err) return do500(response, err);
 							if (rows.length < 1) return do400(response, 404);
 							var otheruser = rows[0];
 							otheruser.followers += "," + userobj.id;
-							database.updateObject("users", otheruser, callback);
+							Database.updateObject("users", otheruser, callback);
 						});
 					}
 				], callback);
@@ -689,17 +689,17 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 				async.parallel([
 					function(callback) {
-						database.updateObject("users", userobj, callback);
+						Database.updateObject("users", userobj, callback);
 					},
 					function(callback) {
-						database.getObject("users", tofollow, function(err, rows) {
+						Database.getObject("users", tofollow, function(err, rows) {
 							if (err) return do500(response, err);
 							if (rows.length < 1) return do400(response, 404);
 							var otherUser = rows[0];
 
 							otherUser.followers = otherUser.followers.split(",");
 							otherUser.followers.splice(otherUser.followers.indexOf(userobj.id), 1);
-							database.updateObject("users", otherUser, callback);
+							Database.updateObject("users", otherUser, callback);
 						});
 					}
 				], callback);
@@ -719,7 +719,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			var q = "%" + unescape(fragments[3]) + "%";
 			async.parallel([
 				function(callback) {
-					database.query("SELECT `username`, `id` FROM `users` WHERE `username` LIKE " + database.escape(q) + " ORDER BY `lastseen` DESC LIMIT 30", function(err, rows) {
+					Database.query("SELECT `username`, `id` FROM `users` WHERE `username` LIKE " + Database.escape(q) + " ORDER BY `lastseen` DESC LIMIT 30", function(err, rows) {
 						if (rows && rows.length > 0) {
 							results.users = rows;
 						}
@@ -727,8 +727,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					});
 				},
 				function(callback) {
-					var query = "SELECT * FROM `timeline` WHERE `message` LIKE " + database.escape(q) + " ORDER BY `time` DESC LIMIT 30";
-					database.query(query, function(err, rows) {
+					var query = "SELECT * FROM `timeline` WHERE `message` LIKE " + Database.escape(q) + " ORDER BY `time` DESC LIMIT 30";
+					Database.query(query, function(err, rows) {
 						if (rows && rows.length > 0) {
 							results.posts = rows;
 						}
@@ -741,8 +741,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			});
 			break;
 		case "invite":
-			var inviteid = toolbox.hash((Math.random() * 1e5) + userobj.id + fragments[3]);
-			database.postObject("invites", {
+			var inviteid = Toolbox.hash((Math.random() * 1e5) + userobj.id + fragments[3]);
+			Database.postObject("invites", {
 				id: inviteid,
 				from: userobj.id
 			}, function(err, rows) {
@@ -768,7 +768,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 			switch (fragments[3]) {
 				case "notification":
-					database.deleteObject("notifications", {
+					Database.deleteObject("notifications", {
 						to: userobj.id,
 						id: fragments[4]
 					}, function() {
@@ -776,7 +776,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					});
 					break;
 				case "post":
-					database.deleteObject("timeline", {
+					Database.deleteObject("timeline", {
 						from: userobj.id,
 						id: fragments[4]
 					}, function() {
