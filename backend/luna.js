@@ -5,18 +5,10 @@ if (cluster.isMaster) {
 	console.log("PID: " + process.pid);
 	require("fs").writeFile("../../luna.pid", process.pid);
 
-	var broker = function(data) {
-		for (i in cluster.workers) {
-			cluster.workers[i].send({ key: data.key, value: data.value });
-		}
-	}
-
 	var numCPUs = require('os').cpus().length;
 
 	for (var i = 0; i < numCPUs; i++) {
 		var w = cluster.fork();
-		
-		w.on("message", broker);
 	}
 
 	cluster.on("exit", function(worker, code) {

@@ -100,7 +100,7 @@ exports.getStream = function(table, args, callback) {
 	
 	query += ") ORDER BY `time` DESC LIMIT 20";
 	exports.query(query, callback);
-//	console.log(query);
+	//console.log(query);
 }
 
 exports.postObject = function(table, obj, callback) {

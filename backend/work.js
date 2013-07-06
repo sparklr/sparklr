@@ -756,12 +756,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "tag":
 			var tag = fragments[3];
-			var postids = Tags.postsWithTag(tag);
 			var since = uri.query.since;
-			if (postids.length < 1 || (since && !Tags.newPostsWithTag(tag,since))) {
-				return sendObject(response,[]);
-			}
-			database.getStream("timeline", { id: postids, since: since }, function(err,rows) {
+			Tags.getPostsByTag(tag, since, function(err,rows) {
 				if (err) do500(response,err);
 				callback(rows);
 			});
