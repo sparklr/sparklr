@@ -19,16 +19,11 @@ memwatch.on("leak", function(info) {
 require("./config");
 
 database.init(global.database);
-global.broker = [];
-global.broker_set = function(key) {
-	process.send({ key: key, value: global.broker[key] });
-}
+
 var server = http.createServer(function(request,response) {
 	var requesturi = url.parse(request.url, true);
 	var cookies = new Cookies(request,response);
 	var sessionid = cookies.get("D");
-
-	if (requesturi.pathname.indexOf("reload") !== -1) process.send("reload");
 
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		work.run(request,response,requesturi,sessionid);
