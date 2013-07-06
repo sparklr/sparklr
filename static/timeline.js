@@ -254,7 +254,7 @@ function getLastPostTime() {
 }
 
 function fetchOlderPosts() {
-	if (!subscribedStream || !timelineEvents[subscribedStream]) return;
+	if (subscribedStream == null || !timelineEvents[subscribedStream]) return;
 	var query;
 	
 	if (currentPageType == "BOARD")
