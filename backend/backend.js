@@ -9,13 +9,14 @@ var work = require("./work");
 var database = require("./database");
 require("./config");
 
-var memwatch = require('memwatch');
-var hd = new memwatch.HeapDiff();
-memwatch.on("leak", function(info) {
-	console.log("My memory is leaking, so I'm sacrificing myself for the greater good.");
-	process.exit(1);
-});
-
+if (process.platform != "win32") {
+	var memwatch = require('memwatch');
+	var hd = new memwatch.HeapDiff();
+	memwatch.on("leak", function(info) {
+		console.log("My memory is leaking, so I'm sacrificing myself for the greater good.");
+		process.exit(1);
+	});
+}
 
 database.init(global.database);
 
