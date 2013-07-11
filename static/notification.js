@@ -38,10 +38,6 @@ function addNotification(notification) {
 			body = "mentioned you.<br><br>";
 			action = function() { location.href = "#/post/" + notification.action; }
 		break;
-		case 4: //wrote on board 
-			body = "posted on your board:<br>" + notification.body + "<br><br>";
-			action = function() { location.href = "#/user/" + curUser + "/board"; }
-		break;
 		case 6: // repost
 			body = "reposted your post.<br><br>";
 			action = function() { location.href = "#/post/" + notification.action; }

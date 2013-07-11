@@ -205,23 +205,6 @@ exports.run = function(request, response, uri, sessionid) {
 							sendObject(response, {});
 						});
 						break;
-					case "board":
-						Database.postObject("boards", {
-							from: userobj.id,
-							color: 0,
-							to: parseInt(postObject.to),
-							time: Toolbox.time(),
-							message: postObject.message
-						}, function(err, data) {
-							if (err) return do500(response, err);
-							Notification.addUserNotification(parseInt(postObject.to),
-								postObject.message,
-								data.insertId,
-								userobj.id,
-								Notification.N_BOARD);
-							sendObject(response, {});
-						});
-						break;
 					case "settings":
 						var result = true;
 						var message = "";
@@ -583,17 +566,13 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					bio: profile.bio
 				};
 
-				var table = (fragments[4] == "board" ? "boards" : "timeline");
+				var table = "timeline";
 				var args = {
 					from: [profile.id]
 				};
 
 				if (fragments[4] == "photos") {
 					args.type = 1;
-				}
-				if (table == "boards") {
-					args.from = null;
-					args.to = [profile.id];
 				}
 
 				Database.getStream(table, args, function(err, rows) {
@@ -612,16 +591,6 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				} else {
 					callback(rows[0].id);
 				}
-			});
-			break;
-		case "board":
-			Database.getStream("boards", {
-				to: [fragments[3]],
-				since: uri.query.since || 0,
-				starttime: uri.query.starttime || 0
-			}, function(err, rows) {
-				if (err) return do500(response, err);
-				callback(rows);
 			});
 			break;
 		case "chat":

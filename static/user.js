@@ -111,10 +111,6 @@ function mention(handle) {
 
 //Current user actions
 
-function accountSettings() {
-	location.href = "#/settings";
-}
-
 function updateAvatar(user, avatarid) {
 	var elements = document.getElementsByTagName("img");
 	for (var i = 0; i < elements.length; i++) {

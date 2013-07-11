@@ -818,10 +818,6 @@ div.profile_timelinecontainer {
     box-shadow: 0px 0px 10px #000;
 }
 
-#boardcontainer {
-    position: relative;
-}
-
 form.settings {
     padding: 10px;
 }
@@ -865,84 +861,6 @@ span.ok {
 span.error {
     color: #c33;
 }
-
-/* Board stuff */
-#boardcontainer {
-	width: 500px;
-}
-#boardcontainer div.newNote {
-	display: block;
-	position: fixed;
-	bottom: 5px;
-	cursor: pointer;
-	margin-left: -50px;
-}
-#boardcontainer div.newNote img {
-	width: 40px;
-	height: 40px;
-}
-div.stickynote { 
-	position: absolute;
-	display: inline-block;
-	width: 235px;
-	height: 235px;
-	padding: 30px;
-	font-size: 20px;
-	color: #242424;
-	overflow: hidden;
-	top: 0px;
-	left: 0px;
-	-webkit-animation-name: popin;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-duration: 0.4s;
-    -webkit-animation-timing-function: ease-in-out;
-    -webkit-animation-delay: 0s;
-	-webkit-transition: all 1s ease;
-}
-div.stickynote.yellow {
-	background-image: url(sn_y.png);
-}
-div.stickynote.green {
-	background-image: url(sn_g.png);
-}
-
-div.stickynote.purple {
-	background-image: url(sn_p.png);
-}
-
-div.stickynote.blue {
-	background-image: url(sn_b.png);
-}
-div.stickynote textarea {
-	width: 220px;
-	height: 180px;
-	color: #333;
-	background: none;
-	outline: none;
-	border: none;
-	font-size: 20px;
-	font-family: 'PT Sans', sans-serif;
-	overflow: hidden;
-	resize: none;
-}
-div.stickynote img {
-	position: absolute;
-	bottom: 15px;
-	left: 5px;
-	box-shadow: 0px 0px 10px #000;
-}
-div.stickynote span {
-	position: absolute;
-	bottom: 25px;
-	left: 60px;
-	font-size: 10px;
-}
-div.stickynote div.post {
-    display: inline-block;
-    word-wrap: break-word;
-    width: 220px;
-}
-
 
 /* Bottom banner */
 div.banner {

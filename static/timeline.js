@@ -257,10 +257,7 @@ function fetchOlderPosts() {
 	if (subscribedStream == null || !timelineEvents[subscribedStream]) return;
 	var query;
 	
-	if (currentPageType == "BOARD")
-		query = "work/board/" + subscribedStream + "?starttime=" + oldestBoardTime;
-	else
-		query = "work/stream/" + subscribedStream + "?starttime=" + timelineEvents[subscribedStream][0].time;
+	query = "work/stream/" + subscribedStream + "?starttime=" + timelineEvents[subscribedStream][0].time;
 	if (currentPageType == "PHOTO")
 		query += "&photo";
 
