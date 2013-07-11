@@ -26,11 +26,8 @@
 	DISPLAYNAMES[data.user] = data.name;
 	USERHANDLES[data.user] = data.handle;
 
-	var isBoard = location.hash.indexOf("/board") != -1;
 	var isPhotos = location.hash.indexOf("/photos") != -1;
 
-	lastBoardTime = 0;
-	oldestBoardTime = Number.MAX_VALUE;
 	
 </script>
 
@@ -42,7 +39,7 @@
 		<div id='sidebar_links'>
 			<% if (data.user == curUser) %> 
 			<a href='javascript:editProfile();' id='editBtn'>Edit</a>
-			<a href='javascript:accountSettings();'>Account Settings</a>
+			<a href='/#settings'>Account Settings</a>
 			<a href='javascript:signOff();'>Sign off</a>
 			<% else %>
 			<a href='javascript:mention("{data.handle}");'>Mention</a>
@@ -59,27 +56,14 @@
 		<div id='userTip' style='display:none;position:absolute;bottom:10px;left:0px'><p class='headersubtitle'>Drag and drop an image here</p></div>
 		<div style='position:absolute;bottom:5px;right:3px;'>
 			<input type='button' value='Posts' onClick='location.href="#/user/{data.user}/";'>
-			<input type='button' value='Board' onClick='location.href="#/user/{data.user}/board";'>
 			<input type='button' value='Photos' onClick='location.href="#/user/{data.user}/photos";'>
 		</div>
 	</div>
 	<script>
-		if (isBoard) {
-			currentPageType = "BOARD";
-			setTimeout(function() {
-					for (var i=data.timeline.length-1;i>=0;i--) {
-					addBoardItem(data.timeline[i], false);
-					}
-					setTimeout(showAddNote, 100);
-					},0);
-	</script>
-	<div id='boardcontainer'></div>
-	<script>
-		} else {
-			currentPageType = "STREAM";
+		currentPageType = "STREAM";
 
-			if (isPhotos)
-				currentPageType = "PHOTO";
+		if (isPhotos)
+			currentPageType = "PHOTO";
 	</script>
 	<div id='timeline_container'></div>
 	<script>
@@ -95,12 +79,12 @@
 				}, 10);
 		}
 
-setTimeout(function() { 
-		updateHeader(data.user,data.avatarid,subscribedStream != data.user); 
+		setTimeout(function() { 
+			updateHeader(data.user,data.avatarid,subscribedStream != data.user); 
 		}, 0);
-subscribedStream = data.user;
-_g("content").style.minHeight = 0;
 
-	}
+		subscribedStream = data.user;
+		_g("content").style.minHeight = 0;
+
 	</script>
 

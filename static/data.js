@@ -76,12 +76,6 @@ function pollData() {
 				lastUpdateTime = t;
 			}
 		break;
-		case "BOARD":
-			query = "/board/" + subscribedStream + "?since=" + lastBoardTime;
-			callback = function(data) {
-				addBoardItems(data,false);
-			}
-		break;
 		case "POST":
 			query = "/comments/" + subscribedStream + "?since=" + getLastCommentTime();
 			callback = addComments;
