@@ -145,6 +145,26 @@ exports.repost = function(user, postid, reply, callback) {
 	});
 }
 
+exports.getPostsMentioning = function(user, since, callback) {
+	var query = "SELECT `postid` FROM `mentions` WHERE `user` = " + parseInt(user);
+	if (since)
+		query += " AND `time` > " + parseInt(since);
+
+	database.query(query, function(err,rows) {
+		if (err)
+			return callback(err);
+
+		if (rows.length < 1) {
+			callback(null, []);
+			return; 
+		}
+		var postids = [];
+		for (id in rows)
+			postids.push(rows[id].postid);
+
+		database.getStream("timeline", { id: postids }, callback);
+	});
+}
 function processMentions(post, mentioner, postid) {
 	var matches = post.toString().match(/@([\w-]+)/gi);
 	for (i in matches) {
@@ -152,7 +172,10 @@ function processMentions(post, mentioner, postid) {
 		User.getUserProfileByUsername(user, function(err,rows) {
 			if (rows.length > 0) {
 				Notification.addUserNotification(rows[0].id, "", postid, mentioner, Notification.N_MENTION);
-				console.log("Notifying " + rows[0].id);
+
+			database.postObject("mentions", { user: rows[0].id, postid: postid }, function(err) {
+				if (err) console.log(err);
+			});
 			}
 		});
 	}

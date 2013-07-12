@@ -26,9 +26,8 @@
 	DISPLAYNAMES[data.user] = data.name;
 	USERHANDLES[data.user] = data.handle;
 
-	var isPhotos = location.hash.indexOf("/photos") != -1;
+	var pageType = fragments[4];
 
-	
 </script>
 
 <% if (data.user == curUser) %>
@@ -56,14 +55,17 @@
 		<div id='userTip' style='display:none;position:absolute;bottom:10px;left:0px'><p class='headersubtitle'>Drag and drop an image here</p></div>
 		<div style='position:absolute;bottom:5px;right:3px;'>
 			<input type='button' value='Posts' onClick='location.href="#/user/{data.user}/";'>
+			<input type='button' value='Mentions' onClick='location.href="#/user/{data.user}/mentions";'>
 			<input type='button' value='Photos' onClick='location.href="#/user/{data.user}/photos";'>
 		</div>
 	</div>
 	<script>
 		currentPageType = "STREAM";
 
-		if (isPhotos)
+		if (pageType == "photos")
 			currentPageType = "PHOTO";
+		if (pageType == "mentions")
+			currentPageType = "MENTIONS";
 	</script>
 	<div id='timeline_container'></div>
 	<script>
