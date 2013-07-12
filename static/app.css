@@ -950,11 +950,6 @@ div.popup textarea {
     -webkit-animation-duration: 0.4s;
     -webkit-animation-timing-function: linear;
     -webkit-animation-delay: 0s;
-    animation-name: fadein;
-    animation-iteration-count: 1;
-    animation-duration: 0.4s;
-    animation-timing-function: linear;
-    animation-delay: 0s;
 }
 
 @-webkit-keyframes popin {
@@ -977,7 +972,7 @@ div.popup textarea {
     }
 }
 
-@keyframes fadein {
+@-webkit-keyframes fadein {
     0% {
         opacity: 0;
     }
