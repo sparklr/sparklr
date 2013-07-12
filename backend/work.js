@@ -540,6 +540,19 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				callback(obj);
 			});
 			break;
+		case "mentions":
+			var stream = parseInt(fragments[3]);
+			if (isNaN(stream)) {
+				return do400(response, 400);
+			}
+			var since = uri.query.since;
+
+			Post.getPostsMentioning(stream, since, function(err,rows) {
+				if (err) return do500(response,err);
+
+				callback(rows);
+			});
+			break;
 		case "user":
 			var userid = fragments[3];
 			Database.getObject("users", userid, function(err, users) {
@@ -575,11 +588,18 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					args.type = 1;
 				}
 
-				Database.getStream(table, args, function(err, rows) {
+				var done = function(err, rows) {
 					if (err) return do500(response, err);
 					obj.timeline = rows;
 					sendObject(response, obj);
-				});
+				}
+
+				if (fragments[4] == "mentions") {
+					Post.getPostsMentioning(profile.id, null, done);
+				} else {
+					Database.getStream(table, args, done);
+				}
+
 			});
 			break;
 		case "userid":
