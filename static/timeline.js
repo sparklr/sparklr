@@ -326,15 +326,9 @@ function renderTimeline() {
 		}
 		region.onkeyup = function(event) {
 			if (event.keyCode == 38 || event.keyCode == 40) return;
-			var items = {};
-			var found = false;
-			for (id in DISPLAYNAMES) {
-				if (new RegExp(region.innerText, "i").test(DISPLAYNAMES[id])) {
-					items[id] = DISPLAYNAMES[id];
-					found = true;
-				}
-			}
-			showSuggestionBox(found,(e.x),(e.y + 30),items);
+			var items = getUserSuggestions(region.innerText);
+
+			showSuggestionBox(items.length,(e.x),(e.y + 30),items);
 			suggestionBoxCallback = function(id,title) { 
 				region.innerHTML = "<img class='littleavatar' src='" + getAvatar(id) + "'>" +title;
 				region.setAttribute("data-userid", id);

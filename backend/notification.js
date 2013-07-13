@@ -6,6 +6,7 @@ exports.N_CHAT = 3;
 exports.N_BOARD = 4;
 exports.N_PASS = 5;
 exports.N_REPOST = 6;
+exports.N_WHITELIST = 7;
 
 exports.addUserNotification = function (user, notification, action, from, type) {
 	if (user == from) return false;

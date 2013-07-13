@@ -48,6 +48,10 @@ function addNotification(notification) {
 			updatePageTitle();
 			return;
 		break;
+		case 7: //whitelist
+			body = "wants to be whitelisted.";
+			action = function() { location.href = "#/user/" + notification.from; }
+			break;
 	}
 	
 	notification.body = "<img class='avatar' src='" + getAvatar(notification.from) + "'>" + getDisplayName(notification.from) + " " + body;

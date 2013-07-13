@@ -323,3 +323,43 @@ function selectedSuggestionBoxItem() {
 	}
 	return null;
 }
+
+function showSuggestionBoxBelowElement(e) {
+	if (!e)
+		e = window.event;
+
+	var node = e.target;
+	var x = 0;
+	var y = 40;//(document.body.scrollTop || document.documentElement.scrollTop);
+
+	while (node) {
+		x += node.offsetLeft;
+		y += node.offsetTop;
+		node = node.offsetParent;
+	}
+
+	var items = getUserSuggestions(e.target.value);
+
+	if (e.keyCode == 40)  //down
+		return suggestionBoxNextItem();
+	if (e.keyCode == 13) {
+		stopBubbling();
+		
+		var selected = selectedSuggestionBoxItem();
+		var userid = selected ? selected.getAttribute("data-id") : "";
+		var title = selected ? selected.innerText : e.target.value;
+		e.target.setAttribute("data-userid", userid);
+		e.target.value = title;
+
+		showSuggestionBox(false);
+		return false;
+	}
+
+	showSuggestionBox(items.length, x, y, items);
+
+	suggestionBoxCallback = function(id,title) {
+		e.target.value = title;
+		e.target.setAttribute("data-userid", id);
+		showSuggestionBox(false);
+	};
+}

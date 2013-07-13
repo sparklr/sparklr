@@ -57,20 +57,32 @@ function uploadAvatar(e) {
 	xhr.send(e.target.result);
 }
 
-function showPrivateUser(user) {
-	var html = "<div class='contentwrapper'>";
-	html += "<img src='"+getAvatar(user.id)+"' class='avatar'><h2>"+user.name+" ("+user.handle+")</h2><br>";
-	html += "This user has a private profile.<br>In order to see this content, you must mutually follow each other.<br><br>";
-	if (!user.following) {
-		html += "<input type='button' onClick='follow("+user.id+")' value='Follow "+user.handle+"'>";
-	} else {
-		html += "<input type='button' onClick='unfollow("+user.id+")' value='Unfollow "+user.handle+"'>";
+function addUserToList_Keydown(e, list) {
+	if (!e)
+		e = window.event;
+
+	var result = showSuggestionBoxBelowElement(e); 
+	if (e.keyCode == 13) {
+		for (id in DISPLAYNAMES) {
+			if (DISPLAYNAMES[id].toLowerCase() == e.target.value.toLowerCase()) {
+				addUserToList(list, id);
+				addUserToServerList(list, id, true);
+				break;
+			}
+		}
 	}
-	html += "</div>";
-	_g("content").innerHTML = html;
+	return result;
 }
 
-function showMePage() {
-	location.href = '#/user/' + curUser;
+function addUserToList(list,user) {
+	_g(list ? "whitelist" : "blacklist").innerHTML += "<div style='min-height:50px;margin: 5px;'><img src='" + getAvatar(user) + "' class='avatar'> <b>" + getDisplayName(user) + "</b><div style='float:right;'><a href='javascript:addUserToServerList(" + list + ", " + user + ", 0);'>Remove</a></div></div>";
+}
+
+function addUserToServerList(type, id, action) {
+	ajaxGet("work/list", { type: type, action: action, user: id }, function() {
+		  if (!action) {
+				location.href = location.href + "/#";
+		  }
+	});
 }
 
