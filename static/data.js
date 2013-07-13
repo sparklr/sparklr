@@ -55,9 +55,10 @@ function pollData() {
 		case "STREAM":
 			query = streamUrl(lastUpdateTime);
 			callback = function(data,xhr) {
-				addTimelineArray(data.timeline,subscribedStream);
-				for (var i = data.timeline.length - 1; i >= 0; i--) {
-					addTimelineEvent(data.timeline[i], 0);
+				var items = data.timeline || data;
+				addTimelineArray(items,subscribedStream);
+				for (var i = items.length - 1; i >= 0; i--) {
+					addTimelineEvent(items[i], 0);
 				}
 				var t = Date.parse(xhr.getResponseHeader("date")) / 1000;
 				lastUpdateTime = t;

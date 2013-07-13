@@ -577,15 +577,13 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			});
 			break;
 		case "mentions":
-			var stream = parseInt(fragments[3]);
-			if (isNaN(stream)) {
-				return do400(response, 400);
-			}
+			var user = fragments[3];
+
 			var since = uri.query.since;
+			var starttime = uri.query.starttime;
 
-			Post.getPostsMentioning(stream, since, function(err,rows) {
-				if (err) return do500(response,err);
-
+			Post.getPostRowsFromKeyQuery("mentions", "user", user, since, starttime, function(err,rows) {
+				if (err) do500(response,err);
 				callback(rows);
 			});
 			break;
@@ -762,7 +760,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			var since = uri.query.since;
 			var starttime = uri.query.starttime;
 
-			Tags.getPostsByTag(tag, since, starttime, function(err,rows) {
+			Post.getPostRowsFromKeyQuery("tags", "tag", tag, since, starttime, function(err,rows) {
 				if (err) do500(response,err);
 				callback(rows);
 			});
