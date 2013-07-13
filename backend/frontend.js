@@ -55,7 +55,7 @@ exports.run = function(user, request, response, sessionid) {
 	var from = user.following;
 	from.push(user.id);
 
-	var payload = {};
+	var payload = { private: user.private };
 
 	async.parallel([
 		function(callback) {
