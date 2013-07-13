@@ -254,7 +254,7 @@ function getLastPostTime() {
 }
 
 function fetchOlderPosts() {
-	if (subscribedStream == null || !timelineEvents[subscribedStream]) return;
+	if (subscribedStream == null || !timelineEvents[subscribedStream] || timelineStream[subscribedStream].length < 1) return;
 	var query;
 	
 	query = "work/stream/" + subscribedStream + "?starttime=" + timelineEvents[subscribedStream][0].time;
