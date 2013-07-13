@@ -631,7 +631,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				}
 
 				if (fragments[4] == "mentions") {
-					Post.getPostsMentioning(profile.id, null, done);
+					Post.getPostRowsFromKeyQuery("mentions", "user", profile.id.toString(), 0, 0, done);
 				} else {
 					Database.getStream(table, args, done);
 				}
