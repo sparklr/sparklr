@@ -30,28 +30,23 @@
 		  <fieldset>
 				<input type='radio' name='private' id='public' value='0'<% if (!data.private) %>checked<% endif %> onclick='updateLists()'>
 				<label for='public' class='radio'><b>Public</b><br>
-					 <p>Anyone can see anything.</p>
+					 <p>Only the following blacklisted users cannot see your content.</p>
+					 <div id='blacklist' style='margin:15px;padding-right:35px;display: {(data.private ? 'none' : 'block')}'>
+					  <input onkeydown='return addUserToList_Keydown(event,0);' type='text' placeholder='Type a user to blacklist' style='margin:5px;width:400px' class='t1'>
+					  </div>
 				</label>
 		  </fieldset>
 		  <fieldset>
 				<input type='radio' name='private' id='private' value='1'<% if (data.private) %>checked<% endif %> onclick='updateLists()'>
 				<label for='private' class='radio'><b>Private</b><br>
-					 <p>Only whitelisted users can see profile, posts, and respond to you.<br>
+					 <p>Only the following whitelisted users can see profile, posts, and respond to you.<br>
+					 <div id='whitelist' style='margin:15px;padding-right:35px;display: {(data.private ? 'block' : 'none')}'>
+						 <input onkeydown='return addUserToList_Keydown(event,1);' type='text' placeholder='Type a user to whitelist' style='margin:5px;width:400px' class='t1'>
+					 </div>
 					 </p>
 				</label>
 		  </fieldset>
 
-		  <div id='blacklist' style='display: {(data.private ? 'none' : 'block')}'>
-			  <h2>blacklist</h2>
-			  The following users are blocked from seeing your profile and posts.<br>
-			  <input onkeydown='return addUserToList_Keydown(event,0);' type='text' placeholder='Person to ignore' style='margin:5px;' class='t1'>
-		  </div>
-
-		  <div id='whitelist' style='display: {(data.private ? 'block' : 'none')}'>
-			  <h2>whitelist</h2>
-			  Only the following users can see your profile and posts.<br>
-			  <input onkeydown='return addUserToList_Keydown(event,1);' type='text' placeholder='Person to whitelist' style='margin:5px;' class='t1'>
-		  </div>
 		  <br><br>
 		  <% endif %>
 		  <% if (fragments[2] == "account") %>	
