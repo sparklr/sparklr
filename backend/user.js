@@ -69,12 +69,12 @@ exports.canSeeUser = function(targetUser, fromUser) {
 	if (targetUser.id == fromUser) return true;
 
 	var blacklist = (targetUser.blacklist || "").split(",");
-	if (blacklist.indexOf(fromUser) !== -1)
+	if (blacklist.indexOf(fromUser.toString()) !== -1)
 		return false;
 
 	if (targetUser.private) {
 		var whitelist = (targetUser.whitelist || "").split(",");
-		if (whitelist.indexOf(fromUser) === -1)
+		if (whitelist.indexOf(fromUser.toString()) === -1)
 			return false;
 	}
 

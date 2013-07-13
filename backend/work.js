@@ -269,7 +269,7 @@ exports.run = function(request, response, uri, sessionid) {
 						break;
 					case "list":
 						var list = (postObject.type ? userobj.whitelist : userobj.blacklist);
-						list = list.split(",");
+						list = (list || "").split(",");
 
 						if (postObject.action) {
 							 if (list.indexOf(postObject.user.toString()) === -1)
