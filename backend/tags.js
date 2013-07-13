@@ -2,30 +2,6 @@
 var toolbox = require("./toolbox");
 var database = require("./database");
 
-exports.getPostsByTag = function(tag, since, starttime, callback) {
-	var query = "SELECT `postid` FROM `tags` WHERE `tag` = " + database.escape(tag);
-	if (since)
-		query += " AND `time` > " + parseInt(since);
-	if (starttime)
-		query += " AND `time` < " + parseInt(starttime);
-
-
-	database.query(query, function(err,rows) {
-		if (err)
-			return callback(err);
-
-		if (rows.length < 1) {
-			callback(null, []);
-			return; 
-		}
-		var postids = [];
-		for (id in rows)
-			postids.push(rows[id].postid);
-		
-		database.getStream("timeline", { id: postids }, callback);
-	});
-}
-
 exports.processPostTags = function(body, id) {
 	var tagregex =  /\B#([\w-]+)/gi;
 	var tags = body.match(tagregex);

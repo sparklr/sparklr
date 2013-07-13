@@ -145,26 +145,6 @@ exports.repost = function(user, postid, reply, callback) {
 	});
 }
 
-exports.getPostsMentioning = function(user, since, callback) {
-	var query = "SELECT `postid` FROM `mentions` WHERE `user` = " + parseInt(user);
-	if (since)
-		query += " AND `time` > " + parseInt(since);
-
-	database.query(query, function(err,rows) {
-		if (err)
-			return callback(err);
-
-		if (rows.length < 1) {
-			callback(null, []);
-			return; 
-		}
-		var postids = [];
-		for (id in rows)
-			postids.push(rows[id].postid);
-
-		database.getStream("timeline", { id: postids }, callback);
-	});
-}
 function processMentions(post, mentioner, postid) {
 	var matches = post.toString().match(/@([\w-]+)/gi);
 	for (i in matches) {
@@ -181,3 +161,27 @@ function processMentions(post, mentioner, postid) {
 	}
 }
 
+exports.getPostRowsFromKeyQuery = function(table, key, value, since, starttime, callback) {
+	var query = "SELECT `postid` FROM " + database.escapeId(table) + " WHERE " + database.escapeId(key) + " = " + database.escape(value);
+	if (since)
+		query += " AND `time` > " + parseInt(since);
+	if (starttime)
+		query += " AND `time` < " + parseInt(starttime);
+
+
+	database.query(query, function(err,rows) {
+		if (err)
+			return callback(err);
+
+		if (rows.length < 1) {
+			callback(null, []);
+			return; 
+		}
+		var postids = [];
+		for (id in rows)
+			postids.push(rows[id].postid);
+		
+		database.getStream("timeline", { id: postids }, callback);
+	});
+
+}
