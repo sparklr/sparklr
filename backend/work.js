@@ -543,6 +543,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				callback(comments);
 			});
 			break;
+			fragments[3] = "0";
 		case "stream":
 			var stream = parseInt(fragments[3]);
 			if (isNaN(stream)) {
@@ -565,6 +566,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			if (uri.query.starttime) {
 				args.starttime = uri.query.starttime;
 			}
+			if (uri.query.photo)
+				args.type = 1;
 
 			Database.getStream("timeline", args, function(err, rows) {
 				if (err) return do500(response, err);
