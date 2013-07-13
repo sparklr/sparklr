@@ -64,6 +64,22 @@ exports.getFollowing = function(userid,callback) {
 	})
 }
 
+exports.canSeeUser = function(targetUser, fromUser) {
+	if (targetUser.id == fromUser) return true;
+
+	var blacklist = (targetUser.blacklist || "").split(",");
+	if (blacklist.indexOf(fromUser) !== -1)
+		return false;
+
+	if (targetUser.private) {
+		var whitelist = (targetUser.whitelist || "").split(",");
+		if (whitelist.indexOf(fromUser) === -1)
+			return false;
+	}
+
+	return true;
+}
+
 exports.trySignin = function(user,pass,callback) {
 	database.query("SELECT * FROM `users` WHERE `username` = " + database.escape(user) + " OR `email` = " + database.escape(user) + ";", function(err,rows) 
 	{

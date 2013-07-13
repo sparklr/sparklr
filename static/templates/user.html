@@ -7,15 +7,9 @@
 						<img src='{getAvatar(fragments[2])}'>
 					</div>
 					<b>{getUserHandle(fragments[2])}</b> has a <b>private profile</b>.<br>
-					In order to view this page, you and {getUserHandle(fragments[2])} must both be following each other.
+					In order to view this page, {getUserHandle(fragments[2])} must whitelist you.
 					<br><br>
-					<% if (data.info.following) %>
-					You are following {getUserHandle(fragments[2])} and await his/her mutual follow.
-					<br>
-					<input type='button' value='Unfollow' onClick='unfollow({parseInt(fragments[2])})'>
-					<% else %>
-					<input type='button' value='Follow' onClick='follow({parseInt(fragments[2])})'>
-					<% endelse %>
+					<input type='button' value='Request Whitelist' id='btnWhitelist' onClick='requestWhitelist({fragments[2]});'>
 				</div>
 			<script>
 		} else {
@@ -38,7 +32,7 @@
 		<div id='sidebar_links'>
 			<% if (data.user == curUser) %> 
 			<a href='javascript:editProfile();' id='editBtn'>Edit</a>
-			<a href='/#settings'>Account Settings</a>
+			<a href='/#/settings'>Account Settings</a>
 			<a href='javascript:signOff();'>Sign off</a>
 			<% else %>
 			<a href='javascript:mention("{data.handle}");'>Mention</a>

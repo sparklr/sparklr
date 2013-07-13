@@ -235,3 +235,19 @@ function updateSettingsCallback(result, message) {
 	}
 }
 
+function getUserSuggestions(input) {
+	var items = [];
+	for (id in DISPLAYNAMES) {
+		if (new RegExp(input, "i").test(DISPLAYNAMES[id])) {
+			items[id] = DISPLAYNAMES[id];
+		}
+	}
+	return items;
+}
+
+function requestWhitelist(user) {
+	ajaxGet("work/requestwhitelist/" + user, null, function() {
+		_g("btnWhitelist").disabled = true;
+		_g("btnWhitelist").value = "Request Sent";
+	});
+}

@@ -267,6 +267,27 @@ exports.run = function(request, response, uri, sessionid) {
 						Database.updateObject("users", userobj);
 						sendObject(response, { result: true, message: "" });
 						break;
+					case "list":
+						var list = (postObject.type ? userobj.whitelist : userobj.blacklist);
+						list = list.split(",");
+
+						if (postObject.action) {
+							 if (list.indexOf(postObject.user.toString()) === -1)
+								  list.push(postObject.user);
+						} else {
+							 list.splice(list.indexOf(postObject.user.toString()), 1);
+						}
+
+						if (postObject.type) {
+							userobj.whitelist = list.join(",");
+						} else {
+							userobj.blacklist = list.join(",");
+						}
+
+						console.log(postObject);
+						Database.updateObject("users", userobj);
+						sendObject(response, { result: true, message: "" });
+						break;
 					case "delete": 
 						var result = {};
 
@@ -561,13 +582,12 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					return do400(response, 404, "no such user");
 				}
 				var profile = users[0];
-				if (profile.private) {
-					if (userid != userobj.id && (userobj.following.indexOf(userid) == -1 || userobj.followers.indexOf(userid) == -1)) {
-						return do400(response, 403, {
-							notFriends: true,
-							following: userobj.following.indexOf(userid) != -1
-						});
-					}
+			
+				if (!User.canSeeUser(profile, userobj.id)) {
+					return do400(response, 403, {
+						notFriends: true,
+						following: userobj.following.indexOf(userid) != -1
+					});
 				}
 
 				var obj = {
@@ -735,6 +755,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				});
 				sendObject(response, true);
 			});
+			break;
+		case "requestwhitelist":
+			Notification.addUserNotification(fragments[3], "", 0, userobj.id, Notification.N_WHITELIST);
+			sendObject(response,true);
 			break;
 		case "tag":
 			var tag = fragments[3];
