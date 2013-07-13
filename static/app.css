@@ -1044,28 +1044,6 @@ div.popup textarea {
     100% { opacity: 0.5; }
 }
 
-/* Ajax loading GIF */
-#loading {
-	display: block;
-	position: fixed;
-	top: 20px;
-	right: 20px;
-	opacity: 0;
-	-webkit-transition: all 1s ease;
-	-webkit-animation-name: ajax;
-    -webkit-animation-iteration-count: infinite;
-	-webkit-animation-duration: 0.7s;
-	width: 8px;
-	height: 8px;
-	background: rgba(255,255,255,0.5);
-}
-
-@-webkit-keyframes ajax {
-	0% { top: 5px; -webkit-transform: rotate(0deg) }
-	50% { top: 20px; -webkit-transform: rotate(180deg)}
-	100% { top: 5px; -webkit-transform: rotate(360deg)}
-}
-
 #scrolltotop{
 	background-image: url(arrow.png);
 	width: 64px;

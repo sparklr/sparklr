@@ -167,13 +167,12 @@ function getRelativeTime(time) {
 }
 
 function updateUI() { //interval that scans DOM, updates UI
-	var arr = document.getElementsByTagName("*");
+	var arr = document.getElementsByTagName("div");
 	for (i=0;i<arr.length;i++) {
 		if (arr[i].className == "time" || arr[i].className.indexOf("time_raw") != -1) {
 			arr[i].innerHTML = getRelativeTime(parseInt(arr[i].getAttribute("data-time")));
 		}
 	}
-	
 }
 
 setInterval("updateUI();", 1000);

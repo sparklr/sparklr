@@ -1,5 +1,4 @@
 var ajaxCooldown = [];
-var pendingTimer = [];
 
 function ajaxGet(url, data, callback) {
 	if (ajaxCooldown[url]) {
@@ -11,8 +10,6 @@ function ajaxGet(url, data, callback) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 			ajaxCooldown[url] = 0;
-			clearTimeout(pendingTimer[url]);
-			_g("loading").style.opacity = 0;
 
 			var data = xhr.responseText;
 			try {
@@ -39,9 +36,6 @@ function ajaxGet(url, data, callback) {
 	
 	xhr.send(null);
 	ajaxCooldown[url] = 1;
-	pendingTimer[url] = setTimeout(function() {
-		_g("loading").style.opacity = 1;
-	}, 300);
 }
 
 function pollData() {
