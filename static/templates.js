@@ -4,7 +4,6 @@ function renderPageFromTemplate() {
 	var fragments = location.hash.split("/");
 	var template = fragments[1];
 
-	console.log(getTemplate(template));
 	var templateData = getTemplate(template);
 	
 	ajaxGet("work/" + location.hash.substring(2), null, function(data) {
@@ -17,7 +16,7 @@ function renderPageFromTemplate() {
 		} else {
 			_g("sidebar").innerHTML = "";
 		}
-	updateUI();
+		updateUI();
 
 	});
 }

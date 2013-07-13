@@ -2,10 +2,13 @@
 var toolbox = require("./toolbox");
 var database = require("./database");
 
-exports.getPostsByTag = function(tag, since, callback) {
+exports.getPostsByTag = function(tag, since, starttime, callback) {
 	var query = "SELECT `postid` FROM `tags` WHERE `tag` = " + database.escape(tag);
 	if (since)
 		query += " AND `time` > " + parseInt(since);
+	if (starttime)
+		query += " AND `time` < " + parseInt(starttime);
+
 
 	database.query(query, function(err,rows) {
 		if (err)
@@ -18,7 +21,7 @@ exports.getPostsByTag = function(tag, since, callback) {
 		var postids = [];
 		for (id in rows)
 			postids.push(rows[id].postid);
-
+		
 		database.getStream("timeline", { id: postids }, callback);
 	});
 }

@@ -253,24 +253,33 @@ function getLastPostTime() {
 	return timelineEvents[subscribedStream][timelineEvents[subscribedStream].length - 1].time;
 }
 
-function fetchOlderPosts() {
-	if (subscribedStream == null || !timelineEvents[subscribedStream] || timelineStream[subscribedStream].length < 1) return;
-	var query;
-	
-	query = "work/stream/" + subscribedStream + "?starttime=" + timelineEvents[subscribedStream][0].time;
+function streamUrl(since,start) {
+	var query = "/stream/";
+
+	if (currentPageType == "TAG")
+		query = "/tag/";
+	if (currentPageType == "MENTIONS")
+		query = "/mentions/";
+
+	query += subscribedStream + "?since=" + since;
+	if (start)
+		query += "&starttime=" + start;
+
 	if (currentPageType == "PHOTO")
-		query += "&photo";
+		query += "&photo=1";
+
+	return query;
+}
+
+function fetchOlderPosts() {
+	if (subscribedStream == null || !timelineEvents[subscribedStream] || timelineEvents[subscribedStream].length < 1) return;
+	var query = "work" + streamUrl(0,timelineEvents[subscribedStream][0].time);
 
 	ajaxGet(query,null,function(data) {
-		if (data.timeline) { 
-		addTimelineArray(data.timeline,subscribedStream,true);
-		for (var i = data.timeline.length - 1; i > 0 ; i--) {
-			addTimelineEvent(data.timeline[i], true);
-		}
-		lastUpdateTime = Math.floor((new Date).getTime() / 1000);
-		}
-		else {
-			addBoardItems(data,true);
+		var items = data.timeline || data;
+		addTimelineArray(items,subscribedStream,true);
+		for (var i = items.length - 1; i > 0 ; i--) {
+			addTimelineEvent(items[i], true);
 		}
 	});
 }

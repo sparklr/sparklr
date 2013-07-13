@@ -173,7 +173,7 @@ function processMentions(post, mentioner, postid) {
 			if (rows.length > 0) {
 				Notification.addUserNotification(rows[0].id, "", postid, mentioner, Notification.N_MENTION);
 
-			database.postObject("mentions", { user: rows[0].id, postid: postid }, function(err) {
+			database.postObject("mentions", { user: rows[0].id, postid: postid, time: toolbox.time() }, function(err) {
 				if (err) console.log(err);
 			});
 			}
