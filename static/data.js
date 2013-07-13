@@ -53,14 +53,7 @@ function pollData() {
 		case "MENTIONS":
 		case "TAG":
 		case "STREAM":
-			query = "/stream/" + subscribedStream + "?since=" + lastUpdateTime;
-			if (currentPageType == "PHOTO")
-				query += "&photo";
-			if (currentPageType == "TAG")
-				query = "/tag/" + subscribedStream + "?since=" + lastUpdateTime;
-			if (currentPageType == "MENTION")
-				query = "/mentions/" + subscribedStream + "?since=" + lastUpdateTime;
-
+			query = streamUrl(lastUpdateTime);
 			callback = function(data,xhr) {
 				addTimelineArray(data.timeline,subscribedStream);
 				for (var i = data.timeline.length - 1; i >= 0; i--) {

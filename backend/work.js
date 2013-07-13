@@ -760,7 +760,9 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "tag":
 			var tag = fragments[3];
 			var since = uri.query.since;
-			Tags.getPostsByTag(tag, since, function(err,rows) {
+			var starttime = uri.query.starttime;
+
+			Tags.getPostsByTag(tag, since, starttime, function(err,rows) {
 				if (err) do500(response,err);
 				callback(rows);
 			});
