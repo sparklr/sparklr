@@ -46,6 +46,7 @@ var app = function(payload) {
 	FRIENDS = payload.friends;
 	DISPLAYNAMES = payload.displayNames;
 	USERHANDLES = payload.userHandles;
+	IS_PRIVATE = payload.private;
 
 	updateFriendsList();
 

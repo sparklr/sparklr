@@ -2,6 +2,7 @@ var FRIENDS = [];
 var DISPLAYNAMES = [];
 var USERHANDLES = [];
 var AVATAR_IDS = [];
+var IS_PRIVATE = false;
 var handlesToFetch = [];
 var fetchTaskAsync;
 
