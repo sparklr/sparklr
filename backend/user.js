@@ -1,7 +1,8 @@
-var database = require("./database");
+var Database = require("./database");
 var toolbox = require("./toolbox");
 var bcrypt = require("bcrypt");
 var crypto = require("crypto");
+var async = require("async");
 
 var CACHE_DISPLAYNAME = [];
 
@@ -21,15 +22,15 @@ exports.generateAuthkey = function(user) {
 }
 
 exports.getUserProfile = function(userid,callback) {
-	database.query("SELECT * FROM `users` WHERE `id` = " + parseInt(userid), callback);
+	Database.query("SELECT * FROM `users` WHERE `id` = " + parseInt(userid), callback);
 }
 
 exports.getUserProfileByUsername = function(username,callback) {
-	database.query("SELECT * FROM `users` WHERE `username` = " + database.escape(username), callback);
+	Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(username), callback);
 }
 
 exports.getUserProfileByAnything = function(query,callback) {
-	database.query("SELECT * FROM `users` WHERE `email` = " + database.escape(query) + " OR `username` = " + database.escape(query), callback);
+	Database.query("SELECT * FROM `users` WHERE `email` = " + Database.escape(query) + " OR `username` = " + Database.escape(query), callback);
 }
 
 exports.getMassUserDisplayName = function(following,callback) {
@@ -38,7 +39,7 @@ exports.getMassUserDisplayName = function(following,callback) {
 		querystr += "'" + following[i] + "',";
 	querystr += "'" + following[following.length - 1] + "')";
 
-	database.query(querystr, callback);
+	Database.query(querystr, callback);
 }
 
 exports.getOnlineFriends = function(friends, callback) {
@@ -49,7 +50,7 @@ exports.getOnlineFriends = function(friends, callback) {
 	querystr += "'" + parseInt(friends[friends.length - 1]) + "')";
 	querystr += " AND `lastseen` > " + Math.floor(((new Date).getTime() / 1000) - 60);
 
-	database.query(querystr, callback);
+	Database.query(querystr, callback);
 }
 
 exports.getFollowers = function(userid,callback) {
@@ -81,7 +82,7 @@ exports.canSeeUser = function(targetUser, fromUser) {
 }
 
 exports.trySignin = function(user,pass,callback) {
-	database.query("SELECT * FROM `users` WHERE `username` = " + database.escape(user) + " OR `email` = " + database.escape(user) + ";", function(err,rows) 
+	Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(user) + " OR `email` = " + Database.escape(user) + ";", function(err,rows) 
 	{
 		if (rows.length < 1 || err) return callback(false);
 		bcrypt.compare(pass, rows[0].password, function(err,match) {
@@ -93,25 +94,25 @@ exports.trySignin = function(user,pass,callback) {
 
 exports.updateActivity = function(userobj) {
 	userobj.lastseen = toolbox.time();
-	database.updateObject("users", userobj);
+	Database.updateObject("users", userobj);
 }
 
 exports.resetPassword = function(userobj) {
 	var token = crypto.randomBytes(30).toString("hex");
 	userobj.password = "RESET:" + token;
-	database.updateObject("users", userobj);
+	Database.updateObject("users", userobj);
 	return token;
 }
 
 exports.signupUser = function(inviteid, username, email, password, callback) {
-	database.query("SELECT * FROM `invites` WHERE `id` = " + database.escape(inviteid), function(err, inviterows) {
+	Database.query("SELECT * FROM `invites` WHERE `id` = " + Database.escape(inviteid), function(err, inviterows) {
 		if (err) return callback(err);
 		if (!inviterows[0]) return callback(1);
 
 		username = username.replace(/[^A-Za-z0-9]/g, "");
 		exports.generatePass(password, function(err,pass) {
 
-			database.postObject("users", {
+			Database.postObject("users", {
 				username: username,
 				password: pass,
 				email: email,
@@ -129,11 +130,64 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 					if (err) return false;
 					data[0].following += "," + rows.insertId;
 					data[0].followers += "," + rows.insertId;
-					database.updateObject("users", data[0]);
+					Database.updateObject("users", data[0]);
 				});
 
-				database.deleteObject("invites", inviterows[0]);
+				Database.deleteObject("invites", inviterows[0]);
 			});
 		});
 	});
+}
+
+//TODO: possible exploit with splice
+exports.unfollow = function(userobj, tofollow, callback) {
+	if (userobj.following.indexOf(tofollow) != -1) {
+		userobj.following.splice(userobj.following.indexOf(tofollow), 1);
+
+		async.parallel([
+			function(callback) {
+				Database.updateObject("users", userobj, callback);
+			},
+			function(callback) {
+				Database.getObject("users", tofollow, function(err, rows) {
+					if (err) return callback(err); //return do500(response, err);
+					if (rows.length < 1) return callback(404); //do400(response, 404);
+					var otherUser = rows[0];
+
+					otherUser.followers = otherUser.followers.split(",");
+					otherUser.followers.splice(otherUser.followers.indexOf(userobj.id), 1);
+					Database.updateObject("users", otherUser, callback);
+				});
+			}
+		], callback);
+
+	} else {
+		callback();
+	}
+}
+
+exports.removeFollower = function(userobj, tofollow, callback) {
+	if (userobj.followers.indexOf(tofollow) != -1) {
+		userobj.followers.splice(userobj.followers.indexOf(tofollow), 1);
+
+		async.parallel([
+			function(_callback) {
+				Database.updateObject("users", userobj, _callback);
+			},
+			function(_callback) {
+				Database.getObject("users", tofollow, function(err, rows) {
+					console.log(rows);
+					if (err) return _callback(err); //return do500(response, err);
+					if (rows.length < 1) return _callback(404); //do400(response, 404);
+					var otherUser = rows[0];
+
+					otherUser.following = otherUser.following.split(",");
+					otherUser.following.splice(otherUser.following.indexOf(userobj.id), 1);
+					Database.updateObject("users", otherUser, _callback);
+				});
+			}
+		], callback);
+	} else {
+		callback();
+	}
 }

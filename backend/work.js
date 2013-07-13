@@ -274,8 +274,12 @@ exports.run = function(request, response, uri, sessionid) {
 						if (postObject.action) {
 							 if (list.indexOf(postObject.user.toString()) === -1)
 								  list.push(postObject.user);
+							  if (postObject.type == 0)
+								  User.removeFollower(userobj, postObject.user, function(err){});
 						} else {
 							 list.splice(list.indexOf(postObject.user.toString()), 1);
+							  if (postObject.type == 1)
+								  User.removeFollower(userobj, postObject.user, function(){});
 						}
 
 						if (postObject.type) {
@@ -499,7 +503,18 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				function(callback) {
 					Database.getObject("timeline", fragments[3], function(err, res) {
 						posts = res;
-						callback(err);
+						if (!err && res.length > 0) {
+							User.getUserProfile(res[0].from, function(err, rows) {
+								if (!err && rows.length > 0) {
+									if (!User.canSeeUser(rows[0], userobj.id)) {
+										return do400(response, 403);
+									}
+								}
+								callback(err);
+							});
+						} else {
+							callback(err);
+						}
 					});
 				},
 				function(callback) {
@@ -666,49 +681,31 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				tofollow = parseInt(tofollow);
 				userobj.following.push(tofollow);
 
-				async.parallel([
-					function(callback) {
-						Database.updateObject("users", userobj, callback);
-					},
-					function(callback) {
-						Database.getObject("users", tofollow, function(err, rows) {
-							if (err) return do500(response, err);
-							if (rows.length < 1) return do400(response, 404);
-							var otheruser = rows[0];
-							otheruser.followers += "," + userobj.id;
+				Database.getObject("users", tofollow, function(err, rows) {
+					if (err) return do500(response, err);
+					if (rows.length < 1) return do400(response, 404);
+
+					var otheruser = rows[0];
+					if (!User.canSeeUser(otheruser, userobj.id))
+						return do400(response, 403);
+
+					otheruser.followers += "," + userobj.id;
+					async.parallel([
+						function(callback) {
 							Database.updateObject("users", otheruser, callback);
-						});
-					}
-				], callback);
+						},
+						function(callback) {
+							Database.updateObject("users", userobj, callback);
+						}
+					], callback);
+				});
 			} else {
 				callback();
 			}
 			break;
 		case "unfollow":
 			var tofollow = fragments[3];
-			if (userobj.following.indexOf(tofollow) != -1) {
-				userobj.following.splice(userobj.following.indexOf(tofollow), 1);
-
-				async.parallel([
-					function(callback) {
-						Database.updateObject("users", userobj, callback);
-					},
-					function(callback) {
-						Database.getObject("users", tofollow, function(err, rows) {
-							if (err) return do500(response, err);
-							if (rows.length < 1) return do400(response, 404);
-							var otherUser = rows[0];
-
-							otherUser.followers = otherUser.followers.split(",");
-							otherUser.followers.splice(otherUser.followers.indexOf(userobj.id), 1);
-							Database.updateObject("users", otherUser, callback);
-						});
-					}
-				], callback);
-
-			} else {
-				callback();
-			}
+			User.unfollow(userobj, tofollow, callback);
 			break;
 		case "checkusername":
 			User.getUserProfileByUsername(fragments[3], function(err, rows) {
