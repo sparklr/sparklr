@@ -221,7 +221,7 @@ function postComment() {
 		comment: _g("composer").value
 	}
 
-	setTimeout('_g("composer").value="";',0);
+	setTimeout('_g("composer").value="";',10);
 
 	if (!vars.comment) return;
 
@@ -367,7 +367,7 @@ function postToTimeline() {
 		body: _g("composer").value
 	};
 
-	setTimeout('_g("composer").value = "";expandTextarea({ target: _g("composer") });',0);
+	setTimeout('_g("composer").value = "";expandTextarea({ target: _g("composer") });',10);
 
 	if (imgAttachments != null) {
 		_g("attachment").className += " pulse";
