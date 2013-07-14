@@ -405,13 +405,9 @@ function postToTimeline() {
 		xhr.send();
 }
 
-function uploadStreamImageCallback(files) {
-	var reader = new FileReader();
-	reader.onload = function(e) { 
-		_g("attachment").style.backgroundImage = "url(" + e.target.result + ")";
-		_g("attachment").style.display = "block";
-		imgAttachments = e;
-	}
-	reader.readAsDataURL(files[0]);
+function uploadStreamImageCallback(e) {
+	_g("attachment").style.backgroundImage = "url(" + e.target.result + ")";
+	_g("attachment").style.display = "block";
+	imgAttachments = e;
 }
 

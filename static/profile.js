@@ -2,12 +2,11 @@
 function updateHeader(user, avatarid, animate) {
 	var h = _g("profileheader");
 	h.style.backgroundImage = 'url(' + STATICHOST + "/users/" + user + '?' + avatarid + ')';
-	h.className = "profileheader";
-	if (animate)
-		h.className += " bgslide";
-	setTimeout(function() {
-		h.className = "profileheader";
-	},3500);
+}
+
+function updateBackground(user, id) {
+	var h = _g("profilebackground");
+	h.style.backgroundImage = 'url(' + STATICHOST + "/backgrounds/" + user + '?' + id + ')';
 }
 
 function editProfile() {
@@ -34,24 +33,18 @@ function editProfile() {
 	}
 }
 
-function avatarUploadCallback(files) {
-	var reader = new FileReader();
-	reader.onload = function(e) { uploadAvatar(e); }
-	reader.readAsDataURL(files[0]);
+function avatarUploadCallback(e) {
+	uploadImage(e, "work/avatar", function(xhr) {
+		var avatarid = xhr.responseText;
+		updateHeader(curUser, avatarid, true);
+		updateAvatar(curUser, avatarid);
+	});
 }
 
-function uploadAvatar(e) {
-	var data = [];
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4) {
-			var avatarid = xhr.responseText;
-			updateHeader(curUser, avatarid, true);
-			updateAvatar(curUser, avatarid);
-		}
-	}
-	xhr.open("POST", "work/avatar");
-	xhr.send(e.target.result);
+function backgroundUploadCallback(e) {
+	uploadImage(e, "work/background", function(xhr) {
+		updateBackground(curUser, xhr.responseText);
+	});
 }
 
 function addUserToList_Keydown(e, list) {
