@@ -46,7 +46,6 @@ div::-webkit-scrollbar-track {
 body { 
     color: #fff;
     background: #3F364A;
-	background-repeat: repeat-x;
     margin: 0px;
     padding: 0px;
 	font-family: 'PT Sans', sans-serif;
@@ -657,6 +656,7 @@ div.profileheader {
         inset 0px 0px 35px 2px rgba(255,255,255,0.4),
     inset 0px 0px 2px rgba(255,255,255,0.4);
     position: relative;
+	overflow: hidden;
 }
 
 div.profileheader a {

@@ -45,7 +45,7 @@
 		</div>
 		<p class='headertitle' id='userDisplayName'>{ getDisplayName(data.user) }</p>
 		<p class='headersubtitle'>@{getUserHandle(data.user)}</p>
-		<p class='headersubtitle' id='userBio'>{data.bio}</p>
+		<p class='headersubtitle' id='userBio'>{processMedia(data.bio.replace(/\n/g,'<br>'),true)}</p>
 		<div id='userTip' style='display:none;position:absolute;bottom:10px;left:0px'><p class='headersubtitle'>Drag and drop an image here</p></div>
 		<div style='position:absolute;bottom:5px;right:3px;'>
 			<input type='button' value='Posts' onClick='location.href="#/user/{data.user}/";'>

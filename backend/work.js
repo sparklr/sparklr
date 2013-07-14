@@ -347,7 +347,7 @@ exports.run = function(request, response, uri, sessionid) {
 							userobj.displayname = postObject.displayname.replace(/(\<|\>)/g, "");
 						}
 						if (postObject.bio.length < 300) {
-							userobj.bio = postObject.bio.replace(/(\<|\>)/g, "");
+							userobj.bio = postObject.bio;
 						}
 						Database.updateObject("users", userobj);
 						sendObject(response, {});
