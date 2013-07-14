@@ -664,13 +664,12 @@ div.profileheader a {
 
 #profilebackground {
 	position: fixed;
-	top: 85px;
+	top: 80px;
 	left: 0px;
+	bottom: -80px;
 	right: 0px;
-	bottom: 0px;
 	z-index: -1;
 	opacity: 0.6;
-	background-size: cover;
 }
 
 div.bgslide {

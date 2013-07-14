@@ -43,7 +43,7 @@ exports.handleUpload = function(data, userobj, args, callback) {
 }
 
 function resizeImage(input, output, callback) {
-	var process = spawn("convert", [input, "-resize", "1920x1080", "-strip", output]);
+	var process = spawn("convert", [input, "-resize", ">1920x1080", "-strip", output]);
 	process.on("close", function(code) {
 		callback(code);
 	});
