@@ -292,7 +292,7 @@ function renderTimeline() {
 	html += "</div></div><div id='timeline_container'></div>";
 	_g("content").innerHTML = html;
 	_g("attachfile").onchange = function(e) {
-		uploadStreamImageCallback(e.target.files);
+		loadImage(e.target.files[0], uploadStreamImageCallback);
 		e.target.value = "";
 	}
 	_g("attachment").onmousedown = function (e) {

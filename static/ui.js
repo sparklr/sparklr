@@ -268,13 +268,16 @@ function dropImage(e, callback) {
 	e.preventDefault();
 	e.stopPropagation();
 	
+	loadImage(e.dataTransfer.files[0], callback);
+
+	return false;
+}
+function loadImage(f, callback) {
 	var reader = new FileReader();
 	reader.onload = function(e) { 
 		callback(e);
 	}
-	reader.readAsDataURL(e.dataTransfer.files[0]);
-	
-	return false;
+	reader.readAsDataURL(f);
 }
 
 function dropPrevent(e) {

@@ -371,6 +371,12 @@ exports.run = function(request, response, uri, sessionid) {
 						break;
 					case "background":
 						var f = function() {
+							if (postObject.remove) {
+								userobj.background = 0;
+								Database.updateObject("users", userobj);
+								sendObject(response, true);
+								return;
+							}
 							Upload.handleUpload(postBody, userobj, {
 								id: userobj.id,
 								folder: "backgrounds"

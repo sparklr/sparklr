@@ -15,12 +15,14 @@ function editProfile() {
 		var bio = _g("userBio");
 		bio.setAttribute("contenteditable", true);
 		_g("userTip").style.display = "inline-block";
+		_g("backgroundTip").style.display = "inline-block";
 		_g("editBtn").innerHTML = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
 		var bio = _g("userBio");
 		bio.setAttribute("contenteditable", false);
 		_g("userTip").style.display = "none";
+		_g("backgroundTip").style.display = "none";
 	
 		var data = { 
 			"displayname": _g("userDisplayName").innerText,
@@ -44,6 +46,14 @@ function avatarUploadCallback(e) {
 function backgroundUploadCallback(e) {
 	uploadImage(e, "work/background", function(xhr) {
 		updateBackground(curUser, xhr.responseText);
+		_g("removeBackground").style.display = "inline-block";
+	});
+}
+
+function removeBackground() {
+	ajaxGet("work/background", { remove: true }, function() {
+		_g("removeBackground").style.display = "none";
+		_g("profilebackground").style.background = "";
 	});
 }
 
