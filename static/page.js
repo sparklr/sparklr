@@ -38,6 +38,9 @@ function updatePages(loaded) {
 	//fix height
 	_g("frame").style.minHeight = "640px";
 
+	//disable bg
+	_g("profilebackground").style.background = "";
+
 	var s = location.hash.split("/");
 
 	if (s[1] == "user" && isNaN(parseInt(s[2]))) {

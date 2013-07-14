@@ -23,7 +23,6 @@
 	var pageType = fragments[3];
 
 </script>
-<div id='profilebackground'></div>
 <% if (data.user == curUser) %>
 <div id='profileheader' class='profileheader' onDrop='dropImage(event, avatarUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'>
 	<% else %>
@@ -67,7 +66,7 @@
 				var arr = data.timeline;
 
 				for(var i = arr.length-1; i >= 0; i--) {
-				addTimelineEvent(arr[i]);
+					addTimelineEvent(arr[i]);
 				}
 
 				addTimelineArray(arr,subscribedStream);
