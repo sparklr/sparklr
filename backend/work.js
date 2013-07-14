@@ -156,7 +156,8 @@ exports.run = function(request, response, uri, sessionid) {
 							var f = function() {
 								Upload.handleUpload(postBody, userobj, {
 									width: 590,
-									height: 350
+									height: 350,
+									folder: "images"
 								}, function(err, id) {
 									if (err) return do500(response, err);
 									postObject.img = id;
@@ -357,12 +358,27 @@ exports.run = function(request, response, uri, sessionid) {
 							Upload.handleUpload(postBody, userobj, {
 								width: 50,
 								height: 50,
-								avatar: true
+								id: userobj.id,
+								folder: "avatars"
 							}, function(err, id) {
 								if (err) return do500(response, err);
 								userobj.avatarid = Toolbox.time();
 								Database.updateObject("users", userobj);
 								sendObject(response, userobj.avatarid);
+							});
+						};
+						dataComplete ? f() : request.on("end", f);
+						break;
+					case "background":
+						var f = function() {
+							Upload.handleUpload(postBody, userobj, {
+								id: userobj.id,
+								folder: "backgrounds"
+							}, function(err, id) {
+								if (err) return do500(response, err);
+								userobj.background = Toolbox.time();
+								Database.updateObject("users", userobj);
+								sendObject(response, userobj.background);
 							});
 						};
 						dataComplete ? f() : request.on("end", f);
@@ -610,6 +626,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					user: profile.id,
 					handle: profile.username,
 					avatarid: profile.avatarid,
+					background: profile.background,
 					following: (userobj.following.indexOf(profile.id.toString()) != -1),
 					name: profile.displayname,
 					bio: profile.bio

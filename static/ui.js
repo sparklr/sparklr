@@ -268,7 +268,11 @@ function dropImage(e, callback) {
 	e.preventDefault();
 	e.stopPropagation();
 	
-	callback(e.dataTransfer.files);
+	var reader = new FileReader();
+	reader.onload = function(e) { 
+		callback(e);
+	}
+	reader.readAsDataURL(e.dataTransfer.files[0]);
 	
 	return false;
 }
@@ -280,6 +284,18 @@ function dropPrevent(e) {
 	e.preventDefault();
 	e.stopPropagation();
 	return false;
+}
+
+function uploadImage(e, url, callback) {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+			callback(xhr);
+		}
+	}
+	xhr.open("POST", url);
+	xhr.setRequestHeader("X-X", AUTHKEY);
+	xhr.send(e.target.result);
 }
 
 function showSuggestionBox(show,x,y,items) {

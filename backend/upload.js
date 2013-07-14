@@ -12,11 +12,12 @@ exports.handleUpload = function(data, userobj, args, callback) {
 
 	var tmpfile = os.tmpdir() + "/upload_" + imgid;
 
-	var outfile = global.storageDir + "/";
-	if (args.avatar)
-		outfile += "avatars/" + userobj.id;
-	else
-		outfile += "images/" + imgid;
+	var outfile = global.storageDir + "/" + args.folder;
+	if (args.id) {
+		outfile += "/" + args.id;
+	} else {
+		outfile += "/" + imgid;
+	}
 
 	var outthumb = outfile + "_thumb.jpg";
 	outfile += ".jpg";
@@ -26,19 +27,23 @@ exports.handleUpload = function(data, userobj, args, callback) {
 
 		async.parallel([
 			function(callback) {
-				makeThumb(tmpfile, outthumb, args, callback);
+				if (args.width)
+					makeThumb(tmpfile, outthumb, args, callback);
+				else
+					callback();
 			},
 			function(callback) {
 				resizeImage(tmpfile, outfile, callback);
 			}
 		], function(err) {
+			console.log("hi");
 			callback(err, imgid);
 		});
 	});
 }
 
 function resizeImage(input, output, callback) {
-	var process = spawn("convert", [input, "-resize", "800x800", "-strip", output]);
+	var process = spawn("convert", [input, "-resize", "1920x1080", "-strip", output]);
 	process.on("close", function(code) {
 		callback(code);
 	});
