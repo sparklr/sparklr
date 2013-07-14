@@ -15,15 +15,12 @@ function editProfile() {
 		_g("userDisplayName").setAttribute("contenteditable", true);
 		var bio = _g("userBio");
 		bio.setAttribute("contenteditable", true);
-		bio.innerText = "Bio: " + bio.innerText;
 		_g("userTip").style.display = "inline-block";
 		_g("editBtn").innerHTML = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
 		var bio = _g("userBio");
 		bio.setAttribute("contenteditable", false);
-		if (bio.innerText.substring(0,5) == "Bio: ")
-			bio.innerText = bio.innerText.substring(4);
 		_g("userTip").style.display = "none";
 	
 		var data = { 

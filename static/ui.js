@@ -101,8 +101,8 @@ function processPost(post) {
 }
 
 
-function processMedia(text) {
-	var urlexp = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:([^\s()<>.]+[.]?)+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi; 
+function processMedia(text,noImages) {
+	var urlexp = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:([^\s()<>.]+[.]?)+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’]))/gi; 
 		text = text.replace(urlexp, function (match, p1, p2, p3, p4, p5) {
 		var url = match;
 	
@@ -115,8 +115,10 @@ function processMedia(text) {
 
 		var html = "<a href='" + url + "' target='_blank'>";
 
-		if (url.indexOf(".jpg") != -1 || url.indexOf(".png") != -1 || url.indexOf(".gif") != -1) {
-			html += "<img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"block\";'><br>";
+		if (!noImages) {
+			if (url.indexOf(".jpg") != -1 || url.indexOf(".png") != -1 || url.indexOf(".gif") != -1) {
+				html += "<img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"block\";'><br>";
+			}
 		}
 		html += match + "</a>";
 
