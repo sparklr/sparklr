@@ -761,7 +761,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			var q = "%" + unescape(fragments[3]) + "%";
 			async.parallel([
 				function(callback) {
-					Database.query("SELECT `username`, `id` FROM `users` WHERE `username` LIKE " + Database.escape(q) + " ORDER BY `lastseen` DESC LIMIT 30", function(err, rows) {
+					Database.query("SELECT `username`, `id` FROM `users` WHERE `displayname` LIKE " + Database.escape(q) + " OR `username` LIKE " + Database.escape(q) + " ORDER BY `lastseen` DESC LIMIT 30", function(err, rows) {
 						if (rows && rows.length > 0) {
 							results.users = rows;
 						}
