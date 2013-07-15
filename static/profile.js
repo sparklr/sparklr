@@ -70,8 +70,8 @@ function addUserToList_Keydown(e, list) {
 				break;
 			}
 		}
+		return false;
 	}
-	return result;
 }
 
 function addUserToList(list,user) {
