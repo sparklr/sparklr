@@ -32,7 +32,7 @@
 				<label for='public' class='radio'><b>Public</b><br>
 					 <p>Only the following blacklisted users cannot see your content.</p>
 					 <div id='blacklist' style='margin:15px;padding-right:35px;display: {(data.private ? 'none' : 'block')}'>
-					  <input onkeydown='return addUserToList_Keydown(event,0);' type='text' placeholder='Type a user to blacklist' style='margin:5px;width:400px' class='t1'>
+					  <input onblur='showSuggestionBox(false);' onkeydown='return addUserToList_Keydown(event,0);' type='text' placeholder='Type a user to blacklist' style='margin:5px;width:400px' class='t1'>
 					  </div>
 				</label>
 		  </fieldset>
@@ -41,7 +41,7 @@
 				<label for='private' class='radio'><b>Private</b><br>
 					 <p>Only the following whitelisted users can see profile, posts, and respond to you.<br>
 					 <div id='whitelist' style='margin:15px;padding-right:35px;display: {(data.private ? 'block' : 'none')}'>
-						 <input onkeydown='return addUserToList_Keydown(event,1);' type='text' placeholder='Type a user to whitelist' style='margin:5px;width:400px' class='t1'>
+						 <input onblur='showSuggestionBox(false);' onkeydown='return addUserToList_Keydown(event,1);' type='text' placeholder='Type a user to whitelist' style='margin:5px;width:400px' class='t1'>
 					 </div>
 					 </p>
 				</label>

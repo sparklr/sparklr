@@ -372,7 +372,7 @@ function showSuggestionBoxBelowElement(e) {
 		e.target.value = title;
 
 		showSuggestionBox(false);
-		return false;
+		return userid;
 	}
 
 	showSuggestionBox(items.length, x, y, items);
@@ -382,4 +382,16 @@ function showSuggestionBoxBelowElement(e) {
 		e.target.setAttribute("data-userid", id);
 		showSuggestionBox(false);
 	};
+}
+
+function search_Keydown(e) {
+	if (!e)
+		e = window.event;
+
+	var result = showSuggestionBoxBelowElement(e); 
+	if (e.keyCode == 13) {
+		if (result)
+			return location.href="/#/user/" + result;
+		search(e.target.value);
+	}
 }
