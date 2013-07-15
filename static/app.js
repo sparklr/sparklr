@@ -57,6 +57,10 @@ var app = function(payload) {
 	updateFriendsList();
 
 	addTimelineArray(payload.timelineStream, 0);
+
+	for (var i = 0; i < payload.trackedtags.length; i++) {
+		addTrackedTag(payload.trackedtags[i]);
+	}
 }
 
 var s = document.cookie;

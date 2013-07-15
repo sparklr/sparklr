@@ -58,7 +58,7 @@ a.person { color: #3a3a3a; font-weight: 700 }
 h2 {
     color: #555;
     font-weight: normal;
-    font-size: 28px;
+    font-size: 26px;
     padding: 3px;
     margin-bottom: 4px;
     margin-top: 0px;
@@ -435,6 +435,17 @@ div.commentcount.icon {
 	background-repeat: no-repeat;
 	width: 28px;
 	height: 30px;
+}
+
+a.tag {
+	display: inline-block;
+	background: #6a5a7f;
+	color: #fff;
+	padding: 0px 5px;
+	border-radius: 4px;
+	-webkit-border-bottom-left-radius: 12px;
+	-webkit-border-top-left-radius: 12px;
+	border: solid 1px #86749b;
 }
 
 div.repost {
@@ -1064,4 +1075,29 @@ div.popup textarea {
     opacity: 0;
     -webkit-transition: all 0.5s ease;
 	cursor: pointer;
+}
+
+/* Tag system */
+#trackedtags {
+}
+#trackedtags a {
+	padding: 5px;
+	color: #fff;
+	display: inline-block;
+	background: #2b2533;
+	color: #fff;
+	padding: 5px 10px;
+	border-radius: 4px;
+	-webkit-border-bottom-left-radius: 12px;
+	-webkit-border-top-left-radius: 12px;
+	border: solid 1px #43394f;
+	opacity: 0.6;
+	box-shadow: inset 0px 0px 3px #000;
+	margin: 3px;
+}
+h2 a.tag {
+	background: #2b2533;
+	border: solid 1px #43394f;
+	box-shadow: inset 0px 0px 3px #000;
+	padding: 3px 6px;
 }

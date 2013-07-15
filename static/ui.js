@@ -132,7 +132,7 @@ function processMedia(text,noImages) {
 
 	var tagregex =  /\B#([\w-]+)/gi;
 	text = text.replace(tagregex, function(match, tag) {
-		return "<a href='#/tag/" + tag + "'>" + match + "</a>";
+		return "<a href='#/tag/" + tag + "' class='tag'>" + match + "</a>";
 	});
 
 	return text;

@@ -411,3 +411,32 @@ function uploadStreamImageCallback(e) {
 	imgAttachments = e;
 }
 
+function addTrackedTag(tag) {
+	if (tag == "") return;
+	_g("trackedtags").innerHTML += "<a id='trackedtag_" + tag + "' href='#/tag/" + tag + "'>" + tag + "</a>";
+}
+
+function removeTrackedTag(tag) {
+	_g("trackedtags").removeChild(_g("trackedtag_" + tag));
+}
+
+function trackTag(tag) {
+	ajaxGet("work/track/" + tag, null, function () {
+		addTrackedTag(tag);
+		updateTrackTagBtns(tag);
+	});
+}
+
+function untrackTag(tag) {
+	ajaxGet("work/untrack/" + tag, null, function () {
+		removeTrackedTag(tag);
+		updateTrackTagBtns(tag);
+	});
+}
+
+function updateTrackTagBtns(tag) {
+	var e = _g("trackedtag_" + tag);
+	_g("trackbtn").style.display = e ? "none" : "inline-block";
+	_g("untrackbtn").style.display = !e ? "none" : "inline-block";
+
+}

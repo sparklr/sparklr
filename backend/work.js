@@ -699,6 +699,25 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				callback(rows);
 			});
 			break;
+		case "track":
+			var totrack = fragments[3];
+			if (!userobj.trackedtags)
+				userobj.trackedtags = "";
+			userobj.trackedtags = userobj.trackedtags.split(",");
+			if (userobj.trackedtags.indexOf(totrack) === -1)
+				userobj.trackedtags.push(totrack);
+			Database.updateObject("users", userobj, callback);
+			break;
+		case "untrack":
+			var totrack = fragments[3];
+			if (!userobj.trackedtags)
+				userobj.trackedtags = "";
+			userobj.trackedtags = userobj.trackedtags.split(",");
+			var index = userobj.trackedtags.indexOf(totrack);
+			if (index !== -1)
+				userobj.trackedtags.splice(index, 1);
+			Database.updateObject("users", userobj, callback);
+			break;
 		case "follow":
 			var tofollow = fragments[3];
 			if (userobj.following.indexOf(tofollow) == -1) {
