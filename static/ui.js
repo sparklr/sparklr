@@ -350,7 +350,7 @@ function showSuggestionBoxBelowElement(e) {
 
 	var node = e.target;
 	var x = 0;
-	var y = 40;//(document.body.scrollTop || document.documentElement.scrollTop);
+	var y = 35;//(document.body.scrollTop || document.documentElement.scrollTop);
 
 	while (node) {
 		x += node.offsetLeft;

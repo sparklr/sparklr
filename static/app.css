@@ -147,7 +147,7 @@ hr {
     height: 15px;
     vertical-align: top;
     margin-top: 7px;
-    margin-left: 18px;
+    margin-left: 20px;
 }
 #frame {
     width: 790px;
@@ -756,8 +756,8 @@ input[type=button]:hover, input[type=submit]:hover {
 }
 
 input.t1 {
-    width: 230px;
-    height: 34px;
+    width: 285px;
+    height: 25px;
     margin: 4px;
     font-size: 20px;
     border-radius: 4px;
@@ -772,7 +772,8 @@ input.t1:focus {
 
 input.s1 {
     width: 50px;
-    height: 40px;
+    height: 30px;
+	margin: 10px;
     padding: 2px;
     border-radius: 2px;
     font-size: 22px;
