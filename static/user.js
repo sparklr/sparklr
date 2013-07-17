@@ -127,27 +127,20 @@ function signOff() {
 }
 
 function inviteFriend() {
-	showPopup("<form onSubmit='inviteUser(to.value);return false;'><input type='text' class='t1' id='inviteField' name='to' autofocus='true' placeholder='Type an email address...'></form>");
+	eval(getTemplate("invite"));
+	showPopup(html);
 }
 
-function inviteUser(to) {
+function inviteUser(to,cb) {
 	ajaxGet("work/invite/" + to, null, function(result) {
-		if (result === true) 
-			inviteSuccess();
-		else
-			inviteFailed();
+		if (result === true) {
+			_g("inviteField").style.boxShadow = "none";
+			_g("inviteField").value = "";
+			cb.value = "Sent!";
+			setTimeout(hideAllPopups, 1000);
+		} else
+			_g("inviteField").style.boxShadow = "0px 0px 15px #ff0000";
 	});
-}
-
-function inviteFailed() {
-	_g("inviteField").style.boxShadow = "0px 0px 15px #ff0000";
-}
-
-function inviteSuccess() {
-	_g("inviteField").style.boxShadow = "none";
-	_g("inviteField").value = "";
-	_g("inviteField").placeholder = "Sent!";
-	setTimeout(hideAllPopups, 1000);
 }
 
 function checkPasswords(password1,password2) {
