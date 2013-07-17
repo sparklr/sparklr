@@ -8,11 +8,19 @@
 			for (var i = 0; i < data.users.length; i++) {
 				USERHANDLES[data.users[i].id] = data.users[i].username;
 	</script>
+	<div style='min-height:55px;'>
+		<a href='/#/user/{data.users[i].id}' class='person'>
+			<img src='{getAvatar(data.users[i].id)}' class='avatar'>
+			{getDisplayName(data.users[i].id)}
+		</a>
+	</div>
+	<!--
 	<div class='friend fadein' onClick='location.href="#/user/{data.users[i].id}";' style='width: 282px;background-image: url({STATICHOST}/users/{data.users[i].id});-webkit-animation-duration: {(Math.random() * 1.5)}s'>
 		<div style='position: absolute; bottom: 2px; right: 5px;'>
 		</div>
 		<span style='width:272px'>{getDisplayName(data.users[i].id) }</span>
 	</div>
+	-->
 	<script>
 			}
 		}
