@@ -3,6 +3,8 @@ var os = require("os");
 var toolbox = require("./toolbox");
 var exec = require("child_process").execFile;
 
+var cleanCSS = require("clean-css");
+
 exports.build = function(callback) {
 	console.log("Building CSS...");
 
@@ -76,7 +78,7 @@ exports.build = function(callback) {
 				return "image: url(" + spritehash + ".png);\nbackground-position: 0px -" + y + "px;";
 			});
 
-			fs.writeFileSync("../static/out/" + spritehash + ".png", fs.readFileSync(outputFileName));
+			fs.writeFileSync("out/" + spritehash + ".png", fs.readFileSync(outputFileName));
 
 			// CSS Sprite is now generated. Next step.
 			buildCSSPrefixes();
@@ -146,7 +148,10 @@ exports.build = function(callback) {
 	};
 
 	var writeCSS = function() {
-		fs.writeFileSync("../static/out/" + cssHash + ".css", css);
+		// Last step: minify it 
+		css = cleanCSS.process(css);
+
+		fs.writeFileSync("out/" + cssHash + ".css", css);
 		console.log("CSS written: " + cssHash);
 		callback(cssHash);
 	};

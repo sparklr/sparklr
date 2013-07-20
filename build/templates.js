@@ -8,7 +8,6 @@ exports.build = function(callback) {
 
 	fs.readdir("../static/templates", function(err, files) {
 		for (var i = 0; i < files.length; i++) {
-			console.log("Compiling " + files[i]);
 			var data = fs.readFileSync("../static/templates/" + files[i]);
 			var id = files[i].split(".");
 			id = id[0];
@@ -22,8 +21,7 @@ exports.build = function(callback) {
 		}
 
 		console.log("Writing ../static/out/templates.js");
-		fs.writeFile("../static/out/templates.js", templateData);
-		callback();
+		callback(templateData);
 	});
 
 }
