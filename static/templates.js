@@ -1,4 +1,4 @@
-var TEMPLATES = [];
+var TEMPLATES = TEMPLATES || [];
 
 function renderPageFromTemplate() {
 	var fragments = location.hash.split("/");

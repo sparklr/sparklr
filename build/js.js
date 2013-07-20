@@ -9,7 +9,7 @@ exports.build = function(templateData, callback) {
 	var header = fs.readFileSync("../static/templates/headers_test.html").toString();
 
 	// Store the concatenated JS
-	var jsData = "";
+	var jsData = templateData;
 	
 	var scriptRegex = new RegExp("\\<script(.*)src=('|\")\{global.commonHost\}/(.*)('|\")", "g");
 
@@ -17,8 +17,6 @@ exports.build = function(templateData, callback) {
 		var jsFile = match[3];
 		jsData += fs.readFileSync("../static/" + jsFile).toString();
 	}
-
-	jsData += templateData;
 
 	// Uglify it (compress it)
 	var uglify = require("uglify-js");
