@@ -18,13 +18,14 @@ var loadTemplates = function() {
 	} else { 
 		fs.readFile("../static/templates/headers_live.html", function(err, data) {
 			var cssHash = fs.readFileSync("../build/out/p18_csshash_frontend").toString();
+			var jsHash = fs.readFileSync("../build/out/p18_jshash_frontend").toString();
+
 			eval(templates.parse(data.toString()));
 			frontendTemplate = html + "<body>";
 		});
 	}
 
 	fs.readFile("../../p18mobile/static/templates/headers_test.html", function(err, data) {
-		var jsHash = fs.readFileSync("../build/out/p18_jshash_frontend").toString();
 		eval(templates.parse(data.toString()));
 		mobileTemplate = html + "<body>";
 	});
