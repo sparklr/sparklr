@@ -1,9 +1,9 @@
 var fs = require("fs");
 
-var templateData = "";
 var templateFormatter = require("../static/templates.js");
 
 exports.build = function(callback) {
+	var templateData = "var TEMPLATES = [];";
 	console.log("Building templates...");
 
 	fs.readdir("../static/templates", function(err, files) {
