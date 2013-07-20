@@ -10,6 +10,11 @@ var externalTemplate = "";
 var mobileTemplate = "";
 
 var loadTemplates = function() {
+	if (global.liveSite) {
+		var buildData = require("../build/out/build");
+	} else {
+		var buildData = { cssHash_external: "external" };
+	}
 	if (!global.liveSite) { 
 		fs.readFile("../static/templates/headers_test.html", function(err, data) {
 			eval(templates.parse(data.toString()));
@@ -17,9 +22,6 @@ var loadTemplates = function() {
 		});
 	} else { 
 		fs.readFile("../static/templates/headers_live.html", function(err, data) {
-			var cssHash = fs.readFileSync("../build/out/p18_csshash_frontend").toString();
-			var jsHash = fs.readFileSync("../build/out/p18_jshash_frontend").toString();
-
 			eval(templates.parse(data.toString()));
 			frontendTemplate = html + "<body>";
 		});

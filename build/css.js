@@ -8,8 +8,19 @@ var cleanCSS = require("clean-css");
 exports.build = function(callback) {
 	console.log("Building CSS...");
 
+	buildCSSFromFile("../static/app.css", function(cssHash) {
+		global.buildData.cssHash_frontend = cssHash;
+		buildCSSFromFile("../static/external.css", function(cssHash) {
+			global.buildData.cssHash_external = cssHash;
+
+			callback();
+		});
+	});
+}
+
+var buildCSSFromFile = function(file, callback) {
 	// Load the source CSS
-	var css = fs.readFileSync("../static/app.css").toString();
+	var css = fs.readFileSync(file).toString();
 
 	// Generate a sha1 hash for the file name 
 	var cssHash = toolbox.sha1(css);
@@ -34,7 +45,7 @@ exports.build = function(callback) {
 		});
 		identCounter++;
 
-		return match;;
+		return match;
 	});
 
 	var buildCSSSprite = function() {

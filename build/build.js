@@ -5,12 +5,15 @@ var cssBuilder = require("./css");
 var jsBuilder = require("./js");
 var templatesBuilder = require("./templates");
 
-templatesBuilder.build(function(templateData) {
-	jsBuilder.build(templateData, function(jsHash) {
-		fs.writeFileSync("out/p18_jshash_" + process.argv[2] || "", jsHash);
+global.buildData = {};
 
-		cssBuilder.build(function(cssHash) {
-			fs.writeFileSync("out/p18_csshash_" + process.argv[2] || "", cssHash);
+templatesBuilder.build(function(templateData) {
+	jsBuilder.build(templateData, function() {
+		cssBuilder.build(function() {
+
+			// build complete, write the buildData
+			fs.writeFileSync("out/build.js", "module.exports=" + JSON.stringify(global.buildData));
+
 		});
 	});
 });

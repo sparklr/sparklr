@@ -11,7 +11,7 @@ body {
 a { color: white; }
 
 #logo {
-	background: url(logo_big.png);
+	background-image: url(logo_big.png);
 	width: 580px;
 	height: 215px;
 	display: inline-block;
