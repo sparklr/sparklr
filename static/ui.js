@@ -389,9 +389,14 @@ function search_Keydown(e) {
 		e = window.event;
 
 	var result = showSuggestionBoxBelowElement(e); 
+
+	suggestionBoxCallback = function(id) {
+			return location.href="/#/user/" + id;
+	};
+
 	if (e.keyCode == 13) {
 		if (result)
-			return location.href="/#/user/" + result;
+			return suggestionBoxCallback(result);
 		search(e.target.value);
 	}
 }
