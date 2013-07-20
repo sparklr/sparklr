@@ -1,3 +1,5 @@
+require("./config");
+
 var cluster = require("cluster");
 
 var url = require("url");
@@ -7,7 +9,6 @@ var frontend = require("./frontend");
 var user = require("./user");
 var work = require("./work");
 var database = require("./database");
-require("./config");
 
 if (process.platform != "win32") {
 	var memwatch = require('memwatch');
