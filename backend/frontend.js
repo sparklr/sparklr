@@ -35,6 +35,11 @@ var loadTemplates = function() {
 }();
 
 exports.run = function(user, request, response, sessionid) {
+	if (request.headers['x-scheme'] == "https") {
+		response.writeHead(302, { "Location" : "http://sparklr.me/" });
+		response.end();
+		return;
+	}
 	response.writeHead(200, {
 		"Content-type": "text/html"
 	});
@@ -105,6 +110,11 @@ exports.run = function(user, request, response, sessionid) {
 }
 
 exports.showExternalPage = function(request, response) {
+	if (request.headers['x-scheme'] == "http") {
+		response.writeHead(302, { "Location" : "https://sparklr.me/" });
+		response.end();
+		return;
+	}
 	response.writeHead(200);
 	response.write(externalTemplate);
 	response.end();
