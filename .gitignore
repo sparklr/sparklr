@@ -10,6 +10,7 @@ tags
 
 #compiled stuff
 static/out
+build/out
 
 .tingle.vim
 backend/.tingle.vim
