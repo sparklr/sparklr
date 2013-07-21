@@ -308,6 +308,7 @@ div.confirm {
     height: 40px;
     margin-top: 10px;
 	cursor: pointer;
+	-webkit-transition: all 0.2s ease;
 }
 #friendslist a.online {
 	color: rgba(255,255,255,0.8);
@@ -317,14 +318,35 @@ div.confirm {
     opacity: 0.5;
 	color: rgba(255,255,255,0.3);
 }
-#friendslist a.attn {
-    -webkit-animation-name: jiggle;
+#friendslist a img {
+	-webkit-transition: all 0.2s ease;
+}
+#friendslist a.attn img {
+    -webkit-animation-name: chatattention;
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-duration: 1s;
     -webkit-animation-timing-function: ease-out;
     -webkit-animation-delay: 0s;
+	box-shadow: 0px 0px 10px #fff;
+	margin-left: 9px;
 }
-
+@-webkit-keyframes chatattention {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    13% {
+        -webkit-transform: rotate(8deg);
+    }
+    26% {
+        -webkit-transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(8deg);
+    }
+    63% {
+        -webkit-transform: rotate(0deg);
+    }
+}
 #friendslist img {
     width: 40px;
     height: 40px;
@@ -933,13 +955,6 @@ div.popup textarea {
     -webkit-animation-timing-function: linear;
     -webkit-animation-delay: 0s;
 }
-.jiggle {
-  	-webkit-animation-name: jiggle;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-duration: 1s;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-delay: 0s;
-}
 
 .slideinfromright {
     -webkit-animation-name: slideinfromright;
@@ -1042,23 +1057,6 @@ div.popup textarea {
     }
 }
 
-@-webkit-keyframes jiggle {
-    0% {
-        -webkit-transform: rotate(0deg) scale(1.1);
-    }
-    13% {
-        -webkit-transform: rotate(5deg);
-    }
-    26% {
-        -webkit-transform: rotate(0deg);
-    }
-    50% {
-        -webkit-transform: rotate(5deg);
-    }
-    63% {
-        -webkit-transform: rotate(0deg);
-    }
-}
 @-webkit-keyframes pulse {
     0% { opacity: 0.5; }
     50% { opacity: 0.8; }
