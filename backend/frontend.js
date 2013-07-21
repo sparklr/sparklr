@@ -13,19 +13,13 @@ var loadTemplates = function() {
 	if (global.liveSite) {
 		var buildData = require("../build/out/build");
 	} else {
-		var buildData = { cssHash_external: "external" };
+		var buildData = { cssHash_external: "external", cssHash_frontend: "app" };
 	}
-	if (!global.liveSite) { 
-		fs.readFile("../static/templates/headers_test.html", function(err, data) {
-			eval(templates.parse(data.toString()));
-			frontendTemplate = html + "<body>";
-		});
-	} else { 
-		fs.readFile("../static/templates/headers_live.html", function(err, data) {
-			eval(templates.parse(data.toString()));
-			frontendTemplate = html + "<body>";
-		});
-	}
+
+	fs.readFile("../static/templates/headers.html", function(err, data) {
+		eval(templates.parse(data.toString()));
+		frontendTemplate = html + "<body>";
+	});
 
 	fs.readFile("../../p18mobile/static/templates/headers_test.html", function(err, data) {
 		eval(templates.parse(data.toString()));

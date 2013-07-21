@@ -5,7 +5,7 @@ var toolbox = require("./toolbox");
 exports.build = function(templateData, callback) {
 	console.log("Building JS...");
 
-	buildJSFromHeaderFile("../static/templates/headers_test.html", templateData, function(jsHash) {
+	buildJSFromHeaderFile("../static/templates/headers.html", templateData, function(jsHash) {
 		global.buildData.jsHash_frontend = jsHash;
 		buildJSFromHeaderFile("../static/templates/external.html", "", function(jsHash) {
 			global.buildData.jsHash_external = jsHash;
