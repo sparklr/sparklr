@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sparklr</title>
+	<link rel='stylesheet' href='{global.commonHost}/{buildData.cssHash_frontend}.css'>
+	<script>
+		var STATICHOST = "{global.staticHost}";
+		var COMMONHOST = "{global.commonHost}";
+	</script>
+	<% if (global.liveSite) %>
+		<script data-live src='{global.commonHost}/{buildData.jsHash_frontend}.js'></script>
+	<% else %>
+		<script src='{global.commonHost}/templates.js'></script>
+		<script src='{global.commonHost}/page.js'></script>
+		<script src='{global.commonHost}/data.js'></script>
+		<script src='{global.commonHost}/timeline.js'></script>
+		<script src='{global.commonHost}/user.js'></script>
+		<script src='{global.commonHost}/chat.js'></script>
+		<script src='{global.commonHost}/ui.js'></script>
+		<script src='{global.commonHost}/notification.js'></script>
+		<script src='{global.commonHost}/profile.js'></script>
+		<script src='{global.commonHost}/app.js'></script>
+		<script src='{global.commonHost}/bugs.js'></script>
+		<script src='http://127.0.0.1:9001/socket.js' async></script>
+	<% endelse %>
+</head>
+
