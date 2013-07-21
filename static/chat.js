@@ -1,4 +1,6 @@
 var curChatUser;
+var FRIENDS = [];
+var newMessageUsers = [];
 
 //If true, the scroll handler will ignore upscrolling events
 var chat_downloadingOlder;
@@ -106,16 +108,52 @@ function sendChatMessage() {
 	ajaxGet("work/chat", vars);
 }
 
-function setUserAttention(user, on) {
-	setUserStatus(user);
 
-	if (on)
-		_g("friendicon_" + user).className += " attn";
+function addFriend(id, status) {
+	FRIENDS[id] = status;
+}
+
+function addFriendElement(id) {
+	var e = document.createElement("a");
+	e.id = "friendicon_" + id;
+	e.onclick = function() { chatWith(id); };
+	e.innerHTML = "<img src='" + getAvatar(id) + "'><div class='names'>" + getDisplayName(id) + "</div></a>";
+	
+	_g("friendslist").appendChild(e);
+	return e;
+}
+
+function updateFriendsList() {
+	for (id in FRIENDS) {
+		setUserStatus(id);
+	}
+}
+
+function updateOnlineFriends() {
+	ajaxGet("work/onlinefriends", null, function(data) {
+		for (id in FRIENDS) { 
+			var online = false;
+
+			for (var i = 0; i < data.length; i++) {
+				if (data[i].id == id) {
+				  online = true;
+				}
+			}
+
+			addFriend(id, online);
+			setUserStatus(user);
+		}
+	});
+}
+function setUserAttention(user, on) {
+	newMessageUsers[user] = on;
+	setUserStatus(user);
 }
 
 function setUserStatus(user) {
 	var e = _g("friendicon_" + user);
+	if (!e) e = addFriendElement(user);
 	
-	e.className = FRIENDS[user] ? "online" : "offline";
+	e.className = FRIENDS[user] ? "online" : "offline" + (newMessageUsers[user] ? " attn" : "");
 }
 
