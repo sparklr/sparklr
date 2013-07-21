@@ -1,4 +1,3 @@
-var FRIENDS = [];
 var DISPLAYNAMES = [];
 var USERHANDLES = [];
 var AVATAR_IDS = [];
@@ -61,41 +60,8 @@ function getUserFromHandle(handle, callback) {
 	ajaxGet("work/userid/" + handle, null, function (data) { if (!data.error) { callback(data) } });
 }
 
-function addFriend(id, status) {
-	FRIENDS[id] = status;
-}
-
-function updateFriendsList() {
-	var html = "";
-	for (id in FRIENDS) {
-		html += "<a id='friendicon_" + id + "' onClick='chatWith("+id+");' class='" + (FRIENDS[id] ? "online" : "offline") + "'><img src='" + getAvatar(id) + "'><div class='names'>" + getDisplayName(id) + "</div></a>";
-	}
-	_g("friendslist").innerHTML = html;
-}
-
-function updateOnlineFriends() {
-	ajaxGet("work/onlinefriends", null, function(data) {
-		for (id in FRIENDS) { 
-			var online = false;
-
-			for (var i = 0; i < data.length; i++) {
-				if (data[i].id == id) {
-				  online = true;
-				}
-			}
-			addFriend(id, online);
-		}
-
-		updateFriendsList();
-	});
-}
-
 function chatWith(id) {
 	location.href = "#/chat/" + id;
-}
-
-function setNewMessage(id, status) {
-	_g("friendicon_" + id).className = (FRIENDS[id] ? "online" : "offline") + " " + (status ? "attn" : "");
 }
 
 function follow(id) {
