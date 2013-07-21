@@ -46,7 +46,7 @@ function getTemplate(id) {
 				templatedata = xhr.responseText;
 			}
 		}
-		xhr.open("GET", COMMONHOST + "/templates/" + id + ".html", false);
+		xhr.open("GET", COMMONHOST + "../templates/" + id + ".html", false);
 		xhr.send(null);
 		templatedata = t(templatedata);
 		TEMPLATES[id] = templatedata;
