@@ -4,10 +4,14 @@ window.addEventListener("load", function() { updatePages(true) });
 function updatePages(loaded) {
 	var args = location.hash.split("/");
 	var html = "";
+	var pages = _g("pages");
+	
+	if (loaded && args[1] == "thankyou")
+		return location.href = "#";
 
-	for (var i = 0; i < _g("pages").childNodes.length; i++) {
-		if (_g("pages").childNodes[i].getAttribute("data-page") == args[1]) {
-			html = _g("pages").childNodes[i].innerHTML;
+	for (var i = 0; i < pages.childNodes.length; i++) {
+		if (pages.childNodes[i].getAttribute("data-page") == args[1]) {
+			html = pages.childNodes[i].innerHTML;
 		}
 	}
 	
@@ -18,12 +22,48 @@ function updatePages(loaded) {
 		_g("content").style.opacity = 0;
 		setTimeout(function() {
 			_g("content").style.opacity = 1;
-			_g("content").innerHTML = html;
+			setContent(html);
 		}, 500);
 	} else {
-		_g("content").innerHTML = html;
+		setContent(html);
 	}
 	callback(""); //hide any old error messages
+}
+
+// This entire function is literally just for IE compat.
+function setContent(html) {
+	var content = _g("content");
+	content.innerHTML = html;
+
+	var walk = function(e) {
+		for (var i = 0; i < e.childNodes.length; i++) {
+			var child = e.childNodes[i];
+			if (e.childNodes[i].getAttribute && e.childNodes[i].getAttribute("autofocus")) {
+				e.childNodes[i].focus();
+				if (child.placeholder) {
+					child.value = child.placeholder;
+					child.setSelectionRange(0,0);
+					child.style.color = '#aaa';
+					child.onkeydown = function(e) {
+						if (!e) e = window.event;
+						e.target.onkeydown = null;
+						e.target.value = "";
+						e.target.style.color = "";
+					}
+					child.onclick = function(e) {
+						if (!e) e = window.event;
+						e.target.value = "";
+						e.target.style.color = "";
+						e.target.onclick = null;
+					}
+				}
+			}
+			if (e.childNodes[i].childNodes.length > 0) {
+				walk(e.childNodes[i]);
+			}
+		}
+	};
+	walk(content);
 }
 
 function requestInvite(email) {
@@ -36,7 +76,9 @@ function trySignin(username, password) {
 	var xhr = new XMLHttpRequest();
 	
 	_g("loginform").className = "";
-	
+	if (username.value == "")
+		return;	
+
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 			switch (xhr.status)
@@ -48,9 +90,10 @@ function trySignin(username, password) {
 					password.value = "";
 					_g("content").className = "shake";
 					_g("forgot").style.opacity = 1;
+					callback("Incorrect username or password");
 				break;
 				default:
-					alert("Ooh, not good... Something is wrong with our server. Try again soon. Sorry!");
+					callback("Failed to contact the server. Try again.");
 				break;
 			}
 		}

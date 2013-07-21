@@ -2,14 +2,14 @@
 <html>
 <head>
 <title>Sparklr</title>
-<link rel='stylesheet' href='{global.commonHost}/{buildData.cssHash_external}.css'>
+<link rel='stylesheet' href='{global.secureCommonHost}/{buildData.cssHash_external}.css'>
 <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
 <% if (!global.liveSite) %>
 <script src='{global.commonHost}/external.js'></script>
 <script src='{global.commonHost}/ui.js'></script>
 <script src='{global.commonHost}/data.js'></script>
 <% else %>
-<script data-live src='{global.commonHost}/{buildData.jsHash_external}.js'></script>
+<script data-live src='{global.secureCommonHost}/{buildData.jsHash_external}.js'></script>
 <% endelse %>
 <script>
 	var STATICHOST = "{global.staticHost}";
@@ -46,8 +46,8 @@
 		<a href='#'>Don't have an account?</a>
 	</div>
 	<div data-page="thankyou">
-		<span>Thank you.</span><br><br>
-		We'll let you know when we have more share.
+		<span>You're on the list!</span><br><br>
+		We'll let you know once it's your time to shine.<br><br>
 	</div>
 	<div data-page="signup">
 		<span>Welcome to Sparklr</span><br><br>
@@ -56,16 +56,15 @@
 			<input type='text' name='username' onblur='checkSignupForm(username,password,errors);' placeholder='username' class='t1' autofocus='autofocus'><br>
 			<input type='email' name='email' placeholder='email' class='t1'><br>
 			<input type='password' name='password' placeholder='password' class='t1'><br>
-			<input type='submit' value='&gt;' name='go' class='s1'>
+			<input type='submit' value='Sign up' name='go' class='s1'>
 			<input type='hidden' name='errors'>
 		</form>
 	</div>
 	<div id='page_default' data-page="info">
-		<span>Sparklr is in closed preview.</span><br><br>
-		Request an invite
+		<span>In limited beta. Coming soon.</span><br><br>
 		<form onSubmit='requestInvite(email); return false;'>
 			<input type='text' name='email' id='email' placeholder='email address' class='t1' autofocus='autofocus'>
-			<input type='submit' value='&gt;' name='go' class='s1'>
+			<input type='submit' value='Get Invited' name='go' class='s1'>
 		</form>
 	</div>
 </div>
