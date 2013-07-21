@@ -6,9 +6,9 @@ exports.build = function(callback) {
 	var templateData = "var TEMPLATES = [];";
 	console.log("Building templates...");
 
-	fs.readdir("../static/templates", function(err, files) {
+	fs.readdir("../templates", function(err, files) {
 		for (var i = 0; i < files.length; i++) {
-			var data = fs.readFileSync("../static/templates/" + files[i]);
+			var data = fs.readFileSync("../templates/" + files[i]);
 			var id = files[i].split(".");
 			id = id[0];
 
@@ -20,7 +20,6 @@ exports.build = function(callback) {
 			templateData += "TEMPLATES['"+id+"'] = \"" + data + "\";\n";
 		}
 
-		console.log("Writing ../static/out/templates.js");
 		callback(templateData);
 	});
 

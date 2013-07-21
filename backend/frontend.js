@@ -16,7 +16,7 @@ var loadTemplates = function() {
 		var buildData = { cssHash_external: "external", cssHash_frontend: "app" };
 	}
 
-	fs.readFile("../static/templates/headers.html", function(err, data) {
+	fs.readFile("../templates/headers.html", function(err, data) {
 		eval(templates.parse(data.toString()));
 		frontendTemplate = html + "<body>";
 	});
@@ -26,7 +26,7 @@ var loadTemplates = function() {
 		mobileTemplate = html + "<body>";
 	});
 
-	fs.readFile("../static/templates/external.html", function(err, data) {
+	fs.readFile("../templates/external.html", function(err, data) {
 		eval(templates.parse(data.toString()));
 		externalTemplate = html;
 	});
