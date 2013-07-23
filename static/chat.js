@@ -154,6 +154,6 @@ function setUserStatus(user) {
 	var e = _g("friendicon_" + user);
 	if (!e) e = addFriendElement(user);
 	
-	e.className = FRIENDS[user] ? "online" : "offline" + (newMessageUsers[user] ? " attn" : "");
+	e.className = (FRIENDS[user] ? "online" : "offline") + (newMessageUsers[user] ? " attn" : "");
 }
 
