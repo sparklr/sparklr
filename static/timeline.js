@@ -67,10 +67,6 @@ function addTimelineArray(arr, timeline, append) {
 	}
 }
 
-function clearTimelineArray(timeline) {
-	timelineEvents[timeline] = null;
-}
-
 function showEvent(id,args) {
 	if (typeof(args) === "undefined")
 		var args = "";
@@ -186,16 +182,6 @@ function getLastCommentTime() {
 	return currentComments[currentComments.length - 1].time;
 }
 
-function getCommentSum() {
-	//Summation of all the comment counts
-	var count = 0;
-	for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
-		count += timelineEvents[subscribedStream][i].commentcount;
-	}
-
-	return count;
-}
-
 function addComments(comments) {
 	for (var i = 0; i < comments.length; i++) {
 		if (currentComments.indexOf(comments) != -1) continue; //this comment is already in the array
@@ -244,13 +230,6 @@ function likeEvent(id, to, callback) {
 		setTimeout(function() { callback.className = callback.className.replace(" jiggle", ""); }, 1000);
 		pollData();
 	});
-}
-
-function getLastPostTime() {
-	if (typeof(timelineEvents[subscribedStream]) == 'undefined') return 0;
-    if (timelineEvents[subscribedStream].length < 1) return 0;
-
-	return timelineEvents[subscribedStream][timelineEvents[subscribedStream].length - 1].time;
 }
 
 function streamUrl(since,start) {

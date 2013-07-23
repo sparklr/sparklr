@@ -4,8 +4,6 @@ var bcrypt = require("bcrypt");
 var crypto = require("crypto");
 var async = require("async");
 
-var CACHE_DISPLAYNAME = [];
-
 exports.verifyAuth = function(userid,authkey,callback) {
 	this.getUserProfile(userid, function(err,rows) {
 		if (err || rows.length < 1) callback(false);
