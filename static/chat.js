@@ -101,7 +101,7 @@ function sendChatMessage() {
 		message: _g("composer").value
 	};
 	
-	setTimeout('_g("composer").value="";', 0);
+	setTimeout('_g("composer").value="";', 10);
 
 	addChatMessage(curUser, vars.message, getLastChatTime(), false, true);
 
