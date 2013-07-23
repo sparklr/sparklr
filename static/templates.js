@@ -20,23 +20,7 @@ function renderPageFromTemplate() {
 
 	});
 }
-function renderPageFromTemplateContext(data) {
-	var fragments = location.hash.split("/");
-	var template = fragments[1];
 
-	console.log(getTemplate(template));
-	var templateData = getTemplate(template);
-
-	eval(templateData);
-
-	_g("content").innerHTML = html;
-	if (_g("sidebar_links")) {
-		_g("sidebar").innerHTML = _g("sidebar_links").innerHTML;
-		_g("sidebar_links").innerHTML = "";
-	}
-	updateUI();
-
-}
 function getTemplate(id) {
 	if (!TEMPLATES[id]) {
 		var templatedata = "";
