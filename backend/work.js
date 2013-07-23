@@ -398,7 +398,6 @@ exports.run = function(request, response, uri, sessionid) {
 				if (uri.pathname.indexOf("/beacon") !== -1) {
 					User.updateActivity(userobj);
 
-					var counter = 0;
 					var obj = {};
 
 					async.parallel([
