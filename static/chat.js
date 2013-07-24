@@ -1,5 +1,5 @@
 var curChatUser;
-var FRIENDS = [];
+var FRIENDS = {};
 var newMessageUsers = [];
 
 //If true, the scroll handler will ignore upscrolling events
@@ -141,7 +141,7 @@ function updateOnlineFriends() {
 			}
 
 			addFriend(id, online);
-			setUserStatus(user);
+			setUserStatus(id);
 		}
 	});
 }
