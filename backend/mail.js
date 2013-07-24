@@ -4,7 +4,7 @@ var User = require("./user");
 var Templates = require("./templates");
 var email = require("emailjs");
 var server = email.server.connect({
-	user: "noreply@societyofcode.com",
+	user: "app@sparklr.me",
 	password: "df498rure93rjkdfj", //TODO: switch to using the relay so that the noreply addr isn't here
 	host: "smtp.gmail.com",
 	ssl: true
