@@ -45,6 +45,7 @@ function pullHandlesFromServerCallback(handles) {
 			if (tags[i].getAttribute("data-id") == id) {
 				tags[i].innerHTML = handles[h].username;
 			}
+			USERHANDLES[handles[h].id] = handles[h].username;
 		}
 	}
 }
