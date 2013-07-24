@@ -72,7 +72,7 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 		ele.className += " unconfirmedchat";
 
 	ele.id = "msg_" + time;
-	ele.innerHTML = "<img class='avatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>" + msg;
+	ele.innerHTML = "<img class='avatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>" + processMedia(escapeHTML(msg));
 
 	if (typeof(prepend) != "undefined" && prepend) {
 		sc.insertBefore(ele, sc.children[0]);
