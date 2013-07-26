@@ -20,13 +20,5 @@ node build.js frontend
 
 #echo "use p18; INSERT INTO \`timeline\` (\`from\`, \`time\`, \`message\`) VALUES (12, `date +%s`, \"$MESSAGE\" )" | mysql -u root -pCe3265Bb
 
-cd /var/www/p18mobile || exit
-unset GIT_DIR
-git fetch --all
-git reset --hard origin/mobile
-
-cd build
-node build.js mobile
-
 # reboot server
 kill -USR2 `cat /var/www/luna.pid`
