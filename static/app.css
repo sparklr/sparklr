@@ -1039,7 +1039,6 @@ h2 a.tag {
 	#sidebarwrapper {
 		float: none;
 		width: 100%;
-		padding: 4px;
 	}
 	#sidebar {
 		padding-right: 10px;
@@ -1050,7 +1049,7 @@ h2 a.tag {
 	}
 	#sidebar > a {
 		display: inline-block;
-		margin-right: 5px;
+		margin-left: 5px;
 		width: inherit;
 	}
 	#frame {

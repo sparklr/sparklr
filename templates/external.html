@@ -4,6 +4,7 @@
 <title>Sparklr</title>
 <link rel='stylesheet' href='{global.secureCommonHost}/{buildData.cssHash_external}.css'>
 <link rel='canonical' href='http://sparklr.me/'>
+<meta name="viewport" content="target-densitydpi=device-dpi, width=440, initial-scale=0.8, maximum-scale=0.8, user-scalable=0" />
 <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
 <meta name='description' content='Sparklr is the new place to connect with friends. Be among the first in our exclusive, invite-only beta.'>
 <% if (!global.liveSite) %>
@@ -43,9 +44,9 @@
 		</form>
 	</div>
 	<div id='loginform' data-page="signin">
-		<form onSubmit='trySignin(username,password); return false;'>
+		<form onSubmit='trySignin(username,password); return false;' id='login'>
 			<input type='text' name='username' id='username' placeholder='email or username' class='t1' autofocus='autofocus'>
-			<input type='password' name='password' placeholder='password' class='t1'>
+			<input type='password' id='password' name='password' placeholder='password' class='t1'>
 			<input type='submit' value='&gt;' name='go' class='s1'>
 		</form>
 		<div id='forgot'><a href='javascript:forgotPassword();'>Forgot?</a></div>
