@@ -21,11 +21,6 @@ var loadTemplates = function() {
 		frontendTemplate = html + "<body>";
 	});
 
-	fs.readFile("../../p18mobile/static/templates/headers_test.html", function(err, data) {
-		eval(templates.parse(data.toString()));
-		mobileTemplate = html + "<body>";
-	});
-
 	fs.readFile("../templates/external.html", function(err, data) {
 		eval(templates.parse(data.toString()));
 		externalTemplate = html;

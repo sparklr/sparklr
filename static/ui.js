@@ -230,8 +230,8 @@ function expandTextarea(e) {
 	
 }
 
-function search() {
-	location.href = "/#/search/" + escape(_g("searchbox").value);
+function search(query) {
+	location.href = "/#/search/" + escape(query);
 }
 
 function stopBubbling(e) {
