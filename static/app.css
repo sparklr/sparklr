@@ -121,6 +121,10 @@ hr {
 #navigation a.photos {
     background-image: url(icons/photos.png);
 }
+#navigation a.search {
+    background-image: url(icons/search.png);
+	display: none;
+}
 #navigation a:hover {
     opacity: 0.7;
 }
@@ -683,6 +687,10 @@ p.headersubtitle {
 	padding-left: 3px;
 }
 
+div.profileheader div.controls {
+	position:absolute;top:175px;right:3px;
+}
+
 div.friend {
     display: inline-block;
     width: 284px;
@@ -990,4 +998,105 @@ h2 a.tag {
 	border: solid 1px #43394f;
 	box-shadow: inset 0px 0px 3px #000;
 	padding: 3px 6px;
+}
+
+#searchbox_mobile {
+	display: none;
+}
+
+@media all and (max-width: 799px) {
+	@-ms-viewport {
+		width: 480px;
+		zoom: 0.8;
+	}
+	body {
+		font-size: 19px;
+		padding: 0px;
+		margin: 0px;
+	}
+	h2 { 
+		font-size: 26px;
+		margin-bottom: 8px;
+	}
+	#logo {
+		margin-right: 0px;
+		display: inline-block;
+	}
+	#navigation {
+		width: 100%;
+		position: relative;
+	}
+	#navigation #links {
+		float: right;
+		padding-right: 5px;
+	}
+	#navigation a.search {
+		display: inline-block;
+	}
+	#searchbox, #friendslist {
+		display: none;
+	}
+	#sidebarwrapper {
+		float: none;
+		width: 100%;
+		padding: 4px;
+	}
+	#sidebar {
+		padding-right: 10px;
+		padding-left: 10px;
+	}
+	#sidebar > a:nth-last-child(1) {
+		float: right;
+	}
+	#sidebar > a {
+		display: inline-block;
+		margin-right: 5px;
+		width: inherit;
+	}
+	#frame {
+		width: 100%;
+		margin: 0px;
+		padding: 0px;
+		margin-top: 5px;
+	}
+	#content {
+		width: 100%;
+		float: none;
+		overflow: hidden;
+		left: 0px;
+		right: 0px;
+		margin: 0px;
+	}
+	#composerframe {
+		margin-left: 55px;
+	}
+	textarea {
+		width: 80% !important;
+	}
+	div.profileheader {
+		width: 100%;
+		margin: 0px;
+		margin-bottom: 5px;
+	}
+	div.profileheader div.controls {
+		position:absolute;top:175px;right:15px;
+	}
+	div.friend {
+		width: 49%;
+		height: 160px;
+	}
+	div.friend span {
+		width: 100%;
+		margin: 0px;
+		padding: 0px;
+	}
+	#feedbackbtn {
+		display: none;
+	}
+	div.contentwrapper.search #searchbox_mobile {
+		display: inline-block;
+	}
+	div.contentwrapper.search h2 {
+		display: none;
+	}
 }

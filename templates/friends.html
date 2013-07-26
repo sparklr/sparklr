@@ -5,7 +5,6 @@
 
 <h2>following</h2>
 <script>
-	console.log(data);
 	var renderUser = function (user) {
 		var html = "";
 </script>
@@ -36,23 +35,16 @@
 <% if (!foundFollower) %>
 	All your followers are mutual. c:
 <% endif %>
-</div>
 <script>
 	if (data.recommends && data.recommends.length > 0) {
 </script>
-<div id='sidebar_links'>
-	who to follow
-	<div class='friends'>
+<h2>who to follow</h2>
 		<script>
 			for (var i = 0; i < data.recommends.length; i++) {
-				person = data.recommends[i];
-		</script>
-			<a href='#/user/{person}'><img src='{STATICHOST}/thumb/{person}' class='avatar'>{getDisplayName(person)}</a>
-		<script>
+				html += renderUser(data.recommends[i]);
 			}
 		</script>
-	</div>
-</div>
 <script>
-}
+	}
 </script>
+</div>

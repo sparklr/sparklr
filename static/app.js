@@ -45,6 +45,7 @@ window.addEventListener("focus", function() {
 
 // Render/process data sent from the server (initial payload)
 
+var MOBILE = navigator.userAgent.match(/mobile/i) ? true : false;
 var AUTHKEY;
 var curUser;
 
@@ -70,3 +71,11 @@ AUTHKEY = s[1];
 
 eval(getTemplate("frontend"));
 document.write(html);
+
+var ua = navigator.userAgent;
+
+if (ua.match(/Chrome/i) && ua.match(/mobile/i)) {
+	document.head.children[1].content = "target-densitydpi=device-dpi, width=440, initial-scale=0.8, maximum-scale=0.8, user-scalable=0";
+} else {
+	document.head.children[1].content = "target-densitydpi=device-dpi, width=480, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
+}
