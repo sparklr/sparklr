@@ -189,7 +189,7 @@ function addComments(comments) {
 		renderComment(comments[i]);
 	}
 	if (scrollDistanceFromBottom() < 70)
-		window.scrollTo(0,0xFFFFFF);
+		window.scrollBy(0,0xFFFFFF);
 }
 
 function updateCommentCount(id, count) {
