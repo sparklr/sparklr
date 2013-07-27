@@ -15,6 +15,10 @@ var async = require("async");
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
 	switch (fragments[2]) {
+		case "areyouawake":
+			response.writeHead(200);
+			response.end("success");
+			break;
 		case "signoff":
 			response.writeHead(200, {
 				"Set-Cookie": "D=; Path=/",
