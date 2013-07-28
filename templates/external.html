@@ -53,11 +53,11 @@
 		<a href='#'>Don't have an account?</a>
 	</div>
 	<div data-page="thankyou">
-		<span>You're on the list!</span><br><br>
+		<h1>You're on the list!</h1><br><br>
 		We'll let you know once it's your time to shine.<br><br>
 	</div>
 	<div data-page="signup">
-		<span>Welcome to Sparklr</span><br><br>
+		<h1>Welcome to Sparklr</h1><br><br>
 		Let's get started.
 		<form onSubmit='signUp(username,email,password,errors); return false;'>
 			<input type='text' name='username' onblur='checkSignupForm(username,password,errors);' placeholder='username' class='t1' autofocus='autofocus'><br>
@@ -68,7 +68,7 @@
 		</form>
 	</div>
 	<div id='page_default' data-page="info">
-		<span>In limited beta. Coming soon.</span><br><br>
+		<h1>The new place to connect with friends.</h1><br><br>
 		<form onSubmit='requestInvite(email); return false;'>
 			<input type='text' name='email' id='email' placeholder='email address' class='t1' autofocus='autofocus'>
 			<input type='submit' value='Get Invited' name='go' class='s1'>
