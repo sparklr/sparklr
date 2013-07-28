@@ -36,6 +36,7 @@
 			<a href='javascript:signOff();'>Sign off</a>
 			<% else %>
 			<a href='javascript:mention("{data.handle}");'>Mention</a>
+			<a href='javascript:chatWith({data.user});'>Message</a>
 				<% if (data.following) %>	
 					<a href='javascript:unfollow("{data.user}")'>Unfollow</a>
 				<% else %>

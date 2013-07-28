@@ -46,12 +46,13 @@ function addNotification(notification) {
 			setUserAttention(notification.from, true);
 			newMessageFrom = getDisplayName(notification.from);
 			updatePageTitle();
-			return;
+			body = "messaged you.";
+			action = function() { chatWith(notification.from); }
 		break;
 		case 7: //whitelist
 			body = "wants to be whitelisted.";
 			action = function() { location.href = "#/user/" + notification.from; }
-			break;
+		break;
 	}
 	
 	notification.body = "<img class='avatar' src='" + getAvatar(notification.from) + "'>" + getDisplayName(notification.from) + " " + body;
