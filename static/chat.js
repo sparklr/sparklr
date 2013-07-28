@@ -116,7 +116,7 @@ function addFriend(id, status) {
 function addFriendElement(id) {
 	var e = document.createElement("a");
 	e.id = "friendicon_" + id;
-	e.onclick = function() { chatWith(id); };
+	e.onclick = function() { location.href='#/user/' + id; };
 	e.innerHTML = "<img src='" + getAvatar(id) + "'><div class='names'>" + getDisplayName(id) + "</div></a>";
 	
 	_g("friendslist").appendChild(e);
