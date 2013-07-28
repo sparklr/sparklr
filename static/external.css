@@ -60,8 +60,12 @@ a { color: white; }
 		margin: 8px auto;
 	}
 }
-span {
+h1 {
 	font-size: 30px;
+	font-weight: normal;
+	padding: 0px;
+	margin: 0px;
+	display: inline-block;
 	text-shadow: 0px 0px 15px #fff;
 }
 
