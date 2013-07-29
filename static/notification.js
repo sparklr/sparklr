@@ -13,76 +13,129 @@ var EMAIL_NOT_VERIFIED = "Pst: Your email address is unverified. <a href='#/sett
 
 function addNotification(notification) {
 	currentNotifications[notification.id] = notification;
-	
+
 	handleNotifications();
 
 	if (parseInt(notification.time) > lastNotificationTime)
 		lastNotificationTime = parseInt(notification.time);
-	
+
 	if (currentNotifications[notification.id] == null)
 		return;
-	
+
 	var action = null;
 	var body; 
-	
+
 	switch (parseInt(notification.type)) {
 		case 1: //commented on post 
 			if  (notification.body == LIKE_CHAR) 
-				body = "liked your post.";
-			else
-				body = "commented:<br>" + notification.body;
-			
-			action = function() { location.href= "#/post/" + notification.action + "/new"; }
+		body = "liked your post.";
+		else
+			body = "commented:<br>" + notification.body;
+
+		action = function() { location.href= "#/post/" + notification.action + "/new"; }
 		break;
 		case 2: //mentioned
-			body = "mentioned you.<br><br>";
-			action = function() { location.href = "#/post/" + notification.action; }
+			body = "mentioned you.";
+		action = function() { location.href = "#/post/" + notification.action; }
 		break;
 		case 6: // repost
-			body = "reposted your post.<br><br>";
-			action = function() { location.href = "#/post/" + notification.action; }
+			body = "reposted your post.";
+		action = function() { location.href = "#/post/" + notification.action; }
 		break;
 		case 3: //chat
 			setUserAttention(notification.from, true);
-			newMessageFrom = getDisplayName(notification.from);
-			updatePageTitle();
-			body = "messaged you.";
-			action = function() { chatWith(notification.from); }
+		newMessageFrom = getDisplayName(notification.from);
+		updatePageTitle();
+		body = "messaged you.";
+		action = function() { chatWith(notification.from); }
 		break;
 		case 7: //whitelist
 			body = "wants to be whitelisted.";
-			action = function() { location.href = "#/user/" + notification.from; }
+		action = function() { location.href = "#/user/" + notification.from; }
 		break;
 	}
-	
+
 	notification.body = "<img class='avatar' src='" + getAvatar(notification.from) + "'>" + getDisplayName(notification.from) + " " + body;
 
 	var n = document.createElement("div");
-	
+
 	n.id = "notification_" + notification.id;
 	n.innerHTML = "<span class='exit' onClick='dismissNotification(\"" + notification.id + "\");stopBubbling();'>x</span>" + notification.body;
 	n.className = "fadein";
 	n.onclick = action;
+	n.addEventListener("touchstart", notification_touchstart);
+	n.addEventListener("touchmove", notification_touchmove);
+	n.addEventListener("touchend", notification_touchend);
 
 	//TODO: notifications may not work in IE
 	_g("notificationlist").insertBefore(n, _g("notificationlist").children[0]);
-	
+
 	notificationCount++;
 	updatePageTitle();
+}
+
+function notification_touchstart(evt) {
+	evt.target.setAttribute("data-lastx", evt.changedTouches[0].clientX);
+	evt.target.setAttribute("data-left", 0);
+}
+
+function notification_touchmove(evt) {
+	evt.preventDefault();
+	var cur = evt.changedTouches[0].clientX;
+	var last = evt.target.getAttribute("data-lastx");
+	var curLeft = parseInt(evt.target.getAttribute("data-left")) || 0;
+
+	var delta = parseInt(last) - cur;
+	curLeft -= delta;
+	if (curLeft < 0) {
+		curLeft = 0;
+	}
+
+	evt.target.style.left = curLeft + "px";
+	evt.target.setAttribute("data-left", curLeft);
+	evt.target.setAttribute("data-lastx", evt.changedTouches[0].clientX);
+}
+
+function notification_touchend(evt) {
+	evt.preventDefault();
+	var curLeft = parseInt(evt.target.getAttribute("data-left"));
+	var accel = -1;
+	if (curLeft > 50) {
+		accel = 1;
+	}
+
+	var vel = 0;
+
+	var t = setInterval(function() {
+		vel += accel;
+		curLeft += vel;
+
+		if (curLeft < 0) {
+			clearInterval(t);
+			curLeft = 0;
+		}
+		if (curLeft > 170) {
+			clearInterval(t);
+			var id = evt.target.id.replace("notification_", "");
+			console.log(id);
+			dismissNotification(id);
+		}
+		evt.target.style.left = curLeft + "px";
+	}, 10);
 }
 
 function removeNotification(id) {
 	currentNotifications[id] = null;
 
 	var e = _g("notification_" + id);
-	
+
 	if (e) {
 		e.className = "flyout";
 		setTimeout(function() {
 			_g("notificationlist").removeChild(_g("notification_" + id));
 		}, 510);
 	}
-	
+
 	if (notificationCount > 0)
 		notificationCount--;
 	updatePageTitle();

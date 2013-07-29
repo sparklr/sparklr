@@ -780,7 +780,7 @@ textarea {
 
 #scrollUpContent {
     display: inline-block;
-    height: 350px;
+    height: 300px;
     width: 100%;
     overflow: auto;
 }
@@ -1054,6 +1054,7 @@ h2 a.tag {
 	}
 	#frame {
 		width: 100%;
+		min-height: 0px;
 		margin: 0px;
 		padding: 0px;
 		margin-top: 5px;
@@ -1092,10 +1093,29 @@ h2 a.tag {
 	#feedbackbtn {
 		display: none;
 	}
+	div.contentwrapper {
+		margin-bottom: 0px;
+	}
 	div.contentwrapper.search #searchbox_mobile {
 		display: inline-block;
 	}
 	div.contentwrapper.search h2 {
 		display: none;
+	}
+	#notificationlist div {
+		position: relative;
+		min-height: 40px;
+		background: rgba(255,255,255,0.8);
+		border-radius: 10px;
+		margin: 10px 10px;
+		cursor: none;
+	}
+	#notificationlist div img.avatar {
+		width: 40px;
+		height: 40px;
+	}
+	#notificationlist {
+		width: 200px;
+		right: -20px;
 	}
 }
