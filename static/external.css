@@ -24,7 +24,7 @@ a { color: white; }
 	display: block;
 	width: 590px;
 	margin-top: 3%;
-	-webkit-transition: all 0.5s ease;
+	-webkit-transition: all 0.4s ease;
 }
 #staticcontent {
 	position: relative;
@@ -56,8 +56,10 @@ a { color: white; }
 	}
 	#login input {
 		display: block;
-		clear: both;
 		margin: 8px auto;
+	}
+	#login input.s1 {
+		width: 50px;
 	}
 }
 h1 {
@@ -122,6 +124,7 @@ input.s1 {
 
 #forgot {
 	opacity: 0;
+	display: none;
 	-webkit-transition: all 1s ease-in-out;
 }
 

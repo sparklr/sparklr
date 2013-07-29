@@ -23,7 +23,7 @@ function updatePages(loaded) {
 		setTimeout(function() {
 			_g("content").style.opacity = 1;
 			setContent(html);
-		}, 500);
+		}, 700);
 	} else {
 		setContent(html);
 	}
@@ -40,21 +40,23 @@ function setContent(html) {
 			var child = e.childNodes[i];
 			if (e.childNodes[i].getAttribute && e.childNodes[i].getAttribute("autofocus")) {
 				e.childNodes[i].focus();
+				if (child.type == "password") {
+					child.type = "text";
+					child.setAttribute("data-password", 1);
+				}
 				if (child.placeholder) {
 					child.value = child.placeholder;
 					child.setSelectionRange(0,0);
 					child.style.color = '#aaa';
-					child.onkeydown = function(e) {
+					child.onclick = child.onkeydown = function(e) {
 						if (!e) e = window.event;
 						e.target.onkeydown = null;
-						e.target.value = "";
-						e.target.style.color = "";
-					}
-					child.onclick = function(e) {
-						if (!e) e = window.event;
-						e.target.value = "";
-						e.target.style.color = "";
 						e.target.onclick = null;
+						e.target.value = "";
+						e.target.style.color = "";
+						if (e.target.getAttribute("data-password")) {
+							e.target.type = "password";
+						}
 					}
 				}
 			}
@@ -89,7 +91,8 @@ function trySignin(username, password) {
 				case 403:
 					password.value = "";
 					_g("content").className = "shake";
-					_g("forgot").style.opacity = 1;
+					_g("forgot").style.display = "block";
+					setTimeout('_g("forgot").style.opacity = 1;', 10);
 					callback("Incorrect username or password");
 				break;
 				default:
