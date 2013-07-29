@@ -644,7 +644,7 @@ div.profileheader {
     display: inline-block;
     width: 570px;
     margin: 5px;
-    height: 200px;
+    height: 290px;
     margin-bottom: 15px;
     padding: 0 0 10px 10px;
     background-position: 0% 30%;
@@ -669,6 +669,7 @@ div.profileheader a {
 	right: 0px;
 	z-index: -1;
 	opacity: 0.6;
+	background-size: cover;
 }
 
 p.headertitle {
@@ -688,7 +689,9 @@ p.headersubtitle {
 }
 
 div.profileheader div.controls {
-	position:absolute;top:175px;right:3px;
+	position:absolute;
+	bottom:5px;
+	right:3px;
 }
 
 div.friend {
@@ -1079,7 +1082,7 @@ h2 a.tag {
 		margin-bottom: 5px;
 	}
 	div.profileheader div.controls {
-		position:absolute;top:175px;right:15px;
+		right:15px;
 	}
 	div.friend {
 		width: 49%;
