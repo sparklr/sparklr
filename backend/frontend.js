@@ -108,6 +108,11 @@ exports.showExternalPage = function(request, response) {
 		response.end();
 		return;
 	}
+	if (request.url != "/") {
+		response.writeHead(404);
+		response.end();
+		return;
+	}
 	response.writeHead(200);
 	response.write(externalTemplate);
 	response.end();
