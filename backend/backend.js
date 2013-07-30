@@ -25,9 +25,10 @@ var server = http.createServer(function(request,response) {
 	var requesturi = url.parse(request.url, true);
 	var sessionid;
 	if (request.headers["cookie"]) {
-		var d = request.headers["cookie"].match(/D\=(.*)\;?/);
+		var d = request.headers["cookie"].match(/D\=([^s|^\;]+)\;?/);
 		sessionid = d ? d[1] : "";
 	}
+
 
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		work.run(request,response,requesturi,sessionid);
