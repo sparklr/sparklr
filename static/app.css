@@ -535,12 +535,20 @@ div.comment {
 	margin-bottom: 12px;
 }
 
-#attachment {
+div.minipreview {
+	display: none;
+	width: 150px;
+	height: 80px;
+	background-size: cover;
+	margin: 2px;
+}
+
+div.attachment {
 	display: none;
 	background-size: cover;
 }
 
-#attachment div, div.picturepost div {
+div.attachment div, div.picturepost div {
 	position: absolute;
 	background: rgba(0,0,0,0.2);
 	height: 22px;
@@ -552,11 +560,11 @@ div.comment {
 	padding: 4px;
 }
 
-#attachment div:focus {
+div.attachment div:focus {
 	opacity: 1;
 }
 
-#attachment:hover div, div.picturepost:hover div {
+div.attachment:hover div, div.picturepost:hover div {
 	opacity: 1;
 }
 
@@ -592,7 +600,7 @@ div.comment {
 div.composercontrols {
 	position:absolute;
 	right: 15px;
-	bottom:15px;
+	bottom:10px;
 	opacity: 0;
 	-webkit-transition: all 0.5s ease;
 	background-image: url(icons/photos.png);
