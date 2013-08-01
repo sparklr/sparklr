@@ -23,15 +23,13 @@
 	<div id='responseholder'>
 		<div id='comments_{data.id}' style='padding:5px;'></div>
 		<div class='fadein' style='padding:5px;'>
-			<img src='{getAvatar(curUser)}' class='avatar'>
-			<textarea id='composer' onkeydown='isEnter(event,postComment);' placeholder='Respond...'></textarea>
+			{ renderComposer('Respond...', 'postComment', true) }
 		</div>
 	</div>
 
 	<div id='reblogholder' class='fadein' style='display:none;min-height:100px'>
 		<div class='fadein' style='padding:5px;'>
-			<img src='{getAvatar(curUser)}' class='avatar'>
-			<textarea id='repostcomment' onkeydown='isEnter(event,publishRepost);' class='composer' placeholder='Share something (optional)'></textarea>
+			{ renderComposer('Share something (optional)', 'publishRepost', true, 'repostcomment') }
 		</div>
 		<input type='button' value='Repost to Followers' style='float: right' onClick='publishRepost();'>
 	</div>

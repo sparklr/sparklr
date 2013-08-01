@@ -135,6 +135,11 @@ function processMedia(text,noImages) {
 		return "<a href='#/tag/" + tag + "' class='tag'>" + match + "</a>";
 	});
 
+	var imgregex = /\[IMG([A-Za-z0-9_-]+)\]/g;
+	text = text.replace(imgregex, function(match, img) {
+		return "<img src='" + STATICHOST + "/storage/images/" + img + "_thumb.jpg'><br>";
+	});
+
 	return text;
 }
 
@@ -272,10 +277,10 @@ function dropImage(e, callback) {
 
 	return false;
 }
-function loadImage(f, callback) {
+function loadImage(f, callback, additionalargs) {
 	var reader = new FileReader();
 	reader.onload = function(e) { 
-		callback(e);
+		callback(e,additionalargs);
 	}
 	reader.readAsDataURL(f);
 }
@@ -299,6 +304,11 @@ function uploadImage(e, url, callback) {
 	xhr.open("POST", url);
 	xhr.setRequestHeader("X-X", AUTHKEY);
 	xhr.send(e.target.result);
+}
+function attachfile_changed(e) {
+	if (!e) e = window.event;
+	loadImage(e.target.files[0], uploadStreamImageCallback, e.target.getAttribute("data-target"));
+	e.target.value = "";
 }
 
 function showSuggestionBox(show,x,y,items) {
