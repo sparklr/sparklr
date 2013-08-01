@@ -1121,7 +1121,4 @@ h2 a.tag {
 		width: 200px;
 		right: -20px;
 	}
-	* {
-		cursor: default;
-	}
 }
