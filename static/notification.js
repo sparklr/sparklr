@@ -103,6 +103,10 @@ function notification_touchend(evt) {
 	if (curLeft > 50) {
 		accel = 1;
 	}
+	if (curLeft < 10) {
+		evt.target.onclick();
+		return;
+	}
 
 	var vel = 0;
 
