@@ -7,7 +7,6 @@ var async = require("async");
 
 var frontendTemplate = "";
 var externalTemplate = "";
-var mobileTemplate = "";
 
 var loadTemplates = function() {
 	if (global.liveSite) {
@@ -39,7 +38,7 @@ exports.run = function(user, request, response, sessionid) {
 	var sessiondata = sessionid.split(",");
 	var authkey = sessiondata[1];
 
-	var html = request.url.indexOf("mobile") != -1 ? mobileTemplate : frontendTemplate;
+	var html = frontendTemplate;
 
 	user.following = user.following.split(",").filter(function(e) { return e; });
 	user.followers = user.followers.split(",").filter(function(e) { return e; });
