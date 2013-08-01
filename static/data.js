@@ -29,12 +29,20 @@ function ajaxGet(url, data, callback) {
 	xhr.open((isPosting ? "POST" : "GET"), url);
 	xhr.setRequestHeader("X-X", AUTHKEY);
 
+	var postData;
+
 	if (isPosting) {
 		xhr.setRequestHeader("Content-type", "application/json");
+
+		if (data.postData) {
+			postData = data.postData;
+			data.postData = 1;
+		}
+
 		xhr.setRequestHeader("X-DATA", JSON.stringify(data));
 	}
 	
-	xhr.send(null);
+	xhr.send(postData || null);
 	ajaxCooldown[url] = 1;
 }
 

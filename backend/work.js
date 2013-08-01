@@ -178,14 +178,41 @@ exports.run = function(request, response, uri, sessionid) {
 						}
 						break;
 					case "repost":
-						Post.repost(userobj.id, postObject.id, postObject.reply, function(err) {
-							if (err) return do500(response, err);
-							sendObject(response, {});
-						});
+						if (postObject.postData) {
+							var f = function() {
+								Upload.handleUpload(postBody, userobj, { width: 500, height: 350, folder: "images" }, function (err, id) {
+									if (err) return do500(response,err);
+									postObject.reply = "[IMG" + id + "]" + postObject.reply;
+									Post.repost(userobj.id, postObject.id, postObject.reply, function(err) {
+										if (err) return do500(response, err);
+										sendObject(response, {});
+									});
+								});
+							};
+							dataComplete ? f() : request.on("end", f);
+						} else {
+							Post.repost(userobj.id, postObject.id, postObject.reply, function(err) {
+								if (err) return do500(response, err);
+								sendObject(response, {});
+							});
+						}
 						break;
 					case "comment":
-						Post.postComment(userobj.id, postObject);
-						sendObject(response, {});
+						if (postObject.postData) {
+							var f = function() {
+								Upload.handleUpload(postBody, userobj, { width: 500, height: 350, folder: "images" }, function (err, id) {
+									if (err) return do500(response,err);
+									postObject.comment = "[IMG" + id + "]" + postObject.comment;
+									Post.postComment(userobj.id, postObject, function(err) {
+										sendObject(response, {});
+									});
+								});
+							};
+							dataComplete ? f() : request.on("end", f);
+						} else {
+							Post.postComment(userobj.id, postObject);
+							sendObject(response, {});
+						}
 						break;
 					case "like":
 						Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(postObject.id) + " AND `from` = " + parseInt(userobj.id) + " AND message = 0xe2989d", function (err, rows) {

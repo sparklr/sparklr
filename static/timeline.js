@@ -117,6 +117,11 @@ function publishRepost() {
 		reply: _g("repostcomment").value
 	}
 
+	if (imgAttachments) {
+		vars.postData = imgAttachments.target.result;
+		_g("attachment").style.display = "none";
+	}
+
 	ajaxGet("work/repost", vars);
 	location.href="#";
 }
@@ -169,7 +174,7 @@ function renderComment(comment) {
 		html += " likes this<br><br>";
 	}
 	else
-		html += "<br><div style='margin-left: 50px;'>" + processMedia(escapeHTML(comment.message)) + "</div>";
+		html += "<div style='margin-left: 50px;'>" + processMedia(escapeHTML(comment.message)) + "</div>";
 	
 	html += "</div>";
     e.innerHTML += html;
@@ -207,12 +212,19 @@ function postComment() {
 		comment: _g("composer").value
 	}
 
+	if (imgAttachments) {
+		vars.postData = imgAttachments.target.result;
+		_g("attachment").style.display = "none";
+	}
+
 	setTimeout('_g("composer").value="";',10);
 
 	if (!vars.comment) return;
 
-	ajaxGet("work/comment", vars);
-	pollData();
+	ajaxGet("work/comment", vars, function() {
+		imgAttachments = null;
+		pollData();
+	});
 	
 }
 
@@ -263,17 +275,25 @@ function fetchOlderPosts() {
 	});
 }
 
-function renderTimeline() {
-	var html = "<div class='timelineitem composer'>";
-	html += "<div class='picturepost' id='attachment'></div>";
-	html += "<div style='float:left'><img src='" + getAvatar(curUser) + "' class='avatar'><div id='remaining'></div></div><div id='composerframe'><textarea id='composer' placeholder='Share something...' onkeydown='isEnter(event, postToTimeline);expandTextarea(event);' maxlength=300></textarea>";
-	html += "<div class='composercontrols'><input id='attachfile' type='file'></div>";
-	html += "</div></div><div id='timeline_container'></div>";
-	_g("content").innerHTML = html;
-	_g("attachfile").onchange = function(e) {
-		loadImage(e.target.files[0], uploadStreamImageCallback);
-		e.target.value = "";
+function renderComposer(caption, keydown, minipreview, id) {
+	imgAttachments = null;
+	var html = "<div style='position:relative' class='composer'>";
+	html += "<div style='float:left'><img src='" + getAvatar(curUser) + "' class='avatar'><div id='remaining'></div></div><div id='composerframe'>";
+	if (minipreview) {
+		html += "<div id='attachment" + (id || "") + "' class='minipreview'></div>";
 	}
+	html += "<textarea id='" + (id || "composer") + "' placeholder='" + caption + "' onkeydown='isEnter(event, " + keydown + ");expandTextarea(event);' maxlength=300></textarea>";
+	html += "<div class='composercontrols'><input id='attachfile' data-target='attachment" + (id || "") + "' onchange='attachfile_changed(event,\"" + (id || "") + "\")' type='file'></div>";
+	html += "</div></div>";
+	return html;
+}
+
+function renderTimeline() {
+	var html = "<div class='timelineitem'>";
+	html += "<div class='picturepost attachment' id='attachment'></div>";
+	html += renderComposer("Share something...", "postToTimeline");
+	html += "</div><div id='timeline_container'></div>";
+	_g("content").innerHTML = html;
 	_g("attachment").onmousedown = function (e) {
 		console.log(e);
 
@@ -384,9 +404,9 @@ function postToTimeline() {
 		xhr.send();
 }
 
-function uploadStreamImageCallback(e) {
-	_g("attachment").style.backgroundImage = "url(" + e.target.result + ")";
-	_g("attachment").style.display = "block";
+function uploadStreamImageCallback(e,id) {
+	_g(id).style.backgroundImage = "url(" + e.target.result + ")";
+	_g(id).style.display = "block";
 	imgAttachments = e;
 }
 
