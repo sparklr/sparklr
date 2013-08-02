@@ -538,6 +538,15 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			userobj.password = null;
 			callback(userobj);
 			return;
+		case "random":
+			Database.query("SELECT `id` FROM `users` AS users1\
+								JOIN \
+								(SELECT (RAND() * (SELECT MAX(id) FROM `users`)) as nid) AS users2 \
+								WHERE users1.id >= users2.nid ORDER BY users1.lastseen DESC LIMIT 3", 
+			function(err,rows) {
+				callback(rows[0].id);
+			});
+			return; 
 		default:
 			if (fragments.length < 4 || fragments[3] == "") {
 				return do400(response, 400, "Missing arguments");

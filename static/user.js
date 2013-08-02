@@ -212,3 +212,9 @@ function requestWhitelist(user) {
 		_g("btnWhitelist").value = "Request Sent";
 	});
 }
+
+function meetSomeoneRandom() {
+	ajaxGet("work/random", null, function(data) {
+		location.href='#/user/' + data;
+	});
+}
