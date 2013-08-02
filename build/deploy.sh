@@ -21,4 +21,4 @@ node build.js frontend
 #echo "use p18; INSERT INTO \`timeline\` (\`from\`, \`time\`, \`message\`) VALUES (12, `date +%s`, \"$MESSAGE\" )" | mysql -u root -pCe3265Bb
 
 # reboot server
-kill -USR2 `cat /var/www/luna.pid`
+sudo -u www-data kill -USR2 `cat /var/www/luna.pid`
