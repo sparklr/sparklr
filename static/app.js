@@ -78,3 +78,12 @@ if (ua.match(/Chrome/i) && ua.match(/mobile/i)) {
 } else {
 	document.head.children[1].content = "target-densitydpi=device-dpi, width=480, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
 }
+
+// Nasty UA matching 
+if (ua.match(/MSIE/i)) {
+	var ver = ua.match(/MSIE ([\d.]+)/)[1];
+	if (ver < 10) {
+		eval(getTemplate("browsercompat"));
+		showPopup(html);
+	}
+}
