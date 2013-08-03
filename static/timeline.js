@@ -405,7 +405,11 @@ function postToTimeline() {
 }
 
 function uploadStreamImageCallback(e,id) {
-	_g(id).style.backgroundImage = "url(" + e.target.result + ")";
+	var res = e.target.result;
+	if (res.indexOf("data:base64") != -1) {
+		res = "data:image/jpeg;" + res.substring(5);
+	}
+	_g(id).style.backgroundImage = "url(" + res + ")";
 	_g(id).style.display = "block";
 	imgAttachments = e;
 }
