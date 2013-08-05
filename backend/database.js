@@ -4,27 +4,27 @@ var connection = null;
 var isConnecting = false;
 
 exports.init = function(args) {
-	if (this.isConnecting) return;
-	this.isConnecting = true;
-	this.connection = mysql.createConnectionSync();
-	this.connection.connectSync(args.host, args.user, args.password, args.database);
-	if (!this.connection.connectedSync()) {
+	if (isConnecting) return;
+	isConnecting = true;
+	connection = mysql.createConnectionSync();
+	connection.connectSync(args.host, args.user, args.password, args.database);
+	if (!connection.connectedSync()) {
 		throw new Exception();
 	}
-	this.isConnecting = false;
+	isConnecting = false;
 }
 
 exports.escape = function(str) {
-	return "'" + this.connection.escapeSync(str) + "'";
+	return "'" + connection.escapeSync(str) + "'";
 }
 
 exports.escapeId = function(str) {
-	return "`" + this.connection.escapeSync(str) + "`";
+	return "`" + connection.escapeSync(str) + "`";
 }
 
 exports.query = function(query, callback) {
 	try {
-		this.connection.query(query, function(err,res) {
+		connection.query(query, function(err,res) {
 			if (err) {
 				if (err.message.indexOf("connect") !== -1 || err.message.indexOf("gone away") !== -1) {
 					exports.init(global.database);
@@ -39,6 +39,8 @@ exports.query = function(query, callback) {
 				if (callback) callback(err,res);
 		});
 	} catch (e) {
+		console.log("Mysql Error");
+		console.log(e);
 		if (e.message.indexOf("Not connected") !== -1) {
 			exports.init(global.database);
 			exports.query(query, callback);
