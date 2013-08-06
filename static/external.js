@@ -21,9 +21,11 @@ function updatePages(loaded) {
 	if (!loaded) {
 		_g("content").style.opacity = 0;
 		setTimeout(function() {
-			_g("content").style.opacity = 1;
 			setContent(html);
-		}, 700);
+			setTimeout(function() {
+				_g("content").style.opacity = 1;
+			}, 200);
+		}, 600);
 	} else {
 		setContent(html);
 	}
