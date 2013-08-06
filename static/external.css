@@ -49,6 +49,7 @@ a { color: white; }
 	}
 	#content {
 		width: 400px;
+		-webkit-transition: all 0.3s ease;
 	}
 	#staticcontent {
 		margin-top: 80px;
