@@ -64,7 +64,7 @@ var app = function(payload) {
 	}
 }
 
-var s = document.cookie.match(/D\=([^s|^\;]+)\;?/)[1].split(",");
+var s = document.cookie.match(/D\=([^\s|^\;]+)\;?/)[1].split(",");
 curUser = s[0];
 AUTHKEY = s[1];
 
