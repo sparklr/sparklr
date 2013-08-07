@@ -25,8 +25,9 @@ var server = http.createServer(function(request,response) {
 	var requesturi = url.parse(request.url, true);
 	var sessionid;
 	if (request.headers["cookie"]) {
-		var d = request.headers["cookie"].match(/D\=([^s|^\;]+)\;?/);
+		var d = request.headers["cookie"].match(/D\=([^\s|^\;]+)\;?/);
 		sessionid = d ? d[1] : "";
+		console.log(sessionid);
 	}
 
 
