@@ -9,11 +9,20 @@ setInterval("updateOnlineFriends();", 20000);
 window.addEventListener("hashchange", function() { updatePages() });
 window.addEventListener("load", function() { updatePages(true) });
 
+var newPageToFetch = false;
+
 var scrollHandler = function() {
 	var doctop = document.body.scrollTop || document.documentElement.scrollTop;
 	if (scrollDistanceFromBottom() < 600) {
-		fetchOlderPosts();
+		if (newPageToFetch) {
+			console.log("Fetching posts");
+			fetchOlderPosts();
+			newPageToFetch = false;
+		}
+	} else {
+		newPageToFetch = true;
 	}
+
 	var a = _g("scrolltotop");
 	if (!a) return; // sometimes this is null?? TODO, look into that
 	if (doctop > 1000) {
