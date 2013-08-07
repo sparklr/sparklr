@@ -71,9 +71,13 @@ function setContent(html) {
 }
 
 function requestInvite(email) {
-	ajaxGet("work/requestinvite/" + email.value, null, function() {
-		location.href = "#/thankyou";
-	});
+	if (email.value != "email address" && email.value != "") {
+		ajaxGet("work/requestinvite/" + email.value, null, function() {
+			location.href = "#/thankyou";
+		});
+	} else {
+		callback("Please enter an email address");
+	}
 }
 
 function trySignin(username, password) {
