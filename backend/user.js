@@ -6,7 +6,7 @@ var async = require("async");
 
 exports.verifyAuth = function(userid,authkey,callback) {
 	this.getUserProfile(userid, function(err,rows) {
-		if (err || rows.length < 1) callback(false);
+		if (err || rows.length < 1 || !rows[0]) return callback(false);
 		callback(authkey == rows[0].authkey, rows[0]);
 	});
 }
