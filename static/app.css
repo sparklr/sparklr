@@ -26,16 +26,13 @@ div::-webkit-scrollbar-track {
     background: #cecece;
 }
 
-/* Fonts 
- * TODO: Why do we need two requests?
- */
+/* Fonts */
 @font-face {
   font-family: 'PT Sans';
   font-style: normal;
   font-weight: 400;
   src: local('PT Sans'), local('PTSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v5/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
 }
-
 @font-face {
   font-family: 'PT Sans';
   font-style: normal;
@@ -53,8 +50,16 @@ body {
 
 img { outline: 0 }
 
-a { color: #4F3075; text-decoration: none; outline: 0; }
-a.person { color: #3a3a3a; font-weight: 700 }
+a { 
+	color: #4F3075;
+	text-decoration: none;
+	outline: 0;
+}
+a.person { 
+	color: #3a3a3a;
+	font-weight: 700;
+}
+
 h2 {
     color: #555;
     font-weight: normal;
@@ -153,6 +158,7 @@ hr {
     margin-top: 7px;
     margin-left: 20px;
 }
+
 #frame {
     width: 790px;
     display: block;
@@ -1019,6 +1025,11 @@ h2 a.tag {
 
 #searchbox_mobile {
 	display: none;
+}
+
+var {
+	font-weight: none;
+	font-style: none;
 }
 
 @media all and (max-width: 799px) {
