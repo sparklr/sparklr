@@ -1028,8 +1028,8 @@ h2 a.tag {
 }
 
 var {
-	font-weight: none;
-	font-style: none;
+	font-weight: normal;
+	font-style: normal;
 }
 
 @media all and (max-width: 799px) {
