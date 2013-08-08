@@ -1032,6 +1032,10 @@ var {
 	font-style: normal;
 }
 
+input {
+	-webkit-appearance: none;
+}
+
 @media all and (max-width: 799px) {
 	@-ms-viewport {
 		width: 480px;
