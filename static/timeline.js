@@ -91,6 +91,8 @@ function processPostMeta(data) {
 	return data;
 }
 function renderTags(item) {
+	if (!item.tags) return;
+
 	var post = _g("picturepost_" + item.id);
 	var html = "";
 
