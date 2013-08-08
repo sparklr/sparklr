@@ -81,12 +81,20 @@ eval(getTemplate("frontend"));
 document.write(html);
 
 var ua = navigator.userAgent;
+var width = 480;
+var scale = 1.0;
 
-if (ua.match(/Chrome/i) && ua.match(/mobile/i)) {
-	document.head.children[1].content = "target-densitydpi=device-dpi, width=440, initial-scale=0.8, maximum-scale=0.8, user-scalable=0";
-} else {
-	document.head.children[1].content = "target-densitydpi=device-dpi, width=480, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
+if (ua.match(/mobile/i)) {
+	if (ua.match(/safari/i)) {
+		width = 440;
+		scale = 0.7;
+	}
+	if (ua.match(/chrome/i)) {
+		width = 440;
+		scale = 0.8;
+	}
 }
+document.head.children[1].content = "target-densitydpi=device-dpi, width=" + width + ", initial-scale=" + scale + ", maximum-scale=" + scale + ", user-scalable=0";
 
 // Nasty UA matching 
 if (ua.match(/MSIE/i)) {
