@@ -194,6 +194,6 @@ function showBanner(text, id, timeout) {
 function hideBanner(id) {
 	if (!_g(id)) return;
 	_g(id).style.opacity = 0;
-	setTimeout(function() { document.body.removeChild(_g(id)); }, 1000);
+	setTimeout(function() { if (_g(id)) document.body.removeChild(_g(id)); }, 1000);
 }
 
