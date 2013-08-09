@@ -39,7 +39,7 @@ function updatePages(loaded) {
 	_g("frame").style.minHeight = "640px";
 
 	//disable bg
-	_g("profilebackground").style.background = "";
+	hideBackground();
 
 	var s = location.hash.split("/");
 

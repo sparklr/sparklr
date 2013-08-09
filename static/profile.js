@@ -9,6 +9,12 @@ function updateBackground(user, id) {
 	h.style.backgroundImage = 'url(' + STATICHOST + "/backgrounds/" + user + '?' + id + ')';
 }
 
+function hideBackground() {
+	var s = _g("profilebackground").style;
+	s.background = "";
+	s.position = "fixed";
+}
+
 function editProfile() {
 	if (_g("editBtn").innerHTML == "Edit") {
 		_g("userDisplayName").setAttribute("contenteditable", true);
