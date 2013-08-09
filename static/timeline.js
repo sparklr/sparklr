@@ -311,8 +311,8 @@ function renderTimeline() {
 
 		var region = document.createElement("div");
 		region.setAttribute("contenteditable", true);
-		region.style.top = (e.y - y) + "px";
-		region.style.left = (e.x - x) + "px";
+		region.style.top = (e.clientY - y) + "px";
+		region.style.left = (e.clientX - x) + "px";
 		_g("attachment").appendChild(region);
 
 		setTimeout(function() { region.focus(); }, 100);
