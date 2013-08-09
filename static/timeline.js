@@ -129,7 +129,12 @@ function publishRepost() {
 }
 
 function showImage(img) {
-	showPopup("<img src='" + STATICHOST + "/storage/images/" + img + ".jpg' onload='this.style.opacity=1'>", "lightbox");
+	var imgpath = STATICHOST + "/storage/images/" + img + ".jpg";
+	if (MOBILE) {
+		window.open(imgpath);
+	} else {
+		showPopup("<img src='"+imgpath+"' onload='this.style.opacity=1'>", "lightbox");
+	}
 }
 
 function deletePost(id) {
