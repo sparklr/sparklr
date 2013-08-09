@@ -550,6 +550,9 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				callback(id);
 			});
 			return; 
+		case "search":
+			if (!fragments[3]) return callback(false);
+			break;
 		default:
 			if (fragments.length < 4 || fragments[3] == "") {
 				return do400(response, 400, "Missing arguments");

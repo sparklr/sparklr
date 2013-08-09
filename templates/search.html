@@ -1,7 +1,7 @@
 <div class='contentwrapper search' style='margin:5px;width:570px;min-height:0px'>
 	<input type='text' id='searchbox_mobile' class='t1' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)' value='{ unescape(location.hash.substring(9)).replace(/</g, '&lt;').replace(/>/g, '&gt;') }'>
 <h2>"{ unescape(location.hash.substring(9)).replace(/</g, '&lt;').replace(/>/g, '&gt;') }"</h2>
-	<% if (!data.error) %>
+	<% if (!data.error && data !== false) %>
 		<% if (!data.users && !data.posts) %>
 		<br><b>No results</b><br>
 		Feel free to use your imagination, though.
@@ -18,13 +18,6 @@
 			{getDisplayName(data.users[i].id)}
 		</a>
 	</div>
-	<!--
-	<div class='friend fadein' onClick='location.href="#/user/{data.users[i].id}";' style='width: 282px;background-image: url({STATICHOST}/users/{data.users[i].id});-webkit-animation-duration: {(Math.random() * 1.5)}s'>
-		<div style='position: absolute; bottom: 2px; right: 5px;'>
-		</div>
-		<span style='width:272px'>{getDisplayName(data.users[i].id) }</span>
-	</div>
-	-->
 	<script>
 			}
 		}
