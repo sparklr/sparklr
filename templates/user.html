@@ -86,7 +86,7 @@
 
 		setTimeout(function() { 
 			updateHeader(data.user,data.avatarid); 
-			if (data.background)
+			if (data.background && !MOBILE)
 				updateBackground(data.user,data.background);
 		}, 0);
 
