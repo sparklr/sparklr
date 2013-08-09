@@ -544,9 +544,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			Database.query("SELECT `id` FROM `users` AS users1\
 								JOIN \
 								(SELECT (RAND() * (SELECT MAX(id) FROM `users`)) as nid) AS users2 \
-								WHERE users1.id >= users2.nid ORDER BY users1.lastseen DESC LIMIT 3", 
+								WHERE users1.id >= users2.nid AND users1.id != " + parseInt(userobj.id) + " ORDER BY users1.lastseen DESC LIMIT 5", 
 			function(err,rows) {
-				callback(rows[0].id);
+				var id = rows[Math.round(Math.random() * (rows.length - 1))].id;
+				callback(id);
 			});
 			return; 
 		default:
