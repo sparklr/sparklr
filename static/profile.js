@@ -36,17 +36,22 @@ function editProfile() {
 }
 
 function avatarUploadCallback(e) {
+	_g("profileheader").className += " pulse";
 	uploadImage(e, "work/avatar", function(xhr) {
 		var avatarid = xhr.responseText;
 		updateHeader(curUser, avatarid, true);
 		updateAvatar(curUser, avatarid);
+		_g("profileheader").className = "profileheader";
 	});
 }
 
 function backgroundUploadCallback(e) {
+	_g("profilebackground").className += " pulse";
+	_g("profilebackground").style.backgroundColor = "#000";
 	uploadImage(e, "work/background", function(xhr) {
 		updateBackground(curUser, xhr.responseText);
 		_g("removeBackground").style.display = "inline-block";
+		_g("profilebackground").className = "";
 	});
 }
 
