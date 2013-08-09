@@ -54,7 +54,7 @@ function makeThumb(input, output, size, callback) {
 						"-gravity",
 						"center",
 						"-thumbnail",
-						size.width + "x" + size.height + "^",
+						">" + size.width + "x" + size.height + "^",
 						"-crop",
 						size.width + "x" + size.height + "+0+0",
 						"-strip",

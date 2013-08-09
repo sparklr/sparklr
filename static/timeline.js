@@ -416,6 +416,7 @@ function uploadStreamImageCallback(e,id) {
 	if (res.indexOf("data:base64") != -1) {
 		res = "data:image/jpeg;" + res.substring(5);
 	}
+	id = id || "attachment";
 	_g(id).style.backgroundImage = "url(" + res + ")";
 	_g(id).style.display = "block";
 	imgAttachments = e;
