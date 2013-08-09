@@ -50,15 +50,17 @@
 		<div id='userTip' style='display:none;position:absolute;bottom:10px;left:0px'><p class='headersubtitle'>Drag an image here, or <u>choose a file</u>
 			<input type='file' style='opacity:0;position:absolute;left:50px' onchange='loadImage(this.files[0], avatarUploadCallback)'>
 		</p></div>
-		<div id='backgroundTip' style='display:none;position:fixed;bottom:10px;left:0px'><p class='headersubtitle'>Drag a background image here,<br> or <u>choose a file</u>
-			<input type='file' style='opacity:0;position:absolute;left:0px' onchange='loadImage(this.files[0], backgroundUploadCallback)'><br>
-			<a href='javascript:removeBackground();' id='removeBackground' style='<% if (!data.background) %>display: none;<% endif %>text-decoration:underline'>Remove background</a>
-		</p></div>
 		<div class='controls'>
 			<input type='button' value='Posts' onClick='location.href="#/user/{data.user}/";'>
 			<input type='button' value='Mentions' onClick='location.href="#/user/{data.user}/mentions";'>
 			<input type='button' value='Photos' onClick='location.href="#/user/{data.user}/photos";'>
 		</div>
+	</div>
+	<div id='backgroundTip' style='display:none;position:fixed;bottom:10px;left:0px'>
+		<p class='headersubtitle'>Drag a background image here,<br> or <u>choose a file</u>
+			<input type='file' style='opacity:0;position:absolute;left:0px' onchange='loadImage(this.files[0], backgroundUploadCallback)'><br>
+			<a href='javascript:removeBackground();' id='removeBackground' style='<% if (!data.background) %>display: none;<% endif %>text-decoration:underline;color:#fff'>Remove background</a>
+		</p>
 	</div>
 	<script>
 		currentPageType = "STREAM";
