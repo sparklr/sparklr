@@ -8,19 +8,25 @@ var id = 0;
 
 exports.handleUpload = function(data, userobj, args, callback) {
 	id++;
-	var imgid = start + "_" + id.toString(36);
+	var imgid = args.id || (start + "_" + id.toString(36));
 
 	var tmpfile = os.tmpdir() + "/upload_" + imgid;
 
-	var outfile = global.storageDir + "/" + args.folder;
-	if (args.id) {
-		outfile += "/" + args.id;
+	var outfile = global.storageDir + "/" + (args.category || "");
+
+	if (!args.allowGif) {
+		imgid += ".jpg";
 	} else {
-		outfile += "/" + imgid;
+		if (data.substring(0,16).indexOf("image/gif") != -1) {
+			imgid += ".gif";
+		} else {
+			imgid += ".jpg";
+		}
 	}
 
-	var outthumb = outfile + "_thumb.jpg";
-	outfile += ".jpg";
+	var outthumb = outfile + "t" + imgid;
+	outfile += imgid;
+
 
 	fs.writeFile(tmpfile, data.substring(data.indexOf(",") + 1), "base64", function(err) {
 		if (err) callback(err);
@@ -36,7 +42,6 @@ exports.handleUpload = function(data, userobj, args, callback) {
 				resizeImage(tmpfile, outfile, callback);
 			}
 		], function(err) {
-			console.log("hi");
 			callback(err, imgid);
 		});
 	});

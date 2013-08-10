@@ -135,9 +135,9 @@ function processMedia(text,noImages) {
 		return "<a href='#/tag/" + tag + "' class='tag'>" + match + "</a>";
 	});
 
-	var imgregex = /\[IMG([A-Za-z0-9_-]+)\]/g;
+	var imgregex = /\[IMG([A-Za-z0-9\._-]+)\]/g;
 	text = text.replace(imgregex, function(match, img) {
-		return "<img src='" + STATICHOST + "/storage/images/" + img + "_thumb.jpg'><br>";
+		return "<img src='" + imgUrl(img) + "'><br>";
 	});
 
 	return text;
@@ -409,4 +409,9 @@ function search_Keydown(e) {
 			return suggestionBoxCallback(result);
 		search(e.target.value);
 	}
+}
+
+function imgUrl(img,fullsize) {
+	if (img.indexOf(".") == -1) img += ".jpg";
+	return STATICHOST + "/" + (!fullsize ? "t" : "") + img;
 }

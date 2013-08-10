@@ -129,7 +129,7 @@ function publishRepost() {
 }
 
 function showImage(img) {
-	var imgpath = STATICHOST + "/storage/images/" + img + ".jpg";
+	var imgpath = imgUrl(img,true);
 	if (MOBILE) {
 		window.open(imgpath);
 	} else {

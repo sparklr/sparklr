@@ -4,14 +4,14 @@
 </script>
 
 <div class='contentwrapper'>
-	<div style='background-image: url({STATICHOST}/users/{curChatUser}); margin: -5px -5px; width: 578px;' class='profileheader'>
+	<div style='background-image: url({imgUrl(curChatUser,true)}); margin: -5px -5px; width: 578px;' class='profileheader'>
 		<p class='headertitle fadein'><a href='#/user/{curChatUser}'>{ getDisplayName(curChatUser) }</a></p>
 </div>
 <div class='fadein'>
 	<p>
 		<div id='scrollUpContent'>
 		</div>
-		<img src='{STATICHOST}/thumb/{curUser}' class='avatar'>
+		<img src='{getAvatar(curUser)}' class='avatar'>
 		<textarea id='composer' onkeydown='isEnter(event,sendChatMessage)' autofocus="autofocus"></textarea>
 	</p>
 </div>

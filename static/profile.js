@@ -1,12 +1,12 @@
 //profile pages and such
 function updateHeader(user, avatarid, animate) {
 	var h = _g("profileheader");
-	h.style.backgroundImage = 'url(' + STATICHOST + "/users/" + user + '?' + avatarid + ')';
+	h.style.backgroundImage = 'url(' + imgUrl(user + '.jpg?' + id,true) + ')';
 }
 
 function updateBackground(user, id) {
 	var h = _g("profilebackground");
-	h.style.backgroundImage = 'url(' + STATICHOST + "/backgrounds/" + user + '?' + id + ')';
+	h.style.backgroundImage = 'url(' + imgUrl('b' + user + '.jpg?' + id,true) + ')';
 }
 
 function hideBackground() {
