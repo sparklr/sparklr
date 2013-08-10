@@ -8,8 +8,8 @@
 	var renderUser = function (user) {
 		var html = "";
 </script>
-<img src='{STATICHOST}/users/{user}' onload='_g("friendbox_{user}").style.opacity=1;' style='display:none'>
-<div id='friendbox_{user}' class='friend' onClick='location.href="#/user/{user}";' style='background-image: url({STATICHOST}/users/{user});opacity:0;-webkit-transition: all {(Math.random() * 1.5)}s'><div style='position: absolute; bottom: 2px; right: 5px;'>
+<img src='{imgUrl(user,true)}' onload='_g("friendbox_{user}").style.opacity=1;' style='display:none'>
+<div id='friendbox_{user}' class='friend' onClick='location.href="#/user/{user}";' style='background-image: url({imgUrl(user,true)});opacity:0;-webkit-transition: all {(Math.random() * 1.5)}s'><div style='position: absolute; bottom: 2px; right: 5px;'>
 		<% if (data.followers.indexOf(user) != -1) %>
 		<div class='star' title='Mutual Follower ♥'></div>
 		<% endif %>
