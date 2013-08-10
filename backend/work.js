@@ -161,7 +161,7 @@ exports.run = function(request, response, uri, sessionid) {
 								Upload.handleUpload(postBody, userobj, {
 									width: 590,
 									height: 350,
-									folder: "images"
+									allowGif: true
 								}, function(err, id) {
 									if (err) return do500(response, err);
 									postObject.img = id;
@@ -180,7 +180,7 @@ exports.run = function(request, response, uri, sessionid) {
 					case "repost":
 						if (postObject.postData) {
 							var f = function() {
-								Upload.handleUpload(postBody, userobj, { width: 500, height: 350, folder: "images" }, function (err, id) {
+								Upload.handleUpload(postBody, userobj, { width: 500, height: 350, allowGif: true }, function (err, id) {
 									if (err) return do500(response,err);
 									postObject.reply = "[IMG" + id + "]" + postObject.reply;
 									Post.repost(userobj.id, postObject.id, postObject.reply, function(err) {
@@ -200,7 +200,7 @@ exports.run = function(request, response, uri, sessionid) {
 					case "comment":
 						if (postObject.postData) {
 							var f = function() {
-								Upload.handleUpload(postBody, userobj, { width: 500, height: 350, folder: "images" }, function (err, id) {
+								Upload.handleUpload(postBody, userobj, { width: 500, height: 350, allowGif: true }, function (err, id) {
 									if (err) return do500(response,err);
 									postObject.comment = "[IMG" + id + "]" + postObject.comment;
 									Post.postComment(userobj.id, postObject, function(err) {
@@ -389,8 +389,7 @@ exports.run = function(request, response, uri, sessionid) {
 							Upload.handleUpload(postBody, userobj, {
 								width: 50,
 								height: 50,
-								id: userobj.id,
-								folder: "avatars"
+								id: userobj.id
 							}, function(err, id) {
 								if (err) return do500(response, err);
 								userobj.avatarid = Toolbox.time();
@@ -410,7 +409,7 @@ exports.run = function(request, response, uri, sessionid) {
 							}
 							Upload.handleUpload(postBody, userobj, {
 								id: userobj.id,
-								folder: "backgrounds"
+								category: "b"
 							}, function(err, id) {
 								if (err) return do500(response, err);
 								userobj.background = Toolbox.time();

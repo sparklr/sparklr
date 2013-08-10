@@ -6,7 +6,7 @@ var handlesToFetch = [];
 var fetchTaskAsync;
 
 function getAvatar(id,plain) {
-	return STATICHOST + "/thumb/" + id + "?" + (plain ? "" : AVATAR_IDS[id]);
+	return imgUrl(id + ".jpg" + (plain ? "" : "?" + AVATAR_IDS[id]));
 }
 
 function getDisplayName(id) {
