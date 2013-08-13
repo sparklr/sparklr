@@ -115,8 +115,8 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 				password: pass,
 				email: email,
 				displayname: username,
-				following: inviterows[0].from + (inviterows[0].from != 4) ? (",4") : "", // auto follow jonathan, just cus
-				followers: inviterows[0].from,
+				following: inviterows[0].from || "",
+				followers: inviterows[0].from || "",
 				emailverified: 0,
 				authkey: exports.generateAuthkey(username),
 				bio: ""
@@ -130,8 +130,8 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 					data[0].followers += "," + rows.insertId;
 					Database.updateObject("users", data[0]);
 				});
-
-				Database.deleteObject("invites", inviterows[0]);
+				if (inviterows[0].from != 0)
+					Database.deleteObject("invites", inviterows[0]);
 			});
 		});
 	});
