@@ -1,5 +1,5 @@
 //profile pages and such
-function updateHeader(user, avatarid, animate) {
+function updateHeader(user, id) {
 	var h = _g("profileheader");
 	h.style.backgroundImage = 'url(' + imgUrl(user + '.jpg?' + id,true) + ')';
 }
