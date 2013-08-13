@@ -67,6 +67,7 @@ function chatWith(id) {
 
 function follow(id,redir) {
 	ajaxGet("work/follow/"+id, null, function() { if (!redir) location.href += "/#"; });	
+	lastUpdateTime = 0;
 }
 
 function unfollow(id) {

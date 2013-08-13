@@ -163,7 +163,7 @@ function signUp(username,email,password,errors) {
 		if (data.insertId) {
 			trySignin(username,password,"/welcome");
 		} else {
-			callback("Something went wrong!");
+			callback("Uh oh! It appears that your invite ID is invalid.<br>Contact jonathan@sparklr.me and we'll get this fixed.");
 		}
 	});
 }
