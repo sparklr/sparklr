@@ -62,7 +62,7 @@
 		Let's get started.
 		<form onSubmit='signUp(username,email,password,errors); return false;'>
 			<input type='text' name='username' onblur='checkSignupForm(username,password,errors);' placeholder='username' class='t1' autofocus='autofocus'><br>
-			<input type='email' name='email' placeholder='email' class='t1'><br>
+			<input type='email' name='email' id='signupemail' placeholder='email' class='t1'><br>
 			<input type='password' name='password' placeholder='password' class='t1'><br>
 			<input type='submit' value='Sign up' name='go' class='s1'>
 			<input type='hidden' name='errors'>
