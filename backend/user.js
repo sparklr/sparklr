@@ -105,7 +105,7 @@ exports.resetPassword = function(userobj) {
 exports.signupUser = function(inviteid, username, email, password, callback) {
 	Database.query("SELECT * FROM `invites` WHERE `id` = " + Database.escape(inviteid), function(err, inviterows) {
 		if (err) return callback(err);
-		if (!inviterows[0]) return callback(1);
+		if (!inviterows[0]) return callback(err,1);
 
 		username = username.replace(/[^A-Za-z0-9]/g, "");
 		exports.generatePass(password, function(err,pass) {
@@ -124,14 +124,15 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 				if (err) return callback(err);
 				callback(err, rows);
 				
-				exports.getUserProfile(inviterows[0].from, function(err, data) {
-					if (err) return false;
-					data[0].following += "," + rows.insertId;
-					data[0].followers += "," + rows.insertId;
-					Database.updateObject("users", data[0]);
-				});
-				if (inviterows[0].from != 0)
+				if (inviterows[0].from) {
+					exports.getUserProfile(inviterows[0].from, function(err, data) {
+						if (err) return false;
+						data[0].following += "," + rows.insertId;
+						data[0].followers += "," + rows.insertId;
+						Database.updateObject("users", data[0]);
+					});
 					Database.deleteObject("invites", inviterows[0]);
+				}
 			});
 		});
 	});
