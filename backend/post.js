@@ -100,14 +100,13 @@ exports.deleteComment = function(user, id, callback) {
 
 		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(user);
 		database.query(query, function(){});
-		var count = (rows[0].commentcount - 1 || 0);
-		database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + toolbox.time() + " WHERE id=" + parseInt(data.id));
+		exports.updateCommentCount(rows[0].postid, -1);
 		callback(true);
 	});
 }
 
 exports.updateCommentCount = function(postid, x) {
-	database.query("UPDATE `timeline` SET commentcount = commentcount + " + parseInt(x) + ", modified = " + toolbox.time() + " WHERE id=" + parseInt(postid));
+	database.query("UPDATE `timeline` SET commentcount = commentcount + " + parseInt(x) + ", modified = " + toolbox.time() + " WHERE id=" + parseInt(postid), function(){});
 }
 
 exports.repost = function(user, postid, reply, callback) {
