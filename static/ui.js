@@ -244,7 +244,8 @@ function stopBubbling(e) {
 		e = window.event;
 	
 	e.cancelBubble = true;
-	e.stopPropagation();
+	if (e.stopPropagation)
+		e.stopPropagation();
 }
 
 function updatePageTitle() {
@@ -271,7 +272,8 @@ function dropImage(e, callback) {
 	if (!e) e = window.event;
 	
 	e.preventDefault();
-	e.stopPropagation();
+	if (e.stopPropagation)
+		e.stopPropagation();
 	
 	loadImage(e.dataTransfer.files[0], callback);
 
@@ -290,7 +292,8 @@ function dropPrevent(e) {
 	
 	e.dataTransfer.dropEffect = 'move';
 	e.preventDefault();
-	e.stopPropagation();
+	if (e.stopPropagation)
+		e.stopPropagation();
 	return false;
 }
 
