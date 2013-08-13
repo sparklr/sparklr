@@ -80,7 +80,7 @@ function requestInvite(email) {
 	}
 }
 
-function trySignin(username, password) {
+function trySignin(username, password, redir) {
 	var xhr = new XMLHttpRequest();
 	
 	_g("loginform").className = "";
@@ -92,7 +92,7 @@ function trySignin(username, password) {
 			switch (xhr.status)
 			{
 				case 200:
-					location.href="./";
+					location.href = redir || "./";
 				break;
 				case 403:
 					password.value = "";
@@ -152,7 +152,7 @@ function signUp(username,email,password,errors) {
 
 	ajaxGet("work/signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + password.value, null, function(data) {
 		if (data.insertId) {
-			trySignin(username,password);
+			trySignin(username,password,"/welcome");
 		} else {
 			callback("Something went wrong!");
 		}

@@ -295,8 +295,9 @@ function renderComposer(caption, keydown, minipreview, id) {
 	return html;
 }
 
-function renderTimeline() {
-	var html = "<div class='timelineitem'>";
+function renderTimeline(prehtml) {
+	var html = prehtml || "";
+	html += "<div class='timelineitem'>";
 	html += "<div class='picturepost attachment' id='attachment'></div>";
 	html += renderComposer("Share something...", "postToTimeline");
 	html += "</div><div id='timeline_container'></div>";
