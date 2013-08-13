@@ -24,6 +24,10 @@
 	var pageType = fragments[3];
 
 </script>
+<% if (pageType == "step2") %>
+	<input type='button' value='Next' onClick='editProfile();location.href="/#/step3";' style='margin:7px 4px;float:right'>
+	<h2 style='color:#fff'>Step 2: Customize your profile</h2>
+<% endif %>
 <% if (data.user == curUser) %>
 <div id='profileheader' class='profileheader' onDrop='dropImage(event, avatarUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'>
 	<% else %>
@@ -69,6 +73,12 @@
 			currentPageType = "PHOTO";
 		if (pageType == "mentions")
 			currentPageType = "MENTIONS";
+		if (pageType == "step2") {
+			setTimeout(function() {
+				editProfile(); 
+			}, 10);
+		}
+
 	</script>
 	<div id='timeline_container'></div>
 	<script>

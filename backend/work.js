@@ -471,8 +471,19 @@ exports.run = function(request, response, uri, sessionid) {
 
 function processGetRequest(request, response, uri, sessionid, userobj, callback) {
 	var fragments = uri.pathname.split("/");
-
 	switch (fragments[2]) {
+		case "welcome":
+			var toFollow = [4,6,10];
+			var query = "SELECT `id`,`displayname`,`bio` FROM `users` WHERE `id` IN (";
+			for (var i = 0; i < toFollow.length - 1; i++) {
+				query += toFollow[i] + ",";
+			}
+			query += toFollow[toFollow.length - 1] + ")";
+			Database.query(query, function(err,rows) {
+				if (err) return do500(err);
+				callback(rows);
+			});
+			return;
 		case "friends":
 			var obj = {
 				followers: userobj.followers,
@@ -764,6 +775,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "follow":
 			var tofollow = fragments[3];
+			if (tofollow == userobj.id) 
+				return do400(response, "You can't follow yourself ugh.");
 			if (userobj.following.indexOf(tofollow) == -1) {
 				tofollow = parseInt(tofollow);
 				userobj.following.push(tofollow);

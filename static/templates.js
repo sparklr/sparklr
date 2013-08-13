@@ -7,6 +7,7 @@ function renderPageFromTemplate() {
 	var templateData = getTemplate(template);
 	
 	ajaxGet("work/" + location.hash.substring(2), null, function(data) {
+		console.log(templateData);
 		eval(templateData);
 
 		_g("content").innerHTML = html;

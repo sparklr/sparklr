@@ -65,8 +65,8 @@ function chatWith(id) {
 	location.href = "#/chat/" + id;
 }
 
-function follow(id) {
-	ajaxGet("work/follow/"+id, null, function() { location.href += "/#"; });	
+function follow(id,redir) {
+	ajaxGet("work/follow/"+id, null, function() { if (!redir) location.href += "/#"; });	
 }
 
 function unfollow(id) {

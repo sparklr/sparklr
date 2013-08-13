@@ -19,13 +19,19 @@ function editProfile() {
 	if (_g("editBtn").innerHTML == "Edit") {
 		_g("userDisplayName").setAttribute("contenteditable", true);
 		var bio = _g("userBio");
+		if (bio.innerText.length < 2)
+			bio.innerHTML = "About me:&nbsp;";
 		bio.setAttribute("contenteditable", true);
+
 		_g("userTip").style.display = "inline-block";
 		_g("backgroundTip").style.display = "inline-block";
 		_g("editBtn").innerHTML = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
 		var bio = _g("userBio");
+		if (bio.innerText.substring(0,9) == "About me:") {
+			bio.innerText = bio.innerText.substring(9);
+		}
 		bio.setAttribute("contenteditable", false);
 		_g("userTip").style.display = "none";
 		_g("backgroundTip").style.display = "none";

@@ -1,21 +1,30 @@
 //The current page type, i.e. stream, chat
 var currentPageType;
 
-var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost"];
+var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "welcome"];
 
 var homepage = function() {
-	renderTimeline();
+	var args = location.hash.split("/");
+	var prehtml = "";
+	var composertext = "";
+	if (args[1] == "step3") {
+		prehtml = "<input type='button' value='Next' onClick='location.href=\"/#/friends/step4\";' style='margin:7px 4px;float:right'><h2 style='color:#fff'>Step 3: Say hello!</h2>";
+		composertext = "#introducing ";
+	}
+	if (args[1] == "mention") {
+		composertext = "@" + args[2] + " ";
+	}
+
+	renderTimeline(prehtml);
 	subscribedStream = 0;
 
 	for (var i = 0; i < timelineEvents[0].length; i++) {
 		addTimelineEvent(timelineEvents[0][i]);
 	}
 
-	var args = location.hash.split("/");
-	if (args[1] == "mention") {
+	if (composertext) {
 		var composer = _g("composer");
-
-		composer.value = "@" + args[2] + " ";
+		composer.value = composertext;
 		composer.focus();
 		composer.selectionStart = composer.value.length;
 	}
