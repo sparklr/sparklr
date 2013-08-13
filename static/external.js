@@ -28,6 +28,12 @@ function updatePages(loaded) {
 		}, 600);
 	} else {
 		setContent(html);
+		if (args[1] == "signup" && args[3]) {
+			var ele = _g("signupemail");
+			if (ele) {
+				ele.value = unescape(args[3]);
+			}
+		}
 	}
 	callback(""); //hide any old error messages
 }
@@ -40,6 +46,9 @@ function setContent(html) {
 	var walk = function(e) {
 		for (var i = 0; i < e.childNodes.length; i++) {
 			var child = e.childNodes[i];
+			if (child.id)
+				child.id = child.id.replace("fake","");
+
 			if (e.childNodes[i].getAttribute && e.childNodes[i].getAttribute("autofocus")) {
 				e.childNodes[i].focus();
 				if (child.type == "password") {
