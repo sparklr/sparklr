@@ -2,6 +2,10 @@ window.addEventListener("hashchange", function() { updatePages(false); });
 window.addEventListener("load", function() { updatePages(true) });
 
 function updatePages(loaded) {
+	if (location.href.indexOf("/signup/") != -1 && location.hash == "") {
+		location.href = "/#" + location.href.substring(location.href.indexOf("/signup"));
+		return;
+	}
 	var args = location.hash.split("/");
 	var html = "";
 	var pages = _g("pages");

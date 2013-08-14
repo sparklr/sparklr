@@ -107,7 +107,7 @@ exports.showExternalPage = function(request, response) {
 		response.end();
 		return;
 	}
-	if (request.url != "/") {
+	if (request.url != "/" && request.url.indexOf("/signup") == -1) {
 		response.writeHead(404);
 		response.end();
 		return;

@@ -4,6 +4,10 @@ var currentPageType;
 var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "welcome"];
 
 var homepage = function() {
+	if (location.href.indexOf("/welcome") != -1 && location.hash == "") {
+		location.href = "/#/welcome";
+		return;
+	}
 	var args = location.hash.split("/");
 	var prehtml = "";
 	var composertext = "";
