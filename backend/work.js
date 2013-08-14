@@ -364,6 +364,8 @@ exports.run = function(request, response, uri, sessionid) {
 										}],
 										function(err) {
 											if (err) do500(response, err);
+											result.deleted = true;
+											result.message = "Your account has been deleted.";
 											sendObject(response, result);
 										});
 								});
