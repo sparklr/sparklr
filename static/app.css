@@ -282,6 +282,7 @@ div.lightbox img {
 	opacity: 0;
 	-webkit-transition: all 1s ease;
     box-shadow: 0px 0px 10px #000;
+	max-height: 80%;
 }
 
 div.confirm {
