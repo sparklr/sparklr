@@ -179,6 +179,9 @@ function updateAccountSettings() {
 				AUTHKEY = result.authkey;
 				document.cookie = "D=" + curUser + "," + AUTHKEY;
 			}
+			if (result.deleted) {
+				location.href="./";
+			}
 			updateSettingsCallback(result.result, result.message);
 		});
 
