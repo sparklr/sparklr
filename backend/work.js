@@ -521,6 +521,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				obj.recommends = sorted.slice(0,3);
 				callback(obj);
 			}
+			if (userobj.following.length < 1) 
+				f();
 			return;
 		case "onlinefriends":
 			var friends = [];
