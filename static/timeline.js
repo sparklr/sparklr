@@ -324,17 +324,18 @@ function renderTimeline(prehtml) {
 		setTimeout(function() { region.focus(); }, 100);
 		region.onkeydown = function(e) {
 			if (e.keyCode == 13) {
-				stopBubbling();
+				stopBubbling(e);
 
 				var selected = selectedSuggestionBoxItem();
 				var userid = selected ? selected.getAttribute("data-id") : "";
-				var html = selected ? selected.innerHTML : region.innerText;
+				var html = selected ? selected.innerHTML : region.textContent;
 
-				region.setAttribute("data-tag", selected ? selected.innerText : region.innerText);
+				region.setAttribute("data-tag", selected ? selected.textContent : region.textContent);
 
 				region.innerHTML = html;
 				region.blur();
 				region.setAttribute("data-userid", userid);
+				showSuggestionBox(false);
 				return false;
 			}
 			if (e.keyCode == 40)  //down
@@ -344,7 +345,7 @@ function renderTimeline(prehtml) {
 			if (event.keyCode == 38 || event.keyCode == 40) return;
 			var items = getUserSuggestions(region.innerText);
 
-			showSuggestionBox(items.length,(e.x),(e.y + 30),items);
+			showSuggestionBox(items.length,(e.clientX),(e.clientY + 30),items);
 			suggestionBoxCallback = function(id,title) { 
 				region.innerHTML = "<img class='littleavatar' src='" + getAvatar(id) + "'>" +title;
 				region.setAttribute("data-userid", id);
@@ -353,9 +354,11 @@ function renderTimeline(prehtml) {
 		}
 		region.onblur = function () {
 			if (!region.innerText) {
+				alert();
 				_g("attachment").removeChild(region);
 				region = null;
-				stopBubbling();
+				stopBubbling(e);
+			} else {
 				region.setAttribute("data-tag", region.innerText);
 			}
 			showSuggestionBox(false);
