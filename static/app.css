@@ -497,7 +497,7 @@ div.like {
 div.picturepost {
     box-shadow: 0px 0px 4px #000,
     inset 0px 0px 9px rgba(255,255,255,0.4);
-    min-height: 335px;
+    min-height: 443px;
 	background-color: #000;
     background-repeat: no-repeat;
 	background-position: center center;

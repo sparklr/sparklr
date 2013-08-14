@@ -160,7 +160,7 @@ exports.run = function(request, response, uri, sessionid) {
 							var f = function() {
 								Upload.handleUpload(postBody, userobj, {
 									width: 590,
-									height: 350,
+									height: 443,
 									allowGif: true
 								}, function(err, id) {
 									if (err) return do500(response, err);
