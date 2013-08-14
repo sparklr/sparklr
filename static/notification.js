@@ -55,6 +55,8 @@ function addNotification(notification) {
 		break;
 	}
 
+	body = body.replace(/\[IMG([A-Za-z0-9\._-]+)\]/g,"");
+
 	notification.body = "<img class='avatar' src='" + getAvatar(notification.from) + "'>" + getDisplayName(notification.from) + " " + body;
 
 	var n = document.createElement("div");
