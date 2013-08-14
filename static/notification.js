@@ -28,7 +28,7 @@ function addNotification(notification) {
 	switch (parseInt(notification.type)) {
 		case 1: //commented on post 
 			if  (notification.body == LIKE_CHAR) 
-		body = "liked your post.";
+		body = "likes this post.";
 		else
 			body = "commented:<br>" + notification.body;
 
