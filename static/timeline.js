@@ -343,7 +343,7 @@ function renderTimeline(prehtml) {
 		}
 		region.onkeyup = function(event) {
 			if (event.keyCode == 38 || event.keyCode == 40) return;
-			var items = getUserSuggestions(region.innerText);
+			var items = getUserSuggestions(region.textContent);
 
 			showSuggestionBox(items.length,(e.clientX),(e.clientY + 30),items);
 			suggestionBoxCallback = function(id,title) { 
@@ -353,13 +353,12 @@ function renderTimeline(prehtml) {
 			}
 		}
 		region.onblur = function () {
-			if (!region.innerText) {
-				alert();
+			if (!region.textContent) {
 				_g("attachment").removeChild(region);
 				region = null;
 				stopBubbling(e);
 			} else {
-				region.setAttribute("data-tag", region.innerText);
+				region.setAttribute("data-tag", region.textContent);
 			}
 			showSuggestionBox(false);
 		}
