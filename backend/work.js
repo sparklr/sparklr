@@ -117,7 +117,7 @@ exports.run = function(request, response, uri, sessionid) {
 
 	request.on("data", function(data) {
 		postBody += data;
-		if (postBody.length > 10485760) {
+		if (postBody.length > 15728640) {
 			postBody = null;
 			response.writeHead(413);
 			request.connection.destroy();
