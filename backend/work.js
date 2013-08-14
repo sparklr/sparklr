@@ -389,6 +389,7 @@ exports.run = function(request, response, uri, sessionid) {
 							Upload.handleUpload(postBody, userobj, {
 								width: 50,
 								height: 50,
+								fill: true,
 								id: userobj.id
 							}, function(err, id) {
 								if (err) return do500(response, err);
