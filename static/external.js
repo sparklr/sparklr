@@ -165,7 +165,7 @@ function signUp(username,email,password,errors) {
 
 	ajaxGet("work/signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + password.value, null, function(data) {
 		if (data.insertId) {
-			trySignin(username,password,"/welcome");
+			trySignin(username,password,"http://sparklr.me/welcome");
 		} else {
 			callback("Uh oh! It appears that your invite ID is invalid.<br>Contact jonathan@sparklr.me and we'll get this fixed.");
 		}
