@@ -217,14 +217,14 @@ function isEnter(e,callback) {
 	if (!e)
 		e = window.event;
 	if (e.keyCode == 13)
-		callback();
+		callback(e);
 }
 
 function expandTextarea(e) {
 	if (!e)
 		e = window.event;
 	var l = e.target.value.length;
-	e.target.style.height = (2 + Math.floor((l / 110))) * 20 + "px";
+	e.target.style.height = (2 + Math.floor((l / 90))) * 20 + "px";
 
 	var r = _g("remaining");
 	var toolong = l > 220;
