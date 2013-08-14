@@ -352,7 +352,7 @@ function renderTimeline(prehtml) {
 			}
 		}
 		region.onblur = function () {
-			if (region.innerText == "") {
+			if (!region.innerText) {
 				_g("attachment").removeChild(region);
 				region = null;
 				stopBubbling();
