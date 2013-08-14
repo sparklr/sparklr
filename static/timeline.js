@@ -212,7 +212,7 @@ function updateCommentCount(id, count) {
 	ele.innerHTML = count || "+";
 }
 
-function postComment() {
+function postComment(e) {
 	var vars = {
 		to: currentPostBy,
 		id: subscribedStream,
@@ -224,7 +224,10 @@ function postComment() {
 		_g("attachment").style.display = "none";
 	}
 
-	setTimeout('_g("composer").value="";',10);
+	setTimeout(function() {
+		_g("composer").value="";
+		expandTextarea(e);
+	},10);
 
 	if (!vars.comment) return;
 
