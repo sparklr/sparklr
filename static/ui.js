@@ -380,7 +380,7 @@ function showSuggestionBoxBelowElement(e) {
 		
 		var selected = selectedSuggestionBoxItem();
 		var userid = selected ? selected.getAttribute("data-id") : "";
-		var title = selected ? selected.innerText : e.target.value;
+		var title = selected ? selected.textContent : e.target.value;
 		e.target.setAttribute("data-userid", userid);
 		e.target.value = title;
 
