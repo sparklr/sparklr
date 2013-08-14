@@ -557,7 +557,7 @@ div.minipreview {
 
 div.attachment {
 	display: none;
-	background-size: cover;
+	background-size: contain;
 }
 
 div.attachment div, div.picturepost div {
