@@ -474,7 +474,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 	var fragments = uri.pathname.split("/");
 	switch (fragments[2]) {
 		case "welcome":
-			var toFollow = [4,6,25,24];
+			var toFollow = [4,6,36,25,24];
 			var query = "SELECT `id`,`displayname`,`bio` FROM `users` WHERE `id` IN (";
 			for (var i = 0; i < toFollow.length - 1; i++) {
 				query += toFollow[i] + ",";
