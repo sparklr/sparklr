@@ -379,6 +379,10 @@ function postToTimeline() {
 	setTimeout('_g("composer").value = "";expandTextarea({ target: _g("composer") });',10);
 
 	if (imgAttachments != null) {
+		if (imgAttachments.target.result.length > 15728640) {
+			showBanner("That image is too large to upload. Please try one with a smaller file size.","toolarge",5000);
+			return;
+		}
 		_g("attachment").className += " pulse";
 		vars.img = true; 
 		vars.tags = [];
