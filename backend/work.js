@@ -133,7 +133,6 @@ exports.run = function(request, response, uri, sessionid) {
 		var authkey_header = request.headers['x-x'];
 		User.verifyAuth(s[0], authkey_header, function(success, userobj) {
 			if (!success) {
-				console.log("Auth failure: " + s[0] + "," + s[1]);
 				response.writeHead(403);
 				response.end();
 				return;
