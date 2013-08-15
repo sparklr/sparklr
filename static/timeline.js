@@ -195,13 +195,14 @@ function getLastCommentTime() {
 }
 
 function addComments(comments) {
+	if (scrollDistanceFromBottom() < 70)
+		setTimeout('window.scrollBy(0,0xFFFFFF);',0);
+
 	for (var i = 0; i < comments.length; i++) {
 		if (currentComments.indexOf(comments) != -1) continue; //this comment is already in the array
 		currentComments.push(comments[i]);
 		renderComment(comments[i]);
 	}
-	if (scrollDistanceFromBottom() < 70)
-		window.scrollBy(0,0xFFFFFF);
 }
 
 function updateCommentCount(id, count) {
