@@ -95,8 +95,7 @@ function signOff() {
 }
 
 function inviteFriend() {
-	eval(getTemplate("invite"));
-	showPopup(html);
+	location.href="/#/invite";
 }
 
 function inviteUser(to,cb) {
@@ -105,7 +104,7 @@ function inviteUser(to,cb) {
 			_g("inviteField").style.boxShadow = "none";
 			_g("inviteField").value = "";
 			cb.value = "Sent!";
-			setTimeout(hideAllPopups, 1000);
+			setTimeout(function() { cb.value = "Send Invitation"; }, 2000);
 		} else
 			_g("inviteField").style.boxShadow = "0px 0px 15px #ff0000";
 	});

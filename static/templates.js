@@ -2,12 +2,8 @@ var TEMPLATES = TEMPLATES || [];
 
 function renderPageFromTemplate() {
 	var fragments = location.hash.split("/");
-	var template = fragments[1];
-
-	var templateData = getTemplate(template);
-	
-	ajaxGet("work/" + location.hash.substring(2), null, function(data) {
-		console.log(templateData);
+	var renderPage = function(data) {
+		var templateData = getTemplate(fragments[1]);
 		eval(templateData);
 
 		_g("content").innerHTML = html;
@@ -18,8 +14,11 @@ function renderPageFromTemplate() {
 			_g("sidebar").innerHTML = "";
 		}
 		updateUI();
-
-	});
+	}
+	if (!staticPages[fragments[1]])
+		ajaxGet("work/" + location.hash.substring(2), null, renderPage);
+	else
+		renderPage();
 }
 
 function getTemplate(id) {

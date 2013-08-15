@@ -3,6 +3,8 @@ var currentPageType;
 
 var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "welcome"];
 
+var staticPages = { "invite": 1 };
+
 var homepage = function() {
 	if (location.href.indexOf("/welcome") != -1 && location.hash == "") {
 		location.href = "/#/welcome";
@@ -12,7 +14,7 @@ var homepage = function() {
 	var prehtml = "";
 	var composertext = "";
 	if (args[1] == "step3") {
-		prehtml = "<input type='button' value='Next' onClick='location.href=\"/#/friends/step4\";' style='margin:7px 4px;float:right'><h2 style='color:#fff'>Step 3: Say hello!</h2>";
+		prehtml = "<input type='button' value='Next' onClick='location.href=\"/#/invite/step4\";' style='margin:7px 4px;float:right'><h2 style='color:#fff'>Step 3: Say hello!</h2>";
 		composertext = "#introducing ";
 	}
 	if (args[1] == "mention") {
