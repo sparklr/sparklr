@@ -17,7 +17,12 @@ function ajaxGet(url, data, callback) {
 			} catch (e) {
 			}
 			if (xhr.status != 200) {
-                showBanner("Uh oh, an error occured when attempting to talk to the server", "statusmsg_ajaxerror");
+				if (xhr.status == 404) {
+					eval(getTemplate("404"));
+					_g("content").innerHTML = html;
+				} else {
+					showBanner("Uh oh, an error occured when attempting to talk to the server", "statusmsg_ajaxerror");
+				}
 			} else {
 				hideBanner("statusmsg_ajaxerror");
 			}	
