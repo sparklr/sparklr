@@ -131,7 +131,6 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 						data[0].followers += "," + rows.insertId;
 						Database.updateObject("users", data[0]);
 					});
-					Database.deleteObject("invites", inviterows[0]);
 				}
 			});
 		});
