@@ -99,7 +99,7 @@ function inviteFriend() {
 }
 
 function inviteUser(to,cb) {
-	ajaxGet("work/invite/" + to, null, function(result) {
+	ajaxGet("work/sendinvite/" + to, null, function(result) {
 		if (result === true) {
 			_g("inviteField").style.boxShadow = "none";
 			_g("inviteField").value = "";
