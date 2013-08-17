@@ -1,9 +1,9 @@
 //The current page type, i.e. stream, chat
 var currentPageType;
 
-var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "welcome"];
+var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost"];
 
-var staticPages = { "invite": 1 };
+var staticPages = {  };
 
 var homepage = function() {
 	if (location.href.indexOf("/welcome") != -1 && location.hash == "") {
@@ -13,8 +13,8 @@ var homepage = function() {
 	var args = location.hash.split("/");
 	var prehtml = "";
 	var composertext = "";
-	if (args[1] == "step3") {
-		prehtml = "<input type='button' value='Next' onClick='location.href=\"/#/invite/step4\";' style='margin:7px 4px;float:right'><h2 style='color:#fff'>Step 3: Say hello!</h2>";
+	if (args[1] == "welcome") {
+		prehtml = "<input type='button' value='Next' onClick='location.href=\"/#/user/"+curUser+"/step2\";' style='margin:7px 4px;float:right'><h2 style='color:#fff'>Welcome to Sparklr! Say hello!</h2>";
 		composertext = "#introducing ";
 	}
 	if (args[1] == "mention") {

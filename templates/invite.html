@@ -1,6 +1,6 @@
-<% if (fragments[2] == "step4") %>
+<% if (fragments[2] == "step3") %>
 	<input type='button' value='Finish' onClick='location.href="/#/";' style='margin-top:5px;float:right'>
-	<h2 style='color:#fff'>Last step: Invite your friends!</h2>
+	<h2 style='color:#fff'>Almost done: Invite your friends!</h2>
 <% endif %>
 <div class='contentwrapper'>
 	<div style='text-align:center'>
@@ -12,6 +12,9 @@
 			<input type='submit' name='sendbtn' value='Send Invitation' style='width:290px'>
 		</form>
 		<br>
-		You will follow each other automatically once your friend signs up.
+		<b>-or-</b><br><br>
+		<b>Direct invite link</b><br>(send in IM, forums, Facebook, Twitter, etc.)<br>
+		<input type='text' value='https://sparklr.me/signup/{data}/' style='border: solid 1px #ccc;padding:10px;width:270px;margin:7px;' onClick='this.select()'><br><br>
+		You will follow each other automatically once your friend signs in.
 	</div>
 </div>

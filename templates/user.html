@@ -29,8 +29,8 @@
 
 </script>
 <% if (pageType == "step2") %>
-	<input type='button' value='Next' onClick='editProfile();location.href="/#/step3";' style='margin:7px 4px;float:right'>
-	<h2 style='color:#fff'>Step 2: Customize your profile</h2>
+	<input type='button' value='Next' onClick='editProfile();location.href="/#/invite/step3";' style='margin:7px 4px;float:right'>
+	<h2 style='color:#fff'>Customize your profile</h2>
 <% endif %>
 <% if (data.user == curUser) %>
 <div id='profileheader' class='profileheader' onDrop='dropImage(event, avatarUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'>
