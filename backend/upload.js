@@ -56,6 +56,7 @@ function resizeImage(input, output, callback) {
 
 function makeThumb(input, output, size, callback) {
 	var process = spawn("convert", [input,
+						"-coalesce",
 						"-gravity",
 						"center",
 						"-thumbnail",
