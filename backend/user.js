@@ -115,7 +115,7 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 				password: pass,
 				email: email,
 				displayname: username,
-				following: "68," + (inviterows[0].from || ""),
+				following: "68,4,6,24,36,25," + (inviterows[0].from || ""),
 				followers: inviterows[0].from || "",
 				emailverified: 0,
 				authkey: exports.generateAuthkey(username),

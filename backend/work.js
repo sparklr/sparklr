@@ -474,18 +474,19 @@ exports.run = function(request, response, uri, sessionid) {
 function processGetRequest(request, response, uri, sessionid, userobj, callback) {
 	var fragments = uri.pathname.split("/");
 	switch (fragments[2]) {
-		case "welcome":
-			var toFollow = [4,6,36,25,24];
-			var query = "SELECT `id`,`displayname`,`bio` FROM `users` WHERE `id` IN (";
-			for (var i = 0; i < toFollow.length - 1; i++) {
-				query += toFollow[i] + ",";
-			}
-			query += toFollow[toFollow.length - 1] + ")";
-			Database.query(query, function(err,rows) {
-				if (err) return do500(err);
-				callback(rows);
+		case "invite":
+			Database.query("SELECT * FROM `invites` WHERE `from` = " + parseInt(userobj.id),
+			function(err,rows) {
+				if (err) return do500(response,err);
+				if (rows.length > 0) {
+					callback(rows[0].id);
+				} else {
+					var id = Toolbox.hash(userobj.id + userobj.email + userobj.authkey);
+					Database.query("INSERT INTO `invites` (`id`,`from`) VALUES ('" + id + "','" + parseInt(userobj.id) + "')", function(){});
+					callback(id);
+				}
 			});
-			return;
+				return;
 		case "friends":
 			var obj = {
 				followers: userobj.followers,
