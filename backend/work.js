@@ -844,7 +844,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				callback(results);
 			});
 			break;
-		case "invite":
+		case "sendinvite":
 			var inviteid = Toolbox.hash((Math.random() * 1e5) + userobj.id + fragments[3]);
 			Database.postObject("invites", {
 				id: inviteid,

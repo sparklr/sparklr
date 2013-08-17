@@ -110,12 +110,17 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 		username = username.replace(/[^A-Za-z0-9]/g, "");
 		exports.generatePass(password, function(err,pass) {
 
+			var following = [68,4,6,24,36,25];
+			if (inviterows[0].from && following.indexOf(inviterows[0].from) == -1)
+				following.push(inviterows[0].from);
+			following = following.join(",");
+
 			Database.postObject("users", {
 				username: username,
 				password: pass,
 				email: email,
 				displayname: username,
-				following: "68,4,6,24,36,25," + (inviterows[0].from || ""),
+				following: following,
 				followers: inviterows[0].from || "",
 				emailverified: 0,
 				authkey: exports.generateAuthkey(username),
