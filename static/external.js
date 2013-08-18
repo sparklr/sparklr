@@ -178,6 +178,11 @@ function checkSignupForm(username,password,errors) {
 		errors.value = 1;
 		return;
 	}
+	if (username.value.length > 25) {
+		callback("That username is a tad long... longer isn't always better.");
+		errors.value = 1;
+		return;
+	}
 	ajaxGet("work/checkusername/" + username.value, null, function(data) {
 		if (data) {
 			callback("Sorry, that username has already been taken.");
