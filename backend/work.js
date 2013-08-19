@@ -225,9 +225,11 @@ exports.run = function(request, response, uri, sessionid) {
 						});
 						break;
 					case "chat":
+						postObject.to = parseInt(postObject.to);
+						if (postObject.to == userobj.id) return do400(response, "stop that");
 						Database.postObject("messages", {
 							from: userobj.id,
-							to: parseInt(postObject.to),
+							to: postObject,
 							time: Toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
