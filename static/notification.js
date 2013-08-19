@@ -44,10 +44,11 @@ function addNotification(notification) {
 		break;
 		case 3: //chat
 			setUserAttention(notification.from, true);
-		newMessageFrom = getDisplayName(notification.from);
-		updatePageTitle();
-		body = "messaged you.";
-		action = function() { chatWith(notification.from); }
+			newMessageFrom = getDisplayName(notification.from);
+			updatePageTitle();
+			body = "messaged you.";
+			action = function() { chatWith(notification.from); }
+			setNewInbox(true);
 		break;
 		case 7: //whitelist
 			body = "wants to be whitelisted.";
@@ -70,7 +71,11 @@ function addNotification(notification) {
 	n.addEventListener("touchend", notification_touchend);
 
 	//TODO: notifications may not work in IE
-	_g("notificationlist").insertBefore(n, _g("notificationlist").children[0]);
+	var parent = _g("notificationlist");
+	if (parent.children.length < 1)
+		parent.appendChild(n);
+	else
+		parent.insertBefore(n, parent.children[0]);
 
 	notificationCount++;
 	updatePageTitle();
@@ -167,6 +172,7 @@ function handleNotifications() {
 				setUserAttention(currentNotifications[id].from, false);
 				newMessageFrom = "";
 				dismissNotification(id);				
+				setNewInbox(false);
 			}
 		}
 
