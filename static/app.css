@@ -1060,6 +1060,7 @@ input {
 	}
 	#logo {
 		margin-right: 0px;
+		margin-left: 0px;
 		display: inline-block;
 	}
 	#navigation {
