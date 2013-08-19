@@ -1,0 +1,25 @@
+<div class='contentwrapper'>
+	<h2>inbox</h2>
+	<script>
+		var found = false;
+		for (var i = 0; i < data.length; i++) { 
+			found = true;
+			var msg = data[i];
+			msg.img = imgUrl(msg.from.toString());
+	</script>
+	<div style='position:relative;cursor:pointer;' onClick='location.href="/#/chat/{msg.from}";'>
+		<div class='rightcontrols'>
+			<div class='time' data-time='{msg.time}'></div>
+		</div>
+		<img src='{msg.img}' class='avatar'><b>{getDisplayName(msg.from)}</b><br>
+		{msg.message}<br><br>
+	</div>
+	<script>
+		}
+		if (!found) {
+	</script>
+	You don't have any messages from anyone!<br>To send a message, go to a user's profile page, and click Message.
+	<script>
+		}
+	</script>
+</div>
