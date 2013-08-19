@@ -1067,6 +1067,9 @@ input {
 		width: 100%;
 		position: relative;
 	}
+	#navigation a {
+		margin-left: 12px;
+	}
 	#navigation #links {
 		float: right;
 		padding-right: 5px;
