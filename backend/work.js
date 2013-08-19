@@ -568,6 +568,22 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "search":
 			if (!fragments[3]) return callback(false);
 			break;
+		case "inbox":
+			Database.query("SELECT  msgs.time,msgs.from,`message`\
+FROM    `messages` msgs\
+        INNER JOIN (\
+          SELECT  `from`\
+                  , MAX(`time`) AS time\
+          FROM    `messages`\
+          WHERE   `to` = 4\
+          GROUP BY `from`\
+        ) msgmax ON msgmax.from = msgs.from\
+                   AND msgmax.time = msgs.time\
+		ORDER BY msgs.time DESC", function(err,rows) {
+			if (err) return do500(response,err);
+			callback(rows);
+		});
+			return;
 		default:
 			if (fragments.length < 4 || fragments[3] == "") {
 				return do400(response, 400, "Missing arguments");

@@ -116,7 +116,7 @@ function addFriend(id, status) {
 function addFriendElement(id) {
 	var e = document.createElement("a");
 	e.id = "friendicon_" + id;
-	e.onclick = function() { location.href='#/user/' + id; };
+	e.onclick = function() { location.href='#/chat/' + id; };
 	e.innerHTML = "<img src='" + getAvatar(id) + "'><div class='names'>" + getDisplayName(id) + "</div></a>";
 	
 	_g("friendslist").appendChild(e);
@@ -157,3 +157,7 @@ function setUserStatus(user) {
 	e.className = (FRIENDS[user] ? "online" : "offline") + (newMessageUsers[user] ? " attn" : "");
 }
 
+function setNewInbox(value) {
+	var e = _g("inbox");
+	e.className = "inbox" + (value ? " pulse" : "");
+}

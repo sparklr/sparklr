@@ -80,7 +80,7 @@ hr {
 
 #logo {
     float: left;
-    margin-right: 240px;
+    margin-right: 188px;
     margin-left: 10px;
     cursor: pointer;
 	display: inline-block;
@@ -122,6 +122,13 @@ hr {
 }
 #navigation a.people {
     background-image: url(icons/people.png);
+}
+#navigation a.inbox {
+    background-image: url(icons/chat.png);
+}
+#navigation a.inbox.pulse {
+	box-shadow: 0px 0px 51px #fff;
+	border-radius: 8px;
 }
 #navigation a.photos {
     background-image: url(icons/photos.png);
