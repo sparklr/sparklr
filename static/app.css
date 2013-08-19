@@ -333,8 +333,7 @@ div.confirm {
 }
 
 #friendslist a.offline {
-    opacity: 0.5;
-	color: rgba(255,255,255,0.3);
+	display: none;
 }
 #friendslist a img {
 	-webkit-transition: all 0.2s ease;
@@ -836,8 +835,9 @@ div.chatmsg .time {
 }
 
 div.chatmsg {
+	margin-bottom: 15px;
     display: block;
-    min-height: 60px;
+    min-height: 27px;
 }
 
 form.settings {

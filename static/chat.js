@@ -38,12 +38,13 @@ function setupScrollHandler() {
 
 function getNewChatMessages() {
 	chat_downloadingOlder = true;
+	console.log("getting older");
+	console.log(chatMessages[0][2]);
 	ajaxGet("work/chat/" + curChatUser + "?starttime=" + chatMessages[0][2], null, function(data) {
 		for (var i = 0; i < data.length; i++) {
 			addChatMessage(data[i].from, data[i].message, data[i].time, true);
-			console.log(data[i].time);
-			console.log(chatMessages[0][2]);
 		}
+		chat_downloadingOlder = false;
 	});
 }
 
@@ -72,14 +73,14 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 		ele.className += " unconfirmedchat";
 
 	ele.id = "msg_" + time;
-	ele.innerHTML = "<img class='avatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>" + processMedia(escapeHTML(msg));
+	ele.innerHTML = "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>" + processMedia(escapeHTML(msg));
 
 	if (typeof(prepend) != "undefined" && prepend) {
 		sc.insertBefore(ele, sc.children[0]);
 		chatMessages.unshift([from,msg,time]);
 	} else {
 		sc.appendChild(ele);
-		sc.scrollTop = 0xFFFFFF;
+		setTimeout(function() { sc.scrollTop = 0xFFFFFF; },5);
 		chatMessages.push([from,msg,time]);
 	}
 
