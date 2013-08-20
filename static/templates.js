@@ -11,7 +11,7 @@ function renderPageFromTemplate() {
 			_g("sidebar").innerHTML = _g("sidebar_links").innerHTML;
 			_g("sidebar_links").innerHTML = "";
 		} else {
-			_g("sidebar").innerHTML = "";
+			dummySidebar();
 		}
 		updateUI();
 	}

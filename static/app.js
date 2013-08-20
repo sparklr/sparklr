@@ -57,12 +57,14 @@ window.addEventListener("focus", function() {
 var MOBILE = navigator.userAgent.match(/mobile/i) ? true : false;
 var AUTHKEY;
 var curUser;
+var RECOMMENDATIONS = [];
 
 var app = function(payload) { 
 	FRIENDS = payload.friends;
 	DISPLAYNAMES = payload.displayNames;
 	USERHANDLES = payload.userHandles;
 	IS_PRIVATE = payload.private;
+	RECOMMENDATIONS = payload.recommendations;
 
 	updateFriendsList();
 
