@@ -5,6 +5,8 @@ var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat
 
 var staticPages = {  };
 
+var previousPage = "";
+
 var homepage = function() {
 	if (location.href.indexOf("/welcome") != -1 && location.hash == "") {
 		location.href = "/#/welcome";
@@ -71,13 +73,14 @@ function updatePages(loaded) {
 
 	var s = location.hash.split("/");
 
-	if (s[1] == "user" && !isNaN(parseInt(s[2])) && !s[3]) {
+	if (s[1] == "user" && !isNaN(parseInt(s[2])) && !s[3] && previousPage[1] != "user") {
 		if (USERHANDLES[parseInt(s[2])]) {
 			location.href = "/#/user/" + USERHANDLES[parseInt(s[2])];
 			return;
 		}
 	}
 
+	previousPage = s;	
 
 	for (i = 0; i < definedPages.length; i++) {
 		if (definedPages[i] == s[1]) {
