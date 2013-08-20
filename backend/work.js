@@ -690,7 +690,12 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "user":
 			var userid = fragments[3];
-			Database.getObject("users", userid, function(err, users) {
+			if (!isNaN(parseInt(userid))) {
+				User.getUserProfile(userid, cb);
+			} else {
+				User.getUserProfileByUsername(userid, cb);
+			}
+			function cb(err, users) {
 				if (err) return do500(response, err);
 				if (users.length < 1) {
 					return do400(response, 404, "no such user");
@@ -735,7 +740,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					Database.getStream(table, args, done);
 				}
 
-			});
+			}
 			break;
 		case "userid":
 			var handle = fragments[3];
