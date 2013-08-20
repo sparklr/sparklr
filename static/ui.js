@@ -140,6 +140,15 @@ function processMedia(text,noImages) {
 		return "<img src='" + imgUrl(img) + "'><br>";
 	});
 
+	var countnewlines = 0;
+	text = text.replace(/\n/g, function() {
+		countnewlines++;
+		if (countnewlines < 8)
+			return "<br>\n";
+		else 
+			return "\n";
+	});
+
 	return text;
 }
 
@@ -216,7 +225,7 @@ function scrollTo(element, to, duration) {
 function isEnter(e,callback) {
 	if (!e)
 		e = window.event;
-	if (e.keyCode == 13)
+	if (e.keyCode == 13 && !(e.ctrlKey || e.shiftKey))
 		callback(e);
 }
 
@@ -224,7 +233,7 @@ function expandTextarea(e) {
 	if (!e)
 		e = window.event;
 	var l = e.target.value.length;
-	e.target.style.height = (2 + Math.floor((l / 90))) * 20 + "px";
+	e.target.style.height = (2 + Math.floor((l / 90))) * 20 + (20 * (e.target.value.split("\n").length - 1)) + "px";
 
 	var r = _g("remaining");
 	var toolong = l > 220;
@@ -240,6 +249,7 @@ function search(query) {
 }
 
 function stopBubbling(e) {
+	console.log("bubble");
 	if (!e)
 		e = window.event;
 	
