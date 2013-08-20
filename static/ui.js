@@ -148,6 +148,11 @@ function processMedia(text,noImages) {
 		else 
 			return "\n";
 	});
+	
+	text = text.replace(/([\ud800-\udbff])([\udc00-\udfff])/g, function(match, b1, b2) {
+		var cp = (b1.charCodeAt(0) - 0xD800) * 0x400 + (b2.charCodeAt(0) - 0xDC00) + 0x10000;
+		return "<img src='" + STATICHOST + "/../eji/" + cp.toString(16) + ".png' style='vertical-align:bottom'>";
+	});
 
 	return text;
 }
