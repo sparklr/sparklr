@@ -35,6 +35,17 @@ var homepage = function() {
 		composer.selectionStart = composer.value.length;
 	}
 	window.scrollTo(0,timelineTop);
+	dummySidebar();
+}
+
+function dummySidebar() {
+	if (!MOBILE) {
+		var html;
+		html = "<a href='/#/user/" + curUser + "'>My profile</a>";
+		html += "<a href='/#/invite/'>Invite friends</a>";
+		html += "<a href='javascript:meetSomeoneRandom();'>Meet someone random</a>";
+		_g("sidebar").innerHTML = html;
+	}
 }
 
 function updatePages(loaded) {
