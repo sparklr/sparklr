@@ -71,12 +71,13 @@ function updatePages(loaded) {
 
 	var s = location.hash.split("/");
 
-	if (s[1] == "user" && isNaN(parseInt(s[2]))) {
-		getUserFromHandle(s[2], function(id) {
-			location.href = "#/user/" + id;
-		});
-		return;
+	if (s[1] == "user" && !isNaN(parseInt(s[2])) && !s[3]) {
+		if (USERHANDLES[parseInt(s[2])]) {
+			location.href = "/#/user/" + USERHANDLES[parseInt(s[2])];
+			return;
+		}
 	}
+
 
 	for (i = 0; i < definedPages.length; i++) {
 		if (definedPages[i] == s[1]) {
