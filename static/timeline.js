@@ -303,7 +303,7 @@ function renderTimeline(prehtml) {
 	var html = prehtml || "";
 	html += "<div class='timelineitem'>";
 	html += "<div class='picturepost attachment' id='attachment'></div>";
-	html += renderComposer("Share something...", "postToTimeline");
+	html += renderComposer("Post something...", "postToTimeline");
 	html += "</div><div id='timeline_container'></div>";
 	_g("content").innerHTML = html;
 	_g("attachment").onmousedown = function (e) {
