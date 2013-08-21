@@ -718,6 +718,15 @@ div.profileheader div.controls {
 	right:3px;
 }
 
+div.profileheader div.actions {
+	position:absolute;
+	bottom:5px;
+}
+
+div.profileheader input {
+	margin-right: 5px;
+}
+
 div.friend {
     display: inline-block;
     width: 284px;
@@ -1080,6 +1089,7 @@ input {
 	#sidebarwrapper {
 		float: none;
 		width: 100%;
+		display:none;
 	}
 	#sidebar {
 		padding-right: 10px;

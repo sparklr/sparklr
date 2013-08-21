@@ -37,27 +37,27 @@
 	<% else %>
 	<div class='profileheader' id='profileheader'>
 		<% endelse %>
-		<div id='sidebar_links'>
-			<% if (data.user == curUser) %> 
-			<a href='javascript:editProfile();' id='editBtn'>Edit</a>
-			<a href='/#/settings'>Account Settings</a>
-			<a href='javascript:signOff();'>Sign off</a>
-			<% else %>
-			<a href='javascript:mention("{data.handle}");'>Mention</a>
-			<a href='javascript:chatWith({data.user});'>Message</a>
-				<% if (data.following) %>	
-					<a href='javascript:unfollow("{data.user}")'>Unfollow</a>
-				<% else %>
-					<a href='javascript:follow("{data.user}")'>Follow</a>
-				<% endelse %>
-			<% endelse %>
-		</div>
 		<p class='headertitle' id='userDisplayName'>{ getDisplayName(data.user) }</p>
 		<p class='headersubtitle'>@{getUserHandle(data.user)}</p>
 		<p class='headersubtitle' id='userBio'>{processMedia(data.bio.replace(/\n/g,'<br>'),true)}</p>
-		<div id='userTip' style='display:none;position:absolute;bottom:10px;left:0px'><p class='headersubtitle'>Drag an image here, or <u>choose a file</u>
+		<div id='userTip' style='display:none;position:absolute;bottom:45px;left:0px'><p class='headersubtitle'>Drag an image here, or <u>choose a file</u>
 			<input type='file' style='opacity:0;position:absolute;left:50px' onchange='loadImage(this.files[0], avatarUploadCallback)'>
 		</p></div>
+		<div class='actions'>
+			<% if (data.user == curUser) %> 
+			<input id='editBtn' type='button' value='Edit' onClick='editProfile();'>
+			<input type='button' value='Settings' onClick='location.href="/#/settings";'>
+			<input type='button' value='Sign off' onClick='signOff();'>
+			<% else %>
+			<input type='button' value='Mention' onClick='mention("{data.handle}");'>
+			<input type='button' value='Message' onClick='chatWith("{data.user}");'>
+				<% if (data.following) %>	
+					<input type='button' value='Unfollow' onClick='unfollow("{data.user}");'>
+				<% else %>
+					<input type='button' value='Follow' onClick='follow("{data.user}");'>
+				<% endelse %>
+			<% endelse %>
+		</div>
 		<div class='controls'>
 			<input type='button' value='Posts' onClick='location.href="#/user/{data.user}/";'>
 			<input type='button' value='Mentions' onClick='location.href="#/user/{data.user}/mentions";'>

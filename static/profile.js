@@ -16,7 +16,7 @@ function hideBackground() {
 }
 
 function editProfile() {
-	if (_g("editBtn").innerHTML == "Edit") {
+	if (_g("editBtn").value == "Edit") {
 		_g("userDisplayName").setAttribute("contenteditable", true);
 		var bio = _g("userBio");
 		if (bio.textContent.length < 2)
@@ -25,7 +25,7 @@ function editProfile() {
 
 		_g("userTip").style.display = "inline-block";
 		_g("backgroundTip").style.display = "inline-block";
-		_g("editBtn").innerHTML = "Save";
+		_g("editBtn").value = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
 		var bio = _g("userBio");
@@ -43,7 +43,7 @@ function editProfile() {
 
 		ajaxGet("work/profile", data);
 	
-		_g("editBtn").innerHTML = "Edit";
+		_g("editBtn").value = "Edit";
 	}
 }
 
