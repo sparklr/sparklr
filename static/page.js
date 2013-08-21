@@ -44,6 +44,7 @@ function dummySidebar() {
 	if (!MOBILE) {
 		var html;
 		html = "<a href='/#/user/" + curUser + "'>My profile</a>";
+		html += "<a href='/#/photos/'>Photos</a>";
 		html += "<a href='/#/invite/'>Invite friends</a>";
 		html += "<a href='javascript:meetSomeoneRandom();'>Meet someone random</a>";
 		_g("sidebar").innerHTML = html;
