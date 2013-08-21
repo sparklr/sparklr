@@ -42,7 +42,7 @@ div::-webkit-scrollbar-track {
 
 body { 
     color: #fff;
-    background: #3F364A;
+    background: #454050;
     margin: 0px;
     padding: 0px;
 	font-family: 'PT Sans', sans-serif;
@@ -80,7 +80,7 @@ hr {
 
 #logo {
     float: left;
-    margin-right: 188px;
+    margin-right: 240px;
     margin-left: 10px;
     cursor: pointer;
 	display: inline-block;
@@ -129,9 +129,6 @@ hr {
 #navigation a.inbox.pulse {
 	box-shadow: 0px 0px 51px #fff;
 	border-radius: 8px;
-}
-#navigation a.photos {
-    background-image: url(icons/photos.png);
 }
 #navigation a.search {
     background-image: url(icons/search.png);
@@ -196,8 +193,8 @@ div.contentwrapper {
     padding: 5px;
     border-radius: 3px;
     border: solid 1px #000;
-    box-shadow: 0px 0px 10px 0px #000,
-    inset 0px 0px 5px 0px #745B85;
+    box-shadow: 0px 0px 5px 0px #000,
+    inset 0px 0px 2px 0px #745B85;
     margin-bottom: 40px;
 }
 #sidebar {
