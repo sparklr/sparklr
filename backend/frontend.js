@@ -58,7 +58,7 @@ exports.run = function(user, request, response, sessionid) {
 	async.parallel([
 		function(callback) {
 			database.getStream("timeline", {
-				from: from
+				networks: ["0"]
 			}, function(err, stream) {
 				payload.timelineStream = stream;
 				callback();
