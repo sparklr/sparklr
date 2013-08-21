@@ -31,6 +31,7 @@ exports.query = function(query, callback) {
 					exports.query(query, callback);
 					return;
 				}
+				console.log(err);
 				return callback(err);
 			}
 			if (res.fetchAll)
@@ -77,6 +78,13 @@ exports.getStream = function(table, args, callback) {
 			query += parseInt(args.to[args.to.length - 1]);
 			query += ") ";
 
+		}
+		if (args.networks && args.networks.length > 0) {
+			query += "`network` IN (";
+			for (var i = 0; i < args.networks.length - 1; i++)
+				query += parseInt(args.networks[i]) + ",";
+			query += parseInt(args.networks[args.networks.length - 1]);
+			query += ") ";
 		}
 	}
 	if (args.id) {

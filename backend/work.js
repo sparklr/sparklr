@@ -144,6 +144,9 @@ exports.run = function(request, response, uri, sessionid) {
 			userobj.followers = userobj.followers.split(",").filter(function(e) {
 				return e;
 			});
+			userobj.networks = (userobj.networks || "0").split(",").filter(function(e) {
+				return e;
+			});
 			if (request.method == "POST") {
 				var postObject;
 				try {
@@ -647,16 +650,14 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			if (isNaN(stream)) {
 				return do400(response, 400);
 			}
-			var from;
+			var args = {};
 			if (stream === 0) {
-				from = userobj.following.slice(0); // get a copy, not a reference
-				from.push(userobj.id);
+				/*args.from = userobj.following.slice(0); // get a copy, not a reference
+				args.from.push(userobj.id);*/
+				args.networks = userobj.networks.slice(0);
 			} else {
-				from = [stream];
+				args.from = [stream];
 			}
-			var args = {
-				from: from
-			};
 			if (uri.query.since) {
 				args.since = uri.query.since;
 				args.modified = uri.query.since;
