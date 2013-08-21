@@ -33,6 +33,8 @@ What we do collect, however, is any information you submit regarding your accoun
 
 We also collect any data you post to your account. That's pretty much implied with any social sharing service; if you submit data to your account, the data is stored on our server. This being said, you retain all ownership of your data, and have the right to remove it at any time.
 
+Also, for right now, we have Google Analytics enabled. If you don't like that, feel free to block it. It provides us with little numbers that are sometimes helpful and sometimes just look pretty. It's a goal to get rid of it, because it slows things down and nobody trusts Google these days.
+
 Again, we take privacy seriously (unlike most companies who have way more information than we do) and will notify you if any changes are necessary to this privacy policy.
 
 # Be a decent person 
