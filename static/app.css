@@ -1089,7 +1089,6 @@ input {
 	#sidebarwrapper {
 		float: none;
 		width: 100%;
-		display:none;
 	}
 	#sidebar {
 		padding-right: 10px;
