@@ -232,7 +232,7 @@ exports.run = function(request, response, uri, sessionid) {
 						if (postObject.to == userobj.id) return do400(response, "stop that");
 						Database.postObject("messages", {
 							from: userobj.id,
-							to: postObject,
+							to: postObject.to,
 							time: Toolbox.time(),
 							message: postObject.message
 						}, function(err, data) {
