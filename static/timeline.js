@@ -230,7 +230,7 @@ function postComment(e) {
 		expandTextarea(e);
 	},10);
 
-	if (!vars.comment) return;
+	if (!vars.comment && !vars.postData) return;
 
 	ajaxGet("work/comment", vars, function() {
 		imgAttachments = null;
