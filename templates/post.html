@@ -16,6 +16,11 @@
 			<div class='time' data-time='{data.time}'></div>
 		</div> 
 		<a href='#/user/{data.from}' class='person'>{getDisplayName(data.from)}</a><br>
+		<div class='rightcontrols'>
+			<% if (data.from == curUser) %>
+			<a href='javascript:deletePost("{data.id}");' class='delete'></a>
+			<% endif %>
+		</div>
 		{processPost(data)}
 		<br>
 	</div>
@@ -26,7 +31,6 @@
 			{ renderComposer('Respond...', 'postComment', true) }
 		</div>
 	</div>
-
 	<div id='reblogholder' class='fadein' style='display:none;min-height:100px'>
 		<div class='fadein' style='padding:5px;'>
 			{ renderComposer('Share something (optional)', 'publishRepost', true, 'repostcomment') }
