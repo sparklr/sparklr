@@ -19,11 +19,12 @@ exports.getComments = function(postid, since, callback) {
 }
 
 exports.post = function(user, data, callback) {
-	data.time = Math.floor((new Date).getTime() / 1000);
+	data.time = toolbox.time();
 	data.from = user;
 
-	var querystr = "INSERT INTO `timeline` (`from`, `time`, `message`, `meta`, `type`, `public`) VALUES ("
+	var querystr = "INSERT INTO `timeline` (`from`, `time`, `modified`, `message`, `meta`, `type`, `public`) VALUES ("
 	querystr += parseInt(user) + ",";
+	querystr += data.time + ",";
 	querystr += data.time + ",";
 	querystr += database.escape(data.body) + ",";
 
