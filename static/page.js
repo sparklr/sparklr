@@ -26,8 +26,14 @@ var homepage = function() {
 	renderTimeline(prehtml);
 	subscribedStream = 0;
 
-	for (var i = 0; i < timelineEvents[0].length; i++) {
-		addTimelineEvent(timelineEvents[0][i]);
+	if (args[1] == "network") {
+		subscribedStream = parseInt(args[2]);
+		isNetwork = true;
+		lastUpdateTime = 0;
+	}
+
+	for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
+		addTimelineEvent(timelineEvents[subscribedStream][i]);
 	}
 
 	if (composertext) {
@@ -53,6 +59,8 @@ function dummySidebar() {
 
 function updatePages(loaded) {
 	document.body.ondrop = document.body.ondragover = document.body.ondragenter = function (e) { dropPrevent(e); }
+
+	isNetwork = false;
 
 	//set timeline position
 	if (subscribedStream == 0 && currentPageType == "STREAM")
