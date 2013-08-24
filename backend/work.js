@@ -655,6 +655,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				/*args.from = userobj.following.slice(0); // get a copy, not a reference
 				args.from.push(userobj.id);*/
 				args.networks = userobj.networks.slice(0);
+			} else if (uri.query.network) {
+				args.networks = [stream];
 			} else {
 				args.from = [stream];
 			}
@@ -670,7 +672,6 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 
 			Database.getStream("timeline", args, function(err, rows) {
 				if (err) return do500(response, err);
-
 				var obj = {
 					timeline: rows,
 					length: rows.length

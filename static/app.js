@@ -65,6 +65,7 @@ var app = function(payload) {
 	USERHANDLES = payload.userHandles;
 	IS_PRIVATE = payload.private;
 	RECOMMENDATIONS = payload.recommendations;
+	AVATAR_IDS[curUser] = payload.avatarid;
 
 	updateFriendsList();
 
