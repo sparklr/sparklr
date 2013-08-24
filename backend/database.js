@@ -99,9 +99,12 @@ exports.getStream = function(table, args, callback) {
 	}
 	if (args.since)
 	{
-		query += ") AND (`time` > "+parseInt(args.since)
+		query += ") AND (";
 		if (args.modified)
-			query += " OR `modified` > "+parseInt(args.modified);
+			query += "`modified` > "+parseInt(args.modified);
+		else
+			query += "`time` > "+parseInt(args.since);
+
 	}
 	if (args.starttime)
 	{

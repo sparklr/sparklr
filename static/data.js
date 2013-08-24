@@ -64,8 +64,8 @@ function pollData() {
 			callback = function(data,xhr) {
 				var items = data.timeline || data;
 				addTimelineArray(items,subscribedStream);
-				if (subscribedStream != 0 && items[0] && subscribedStream != items[0].id)
-					return;
+				//if (subscribedStream != 0 && items[0] && subscribedStream != items[0].id)
+			//		return;
 				for (var i = items.length - 1; i >= 0; i--) {
 					addTimelineEvent(items[i], 0);
 				}

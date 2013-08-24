@@ -1,6 +1,7 @@
 var timelineEvents = [[]];
 var timelineTop = 0;
 var subscribedStream;
+var isNetwork;
 var currentPostBy;
 var currentComments = [];
 var imgAttachments = null;
@@ -269,6 +270,8 @@ function streamUrl(since,start) {
 
 	if (currentPageType == "PHOTO")
 		query += "&photo=1";
+	if (isNetwork)
+		query += "&network=1";
 
 	return query;
 }
@@ -400,7 +403,11 @@ function postToTimeline() {
 	} else {
 		if (!vars.body) return;
 	}
-	
+
+	if (isNetwork) {
+		vars.network = subscribedStream;
+	}
+
 	var xhr = new XMLHttpRequest();
 	
 	xhr.addEventListener("load", function() {

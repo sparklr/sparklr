@@ -22,7 +22,7 @@ exports.post = function(user, data, callback) {
 	data.time = toolbox.time();
 	data.from = user;
 
-	var querystr = "INSERT INTO `timeline` (`from`, `time`, `modified`, `message`, `meta`, `type`, `public`) VALUES ("
+	var querystr = "INSERT INTO `timeline` (`from`, `time`, `modified`, `message`, `meta`, `type`, `public`, `network`) VALUES ("
 	querystr += parseInt(user) + ",";
 	querystr += data.time + ",";
 	querystr += data.time + ",";
@@ -37,7 +37,8 @@ exports.post = function(user, data, callback) {
 
 	querystr += (meta ? database.escape(meta) : "\"\"") + ",";
 	querystr += (data.img ? 1 : 0) + ",";
-	querystr += "1";
+	querystr += "1,";
+	querystr += (parseInt(data.network) || "0");
 	querystr += ");";
 	database.query(querystr,function(err,rows) {
 		if (err) return callback(err);
