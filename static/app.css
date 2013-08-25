@@ -205,7 +205,7 @@ div.contentwrapper {
 #sidebar a {
     color: #fff;
 }
-#sidebar > a {
+#sidebar > a, #sidebar div > a {
     color: rgba(255,255,255,0.9);;
     display: block;
     margin-bottom: 8px;
@@ -455,6 +455,8 @@ img.littleavatar {
 	margin-right: 6px;
 }
 div.commentcount {
+	margin-left:6px;
+	margin-right:2px;
     float: right;
     border-radius: 2px;
     background: #5d4c68;
@@ -472,7 +474,6 @@ div.timelineitem:hover div.commentcount {
 }
 
 div.commentcount.icon {
-	margin-right:8px;
 	padding:0px;
 	background-repeat: no-repeat;
 	width: 28px;
@@ -488,6 +489,10 @@ a.tag {
 	-webkit-border-bottom-left-radius: 12px;
 	-webkit-border-top-left-radius: 12px;
 	border: solid 1px #76648b;
+}
+
+div.delete {
+	background-image: url(icons/delete_white.png);
 }
 
 div.repost {
@@ -1103,6 +1108,9 @@ input {
 		display: inline-block;
 		margin-left: 5px;
 		width: inherit;
+	}
+	#sidebar div.unimportant {
+		display: none;
 	}
 	#frame {
 		width: 100%;
