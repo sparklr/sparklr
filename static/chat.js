@@ -73,7 +73,7 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 		ele.className += " unconfirmedchat";
 
 	ele.id = "msg_" + time;
-	ele.innerHTML = "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>" + processMedia(escapeHTML(msg));
+	ele.innerHTML = "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div><div style='display:inline-block;margin-left: 5px'>" + processMedia(escapeHTML(msg)) + "</div>";
 
 	if (typeof(prepend) != "undefined" && prepend) {
 		sc.insertBefore(ele, sc.children[0]);
@@ -102,11 +102,23 @@ function sendChatMessage() {
 		message: _g("composer").value
 	};
 	
-	setTimeout('_g("composer").value="";', 10);
+	if (imgAttachments) {
+		vars.postData = imgAttachments.target.result;
+		_g("attachment").style.display = "none";
+	}
 
+	setTimeout(function() {
+		_g("composer").value="";
+		expandTextarea(e);
+	},10);
+
+	if (!vars.message && !vars.postData) return;
 	addChatMessage(curUser, vars.message, getLastChatTime(), false, true);
 
-	ajaxGet("work/chat", vars);
+	ajaxGet("work/chat", vars, function() {
+		imgAttachments = null;
+		pollData();
+	});
 }
 
 
