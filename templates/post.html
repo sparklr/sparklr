@@ -18,11 +18,9 @@
 			<img class='avatar' src='{getAvatar(data.from)}'>
 		</div>
 		<a href='#/user/{data.from}' class='person'>{getDisplayName(data.from)}</a><br>
+		<div style='font-size: 13px;color:#999' class='time_raw' data-time='{data.time}'></div><br>
 		{processPost(data)}
-		<br><br>
-		<div class='rightcontrols'>
-			<div class='time' data-time='{data.time}'></div>
-		</div> 
+		<br>
 	</div>
 	<hr>
 	<div id='responseholder'>
