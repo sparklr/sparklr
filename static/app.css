@@ -503,6 +503,12 @@ div.like {
 	background-image: url(icons/like.png);
 }
 
+div.like.liked {
+    box-shadow: 0px 0px 10px #c7316d, 
+	0px 0px 10px #9b365e,
+    0px 0px 2px #000;
+}
+
 div.picturepost {
     box-shadow: 0px 0px 4px #000,
     inset 0px 0px 9px rgba(255,255,255,0.4);
