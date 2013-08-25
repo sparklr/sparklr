@@ -200,20 +200,22 @@ exports.run = function(request, response, uri, sessionid) {
 						}
 						break;
 					case "comment":
+						var cb = function() {
+							Post.postComment(userobj.id, postObject, function(err) {
+								sendObject(response, {});
+							});
+						}
 						if (postObject.postData) {
 							var f = function() {
 								Upload.handleUpload(postBody, userobj, { width: 500, height: 350, allowGif: true }, function (err, id) {
 									if (err) return do500(response,err);
 									postObject.comment = "[IMG" + id + "]" + postObject.comment;
-									Post.postComment(userobj.id, postObject, function(err) {
-										sendObject(response, {});
-									});
+									cb();
 								});
 							};
 							dataComplete ? f() : request.on("end", f);
 						} else {
-							Post.postComment(userobj.id, postObject);
-							sendObject(response, {});
+							cb();
 						}
 						break;
 					case "like":
@@ -228,18 +230,32 @@ exports.run = function(request, response, uri, sessionid) {
 						});
 						break;
 					case "chat":
+						var cb = function() {
+							Database.postObject("messages", {
+								from: userobj.id,
+								to: postObject.to,
+								time: Toolbox.time(),
+								message: postObject.message
+							}, function(err, data) {
+								if (err) return do500(response, err);
+								Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
+								sendObject(response, {});
+							});
+						}
 						postObject.to = parseInt(postObject.to);
 						if (postObject.to == userobj.id) return do400(response, "stop that");
-						Database.postObject("messages", {
-							from: userobj.id,
-							to: postObject.to,
-							time: Toolbox.time(),
-							message: postObject.message
-						}, function(err, data) {
-							if (err) return do500(response, err);
-							Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
-							sendObject(response, {});
-						});
+						if (postObject.postData) {
+							var f = function() {
+								Upload.handleUpload(postBody, userobj, { width: 500, height: 350, allowGif: true }, function (err, id) {
+									if (err) return do500(response,err);
+									postObject.message = "[IMG" + id + "]" + postObject.message;
+									cb();
+								});
+							};
+							dataComplete ? f() : request.on("end", f);
+						} else {
+							cb();
+						}
 						break;
 					case "settings":
 						var result = true;
