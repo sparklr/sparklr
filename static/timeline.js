@@ -167,7 +167,7 @@ function renderComment(comment) {
 			return;
 		e.id = "like_" + comment.from;
 		if (comment.from == curUser) 
-			_g("likebtn").innerHTML = "Unlike";
+			_g("likebtn").className += " liked";
 	}
 
     var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
