@@ -49,10 +49,12 @@ var homepage = function() {
 function dummySidebar() {
 	var html = "";
 	if (!MOBILE) {
-		html += "<a href='/#/user/" + curUser + "'>My profile</a>";
+		html += "<div class='unimportant'>";
+		html += "<a href='/#/user/" + curUser + "'>" + getDisplayName(curUser) + "</a>";
 		html += "<a href='/#/photos/'>Photos</a>";
 		html += "<a href='/#/invite/'>Invite friends</a>";
 		html += "<a href='javascript:meetSomeoneRandom();'>Meet someone random</a>";
+		html += "</div>";
 	}
 	_g("sidebar").innerHTML = html;
 }

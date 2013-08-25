@@ -9,20 +9,20 @@
 	<% endif %>
 
 	<div id='event_{data.id}' class='fadein' style='padding: 7px; margin: -5px' onClick='showEvent({data.id})'>
+		<% if (data.from == curUser) %>
+		<div class='commentcount delete icon' onClick='deletePost("{data.id}");stopBubbling();'></div>
+		<% endif %>
+		<div class='commentcount repost icon' onClick='showEvent("{data.id}","repost");stopBubbling();'></div>
+		<div class='commentcount like icon' onClick='likeEvent("{data.id}","{data.from}", this);stopBubbling();'></div>
 		<div style='display:inline-block;float:left;height:100%'>
 			<img class='avatar' src='{getAvatar(data.from)}'>
 		</div>
+		<a href='#/user/{data.from}' class='person'>{getDisplayName(data.from)}</a><br>
+		{processPost(data)}
+		<br><br>
 		<div class='rightcontrols'>
 			<div class='time' data-time='{data.time}'></div>
 		</div> 
-		<a href='#/user/{data.from}' class='person'>{getDisplayName(data.from)}</a><br>
-		<div class='rightcontrols'>
-			<% if (data.from == curUser) %>
-			<a href='javascript:deletePost("{data.id}");' class='delete'></a>
-			<% endif %>
-		</div>
-		{processPost(data)}
-		<br>
 	</div>
 	<hr>
 	<div id='responseholder'>
@@ -37,14 +37,6 @@
 		</div>
 		<input type='button' value='Repost to Followers' style='float: right' onClick='publishRepost();'>
 	</div>
-</div>
-
-<div id='sidebar_links'>
-	<a href='javascript:repost("{data.id}");'>Repost</a>
-	<a href='javascript:;' onClick='likeEvent("{data.id}", "{data.from}", this);' id='likebtn'>Like</a>
-	<% if (data.from == curUser) %>
-	<a href='javascript:deletePost("{data.id}");'>Delete</a>
-	<% endif %>
 </div>
 
 <script>
