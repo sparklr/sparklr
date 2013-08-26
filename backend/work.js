@@ -60,7 +60,7 @@ exports.run = function(request, response, uri, sessionid) {
 			return;
 		case "reset":
 			if (!fragments[3]) return do400(response, 400);
-			User.getUserProfileByAnything(fragments[3], function(err, rows) {
+			User.getUserProfile(fragments[3], function(err, rows) {
 				if (err) return do500(response, err);
 				if (rows && rows.length > 0) {
 					if (rows[0].password == "RESET:" + fragments[4]) {
