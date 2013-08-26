@@ -30,7 +30,7 @@
 		  <fieldset>
 				<input type='radio' name='private' id='public' value='0'<% if (!data.private) %>checked<% endif %> onclick='updateLists()'>
 				<label for='public' class='radio'><b>Public</b><br>
-					 <p>Only the following blacklisted users cannot see your content.</p>
+					 <p>The following users are hidden from your dashboard.</p>
 					 <div id='blacklist' style='margin:15px;padding-right:35px;display: {(data.private ? 'none' : 'block')}'>
 					  <input onblur='showSuggestionBox(false);' onkeydown='return addUserToList_Keydown(event,0);' type='text' placeholder='Type a user to blacklist' style='margin:5px;width:400px' class='t1'>
 					  </div>

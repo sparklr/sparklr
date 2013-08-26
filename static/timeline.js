@@ -13,6 +13,7 @@ function addTimelineEvent(item,append) {
 		updateCommentCount(item.id, item.commentcount);
 		return;
 	}
+	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
 
 	var ev = document.createElement("div");
 
