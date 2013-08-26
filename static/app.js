@@ -66,6 +66,7 @@ var app = function(payload) {
 	IS_PRIVATE = payload.private;
 	RECOMMENDATIONS = payload.recommendations;
 	AVATAR_IDS[curUser] = payload.avatarid;
+	HIDDEN_USERS = payload.blacklist;
 
 	updateFriendsList();
 
