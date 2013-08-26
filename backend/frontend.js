@@ -46,6 +46,9 @@ exports.run = function(user, request, response, sessionid) {
 	user.networks = (user.networks || "0").split(",").filter(function(e) {
 		return e;
 	});
+	user.blacklist = (user.blacklist || "").split(",").filter(function(e) {
+		return e;
+	});
 
 	var friends = [];
 	for (i in user.following) {
@@ -56,7 +59,7 @@ exports.run = function(user, request, response, sessionid) {
 	var from = user.following;
 	from.push(user.id);
 
-	var payload = { private: user.private, trackedtags: user.trackedtags, avatarid: user.avatarid };
+	var payload = { private: user.private, trackedtags: user.trackedtags, avatarid: user.avatarid, blacklist: user.blacklist };
 
 	async.parallel([
 		function(callback) {

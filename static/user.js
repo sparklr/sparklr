@@ -1,6 +1,7 @@
 var DISPLAYNAMES = [];
 var USERHANDLES = [];
 var AVATAR_IDS = [];
+var HIDDEN_USERS = [];
 var IS_PRIVATE = false;
 var handlesToFetch = [];
 var fetchTaskAsync;

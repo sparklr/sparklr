@@ -44,6 +44,9 @@
 		<div id='userTip' style='display:none;position:absolute;bottom:45px;left:0px'><p class='headersubtitle'>Drag an image here, or <u>choose a file</u>
 			<input type='file' style='opacity:0;position:absolute;left:50px' onchange='loadImage(this.files[0], avatarUploadCallback)'>
 		</p></div>
+			<% if (HIDDEN_USERS.indexOf(data.user.toString()) != -1) %>
+			<p class='headersubtitle'><b>You have hidden this user. <a href='/#/settings/privacy' style='text-decoration:underline'>Change Settings</a></b></p>
+			<% endif %>
 		<div class='actions'>
 			<% if (data.user == curUser) %> 
 			<input id='editBtn' type='button' value='Edit' onClick='editProfile();'>
