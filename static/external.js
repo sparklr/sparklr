@@ -163,7 +163,7 @@ function signUp(username,email,password,errors) {
 
 	if (errors.value != "") return;
 
-	ajaxGet("work/signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + password.value, null, function(data) {
+	ajaxGet("work/signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + encodeURIComponent(password.value), null, function(data) {
 		if (data.insertId) {
 			trySignin(username,password,"http://sparklr.me/welcome");
 		} else {
