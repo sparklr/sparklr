@@ -99,7 +99,7 @@ exports.run = function(request, response, uri, sessionid) {
 			return;
 		case "signup":
 			if (!fragments[6]) return do400(response, 400);
-			User.signupUser(fragments[3], fragments[4], fragments[5], fragments[6], function(err, rows) {
+			User.signupUser(fragments[3], fragments[4], fragments[5], decodeURIComponent(fragments[6]), function(err, rows) {
 				sendObject(response, rows);
 			});
 			return;
@@ -295,7 +295,6 @@ exports.run = function(request, response, uri, sessionid) {
 							result: false,
 							message: ""
 						};
-
 						bcrypt.compare(postObject.password, userobj.password, function(err, match) {
 							if (err) do500(response, err);
 							if (match) {
