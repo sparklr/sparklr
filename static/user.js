@@ -139,7 +139,7 @@ function checkUsername(username) {
 function checkUsernameCallback(result) {
 	var message = "";
 	switch(result) {
-		case false:
+		case true:
 			message = "Awh, somebody already took that :c";
 		break;
 		case 2:
