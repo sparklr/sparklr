@@ -85,6 +85,21 @@ function getNotificationBody(notification) {
 	return notification;
 }
 
+function showNotifications() {
+	var l = 0;
+	var n;
+	for (i in currentNotifications) {
+		l++;
+		n = currentNotifications[i];
+	}
+	if (l < 2) {
+		n = getNotificationBody(n);
+		location.href=n.click;
+	} else {
+		location.href="/#/notifications";
+	}
+}
+
 function removeNotification(id) {
 	currentNotifications[id] = null;
 
