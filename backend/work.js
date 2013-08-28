@@ -225,7 +225,7 @@ exports.run = function(request, response, uri, sessionid) {
 							sendObject(response, { deleted: true });
 							return;
 						}
-						Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D"});
+						Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D", like: true});
 							sendObject(response, {});
 						});
 						break;
