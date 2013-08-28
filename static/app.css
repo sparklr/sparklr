@@ -4,15 +4,15 @@ html {
 }
 
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 9px;
 }
 ::-webkit-scrollbar-track {
     border-radius: 5px;
-    background: #2A242E;
+    background: #454050;
 }
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background: #5A4C64;
+    background: #2A242E;
 }
 div::-webkit-scrollbar {
     width: 5px;
@@ -1058,7 +1058,6 @@ h2 a.tag {
 
 var {
 	font-weight: normal;
-	font-style: normal;
 }
 
 input {
