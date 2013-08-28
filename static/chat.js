@@ -2,6 +2,8 @@ var curChatUser;
 var FRIENDS = {};
 var newMessageUsers = [];
 
+var lastMessageFrom;
+
 //If true, the scroll handler will ignore upscrolling events
 var chat_downloadingOlder;
 
@@ -72,9 +74,16 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 	if (typeof(unconfirmed) != "undefined" && unconfirmed)
 		ele.className += " unconfirmedchat";
 
-	ele.id = "msg_" + time;
-	ele.innerHTML = "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div><div style='display:inline-block;margin-left: 5px'>" + processMedia(escapeHTML(msg)) + "</div>";
 
+	ele.id = "msg_" + time;
+	var html = "";
+	if (lastMessageFrom != from) {
+		html += "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>";
+	}
+	html += "<div style='display:block;margin-left: 25px'>" + processMedia(escapeHTML(msg)) + "</div>";
+
+	ele.innerHTML = html;
+	
 	if (typeof(prepend) != "undefined" && prepend) {
 		sc.insertBefore(ele, sc.children[0]);
 		chatMessages.unshift([from,msg,time]);
@@ -83,6 +92,9 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 		setTimeout(function() { sc.scrollTop = 0xFFFFFF; },5);
 		chatMessages.push([from,msg,time]);
 	}
+
+	if (!unconfirmed)
+		lastMessageFrom = from;
 
 }
 
