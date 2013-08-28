@@ -33,12 +33,6 @@ var scrollHandler = function() {
         a.style.visibility = "hidden";
         a.style.opacity = 0;
     }
-
-	if (location.hash.indexOf("/user") != -1) {
-		var pb = _g("profilebackground");
-		pb.style.position = (doctop < 80) ? "absolute" : "fixed";
-		pb.style.top = (doctop < 80) ? "80px" : "0px";
-	}
 }
 
 window.addEventListener("scroll", scrollHandler);
