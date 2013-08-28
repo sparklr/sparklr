@@ -22,6 +22,13 @@ function addNotification(notification) {
 	if (currentNotifications[notification.id] == null)
 		return;
 
+	var c = 0;
+	for (n in currentNotifications) {
+		if (currentNotifications[n].action == notification.action)
+			c++;
+	}
+	if (c > 1) return;
+
 	var action = null;
 	var body; 
 
