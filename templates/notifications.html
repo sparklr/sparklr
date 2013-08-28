@@ -1,0 +1,25 @@
+<div class='contentwrapper'>
+	<h2>notifications</h2>
+	<script>
+		if (data.length < 1) { 
+	</script>
+			You have no notifications. Hailjeiluh!
+	<script>
+		} else {
+			for (var i = 0; i < data.length; i++) { 
+				var n = data[i];
+				n.img = imgUrl(n.from.toString());
+				n = getNotificationBody(n);
+	</script>
+		<div style='position:relative;cursor:pointer;min-height:60px;' onClick='location.href="{n.click}";'>
+			<div class='rightcontrols'>
+				<div class='time' data-time='{n.time}'></div>
+			</div>
+			<img src='{n.img}' class='avatar'><b>{getDisplayName(n.from)}</b> 
+			{ n.body }<br><br>
+		</div>
+	<script>
+			}
+		}
+	</script>
+</div>

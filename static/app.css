@@ -1065,6 +1065,12 @@ input {
 	-webkit-appearance: none;
 }
 
+#notificationdot {
+	display: none;
+	position: fixed;
+	bottom:-100px;
+}
+
 @media all and (max-width: 799px) {
 	@-ms-viewport {
 		width: 480px;
@@ -1185,6 +1191,21 @@ input {
 	#notificationlist {
 		width: 200px;
 		right: -20px;
+		display: none;
+	}
+	#notificationdot {
+		display: none;
+		position: fixed;
+		bottom: 10px;
+		right: 10px;
+		border-radius: 40px;
+		width: 50px;
+		height: 45px;
+		background: #a72b2b;
+		color: #fff;
+		font-size: 28px;
+		text-align: center;
+		padding-top: 5px;
 	}
 	* {
 		-webkit-tap-highlight-color: rgba(0,0,0,0);
