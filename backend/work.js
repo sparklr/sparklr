@@ -602,6 +602,14 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				callback(rows);
 			});
 			return;
+		case "notifications":
+			Database.getStream("notifications", {
+				to: [userobj.id],
+			}, function(err, rows) {
+				if (err) return do500(response, err);
+				callback(rows);
+			});
+			return;
 		default:
 			if (fragments.length < 4 || fragments[3] == "") {
 				return do400(response, 400, "Missing arguments");

@@ -22,60 +22,15 @@ function addNotification(notification) {
 	if (currentNotifications[notification.id] == null)
 		return;
 
-	var c = 0;
-	for (n in currentNotifications) {
-		if (currentNotifications[n].action == notification.action)
-			c++;
-	}
-	if (c > 1) return;
-
-	var action = null;
-	var body; 
-
-	switch (parseInt(notification.type)) {
-		case 1: //commented on post 
-			if  (notification.body == LIKE_CHAR) 
-		body = "likes this post.";
-		else
-			body = "commented:<br>" + notification.body;
-
-		action = function() { location.href= "#/post/" + notification.action + "/new"; }
-		break;
-		case 2: //mentioned
-			body = "mentioned you.";
-		action = function() { location.href = "#/post/" + notification.action; }
-		break;
-		case 6: // repost
-			body = "reposted your post.";
-		action = function() { location.href = "#/post/" + notification.action; }
-		break;
-		case 3: //chat
-			setUserAttention(notification.from, true);
-			newMessageFrom = getDisplayName(notification.from);
-			updatePageTitle();
-			body = "messaged you.";
-			action = function() { chatWith(notification.from); }
-			setNewInbox(true);
-		break;
-		case 7: //whitelist
-			body = "wants to be whitelisted.";
-		action = function() { location.href = "#/user/" + notification.from; }
-		break;
-	}
-
-	body = body.replace(/\[IMG([A-Za-z0-9\._-]+)\]/g,"");
-
-	notification.body = "<img class='avatar' src='" + getAvatar(notification.from) + "'>" + getDisplayName(notification.from) + " " + body;
+	notification = getNotificationBody(notification);
+	notification.body = "<img class='avatar' src='" + getAvatar(notification.from) + "'>" + getDisplayName(notification.from) + " " + notification.body;
 
 	var n = document.createElement("div");
 
 	n.id = "notification_" + notification.id;
 	n.innerHTML = "<span class='exit' onClick='dismissNotification(\"" + notification.id + "\");stopBubbling();'>x</span>" + notification.body;
 	n.className = "fadein";
-	n.onclick = action;
-	n.addEventListener("touchstart", notification_touchstart);
-	n.addEventListener("touchmove", notification_touchmove);
-	n.addEventListener("touchend", notification_touchend);
+	n.onclick = function () { location.href = notification.click; };
 
 	//TODO: notifications may not work in IE
 	var parent = _g("notificationlist");
@@ -85,61 +40,49 @@ function addNotification(notification) {
 		parent.insertBefore(n, parent.children[0]);
 
 	notificationCount++;
+	_g("notificationdot").innerHTML = notificationCount;
+	_g("notificationdot").style.display = "block";
 	updatePageTitle();
 }
 
-function notification_touchstart(evt) {
-	evt.target.setAttribute("data-lastx", evt.changedTouches[0].clientX);
-	evt.target.setAttribute("data-left", 0);
-}
+function getNotificationBody(notification) {
+	var body = "";
+	switch (parseInt(notification.type)) {
+		case 1: //commented on post 
+			if  (notification.body == LIKE_CHAR) 
+				body = "likes your post.";
+			else
+				body = "commented:<br>" + notification.body;
 
-function notification_touchmove(evt) {
-	evt.preventDefault();
-	var cur = evt.changedTouches[0].clientX;
-	var last = evt.target.getAttribute("data-lastx");
-	var curLeft = parseInt(evt.target.getAttribute("data-left")) || 0;
-
-	var delta = parseInt(last) - cur;
-	curLeft -= delta;
-	if (curLeft < 0) {
-		curLeft = 0;
+			action = "/#/post/" + notification.action + "/new"; 
+		break;
+		case 2: //mentioned
+			body = "mentioned you.";
+			action = "/#/post/" + notification.action; 
+		break;
+		case 6: // repost
+			body = "reposted your post.";
+			action = "/#/post/" + notification.action; 
+		break;
+		case 3: //chat
+			setUserAttention(notification.from, true);
+			newMessageFrom = getDisplayName(notification.from);
+			updatePageTitle();
+			body = "messaged you.";
+			action = "/#/chat/" + notification.from;
+			setNewInbox(true);
+		break;
+		case 7: //whitelist
+			body = "wants to be whitelisted.";
+			action = "/#/user/" + notification.from;
+		break;
 	}
 
-	evt.target.style.left = curLeft + "px";
-	evt.target.setAttribute("data-left", curLeft);
-	evt.target.setAttribute("data-lastx", evt.changedTouches[0].clientX);
-}
-
-function notification_touchend(evt) {
-	evt.preventDefault();
-	var curLeft = parseInt(evt.target.getAttribute("data-left"));
-	var accel = -1;
-	if (curLeft > 50) {
-		accel = 1;
-	}
-	if (curLeft < 10) {
-		evt.target.onclick();
-		return;
-	}
-
-	var vel = 0;
-
-	var t = setInterval(function() {
-		vel += accel;
-		curLeft += vel;
-
-		if (curLeft < 0) {
-			clearInterval(t);
-			curLeft = 0;
-		}
-		if (curLeft > 170) {
-			clearInterval(t);
-			var id = evt.target.id.replace("notification_", "");
-			console.log(id);
-			dismissNotification(id);
-		}
-		evt.target.style.left = curLeft + "px";
-	}, 10);
+	body = body.replace(/\[IMG([A-Za-z0-9\._-]+)\]/g,"");
+	notification.body = body;
+	notification.click = action;
+	
+	return notification;
 }
 
 function removeNotification(id) {
@@ -156,6 +99,8 @@ function removeNotification(id) {
 
 	if (notificationCount > 0)
 		notificationCount--;
+	if (notificationCount == 0)
+		_g("notificationdot").style.display = "none";
 	updatePageTitle();
 }
 
