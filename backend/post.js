@@ -70,6 +70,9 @@ exports.postComment = function(user, data, callback) {
 		var count = (rows[0].commentcount + 1 || 1);
 		database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + toolbox.time() + " WHERE id=" + parseInt(data.id));
 
+		if (data.like) //only notify one person
+			return Notification.addUserNotification(data.to, data.comment, data.id, user, 1);
+
 		query = "SELECT DISTINCT `from` FROM `comments` WHERE postid = " + parseInt(data.id);
 		database.query(query, function(err,rows) {
 			var notified = false;
@@ -86,7 +89,6 @@ exports.postComment = function(user, data, callback) {
 		});
 
 		processMentions(data.comment, user, data.id);
-
 	});
 }
 exports.deleteComment = function(user, id, callback) {
