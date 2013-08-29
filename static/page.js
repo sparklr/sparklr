@@ -12,6 +12,9 @@ var homepage = function() {
 		location.href = "/#/welcome";
 		return;
 	}
+
+	subscribedStream = 0;
+
 	var args = location.hash.split("/");
 	var prehtml = "";
 	var composertext = "";
@@ -23,14 +26,18 @@ var homepage = function() {
 		composertext = "@" + args[2] + " ";
 	}
 
-	renderTimeline(prehtml);
-	subscribedStream = 0;
-
-	if (args[1] == "network") {
-		subscribedStream = parseInt(args[2]);
+	if (args[1] && args[1] != "") {
+		subscribedStream = args[1];
 		isNetwork = true;
 		lastUpdateTime = 0;
+		prehtml = "<h2 id='networkname' style='color:#fff'></h2>";
+		ajaxGet("work/networkinfo/" + subscribedStream, null, function(data) {
+			if (data[0] && data[0].title)
+				_g("networkname").innerHTML = data[0].title + " (/" + data[0].id + ")";
+		});
 	}
+
+	renderTimeline(prehtml);
 
 	for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
 		addTimelineEvent(timelineEvents[subscribedStream][i]);

@@ -125,14 +125,19 @@ function processMedia(text,noImages) {
 		return html;
 		});
 
+	var slashregex = /(^|\s)\/([\w-]+)/gi;
+	text = text.replace(slashregex, function(match, foo, network) {
+		return " <a href='#/" + network + "'>" + match + "</a>";
+	});
+
 	var mentionregex = /\B@([\w-]+)/gi;
 	text = text.replace(mentionregex, function(match, user) {
 		return "<a href='#/user/" + user + "'>" + match + "</a>";
 	});
 
-	var tagregex =  /\B#([\w-]+)/gi;
-	text = text.replace(tagregex, function(match, tag) {
-		return "<a href='#/tag/" + tag + "' class='tag'>" + match + "</a>";
+	var tagregex =  /(^|\s)#([\w-]+)/gi;
+	text = text.replace(tagregex, function(match, foo, tag) {
+		return " <a href='#/tag/" + tag + "' class='tag'>" + match + "</a>";
 	});
 
 	var imgregex = /\[IMG([A-Za-z0-9\._-]+)\]/g;
