@@ -268,7 +268,7 @@ exports.run = function(request, response, uri, sessionid) {
 
 						userobj.email = postObject.email;
 
-						if (postObject.displayname.length > 30) {
+						if (postObject.displayname.length > 20) {
 							message = "That display name is a little long...";
 							result = false;
 						} else {
@@ -671,7 +671,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "stream":
 			var stream = parseInt(fragments[3]);
 			if (isNaN(stream)) {
-				return do400(response, 400);
+				stream = fragments[3];
 			}
 			var args = {};
 			if (stream === 0) {
@@ -802,6 +802,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			query += users.join(",") + ")";
 			Database.query(query, function(err, rows) {
 				if (err) return do500(response, err);
+				callback(rows);
+			});
+			break;
+		case "networkinfo":
+			Database.getObject("networks", fragments[3], function(err,rows) {
 				callback(rows);
 			});
 			break;

@@ -50,7 +50,7 @@ exports.query = function(query, callback) {
 }
 
 exports.getObject = function(table, id, callback) {
-	var query = "SELECT * FROM " + exports.escapeId(table) + " WHERE id=" + parseInt(id);
+	var query = "SELECT * FROM " + exports.escapeId(table) + " WHERE id=" + (parseInt(id) || exports.escape(id));
 	exports.query(query, callback);
 }
 
@@ -82,8 +82,8 @@ exports.getStream = function(table, args, callback) {
 		if (args.networks && args.networks.length > 0) {
 			query += "`network` IN (";
 			for (var i = 0; i < args.networks.length - 1; i++)
-				query += parseInt(args.networks[i]) + ",";
-			query += parseInt(args.networks[args.networks.length - 1]);
+				query += exports.escape(args.networks[i]) + ",";
+			query += exports.escape(args.networks[args.networks.length - 1]);
 			query += ") ";
 		}
 	}
