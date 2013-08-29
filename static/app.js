@@ -51,14 +51,12 @@ window.addEventListener("focus", function() {
 var MOBILE = navigator.userAgent.match(/mobile/i) ? true : false;
 var AUTHKEY;
 var curUser;
-var RECOMMENDATIONS = [];
 
 var app = function(payload) { 
 	FRIENDS = payload.friends;
 	DISPLAYNAMES = payload.displayNames;
 	USERHANDLES = payload.userHandles;
 	IS_PRIVATE = payload.private;
-	RECOMMENDATIONS = payload.recommendations;
 	AVATAR_IDS[curUser] = payload.avatarid;
 	HIDDEN_USERS = payload.blacklist;
 	joinedNetworks = payload.networks;
@@ -67,9 +65,10 @@ var app = function(payload) {
 
 	addTimelineArray(payload.timelineStream, 0);
 
-	for (var i = 0; i < payload.trackedtags.length; i++) {
-		addTrackedTag(payload.trackedtags[i]);
+	for (var i = 0; i < joinedNetworks.length; i++) {
+		addNetwork(joinedNetworks[i]);
 	}
+
 }
 
 var s = document.cookie.match(/D\=([^\s|^\;]+)\;?/)[1].split(",");

@@ -116,6 +116,7 @@ function removeNotification(id) {
 		notificationCount--;
 	if (notificationCount == 0)
 		_g("notificationdot").style.display = "none";
+	_g("notificationdot").innerHTML = notificationCount;
 	updatePageTitle();
 }
 

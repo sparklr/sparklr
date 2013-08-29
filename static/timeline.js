@@ -13,7 +13,7 @@ var joinedNetworks = [];
 function addTimelineEvent(item,append) {
 	if (_g("event_" + item.id)) {
 		updateCommentCount(item.id, item.commentcount);
-		return;
+		 return;
 	}
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
 
@@ -443,32 +443,19 @@ function uploadStreamImageCallback(e,id) {
 	imgAttachments = e;
 }
 
-function addTrackedTag(tag) {
-	if (tag == "") return;
-	_g("trackedtags").innerHTML += "<a id='trackedtag_" + tag + "' href='#/tag/" + tag + "'>" + tag + "</a>";
+function addNetwork(network) {
+	if (network == "" || network == "0") return;
+	_g("networks").innerHTML += "<a id='network_" + network + "' href='#/" + network + "'>" + network + "</a>";
 }
 
-function removeTrackedTag(tag) {
-	_g("trackedtags").removeChild(_g("trackedtag_" + tag));
-}
-
-function trackTag(tag) {
-	ajaxGet("work/track/" + tag, null, function () {
-		addTrackedTag(tag);
-		updateTrackTagBtns(tag);
-	});
-}
-
-function untrackTag(tag) {
-	ajaxGet("work/untrack/" + tag, null, function () {
-		removeTrackedTag(tag);
-		updateTrackTagBtns(tag);
-	});
+function removeNetwork(network) {
+	_g("networks").removeChild(_g("network_" + network));
 }
 
 function joinNetwork() {
 	ajaxGet("work/join/" + subscribedStream, null, function() {
 		joinedNetworks.push(subscribedStream);
+		addNetwork(subscribedStream);
 		updateJoinNetwork();
 	});
 }
@@ -476,6 +463,7 @@ function joinNetwork() {
 function unjoinNetwork() {
 	ajaxGet("work/unjoin/" + subscribedStream, null, function() {
 		joinedNetworks.splice(subscribedStream,1);
+		removeNetwork(subscribedStream);
 		updateJoinNetwork();
 	});
 }
@@ -490,9 +478,3 @@ function updateJoinNetwork() {
 	}
 }
 
-function updateTrackTagBtns(tag) {
-	var e = _g("trackedtag_" + tag);
-	_g("trackbtn").style.display = e ? "none" : "inline-block";
-	_g("untrackbtn").style.display = !e ? "none" : "inline-block";
-
-}
