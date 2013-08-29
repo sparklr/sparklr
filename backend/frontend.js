@@ -42,7 +42,6 @@ exports.run = function(user, request, response, sessionid) {
 
 	user.following = user.following.split(",").filter(function(e) { return e; });
 	user.followers = user.followers.split(",").filter(function(e) { return e; });
-	user.trackedtags = (user.trackedtags || "").split(",").filter(function(e) { return e; });
 	user.networks = (user.networks || "0").split(",").filter(function(e) {
 		return e;
 	});
@@ -59,7 +58,7 @@ exports.run = function(user, request, response, sessionid) {
 	var from = user.following;
 	from.push(user.id);
 
-	var payload = { private: user.private, trackedtags: user.trackedtags, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist };
+	var payload = { private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist };
 
 	async.parallel([
 		function(callback) {
