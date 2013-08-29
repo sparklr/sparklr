@@ -30,10 +30,15 @@ var homepage = function() {
 		subscribedStream = args[1];
 		isNetwork = true;
 		lastUpdateTime = 0;
-		prehtml = "<h2 id='networkname' style='color:#fff'></h2>";
+		prehtml = "<div id='networkheader'></div>";
 		ajaxGet("work/networkinfo/" + subscribedStream, null, function(data) {
-			if (data[0] && data[0].title)
-				_g("networkname").innerHTML = data[0].title + " (/" + data[0].id + ")";
+			var html = "";
+			if (data[0] && data[0].title) {
+				html += "<input id='joinbtn' type='button' style='float:right'>";
+				html += "<h2 style='color:#fff'>" + data[0].title + " (/" + data[0].id + ")</h2>";
+			}
+			_g("networkheader").innerHTML = html;
+			updateJoinNetwork();
 		});
 	}
 

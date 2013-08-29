@@ -810,23 +810,17 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				callback(rows);
 			});
 			break;
-		case "track":
+		case "join":
 			var totrack = fragments[3];
-			if (!userobj.trackedtags)
-				userobj.trackedtags = "";
-			userobj.trackedtags = userobj.trackedtags.split(",");
-			if (userobj.trackedtags.indexOf(totrack) === -1)
-				userobj.trackedtags.push(totrack);
+			if (userobj.networks.indexOf(totrack) === -1)
+				userobj.networks.push(totrack);
 			Database.updateObject("users", userobj, callback);
 			break;
-		case "untrack":
+		case "unjoin":
 			var totrack = fragments[3];
-			if (!userobj.trackedtags)
-				userobj.trackedtags = "";
-			userobj.trackedtags = userobj.trackedtags.split(",");
-			var index = userobj.trackedtags.indexOf(totrack);
+			var index = userobj.networks.indexOf(totrack);
 			if (index !== -1)
-				userobj.trackedtags.splice(index, 1);
+				userobj.networks.splice(index, 1);
 			Database.updateObject("users", userobj, callback);
 			break;
 		case "follow":

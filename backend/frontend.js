@@ -59,7 +59,7 @@ exports.run = function(user, request, response, sessionid) {
 	var from = user.following;
 	from.push(user.id);
 
-	var payload = { private: user.private, trackedtags: user.trackedtags, avatarid: user.avatarid, blacklist: user.blacklist };
+	var payload = { private: user.private, trackedtags: user.trackedtags, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist };
 
 	async.parallel([
 		function(callback) {

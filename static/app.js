@@ -61,6 +61,7 @@ var app = function(payload) {
 	RECOMMENDATIONS = payload.recommendations;
 	AVATAR_IDS[curUser] = payload.avatarid;
 	HIDDEN_USERS = payload.blacklist;
+	joinedNetworks = payload.networks;
 
 	updateFriendsList();
 
