@@ -679,7 +679,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				args.from.push(userobj.id);*/
 				args.networks = userobj.networks.slice(0);
 			} else if (uri.query.network) {
-				args.networks = [stream];
+				args.networks = [stream.toString()];
 			} else {
 				args.from = [stream];
 			}
