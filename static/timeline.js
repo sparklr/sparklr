@@ -8,6 +8,8 @@ var imgAttachments = null;
 var lastUpdateTime = Math.floor((new Date).getTime() / 1000);
 var LIKE_CHAR = "\u261D";
 
+var joinedNetworks = [];
+
 function addTimelineEvent(item,append) {
 	if (_g("event_" + item.id)) {
 		updateCommentCount(item.id, item.commentcount);
@@ -462,6 +464,30 @@ function untrackTag(tag) {
 		removeTrackedTag(tag);
 		updateTrackTagBtns(tag);
 	});
+}
+
+function joinNetwork() {
+	ajaxGet("work/join/" + subscribedStream, null, function() {
+		joinedNetworks.push(subscribedStream);
+		updateJoinNetwork();
+	});
+}
+
+function unjoinNetwork() {
+	ajaxGet("work/unjoin/" + subscribedStream, null, function() {
+		joinedNetworks.splice(subscribedStream,1);
+		updateJoinNetwork();
+	});
+}
+
+function updateJoinNetwork() {
+	if (joinedNetworks.indexOf(subscribedStream) != -1) {
+		_g("joinbtn").value = "Leave";
+		_g("joinbtn").onclick = function() { unjoinNetwork(); };
+	} else {
+		_g("joinbtn").value = "Join";
+		_g("joinbtn").onclick = function() { joinNetwork(); };
+	}
 }
 
 function updateTrackTagBtns(tag) {

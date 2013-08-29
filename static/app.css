@@ -1071,6 +1071,10 @@ input {
 	bottom:-100px;
 }
 
+#networkheader input {
+	margin: 4px;
+}
+
 @media all and (max-width: 799px) {
 	@-ms-viewport {
 		width: 480px;
