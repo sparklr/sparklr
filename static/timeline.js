@@ -16,6 +16,13 @@ function addTimelineEvent(item,append) {
 		 return;
 	}
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
+	if (timelineEvents[subscribedStream]) {
+		for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
+			if (timelineEvents[subscribedStream][i].message == item.message && timelineEvents[subscribedStream][i].id != item.id && item.from != curUser) {
+				return;
+			}
+		}
+	}
 
 	var ev = document.createElement("div");
 
