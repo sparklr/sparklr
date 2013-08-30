@@ -160,9 +160,13 @@ exports.unfollow = function(userobj, tofollow, callback) {
 					var otherUser = rows[0];
 
 					otherUser.followers = otherUser.followers.split(",");
-					var index = otherUser.followers.indexOf(userobj.id.toString());
-					if (index == -1) return callback();
-					otherUser.followers.splice(index, 1);
+					for (var i = 0; i < otherUser.followers.length; i++) {
+						if (otherUser.followers[i] == userobj.id) {
+							otherUser.followers.splice(i,1);
+							i--;
+						}
+					}
+					console.log(otherUser.followers);
 					Database.updateObject("users", otherUser, callback);
 				});
 			}
