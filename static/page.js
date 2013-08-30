@@ -26,7 +26,7 @@ var homepage = function() {
 		composertext = "@" + args[2] + " ";
 	}
 
-	if (args[1] && args[1] != "") {
+	if (args[1] && args[1] != "" && args[1] != "welcome") {
 		subscribedStream = args[1];
 		isNetwork = true;
 		lastUpdateTime = 0;
