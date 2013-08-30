@@ -185,7 +185,6 @@ exports.removeFollower = function(userobj, tofollow, callback) {
 			},
 			function(_callback) {
 				Database.getObject("users", tofollow, function(err, rows) {
-					console.log(rows);
 					if (err) return _callback(err); //return do500(response, err);
 					if (rows.length < 1) return _callback(404); //do400(response, 404);
 					var otherUser = rows[0];
