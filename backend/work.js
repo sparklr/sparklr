@@ -260,7 +260,12 @@ exports.run = function(request, response, uri, sessionid) {
 					case "settings":
 						var result = true;
 						var message = "";
-						userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
+						if (postObject.username.length > 20) {
+							message = "That username is a little long...";
+							result = false;
+						} else {
+							userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
+						}
 
 						if (postObject.email != userobj.email) {
 							userobj.emailverified = 0;

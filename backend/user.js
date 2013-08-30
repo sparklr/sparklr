@@ -107,7 +107,7 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 		if (err) return callback(err);
 		if (!inviterows[0]) return callback(err,1);
 
-		if (username.length > 25) return callback(1);
+		if (username.length > 20) return callback(1);
 
 		username = username.replace(/[^A-Za-z0-9]/g, "");
 		exports.generatePass(password, function(err,pass) {
