@@ -21,5 +21,5 @@ exports.addUserNotification = function (user, notification, action, from, type) 
 	query += Math.floor((new Date).getTime() / 1000);
 	query += ")";
 
-	database.query(query);
+	database.query(query,function(){});
 };
