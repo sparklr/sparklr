@@ -263,16 +263,18 @@ function likeEvent(id, to, callback) {
 }
 
 function streamUrl(since,start) {
-	var query = "";
-	var part = "/stream/";
+	var query = "/";
+	var part = "stream/";
 
 	if (currentPageType == "TAG")
-		part = "/tag/";
+		part = "tag/";
 	if (currentPageType == "MENTIONS")
-		part = "/mentions/";
+		part = "mentions/";
 
 	if (start || (document.body.scrollTop || document.documentElement.scrollTop) < 10)
-		query = part + subscribedStream + "?since=" + since;
+		query += part + subscribedStream + "?since=" + since;
+	else 
+		query = "?";
 
 	if (start)
 		query += "&starttime=" + start;
