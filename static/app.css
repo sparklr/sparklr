@@ -1075,6 +1075,12 @@ input {
 	margin: 4px;
 }
 
+span.mod {
+	font-weight: bold;
+	font-size: 12px;
+	color: #980a40;
+}
+
 @media all and (max-width: 799px) {
 	@-ms-viewport {
 		width: 480px;
