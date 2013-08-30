@@ -137,6 +137,7 @@ exports.repost = function(user, postid, reply, callback) {
 		post.via = post.from;
 		post.from = user;
 		post.time = toolbox.time();
+		post.modified = toolbox.time();
 		post.commentcount = 0;
 		
 
