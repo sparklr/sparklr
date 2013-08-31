@@ -8,7 +8,7 @@ var id = 0;
 
 exports.handleUpload = function(data, userobj, args, callback) {
 	id++;
-	var imgid = args.id || (start + "_" + id.toString(36));
+	var imgid = args.id || (userobj.id + "_" + start + "_" + id.toString(36));
 
 	var tmpfile = os.tmpdir() + "/upload_" + imgid;
 
@@ -29,6 +29,9 @@ exports.handleUpload = function(data, userobj, args, callback) {
 
 
 	fs.writeFile(tmpfile, data.substring(data.indexOf(",") + 1), "base64", function(err) {
+		data = null;
+		delete data;
+
 		if (err) callback(err);
 
 		async.parallel([
@@ -44,7 +47,6 @@ exports.handleUpload = function(data, userobj, args, callback) {
 		], function(err) {
 			callback(err, imgid);
 		});
-		data = null;
 	});
 }
 
@@ -68,7 +70,7 @@ function makeThumb(input, output, size, callback) {
 						output
 	]);
 	process.stderr.on("data", function(data) {
-		console.log("Err: " + data);
+		console.log("UploadErr: " + data);
 	});
 	process.on("close", function(code) {
 		callback(code);

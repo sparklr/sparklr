@@ -115,14 +115,12 @@ exports.updateCommentCount = function(postid, x) {
 
 exports.repost = function(user, postid, reply, callback) {
 	database.getObject('timeline', postid, function(err,rows) {
-		console.log(err);
 		if (rows.length < 1) return;
 
 		var post = rows[0];
 		var origfrom = rows[0].from;
 		var msg;
 
-		console.log(post);
 		if (post.origid != null) {
 			msg = post.message;
 		} else {
