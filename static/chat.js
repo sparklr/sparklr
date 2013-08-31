@@ -116,6 +116,7 @@ function sendChatMessage() {
 	
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
+		vars.img = 1;
 		_g("attachment").style.display = "none";
 	}
 

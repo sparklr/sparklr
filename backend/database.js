@@ -40,8 +40,7 @@ exports.query = function(query, callback) {
 				if (callback) callback(err,res);
 		});
 	} catch (e) {
-		console.log("Mysql Error");
-		console.log(e);
+		console.log((new Date).toString() + ": MysqlError: " + JSON.stringify(e, null, 3));
 		if (e.message.indexOf("Not connected") !== -1) {
 			exports.init(global.database);
 			exports.query(query, callback);
