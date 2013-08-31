@@ -43,9 +43,10 @@ var homepage = function() {
 	}
 
 	renderTimeline(prehtml);
-
-	for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
-		addTimelineEvent(timelineEvents[subscribedStream][i]);
+	if (timelineEvents[subscribedStream]) {
+		for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
+			addTimelineEvent(timelineEvents[subscribedStream][i]);
+		}
 	}
 
 	if (composertext) {
@@ -56,14 +57,15 @@ var homepage = function() {
 	}
 	window.scrollTo(0,timelineTop);
 	dummySidebar();
+	pollData();
 }
 
 function dummySidebar() {
 	var html = "";
 	if (!MOBILE) {
 		html += "<div class='unimportant'>";
-		html += "<a href='/#/user/" + curUser + "'>" + getDisplayName(curUser) + "</a>";
-		html += "<a href='/#/photos/'>Photos</a>";
+		html += "<a href='/#/'>The World</a>";
+		html += "<a href='/#/following'>People I follow</a>";
 		html += "<a href='/#/invite/'>Invite friends</a>";
 		html += "<a href='javascript:meetSomeoneRandom();'>Meet someone random</a>";
 		html += "</div>";
