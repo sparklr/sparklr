@@ -132,6 +132,7 @@ function publishRepost() {
 
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
+		vars.img = 2;
 		_g("attachment").style.display = "none";
 	}
 
@@ -236,6 +237,7 @@ function postComment(e) {
 
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
+		vars.img = 2;
 		_g("attachment").style.display = "none";
 	}
 
