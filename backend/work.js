@@ -446,8 +446,9 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				return;
 			}
 			userobj.background = Toolbox.time();
-			Database.updateObject("users", userobj);
-			sendObject(response, userobj.background);
+			Database.updateObject("users", userobj, function() {
+				sendObject(response, userobj.background);
+			});
 		break;
 		case "feedback":
 			Mail.sendMessageToEmail("jaxbot@gmail.com", "feedback", postObject, userobj);

@@ -326,6 +326,7 @@ function uploadImage(e, url, callback) {
 	}
 	xhr.open("POST", url);
 	xhr.setRequestHeader("X-X", AUTHKEY);
+	xhr.setRequestHeader("X-DATA", JSON.stringify({ img: 1 }));
 	xhr.send(e.target.result);
 }
 function attachfile_changed(e) {
