@@ -130,7 +130,7 @@ hr {
 }
 #navigation a.inbox.pulse {
 	box-shadow: 0px 0px 51px #fff;
-	border-radius: 8px;
+	border-radius: 6px;
 }
 #navigation a.search {
     background-image: url(icons/search.png);
