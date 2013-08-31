@@ -144,7 +144,6 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 	});
 }
 
-//TODO: possible exploit with splice
 exports.unfollow = function(userobj, tofollow, callback) {
 	if (userobj.following.indexOf(tofollow) != -1) {
 		userobj.following.splice(userobj.following.indexOf(tofollow), 1);
@@ -166,7 +165,6 @@ exports.unfollow = function(userobj, tofollow, callback) {
 							i--;
 						}
 					}
-					console.log(otherUser.followers);
 					Database.updateObject("users", otherUser, callback);
 				});
 			}
@@ -187,7 +185,6 @@ exports.removeFollower = function(userobj, tofollow, callback) {
 			},
 			function(_callback) {
 				Database.getObject("users", tofollow, function(err, rows) {
-					console.log(rows);
 					if (err) return _callback(err); //return do500(response, err);
 					if (rows.length < 1) return _callback(404); //do400(response, 404);
 					var otherUser = rows[0];

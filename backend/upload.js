@@ -44,6 +44,7 @@ exports.handleUpload = function(data, userobj, args, callback) {
 		], function(err) {
 			callback(err, imgid);
 		});
+		data = null;
 	});
 }
 
