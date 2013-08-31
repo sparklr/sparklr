@@ -344,7 +344,6 @@ exports.run = function(request, response, uri, sessionid) {
 							userobj.blacklist = list.join(",");
 						}
 
-						console.log(postObject);
 						Database.updateObject("users", userobj);
 						sendObject(response, { result: true, message: "" });
 						break;
