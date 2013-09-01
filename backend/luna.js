@@ -18,7 +18,7 @@ if (cluster.isMaster) {
 	});
 
 	process.on("SIGUSR2", function() {
-		console.log("Reloading app...");
+		console.log((new Date).toString() + ": Reloading app...");
 
 		delete require.cache;
 
