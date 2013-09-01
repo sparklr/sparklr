@@ -37,7 +37,6 @@ var server = http.createServer(function(request,response) {
 		return;
 	}
 
-
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		work.run(request,response,requesturi,sessionid);
 	} else {

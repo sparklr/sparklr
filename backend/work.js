@@ -18,7 +18,7 @@ exports.run = function(request, response, uri, sessionid) {
 		case "areyouawake":
 			response.writeHead(200);
 			response.end("success");
-			break;
+			return;
 		case "signoff":
 			response.writeHead(200, {
 				"Set-Cookie": "D=; Path=/",
@@ -189,32 +189,23 @@ exports.run = function(request, response, uri, sessionid) {
 
 					var obj = {};
 
-					async.parallel([
-						function(callback) {
-							if (!uri.pathname.split("/")[2]) return callback(null,{});
+					Notification.getUserNotifications(userobj.id, uri.query.n, function(err,rows) {
+						if (err) return do500(response, err);
+						if (rows.length > 0)
+							obj.notifications = rows;
+						if (uri.pathname.split("/")[2]) {
 							processGetRequest(request, response, uri, sessionid, userobj, function(data) {
 								if (data.length != 0) {
 									obj.data = data;
 								}
-								callback();
+								sendObject(response,obj);
 							});
-						},
-						function(callback) {
-							Database.getStream("notifications", {
-								to: [userobj.id],
-								since: uri.query.n
-							}, function(err, rows) {
-								if (err) return do500(response, err);
-								if (rows.length > 0) {
-									obj.notifications = rows;
-								}
-								callback();
-							});
+						} else {
+							sendObject(response,obj);
 						}
-					], function(err) {
-						if (err) return do500(response, err);
-						sendObject(response, obj);
+						return;
 					});
+					return;
 				} else {
 					processGetRequest(request, response, uri, sessionid, userobj, function(data) {
 						sendObject(response, data);
