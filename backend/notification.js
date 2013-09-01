@@ -1,4 +1,4 @@
-var database = require("./database");
+var Database = require("./database");
 
 exports.N_EVENT = 1;
 exports.N_MENTION = 2;
@@ -21,5 +21,11 @@ exports.addUserNotification = function (user, notification, action, from, type) 
 	query += Math.floor((new Date).getTime() / 1000);
 	query += ")";
 
-	database.query(query,function(){});
+	Database.query(query,function(){});
 };
+
+function getUserNotifications(userid, since, callback) {
+	Database.query("SELECT * FROM `notifications` WHERE `to` = "+parseInt(userid)+" AND `time` > "+parseInt(since)+" ORDER BY TIME DESC", callback);
+}
+
+exports.getUserNotifications = getUserNotifications;
