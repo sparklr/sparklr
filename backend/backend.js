@@ -10,7 +10,7 @@ var user = require("./user");
 var work = require("./work");
 var database = require("./database");
 
-if (process.platform != "iwin32") {
+if (process.platform != "win32") {
 	var memwatch = require('memwatch');
 	var hd = new memwatch.HeapDiff();
 	memwatch.on("leak", function(info) {
