@@ -117,29 +117,38 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 				following.push(inviterows[0].from);
 			following = following.join(",");
 
-			Database.postObject("users", {
-				username: username,
-				password: pass,
-				email: email,
-				displayname: username,
-				following: following,
-				followers: inviterows[0].from || "",
-				networks: "0",
-				authkey: exports.generateAuthkey(username),
-				bio: ""
-			}, function(err, rows) {
+			exports.getUserProfileByAnything(email, function(err, rows) {
 				if (err) return callback(err);
-				callback(err, rows);
-				
-				if (inviterows[0].from) {
-					exports.getUserProfile(inviterows[0].from, function(err, data) {
-						if (err) return false;
-						data[0].following += "," + rows.insertId;
-						data[0].followers += "," + rows.insertId;
-						Database.updateObject("users", data[0]);
-					});
+				if (rows.length > 0) {
+					return callback(2);
 				}
+
+				Database.postObject("users", {
+					username: username,
+					password: pass,
+					email: email,
+					displayname: username,
+					following: following,
+					followers: inviterows[0].from || "",
+					networks: "0",
+					authkey: exports.generateAuthkey(username),
+					bio: ""
+				}, function(err, rows) {
+					if (err) return callback(err);
+					callback(err, rows);
+
+					if (inviterows[0].from) {
+						exports.getUserProfile(inviterows[0].from, function(err, data) {
+							if (err) return false;
+							data[0].following += "," + rows.insertId;
+							data[0].followers += "," + rows.insertId;
+							Database.updateObject("users", data[0]);
+						});
+					}
+				});
+
 			});
+
 		});
 	});
 }
