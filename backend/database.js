@@ -62,30 +62,28 @@ exports.getStream = function(table, args, callback) {
 		query += parseInt(args.from[args.from.length - 1]);
 		query += ") ";
 		if (args.to) {
-			query += "AND `to` IN (";
-			for (var i = 0; i < args.to.length - 1; i++)
-				query += parseInt(args.to[i]) + ",";
-			query += parseInt(args.to[args.to.length - 1]);
-			query += ") ";
+			query += "AND ";
 		}
-
-	} else { 
-		if (args.to) {
-			query += "`to` IN (";
-			for (var i = 0; i < args.to.length - 1; i++)
-				query += parseInt(args.to[i]) + ",";
-			query += parseInt(args.to[args.to.length - 1]);
-			query += ") ";
-
-		}
-		if (args.networks && args.networks.length > 0) {
-			query += "`network` IN (";
-			for (var i = 0; i < args.networks.length - 1; i++)
-				query += exports.escape(args.networks[i]) + ",";
-			query += exports.escape(args.networks[args.networks.length - 1]);
-			query += ") ";
+		if (args.networks) {
+			query += "OR ";
 		}
 	}
+	if (args.to) {
+		query += "`to` IN (";
+		for (var i = 0; i < args.to.length - 1; i++)
+		query += parseInt(args.to[i]) + ",";
+		query += parseInt(args.to[args.to.length - 1]);
+		query += ") ";
+
+	}
+	if (args.networks && args.networks.length > 0) {
+		query += "`network` IN (";
+		for (var i = 0; i < args.networks.length - 1; i++)
+		query += exports.escape(args.networks[i]) + ",";
+		query += exports.escape(args.networks[args.networks.length - 1]);
+		query += ") ";
+	}
+	
 	if (args.id) {
 		query += "`id` IN (";
 		for (var i = 0; i < args.id.length -1; i++) 
