@@ -100,7 +100,7 @@ exports.run = function(request, response, uri, sessionid) {
 		case "signup":
 			if (!fragments[6]) return do400(response, 400);
 			User.signupUser(fragments[3], fragments[4], fragments[5], decodeURIComponent(fragments[6]), function(err, rows) {
-				sendObject(response, rows);
+				sendObject(response, err || 1);
 			});
 			return;
 		case "checkusername":

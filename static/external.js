@@ -164,10 +164,14 @@ function signUp(username,email,password,errors) {
 	if (errors.value != "") return;
 
 	ajaxGet("work/signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + encodeURIComponent(password.value), null, function(data) {
-		if (data.insertId) {
+		if (data === 1) {
 			trySignin(username,password,"http://sparklr.me/welcome");
 		} else {
-			callback("Uh oh! It appears that your invite ID is invalid.<br>Contact jonathan@sparklr.me and we'll get this fixed.");
+			if (data === 2) {
+				callback("It appears that your email is already in use.");
+			} else {
+				callback("Uh oh! It appears that your invite ID is invalid.<br>Contact jonathan@sparklr.me and we'll get this fixed.");
+			}
 		}
 	});
 }
