@@ -431,6 +431,10 @@ function postToTimeline() {
 	var xhr = new XMLHttpRequest();
 	
 	xhr.addEventListener("load", function() {
+		if (xhr.responseText == "2") {
+			showBanner("You've been posting a lot lately.. wait a few seconds. It'll keep people from being mad at you. ;)", "ratelimit", 5000);
+			return;
+		}
 		//Complete
 		_g("attachment").style.display = "none";
 		_g("attachment").className = "picturepost";
