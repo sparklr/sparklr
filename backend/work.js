@@ -126,6 +126,8 @@ exports.run = function(request, response, uri, sessionid) {
 		});
 		request.on("end", function() {
 			dataComplete = true;
+			request.removeAllListeners("data");
+			request.removeAllListeners("end");
 		});
 	}
 
@@ -629,6 +631,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			var stream = parseInt(fragments[3]);
 			if (isNaN(stream)) {
 				stream = fragments[3];
+				uri.query.network = 1;
 			}
 			var args = {};
 			if (stream === 0) {
