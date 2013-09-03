@@ -225,8 +225,8 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 		case "post":
 			if (postObject.body.length > 300)
 				return do400(response, 400, "Post too long");
-			Post.post(userobj.id, postObject, function(err) {
-				sendObject(response, {});
+			Post.post(userobj.id, postObject, function(err,res) {
+				sendObject(response, res);
 			});
 		return;
 		case "repost":
