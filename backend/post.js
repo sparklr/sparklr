@@ -22,33 +22,40 @@ exports.post = function(user, data, callback) {
 	data.time = toolbox.time();
 	data.from = user;
 
-	var querystr = "INSERT INTO `timeline` (`from`, `time`, `modified`, `message`, `meta`, `type`, `public`, `network`) VALUES ("
-	querystr += parseInt(user) + ",";
-	querystr += data.time + ",";
-	querystr += data.time + ",";
-	querystr += database.escape(data.body) + ",";
-
-	var meta = "";
-	if (data.img)
-		meta = data.img;
-	if (data.tags) {
-		meta += "," + JSON.stringify(data.tags);
-	}
-
-	querystr += (meta ? database.escape(meta) : "\"\"") + ",";
-	querystr += (data.img ? 1 : 0) + ",";
-	querystr += "1,";
-	querystr += (database.escape(data.network || "0"));
-	querystr += ");";
-	database.query(querystr,function(err,rows) {
+	database.query("SELECT `time` FROM `timeline` WHERE `from` = " + parseInt(user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
 		if (err) return callback(err);
-		Tags.processPostTags(data.body, rows.insertId);		
-		processMentions(data.body, user, rows.insertId);
-		data.message = data.body;
-		data.id = rows.insertId;
+		if (rows && rows.length > 1) {
+			return callback(null,2); // as in, 2 many posts
+		}
 
-		callback(err,rows);
-	});//callback);
+		var querystr = "INSERT INTO `timeline` (`from`, `time`, `modified`, `message`, `meta`, `type`, `public`, `network`) VALUES ("
+		querystr += parseInt(user) + ",";
+		querystr += data.time + ",";
+		querystr += data.time + ",";
+		querystr += database.escape(data.body) + ",";
+
+		var meta = "";
+		if (data.img)
+			meta = data.img;
+		if (data.tags) {
+			meta += "," + JSON.stringify(data.tags);
+		}
+
+		querystr += (meta ? database.escape(meta) : "\"\"") + ",";
+		querystr += (data.img ? 1 : 0) + ",";
+		querystr += "1,";
+		querystr += (database.escape(data.network || "0"));
+		querystr += ");";
+		database.query(querystr,function(err,rows) {
+			if (err) return callback(err);
+			Tags.processPostTags(data.body, rows.insertId);		
+			processMentions(data.body, user, rows.insertId);
+			data.message = data.body;
+			data.id = rows.insertId;
+
+			callback(err,"");
+		});//callback);
+	});
 	//processMentions(data.body, user, );
 	//
 }
