@@ -31,6 +31,7 @@ exports.query = function(query, callback) {
 					exports.query(query, callback);
 					return;
 				}
+				console.log("Failed query: " + query);
 				console.log(err);
 				return callback(err);
 			}
