@@ -64,6 +64,7 @@ exports.run = function(user, request, response, sessionid) {
 		function(callback) {
 			database.getStream("timeline", {
 				networks: user.networks.slice(0),
+				from: from,
 				since: 1,
 				sortby: "modified"
 			}, function(err, stream) {
