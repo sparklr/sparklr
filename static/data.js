@@ -94,9 +94,7 @@ function pollData() {
 				addNotification(data.notifications[i]);
 			}
 		}
-		if (typeof(data.data) != "undefined") { 
-			callback(data.data,xhr);
-		}
+		callback(data,xhr);
 	});
 }
 

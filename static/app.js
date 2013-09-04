@@ -2,7 +2,7 @@
 // Events, handlers, etc.
 
 // Poll server for new data 
-setInterval("pollData();", 1000);
+setInterval("pollData();", 1500);
 setInterval("updateOnlineFriends();", 20000);
 
 // Event handlers 
