@@ -8,6 +8,7 @@ exports.init = function(args) {
 	isConnecting = true;
 	connection = mysql.createConnectionSync();
 	connection.connectSync(args.host, args.user, args.password, args.database);
+	console.log("DEBUG: connecting to database...");
 	if (!connection.connectedSync()) {
 		throw new Exception();
 	}
@@ -22,7 +23,7 @@ exports.escapeId = function(str) {
 	return "`" + connection.escapeSync(str) + "`";
 }
 
-exports.query = function(query, callback) {
+exports.query = function(query, callback, args) {
 	try {
 		connection.query(query, function(err,res) {
 			if (err) {
@@ -33,12 +34,30 @@ exports.query = function(query, callback) {
 				}
 				console.log("Failed query: " + query);
 				console.log(err);
-				return callback(err);
+				callback(err);
+				query = null;
+				callback = null;
+				err = null;
+				res = null;
+
+				return;
 			}
-			if (res.fetchAll)
-				res.fetchAll(callback);
-			else
-				if (callback) callback(err,res);
+			if (res.fetchAll) {
+				res.fetchAll(function(err,res) {
+					callback(err,res,args);
+					query = null;
+					callback = null;
+					err = null;
+					res = null;
+				});
+			}
+			else {
+				if (callback) callback(err,res, args);
+				query = null;
+				callback = null;
+				err = null;
+				res = null;
+			}
 		});
 	} catch (e) {
 		console.log((new Date).toString() + ": MysqlError: " + JSON.stringify(e, null, 3));

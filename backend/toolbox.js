@@ -13,3 +13,5 @@ exports.hash = function(str) {
 	hash.update(str, "ascii");
 	return hash.digest("hex");
 }
+
+exports.filter = function (e) { return e; }
