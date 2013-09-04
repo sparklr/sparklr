@@ -4,6 +4,7 @@ function renderPageFromTemplate() {
 	var fragments = location.hash.split("/");
 	var renderPage = function(data) {
 		var templateData = getTemplate(fragments[1]);
+		console.log(templateData);
 		eval(templateData);
 
 		_g("content").innerHTML = html;

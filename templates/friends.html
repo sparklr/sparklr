@@ -5,58 +5,24 @@
 
 <h2>following</h2>
 <script>
-	var renderUser = function (user,mutual,prefix) {
+	var renderUser = function (user) {
 		var html = "";
-		if (!prefix) var prefix = "";
 </script>
-<img src='{imgUrl(user,true)}' onload='_g("friendbox_{user}_{prefix}").style.opacity=1;' style='display:none'>
-<div id='friendbox_{user}_{prefix}' class='friend' onClick='location.href="#/user/{user}";' style='background-image: url({imgUrl(user,true)});opacity:0;-webkit-transition: all {(Math.random() * 1.5)}s'><div style='position: absolute; bottom: 2px; right: 5px;'>
-		<% if (mutual) %>
-		<div class='star' title='Mutual Follower ♥'></div>
-		<% endif %>
+<img src='{imgUrl(user,true)}' onload='_g("friendbox_{user}").style.opacity=1;' style='display:none'>
+<div id='friendbox_{user}' class='friend' onClick='location.href="#/user/{user}";' style='background-image: url({imgUrl(user,true)});opacity:0;-webkit-transition: all {(Math.random() * 1.5)}s'><div style='position: absolute; bottom: 2px; right: 5px;'>
 </div><span>{getDisplayName(user) }</span></div>
 <script>
 		return html;
 	};
 
-	for (var i = 0; i < data.following.length; i++) {
-		html += renderUser(data.following[i], (data.followers.indexOf(data.following[i]) != -1));
+	for (var i = 0; i < data.length; i++) {
+		html += renderUser(data[i]);
 	}
 </script>
-<% if (data.following.length < 1) %>
+<% if (data.length < 1) %>
 You aren't following anyone right now! Try meeting someone random or inviting friends.
 <% endif %>
 <br><br>
-<h2>followers</h2>
-<script>
-	var foundFollower = false;
-	for (var i = 0; i < data.followers.length; i++) { 
-		if (data.following.indexOf(data.followers[i]) == -1) {
-			html += renderUser(data.followers[i],false);
-			foundFollower = true;
-		}
-	}
-</script>
-<% if (!foundFollower && data.followers.length > 0) %>
-	All your followers are mutual. c:
-<% else %>
-<% if (data.followers.length < 1) %>
-	Nobody follows you :c
-<% endif %>
-<% endelse %>
-<br><br>
-<script>
-	if (data.recommends && data.recommends.length > 0) {
-</script>
-<h2>who to follow</h2>
-		<script>
-			for (var i = 0; i < data.recommends.length; i++) {
-				html += renderUser(data.recommends[i], false, "f");
-			}
-		</script>
-<script>
-	}
-</script>
 <div style='text-align:center;margin:9px;'>
 	<input type='button' value='Meet someone random' onclick='meetSomeoneRandom();'>
 </div>

@@ -62,7 +62,7 @@ function pollData() {
 		case "STREAM":
 			query = streamUrl(getLastStreamTime(subscribedStream));
 			callback = function(data,xhr) {
-				var items = data.timeline || data;
+				var items = data.data || data;
 				addTimelineArray(items,subscribedStream);
 				//if (subscribedStream != 0 && items[0] && subscribedStream != items[0].id)
 			//		return;
