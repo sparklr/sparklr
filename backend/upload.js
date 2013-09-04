@@ -32,11 +32,14 @@ exports.handleUpload = function(data, userobj, args, callback) {
 		delete data;
 
 		if (err) callback(err);
-		if (args.width)
-			makeThumb(tmpfile, outthumb, args, callback);
-		else
-			callback();
-		resizeImage(tmpfile, outfile, callback);
+		resizeImage(tmpfile, outfile, function() {
+			if (args.width) {
+				makeThumb(tmpfile, outthumb, args, function() {
+					callback(null,imgid);
+				});
+			} else 
+				callback(null,imgid);
+		});
 	});
 }
 
