@@ -1,7 +1,6 @@
 var fs = require("fs");
 var os = require("os");
 var spawn = require("child_process").spawn;
-var async = require("async");
 
 var start = (new Date()).getTime().toString(36);
 var id = 0;
@@ -33,20 +32,11 @@ exports.handleUpload = function(data, userobj, args, callback) {
 		delete data;
 
 		if (err) callback(err);
-
-		async.parallel([
-			function(callback) {
-				if (args.width)
-					makeThumb(tmpfile, outthumb, args, callback);
-				else
-					callback();
-			},
-			function(callback) {
-				resizeImage(tmpfile, outfile, callback);
-			}
-		], function(err) {
-			callback(err, imgid);
-		});
+		if (args.width)
+			makeThumb(tmpfile, outthumb, args, callback);
+		else
+			callback();
+		resizeImage(tmpfile, outfile, callback);
 	});
 }
 

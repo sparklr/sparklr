@@ -3,11 +3,12 @@ var templates = require("./templates");
 var database = require("./database");
 var Post = require("./post");
 var User = require("./user");
-var async = require("async");
 
 var frontendTemplate = "";
 var externalTemplate = "";
 
+
+// need a better loading for reload cases
 var loadTemplates = function() {
 	if (global.liveSite) {
 		var buildData = require("../build/out/build");
@@ -59,9 +60,6 @@ exports.run = function(user, request, response, sessionid) {
 	from.push(user.id);
 
 	var payload = { private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist };
-
-	async.parallel([
-		function(callback) {
 			database.getStream("timeline", {
 				networks: user.networks.slice(0),
 				from: from,
@@ -69,10 +67,6 @@ exports.run = function(user, request, response, sessionid) {
 				sortby: "modified"
 			}, function(err, stream) {
 				payload.timelineStream = stream;
-				callback();
-			});
-		},
-		function(callback) {
 			User.getMassUserDisplayName(from, function(err, names) {
 				var displayNames = {};
 				var userHandles = {};
@@ -85,10 +79,6 @@ exports.run = function(user, request, response, sessionid) {
 				payload.displayNames = displayNames;
 				payload.userHandles = userHandles;
 
-				callback();
-			});
-		},
-		function(callback) {
 			User.getOnlineFriends(friends, function(err, onlinefriends) {
 				var friendsObj = {};
 				for (i in friends) {
@@ -99,14 +89,12 @@ exports.run = function(user, request, response, sessionid) {
 				}
 				payload.friends = friendsObj;
 
-				callback();
-			});
-		}
-	], function() {
 		html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
 		response.write(html);
 		response.end();
 	});
+			});
+			});
 }
 
 exports.showExternalPage = function(request, response) {

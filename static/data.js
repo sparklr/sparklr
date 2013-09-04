@@ -60,7 +60,7 @@ function pollData() {
 		case "MENTIONS":
 		case "TAG":
 		case "STREAM":
-			query = streamUrl(lastUpdateTime);
+			query = streamUrl(getLastStreamTime(subscribedStream));
 			callback = function(data,xhr) {
 				var items = data.timeline || data;
 				addTimelineArray(items,subscribedStream);
