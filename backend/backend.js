@@ -20,7 +20,7 @@ if (process.platform != "iwin32") {
 		process.exit(1);
 	});
 }
-var agent = require('webkit-devtools-agent');
+//var agent = require('webkit-devtools-agent');
 database.init(global.database);
 
 var server = http.createServer(handleRequests);
