@@ -137,20 +137,15 @@ exports.run = function(request, response, uri, sessionid) {
 		var authkey_header = request.headers['x-x'];
 		User.verifyAuth(s[0], authkey_header, function(success, userobj) {
 			if (!success) {
-				response.writeHead(403);
+			/*	response.writeHead(403);
 				response.end();
 				return;
+				*/
 			}
 
-			userobj.following = userobj.following.split(",").filter(function(e) {
-				return e;
-			});
-			userobj.followers = userobj.followers.split(",").filter(function(e) {
-				return e;
-			});
-			userobj.networks = (userobj.networks || "0").split(",").filter(function(e) {
-				return e;
-			});
+			userobj.following = userobj.following.split(",").filter(Toolbox.filter);
+			userobj.followers = userobj.followers.split(",").filter(Toolbox.filter);
+			userobj.networks = (userobj.networks || "0").split(",").filter(Toolbox.filter);
 			if (request.method == "POST") {
 				var postObject;
 				try {
@@ -187,26 +182,9 @@ exports.run = function(request, response, uri, sessionid) {
 				}
 			} else {
 				if (uri.pathname.indexOf("/beacon") !== -1) {
-					User.updateActivity(userobj);
 
-					var obj = {};
-
-					Notification.getUserNotifications(userobj.id, uri.query.n, function(err,rows) {
-						if (err) return do500(response, err);
-						if (rows.length > 0)
-							obj.notifications = rows;
-						if (uri.pathname.split("/")[2]) {
-							processGetRequest(request, response, uri, sessionid, userobj, function(data) {
-								if (data.length != 0) {
-									obj.data = data;
-								}
-								sendObject(response,obj);
-							});
-						} else {
-							sendObject(response,obj);
-						}
-						return;
-					});
+					Notification.getUserNotifications(userobj.id, uri.query.n, beaconNotifCallback, { response: response, request: request, uri: uri, sessionid: sessionid, userobj: userobj });
+					
 					return;
 				} else {
 					processGetRequest(request, response, uri, sessionid, userobj, function(data) {
@@ -656,14 +634,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			if (uri.query.photo)
 				args.type = 1;
 
-			Database.getStream("timeline", args, function(err, rows) {
-				if (err) return do500(response, err);
-				var obj = {
-					timeline: rows,
-					length: rows.length
-				}
-				callback(obj);
-			});
+			Database.getStream("timeline", args, callback);
 			break;
 		case "mentions":
 			var user = fragments[3];
@@ -911,6 +882,30 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		default:
 			do400(response, 404, "No such API endpoint");
 			break;
+	}
+}
+
+function beaconNotifCallback(err, rows, args) {
+	if (err) return do500(args.response, err);
+
+	var obj = {};
+
+	if (rows.length > 0)
+		obj.notifications = rows;
+
+	if (args.uri.pathname.split("/")[2]) {
+		processGetRequest(args.request, args.response, args.uri, args.sessionid, args.userobj, function(err,rows) {
+			if (err) {
+				do500(args.response, err);
+			} else {
+				obj.timeline = rows;
+				sendObject(args.response,obj);
+			}
+			err = rows = obj = args = null;
+		});
+	} else {
+		sendObject(args.response,obj);
+		args = null;
 	}
 }
 

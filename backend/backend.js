@@ -21,7 +21,10 @@ if (process.platform != "win32") {
 
 database.init(global.database);
 
-var server = http.createServer(function(request,response) {
+var server = http.createServer(handleRequests);
+server.listen(8080);
+
+function handleRequests(request,response) {
 	var requesturi = url.parse(request.url, true);
 	var sessionid;
 	if (request.headers["cookie"]) {
@@ -53,8 +56,8 @@ var server = http.createServer(function(request,response) {
 			frontend.showExternalPage(request,response);
 		}
 	}
-});
-server.listen(8080);
+}
+
 process.on('uncaughtException', function(err) {
 	console.log((new Date).toString() + ": Error: " + JSON.stringify(err, null, 3));
 	console.log(err.stack);

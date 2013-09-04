@@ -441,6 +441,8 @@ function postToTimeline() {
 		_g("attachment").innerHTML = "";
 
 		imgAttachments = null;
+
+		pollData();
 	}, false);
 	xhr.open("POST", "work/post");
 	xhr.setRequestHeader("X-X", AUTHKEY);
