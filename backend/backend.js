@@ -34,6 +34,11 @@ function handleRequests(request,response) {
 		sessionid = d ? d[1] : "";
 	}
 
+	if (!request.headers['x-scheme'] && requesturi.pathname.indexOf("/rb") !== -1) {
+		relayReload(requesturi.pathname);
+		response.end();
+	}
+
 	if (requesturi.pathname.indexOf("heap") !== -1) {
 		response.writeHead(200);
 		response.write(JSON.stringify(hd.end(), null, 3));
@@ -66,3 +71,7 @@ process.on('uncaughtException', function(err) {
 	process.exit(1);
 });
 
+function relayReload(uri) {
+	var s = uri.split("/");
+	process.send("R:" + s[2]);
+}

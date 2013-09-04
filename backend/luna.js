@@ -3,12 +3,16 @@ var cluster = require("cluster");
 if (cluster.isMaster) {
 	console.log("As for our destination, the wind will guide us!");
 	console.log("PID: " + process.pid);
-	require("fs").writeFile("../../luna.pid", process.pid);
+	var rbkey = process.pid + Math.floor(Math.random() * 100000);
+	console.log("RBKEY: " + rbkey);
 
-	var numCPUs = 1 || require('os').cpus().length;
+	require("fs").writeFile("../../luna.pid", rbkey);
+
+	var numCPUs = require('os').cpus().length;
 
 	for (var i = 0; i < numCPUs; i++) {
 		var w = cluster.fork();
+		w.on("message", handleMsg);
 	}
 
 	cluster.on("exit", function(worker, code) {
@@ -17,7 +21,9 @@ if (cluster.isMaster) {
 			cluster.fork();
 	});
 
-	process.on("SIGUSR2", function() {
+	function handleMsg(data) {
+		console.log("Msg received: " + data);
+		if (data != "R:" + rbkey) return;
 		console.log((new Date).toString() + ": Reloading app...");
 
 		delete require.cache;
@@ -43,7 +49,7 @@ if (cluster.isMaster) {
 			});
 		}
 		shutdownWorker();
-	});
+	};
 
 } else {
 	var backend = require("./backend");
