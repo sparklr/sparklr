@@ -209,6 +209,12 @@ function getLastCommentTime() {
 	return currentComments[currentComments.length - 1].time;
 }
 
+function getLastStreamTime(stream) {
+	if (!timelineEvents[stream] || timelineEvents[stream].length == 0)
+		return 0;
+	return timelineEvents[stream][timelineEvents[stream].length - 1].modified;
+}
+
 function addComments(comments) {
 	if (scrollDistanceFromBottom() < 70)
 		setTimeout('window.scrollBy(0,0xFFFFFF);',0);
@@ -442,7 +448,6 @@ function postToTimeline() {
 
 		imgAttachments = null;
 
-		pollData();
 	}, false);
 	xhr.open("POST", "work/post");
 	xhr.setRequestHeader("X-X", AUTHKEY);

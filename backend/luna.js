@@ -5,7 +5,7 @@ if (cluster.isMaster) {
 	console.log("PID: " + process.pid);
 	require("fs").writeFile("../../luna.pid", process.pid);
 
-	var numCPUs = require('os').cpus().length;
+	var numCPUs = 1 || require('os').cpus().length;
 
 	for (var i = 0; i < numCPUs; i++) {
 		var w = cluster.fork();

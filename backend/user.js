@@ -2,7 +2,6 @@ var Database = require("./database");
 var toolbox = require("./toolbox");
 var bcrypt = require("bcrypt");
 var crypto = require("crypto");
-var async = require("async");
 
 exports.verifyAuth = function(userid,authkey,callback) {
 	this.getUserProfile(userid, function(err,rows) {
@@ -157,11 +156,7 @@ exports.unfollow = function(userobj, tofollow, callback) {
 	if (userobj.following.indexOf(tofollow) != -1) {
 		userobj.following.splice(userobj.following.indexOf(tofollow), 1);
 
-		async.parallel([
-			function(callback) {
-				Database.updateObject("users", userobj, callback);
-			},
-			function(callback) {
+				Database.updateObject("users", userobj, function(err,rows) {
 				Database.getObject("users", tofollow, function(err, rows) {
 					if (err) return callback(err); //return do500(response, err);
 					if (rows.length < 1) return callback(404); //do400(response, 404);
@@ -176,9 +171,7 @@ exports.unfollow = function(userobj, tofollow, callback) {
 					}
 					Database.updateObject("users", otherUser, callback);
 				});
-			}
-		], callback);
-
+			});
 	} else {
 		callback();
 	}
@@ -187,7 +180,7 @@ exports.unfollow = function(userobj, tofollow, callback) {
 exports.removeFollower = function(userobj, tofollow, callback) {
 	if (userobj.followers.indexOf(tofollow) != -1) {
 		userobj.followers.splice(userobj.followers.indexOf(tofollow), 1);
-
+/*
 		async.parallel([
 			function(_callback) {
 				Database.updateObject("users", userobj, _callback);
@@ -206,5 +199,7 @@ exports.removeFollower = function(userobj, tofollow, callback) {
 		], callback);
 	} else {
 		callback();
+	}
+	*/
 	}
 }
