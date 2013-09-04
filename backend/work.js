@@ -437,7 +437,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			function(err,rows) {
 				if (err) return do500(response,err);
 				if (rows.length > 0) {
-					callback(rows[0].id);
+					callback(null,rows[0].id);
 				} else {
 					var id = Toolbox.hash(userobj.id + userobj.email + userobj.authkey);
 					Database.query("INSERT INTO `invites` (`id`,`from`) VALUES ('" + id + "','" + parseInt(userobj.id) + "')", function(){});
@@ -446,43 +446,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			});
 				return;
 		case "friends":
-			var obj = {
-				followers: userobj.followers,
-				following: userobj.following
-			}
-			var processed = 0;
-			var candidates = [];
-			
-			for (i in userobj.following) {
-				Database.getObject("users", userobj.following[i], function(err, users) {
-					processed++;
-					if (!err && users[0] && users[0].following) {
-						users[0].following = users[0].following.split(",");
-						for (n in users[0].following) {
-							var person = users[0].following[n];
-							if (!person || person == userobj.id || userobj.following.indexOf(person) != -1) continue;
-							candidates.push(person);
-						}
-					}
-					if (processed == userobj.following.length)
-						f();
-				});
-			}
-			var f = function() {
-				var results = {};
-				for (i in candidates) {
-					var n = candidates[i];
-					results[n] = results[n] ? results[n] + 1 : 1;
-				}
-				var sorted = Object.keys(results);
-				sorted.sort(function(a,b) {
-					return results[a] < results[b];
-				});
-				obj.recommends = sorted.slice(0,3);
-				callback(null,obj);
-			}
-			if (userobj.following.length < 1) 
-				f();
+			callback(null, userobj.following);
 			return;
 		case "onlinefriends":
 			var friends = [];
@@ -735,12 +699,12 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				id: inviteid,
 				from: userobj.id
 			}, function(err, rows) {
-				if (err) return do500(response, err);
+				if (err) return callback(err);
 				Mail.sendMessageToEmail(fragments[3], "invite", {
 					invite: inviteid,
 					from: userobj.displayname
 				});
-				callback(err, rows);
+				callback(err, true);
 			});
 			break;
 		case "tag":
@@ -791,7 +755,7 @@ function beaconNotifCallback(err, rows, args) {
 			if (err) {
 				do500(args.response, err);
 			} else {
-				obj.timeline = rows;
+				obj.data = rows;
 				sendObject(args.response,obj);
 			}
 			err = rows = obj = args = null;
