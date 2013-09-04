@@ -59,6 +59,7 @@ function getLastChatTime() {
 }
 
 function addChatMessages(data) {
+	data = data.data || data;
 	for (var i = data.length - 1; i >= 0; i--) {
 		addChatMessage(data[i].from, data[i].message, data[i].time, false);
 	}
