@@ -28,6 +28,7 @@ if (cluster.isMaster) {
 		var shutdownWorker = function() {
 			if (workersKilled == workerIds.length) {
 				console.log("Reloading complete.");
+				shutdownWorker = null;
 				return;
 			}
 
@@ -35,7 +36,7 @@ if (cluster.isMaster) {
 
 			cluster.workers[workerIds[workersKilled]].disconnect();
 			var newWorker = cluster.fork();
-			newWorker.on("listening", function() {
+			newWorker.once("listening", function() {
 				console.log("Debug: Replacement online.");
 				workersKilled++;
 				shutdownWorker();

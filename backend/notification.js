@@ -24,8 +24,8 @@ exports.addUserNotification = function (user, notification, action, from, type) 
 	Database.query(query,function(){});
 };
 
-function getUserNotifications(userid, since, callback) {
-	Database.query("SELECT * FROM `notifications` WHERE `to` = "+parseInt(userid)+" AND `time` > "+parseInt(since)+" ORDER BY TIME DESC", callback);
+function getUserNotifications(userid, since, callback, args) {
+	Database.query("SELECT * FROM `notifications` WHERE `to` = "+parseInt(userid)+" AND `time` > "+parseInt(since)+" ORDER BY TIME DESC", callback, args);
 }
 
 exports.getUserNotifications = getUserNotifications;
