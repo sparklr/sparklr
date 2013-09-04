@@ -10,18 +10,23 @@ var user = require("./user");
 var work = require("./work");
 var database = require("./database");
 
-if (process.platform != "win32") {
+if (process.platform != "iwin32") {
 	var memwatch = require('memwatch');
 	var hd = new memwatch.HeapDiff();
 	memwatch.on("leak", function(info) {
 		console.log((new Date).toString() + ": MemoryLeak");
+		console.log(info);
+		console.log(JSON.stringify(hd.end(), null, 3));
 		process.exit(1);
 	});
 }
-
+//var agent = require('webkit-devtools-agent');
 database.init(global.database);
 
-var server = http.createServer(function(request,response) {
+var server = http.createServer(handleRequests);
+server.listen(8080);
+
+function handleRequests(request,response) {
 	var requesturi = url.parse(request.url, true);
 	var sessionid;
 	if (request.headers["cookie"]) {
@@ -53,8 +58,8 @@ var server = http.createServer(function(request,response) {
 			frontend.showExternalPage(request,response);
 		}
 	}
-});
-server.listen(8080);
+}
+
 process.on('uncaughtException', function(err) {
 	console.log((new Date).toString() + ": Error: " + JSON.stringify(err, null, 3));
 	console.log(err.stack);

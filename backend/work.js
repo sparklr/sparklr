@@ -10,7 +10,6 @@ var Upload = require("./upload");
 var util = require("util");
 var events = require("events");
 var bcrypt = require("bcrypt");
-var async = require("async");
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
@@ -40,6 +39,7 @@ exports.run = function(request, response, uri, sessionid) {
 					response.writeHead(403);
 					response.end();
 				}
+				request = userobj = uri = sessionid = null;
 			});
 			return;
 		case "forgot":
@@ -56,6 +56,7 @@ exports.run = function(request, response, uri, sessionid) {
 				} else {
 					sendObject(response, 0);
 				}
+				request = userobj = uri = sessionid = null;
 			});
 			return;
 		case "reset":
@@ -142,15 +143,9 @@ exports.run = function(request, response, uri, sessionid) {
 				return;
 			}
 
-			userobj.following = userobj.following.split(",").filter(function(e) {
-				return e;
-			});
-			userobj.followers = userobj.followers.split(",").filter(function(e) {
-				return e;
-			});
-			userobj.networks = (userobj.networks || "0").split(",").filter(function(e) {
-				return e;
-			});
+			userobj.following = userobj.following.split(",").filter(Toolbox.filter);
+			userobj.followers = userobj.followers.split(",").filter(Toolbox.filter);
+			userobj.networks = (userobj.networks || "0").split(",").filter(Toolbox.filter);
 			if (request.method == "POST") {
 				var postObject;
 				try {
@@ -172,7 +167,6 @@ exports.run = function(request, response, uri, sessionid) {
 						
 						Upload.handleUpload(postBody, userobj, args, function(err, id) {
 							postBody = null;
-							delete postBody;
 
 							if (err) return do500(response, err);
 							postObject.img = id;
@@ -189,30 +183,20 @@ exports.run = function(request, response, uri, sessionid) {
 				if (uri.pathname.indexOf("/beacon") !== -1) {
 					User.updateActivity(userobj);
 
-					var obj = {};
-
-					Notification.getUserNotifications(userobj.id, uri.query.n, function(err,rows) {
-						if (err) return do500(response, err);
-						if (rows.length > 0)
-							obj.notifications = rows;
-						if (uri.pathname.split("/")[2]) {
-							processGetRequest(request, response, uri, sessionid, userobj, function(data) {
-								if (data.length != 0) {
-									obj.data = data;
-								}
-								sendObject(response,obj);
-							});
-						} else {
-							sendObject(response,obj);
-						}
+					var args = { response: response, request: request, uri: uri, sessionid: sessionid, userobj: userobj };
+					Notification.getUserNotifications(userobj.id, uri.query.n, beaconNotifCallback, args);
+					
+					return;
+				} else {
+					processGetRequest(request, response, uri, sessionid, userobj, function(err,rows) {
+						if (err)
+							do500(response,err);
+						else
+							sendObject(response,rows);
+						err = rows = request = uri = sessionid = userobj = null;	
 						return;
 					});
 					return;
-				} else {
-					processGetRequest(request, response, uri, sessionid, userobj, function(data) {
-						sendObject(response, data);
-					});
-
 				}
 			}
 		});
@@ -395,18 +379,13 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 					}
 					Database.deleteObject("users", { id: userobj.id }, function(err) {
 						if (err) do500(response, err);
-						async.parallel([
-									   function(callback) {
-							Database.deleteObject("timeline", { from: userobj.id }, callback);
-						},
-						function(callback) {
-							Database.deleteObject("comments", { from: userobj.id }, callback);
-						}],
-						function(err) {
-							if (err) do500(response, err);
-							result.deleted = true;
-							result.message = "Your account has been deleted.";
-							sendObject(response, result);
+						Database.deleteObject("timeline", { from: userobj.id }, function(err) {
+							Database.deleteObject("comments", { from: userobj.id }, function(err) {
+								if (err) do500(response, err);
+								result.deleted = true;
+								result.message = "Your account has been deleted.";
+								sendObject(response, result);
+							});
 						});
 					});
 				} else {
@@ -458,52 +437,16 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			function(err,rows) {
 				if (err) return do500(response,err);
 				if (rows.length > 0) {
-					callback(rows[0].id);
+					callback(null,rows[0].id);
 				} else {
 					var id = Toolbox.hash(userobj.id + userobj.email + userobj.authkey);
 					Database.query("INSERT INTO `invites` (`id`,`from`) VALUES ('" + id + "','" + parseInt(userobj.id) + "')", function(){});
-					callback(id);
+					callback(null,id);
 				}
 			});
 				return;
 		case "friends":
-			var obj = {
-				followers: userobj.followers,
-				following: userobj.following
-			}
-			var processed = 0;
-			var candidates = [];
-			
-			for (i in userobj.following) {
-				Database.getObject("users", userobj.following[i], function(err, users) {
-					processed++;
-					if (!err && users[0] && users[0].following) {
-						users[0].following = users[0].following.split(",");
-						for (n in users[0].following) {
-							var person = users[0].following[n];
-							if (!person || person == userobj.id || userobj.following.indexOf(person) != -1) continue;
-							candidates.push(person);
-						}
-					}
-					if (processed == userobj.following.length)
-						f();
-				});
-			}
-			var f = function() {
-				var results = {};
-				for (i in candidates) {
-					var n = candidates[i];
-					results[n] = results[n] ? results[n] + 1 : 1;
-				}
-				var sorted = Object.keys(results);
-				sorted.sort(function(a,b) {
-					return results[a] < results[b];
-				});
-				obj.recommends = sorted.slice(0,3);
-				callback(obj);
-			}
-			if (userobj.following.length < 1) 
-				f();
+			callback(null, userobj.following);
 			return;
 		case "onlinefriends":
 			var friends = [];
@@ -512,27 +455,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					friends.push(userobj.following[i]);
 			}
 
-			User.getOnlineFriends(friends, function(err, onlinefriends) {
-				if (err) return do500(response, err);
-
-				callback(onlinefriends);
-			});
-			return;
-		case "photos":
-			var from = userobj.following;
-			from.push(userobj.id);
-
-			Database.getStream("timeline", {
-				from: from,
-				type: 1
-			}, function(err, rows) {
-				if (err) return do500(response, err);
-				callback(rows);
-			});
+			User.getOnlineFriends(friends, callback);
 			return;
 		case "settings":
 			userobj.password = null;
-			callback(userobj);
+			callback(null,userobj);
 			return;
 		case "random":
 			Database.query("SELECT `id` FROM `users` AS users1\
@@ -541,11 +468,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 								WHERE users1.id >= users2.nid AND users1.id != " + parseInt(userobj.id) + " ORDER BY users1.lastseen DESC LIMIT 5", 
 			function(err,rows) {
 				var id = rows[Math.round(Math.random() * (rows.length - 1))].id;
-				callback(id);
+				callback(null,id);
 			});
 			return; 
 		case "search":
-			if (!fragments[3]) return callback(false);
+			if (!fragments[3]) return callback(null,false);
 			break;
 		case "inbox":
 			Database.query("SELECT msgs.time,msgs.from,`message` FROM `messages` msgs\
@@ -555,78 +482,57 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 							GROUP BY `from`\
 							) msgmax ON msgmax.from = msgs.from\
 							AND msgmax.time = msgs.time\
-							ORDER BY msgs.time DESC",
-			function(err,rows) {
-				if (err) return do500(response,err);
-				callback(rows);
-			});
+							ORDER BY msgs.time DESC", callback);
 			return;
 		case "notifications":
 			Database.getStream("notifications", {
 				to: [userobj.id],
-			}, function(err, rows) {
-				if (err) return do500(response, err);
-				callback(rows);
-			});
+			}, callback);
 			return;
 		default:
 			if (fragments.length < 4 || fragments[3] == "") {
-				return do400(response, 400, "Missing arguments");
+				callback("Missing arguments");
+				return;
 			}
 	}
 
 	switch (fragments[2]) {
 		case "post":
-			//TODO: privacy
 			var users;
 			var posts;
 			var comments;
-
-			async.parallel([
-				function(callback) {
-					Database.getObject("timeline", fragments[3], function(err, res) {
-						posts = res;
-						if (!err && res.length > 0) {
-							User.getUserProfile(res[0].from, function(err, rows) {
-								if (!err && rows.length > 0) {
-									if (!User.canSeeUser(rows[0], userobj.id)) {
-										return do400(response, 403);
-									}
-								}
-								callback(err);
-							});
-						} else {
-							callback(err);
+			Database.getObject("timeline", fragments[3], function(err, res) {
+				posts = res;
+				if (!err && res.length > 0) {
+					User.getUserProfile(res[0].from, function(err, rows) {
+						if (!err && rows.length > 0) {
+							if (!User.canSeeUser(rows[0], userobj.id)) {
+								return do400(response, 403);
+							}
 						}
-					});
-				},
-				function(callback) {
-					Post.getComments(fragments[3], 0, function(err, res) {
-						comments = res;
-						callback(err);
-					});
-				}
-			], function(err) {
-				if (err) {
-					return do500(response, err);
-				}
-				if (posts.length < 1) {
-					return do400(response, 404);
-				}
-				var obj = posts[0];
+						Post.getComments(fragments[3], 0, function(err, res) {
+							if (err) {
+								return do500(response, err);
+							}
+							if (posts.length < 1) {
+								return do400(response, 404);
+							}
+							comments = res;
+							var obj = posts[0];
 
-				obj.comments = comments;
-				callback(obj);
+							obj.comments = comments;
+							callback(err,obj);
+						});
+					});
+				} else {
+					callback(err);
+				}
 			});
 			break;
 		case "comments":
 			var since = uri.query.since || 0;
-			Post.getComments(fragments[3], since, function(err, comments) {
-				if (err) return do500(response, err);
-				callback(comments);
-			});
+			Post.getComments(fragments[3], since, callback);
 			break;
-			fragments[3] = "0";
 		case "stream":
 			var stream = parseInt(fragments[3]);
 			if (isNaN(stream)) {
@@ -656,14 +562,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			if (uri.query.photo)
 				args.type = 1;
 
-			Database.getStream("timeline", args, function(err, rows) {
-				if (err) return do500(response, err);
-				var obj = {
-					timeline: rows,
-					length: rows.length
-				}
-				callback(obj);
-			});
+			Database.getStream("timeline", args, callback);
 			break;
 		case "mentions":
 			var user = fragments[3];
@@ -671,10 +570,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			var since = uri.query.since;
 			var starttime = uri.query.starttime;
 
-			Post.getPostRowsFromKeyQuery("mentions", "user", user, since, starttime, function(err,rows) {
-				if (err) do500(response,err);
-				callback(rows);
-			});
+			Post.getPostRowsFromKeyQuery("mentions", "user", user, since, starttime, callback);
 			break;
 		case "user":
 			var userid = fragments[3];
@@ -717,9 +613,8 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				}
 
 				var done = function(err, rows) {
-					if (err) return do500(response, err);
 					obj.timeline = rows;
-					sendObject(response, obj);
+					callback(err,obj);
 				}
 
 				if (fragments[4] == "mentions") {
@@ -729,17 +624,6 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				}
 
 			}
-			break;
-		case "userid":
-			var handle = fragments[3];
-			User.getUserProfileByUsername(handle, function(err, rows) {
-				if (err) return do500(response, err);
-				if (!rows[0]) {
-					do400(response, 404, "User not found");
-				} else {
-					callback(rows[0].id);
-				}
-			});
 			break;
 		case "chat":
 			var from = parseInt(fragments[3]);
@@ -751,10 +635,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				to: [userobj.id, from],
 				since: since,
 				starttime: starttime
-			}, function(err, rows) {
-				if (err) return do500(response, err);
-				callback(rows);
-			});
+			}, callback);
 			break;
 		case "username":
 			var users = fragments[3].split(",");
@@ -763,23 +644,18 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				users[i] = parseInt(users[i]);
 			}
 			query += users.join(",") + ")";
-			Database.query(query, function(err, rows) {
-				if (err) return do500(response, err);
-				callback(rows);
-			});
+			Database.query(query, callback);
 			break;
 		case "networkinfo":
-			Database.getObject("networks", fragments[3], function(err,rows) {
-				callback(rows);
-			});
+			Database.getObject("networks", fragments[3], callback);
 			break;
-		case "join":
+		case "track":
 			var totrack = fragments[3];
 			if (userobj.networks.indexOf(totrack) === -1)
 				userobj.networks.push(totrack);
 			Database.updateObject("users", userobj, callback);
 			break;
-		case "unjoin":
+		case "untrack":
 			var totrack = fragments[3];
 			var index = userobj.networks.indexOf(totrack);
 			if (index !== -1)
@@ -788,33 +664,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "follow":
 			var tofollow = fragments[3];
-			if (tofollow == userobj.id) 
-				return do400(response, "You can't follow yourself ugh.");
-			if (userobj.following.indexOf(tofollow) == -1) {
-				tofollow = parseInt(tofollow);
-				userobj.following.push(tofollow);
-
-				Database.getObject("users", tofollow, function(err, rows) {
-					if (err) return do500(response, err);
-					if (rows.length < 1) return do400(response, 404);
-
-					var otheruser = rows[0];
-					if (!User.canSeeUser(otheruser, userobj.id))
-						return do400(response, 403);
-
-					otheruser.followers += "," + userobj.id;
-					async.parallel([
-						function(callback) {
-							Database.updateObject("users", otheruser, callback);
-						},
-						function(callback) {
-							Database.updateObject("users", userobj, callback);
-						}
-					], callback);
-				});
-			} else {
-				callback();
-			}
+			User.follow(userobj, tofollow, callback);
 			break;
 		case "unfollow":
 			var tofollow = fragments[3];
@@ -829,27 +679,18 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "search":
 			var results = {};
 			var q = "%" + unescape(fragments[3]) + "%";
-			async.parallel([
-				function(callback) {
-					Database.query("SELECT `username`, `id` FROM `users` WHERE `displayname` LIKE " + Database.escape(q) + " OR `username` LIKE " + Database.escape(q) + " ORDER BY `lastseen` DESC LIMIT 30", function(err, rows) {
-						if (rows && rows.length > 0) {
-							results.users = rows;
-						}
-						callback(err);
-					});
-				},
-				function(callback) {
-					var query = "SELECT * FROM `timeline` WHERE `message` LIKE " + Database.escape(q) + " ORDER BY `time` DESC LIMIT 30";
-					Database.query(query, function(err, rows) {
-						if (rows && rows.length > 0) {
-							results.posts = rows;
-						}
-						callback(err);
-					});
+			Database.query("SELECT `username`, `id` FROM `users` WHERE `displayname` LIKE " + Database.escape(q) + " OR `username` LIKE " + Database.escape(q) + " ORDER BY `lastseen` DESC LIMIT 30", function(err, rows) {
+				if (rows && rows.length > 0) {
+					results.users = rows;
 				}
-			], function(err) {
-				if (err) return do500(response, err);
-				callback(results);
+				var query = "SELECT * FROM `timeline` WHERE `message` LIKE " + Database.escape(q) + " ORDER BY `time` DESC LIMIT 30";
+				Database.query(query, function(err, rows) {
+					if (rows && rows.length > 0) {
+						results.posts = rows;
+					}
+					callback(err, results);
+					results = q = null;
+				});
 			});
 			break;
 		case "sendinvite":
@@ -858,59 +699,70 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				id: inviteid,
 				from: userobj.id
 			}, function(err, rows) {
-				if (err) return do500(response, err);
+				if (err) return callback(err);
 				Mail.sendMessageToEmail(fragments[3], "invite", {
 					invite: inviteid,
 					from: userobj.displayname
 				});
-				sendObject(response, true);
+				callback(err, true);
 			});
-			break;
-		case "requestwhitelist":
-			Notification.addUserNotification(fragments[3], "", 0, userobj.id, Notification.N_WHITELIST);
-			sendObject(response,true);
 			break;
 		case "tag":
 			var tag = fragments[3];
 			var since = uri.query.since;
 			var starttime = uri.query.starttime;
 
-			Post.getPostRowsFromKeyQuery("tags", "tag", tag, since, starttime, function(err,rows) {
-				if (err) do500(response,err);
-				callback(rows);
-			});
+			Post.getPostRowsFromKeyQuery("tags", "tag", tag, since, starttime, callback);
 			break;
 		case "delete":
 			if (fragments.length < 5 || !fragments[4])
-				return do400(response, 400, "Missing arguments");
+				return callback("Missing arguments");
 
 			switch (fragments[3]) {
 				case "notification":
 					Database.deleteObject("notifications", {
 						to: userobj.id,
 						id: fragments[4]
-					}, function() {
-						sendObject(response, {});
-					});
+					}, callback);
 					break;
 				case "post":
 					Database.deleteObject("timeline", {
 						from: userobj.id,
 						id: fragments[4]
-					}, function() {
-						sendObject(response, {});
-					});
+					}, callback);
 					break;
 				case "comment":
-					Post.deleteComment(userobj.id, parseInt(fragments[4]), function(err) {
-						sendObject(response, {});
-					});
+					Post.deleteComment(userobj.id, parseInt(fragments[4]), callback);
 					break;
 			}
 			break;
 		default:
-			do400(response, 404, "No such API endpoint");
+			callback(400, "No such API endpoint");
 			break;
+	}
+}
+
+function beaconNotifCallback(err, rows, args) {
+	if (err) return do500(args.response, err);
+
+	var obj = {};
+
+	if (rows.length > 0)
+		obj.notifications = rows;
+
+	if (args.uri.pathname.split("/")[2]) {
+		processGetRequest(args.request, args.response, args.uri, args.sessionid, args.userobj, function(err,rows) {
+			if (err) {
+				do500(args.response, err);
+			} else {
+				obj.data = rows;
+				sendObject(args.response,obj);
+			}
+			err = rows = obj = args = null;
+		});
+	} else {
+		sendObject(args.response,obj);
+		args = null;
 	}
 }
 
@@ -922,8 +774,10 @@ function sendObject(response, obj) {
 		response.write(JSON.stringify(obj));
 		response.end();
 	} catch (e) {
+		response = null;
 		// disconnected
 	}
+	obj = null;
 }
 
 function do400(response, code, info) {

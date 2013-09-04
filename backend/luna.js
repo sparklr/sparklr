@@ -5,7 +5,7 @@ if (cluster.isMaster) {
 	console.log("PID: " + process.pid);
 	require("fs").writeFile("../../luna.pid", process.pid);
 
-	var numCPUs = require('os').cpus().length;
+	var numCPUs = 1 || require('os').cpus().length;
 
 	for (var i = 0; i < numCPUs; i++) {
 		var w = cluster.fork();
@@ -28,6 +28,7 @@ if (cluster.isMaster) {
 		var shutdownWorker = function() {
 			if (workersKilled == workerIds.length) {
 				console.log("Reloading complete.");
+				shutdownWorker = null;
 				return;
 			}
 
@@ -35,7 +36,7 @@ if (cluster.isMaster) {
 
 			cluster.workers[workerIds[workersKilled]].disconnect();
 			var newWorker = cluster.fork();
-			newWorker.on("listening", function() {
+			newWorker.once("listening", function() {
 				console.log("Debug: Replacement online.");
 				workersKilled++;
 				shutdownWorker();

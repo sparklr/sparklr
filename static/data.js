@@ -60,9 +60,9 @@ function pollData() {
 		case "MENTIONS":
 		case "TAG":
 		case "STREAM":
-			query = streamUrl(lastUpdateTime);
+			query = streamUrl(getLastStreamTime(subscribedStream));
 			callback = function(data,xhr) {
-				var items = data.timeline || data;
+				var items = data.data || data;
 				addTimelineArray(items,subscribedStream);
 				//if (subscribedStream != 0 && items[0] && subscribedStream != items[0].id)
 			//		return;
@@ -94,9 +94,7 @@ function pollData() {
 				addNotification(data.notifications[i]);
 			}
 		}
-		if (typeof(data.data) != "undefined") { 
-			callback(data.data,xhr);
-		}
+		callback(data,xhr);
 	});
 }
 
