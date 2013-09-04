@@ -190,7 +190,7 @@ function renderComment(comment) {
     }
     html += "</div> <a class='person' href='#/user/" + comment.from + "'>" + getDisplayName(comment.from) + "</a>";
 	if (comment.from == 4 || comment.from == 6) {
-		html += " <span class='mod'>staff</span>";
+		html += " <span class='mod'>admin</span>";
 	}
 	if (comment.like) {
 		html += " likes this<br><br>";
