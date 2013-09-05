@@ -187,9 +187,12 @@ exports.run = function(request, response, uri, sessionid) {
 					return;
 				} else {
 					processGetRequest(request, response, uri, sessionid, userobj, function(err,rows) {
-						if (err)
-							do500(response,err);
-						else
+						if (err) {
+							if (err === 404) {
+								do400(response,404);
+							} else
+								do500(response,err);
+						} else
 							sendObject(response,rows);
 						err = rows = request = uri = sessionid = userobj = null;	
 						return;
@@ -504,10 +507,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 						}
 						Post.getComments(fragments[3], 0, function(err, res) {
 							if (err) {
-								return do500(response, err);
-							}
-							if (posts.length < 1) {
-								return do400(response, 404);
+								return callback(err);
 							}
 							comments = res;
 							var obj = posts[0];
@@ -517,7 +517,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 						});
 					});
 				} else {
-					callback(err);
+					callback(404);
 				}
 			});
 			break;
