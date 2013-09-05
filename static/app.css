@@ -1054,9 +1054,9 @@ h2 a.tag {
 	display: none;
 }
 
-var {
-	font-style: normal;
-	font-weight: normal;
+cite {
+	font-style: inherit;
+	font-weight: inherit;
 }
 
 input {
