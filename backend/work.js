@@ -631,7 +631,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "username":
 			var users = fragments[3].split(",");
-			var query = "SELECT `username`,`id` FROM `users` WHERE id IN (";
+			var query = "SELECT `username`,`displayname`,`id` FROM `users` WHERE id IN (";
 			for (var i = 0; i < users.length; i++) {
 				users[i] = parseInt(users[i]);
 			}

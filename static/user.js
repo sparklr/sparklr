@@ -13,14 +13,15 @@ function getAvatar(id,plain) {
 function getDisplayName(id) {
 	if (DISPLAYNAMES[id])
 		return DISPLAYNAMES[id];
-	return "@"+getUserHandle(id);
+	fetchUserHandle(id);
+	return "<cite data-id='" + id + "'></cite>";
 }
 
 function getUserHandle(id) {
 	if (USERHANDLES[id])
 		return USERHANDLES[id];
 	fetchUserHandle(id);
-	return "<var data-id='" + id + "'></var>";
+	return "<cite data-id='" + id + "' data-handle='1'></cite>";
 }
 
 function fetchUserHandle(id) {
@@ -39,14 +40,19 @@ function pullHandlesFromServer() {
 }
 
 function pullHandlesFromServerCallback(handles) {
-	var tags = document.getElementsByTagName("var");
+	var tags = document.getElementsByTagName("cite");
 	for (var i = 0; i < tags.length; i++) {
 		for (var h in handles) {
 			var id = handles[h].id;
 			if (tags[i].getAttribute("data-id") == id) {
-				tags[i].innerHTML = handles[h].username;
+				if (tags[i].getAttribute("data-handle")) {
+					tags[i].innerHTML = handles[h].username;
+				} else {
+					tags[i].innerHTML = handles[h].displayname;
+				}
 			}
 			USERHANDLES[handles[h].id] = handles[h].username;
+			DISPLAYNAMES[handles[h].id] = handles[h].displayname;
 		}
 	}
 }
