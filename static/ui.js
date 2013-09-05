@@ -117,7 +117,7 @@ function processMedia(text,noImages) {
 
 		if (!noImages) {
 			if (url.indexOf(".jpg") != -1 || url.indexOf(".png") != -1 || url.indexOf(".gif") != -1) {
-				html += "<img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"block\";'><br>";
+				html += "<img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"block\";window.onload();'><br>";
 			}
 		}
 		html += match + "</a>";
@@ -142,7 +142,7 @@ function processMedia(text,noImages) {
 
 	var imgregex = /\[IMG([A-Za-z0-9\._-]+)\]/g;
 	text = text.replace(imgregex, function(match, img) {
-		return "<img src='" + imgUrl(img) + "'><br>";
+		return "<img src='" + imgUrl(img) + "' onload='window.onload();'><br>";
 	});
 
 	var countnewlines = 0;

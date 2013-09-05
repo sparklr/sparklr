@@ -75,6 +75,7 @@ function dummySidebar() {
 
 function updatePages(loaded) {
 	document.body.ondrop = document.body.ondragover = document.body.ondragenter = function (e) { dropPrevent(e); }
+	window.onload = null;
 
 	isNetwork = false;
 

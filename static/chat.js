@@ -75,6 +75,8 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 	if (typeof(unconfirmed) != "undefined" && unconfirmed)
 		ele.className += " unconfirmedchat";
 
+	console.log(lastMessageFrom);
+	console.log(from);
 
 	ele.id = "msg_" + time;
 	var html = "";
@@ -156,22 +158,6 @@ function updateFriendsList() {
 	}
 }
 
-function updateOnlineFriends() {
-	ajaxGet("work/onlinefriends", null, function(data) {
-		for (id in FRIENDS) { 
-			var online = false;
-
-			for (var i = 0; i < data.length; i++) {
-				if (data[i].id == id) {
-				  online = true;
-				}
-			}
-
-			addFriend(id, online);
-			setUserStatus(id);
-		}
-	});
-}
 function setUserAttention(user, on) {
 	newMessageUsers[user] = on;
 	setUserStatus(user);
@@ -181,7 +167,7 @@ function setUserStatus(user) {
 	var e = _g("friendicon_" + user);
 	if (!e) e = addFriendElement(user);
 	
-	e.className = (FRIENDS[user] ? "online" : "offline") + (newMessageUsers[user] ? " attn" : "");
+	e.className = (newMessageUsers[user] ? " attn" : "");
 }
 
 function setNewInbox(value) {

@@ -39,29 +39,6 @@ exports.getMassUserDisplayName = function(following,callback) {
 	Database.query(querystr, callback);
 }
 
-exports.getOnlineFriends = function(friends, callback) {
-	var querystr = "SELECT `id` FROM `users` WHERE `id` IN (";
-
-	for (var i = 0; i < friends.length - 1; i++)
-		querystr += "'" + parseInt(friends[i]) + "',";
-	querystr += "'" + parseInt(friends[friends.length - 1]) + "')";
-	querystr += " AND `lastseen` > " + Math.floor(((new Date).getTime() / 1000) - 60);
-
-	Database.query(querystr, callback);
-}
-
-exports.getFollowers = function(userid,callback) {
-	exports.getUserProfile(userid,function(userobj) {
-		callback(userobj.followers.split(","));
-	})
-}
-
-exports.getFollowing = function(userid,callback) {
-	exports.getUserProfile(userid,function(userobj) {
-		callback(userobj.following.split(","));
-	})
-}
-
 exports.canSeeUser = function(targetUser, fromUser) {
 	if (targetUser.id == fromUser) return true;
 
@@ -87,11 +64,6 @@ exports.trySignin = function(user,pass,callback) {
 			callback(match,rows[0]);
 		});
 	});
-}
-
-exports.updateActivity = function(userobj) {
-	userobj.lastseen = toolbox.time();
-	Database.updateObject("users", userobj);
 }
 
 exports.resetPassword = function(userobj) {
