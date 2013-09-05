@@ -106,7 +106,6 @@ function hideUnconfirmedMessages() {
 	for (i = 0; i < dom.length; i++) {
 		if (dom[i].className.indexOf("unconfirmedchat") != -1) {
 			_g("scrollUpContent").removeChild(dom[i]);
-			dom[i] = null;
 		}
 	}
 }
@@ -125,7 +124,7 @@ function sendChatMessage() {
 
 	setTimeout(function() {
 		_g("composer").value="";
-		expandTextarea(e);
+		expandTextarea(_g("composer"));
 	},10);
 
 	if (!vars.message && !vars.postData) return;
