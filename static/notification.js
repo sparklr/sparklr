@@ -12,6 +12,7 @@ var N_EVENT = 1;
 var EMAIL_NOT_VERIFIED = "Pst: Your email address is unverified. <a href='#/settings/resend'>Resend verification</a>";
 
 function addNotification(notification) {
+	if (currentNotifications[notification.id]) return; //duplicate
 	currentNotifications[notification.id] = notification;
 
 	handleNotifications();
