@@ -478,6 +478,9 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				to: [userobj.id],
 			}, callback);
 			return;
+		case "onlinefriends":
+			callback(null,0);
+			return;
 		default:
 			if (fragments.length < 4 || fragments[3] == "") {
 				callback("Missing arguments: " + uri.pathname);
