@@ -480,7 +480,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			return;
 		default:
 			if (fragments.length < 4 || fragments[3] == "") {
-				callback("Missing arguments");
+				callback("Missing arguments: " + uri.pathname);
 				return;
 			}
 	}
@@ -785,6 +785,6 @@ function do500(response, err) {
 	}));
 	response.end();
 
-	console.log((new Date).toString() + ": 500Error: " + JSON.stringify(err, null, 3));
 	console.trace();
+	console.log((new Date).toString() + ": 500Error: " + JSON.stringify(err, null, 3));
 }
