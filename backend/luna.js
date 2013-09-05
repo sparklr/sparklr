@@ -17,8 +17,10 @@ if (cluster.isMaster) {
 
 	cluster.on("exit", function(worker, code) {
 		console.log("Debug: Worker exitted with code: " + code);
-		if (code != 0)
-			cluster.fork();
+		if (code != 0) {
+			var w = cluster.fork();
+			w.on("message", handleMsg);
+		}
 	});
 
 	function handleMsg(data) {
@@ -47,6 +49,7 @@ if (cluster.isMaster) {
 				workersKilled++;
 				shutdownWorker();
 			});
+			newWorker.on("message", handleMsg);
 		}
 		shutdownWorker();
 	};
