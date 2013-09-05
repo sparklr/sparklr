@@ -326,13 +326,7 @@ div.confirm {
     margin-top: 10px;
 	cursor: pointer;
 	-webkit-transition: all 0.2s ease;
-}
-#friendslist a.online {
 	color: rgba(255,255,255,0.8);
-}
-
-#friendslist a.offline {
-	display: none;
 }
 #friendslist a img {
 	-webkit-transition: all 0.2s ease;

@@ -50,51 +50,34 @@ exports.run = function(user, request, response, sessionid) {
 		return e;
 	});
 
-	var friends = [];
-	for (i in user.following) {
-		if (user.followers.indexOf(user.following[i]) !== -1)
-			friends.push(user.following[i]);
-	}
-
 	var from = user.following;
 	from.push(user.id);
 
 	var payload = { private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist };
-			database.getStream("timeline", {
-				networks: user.networks.slice(0),
-				from: from,
-				since: 1,
-				sortby: "modified"
-			}, function(err, stream) {
-				payload.timelineStream = stream;
-			User.getMassUserDisplayName(from, function(err, names) {
-				var displayNames = {};
-				var userHandles = {};
+	database.getStream("timeline", {
+		networks: user.networks.slice(0),
+		from: from,
+		since: 1,
+		sortby: "modified"
+	}, function(err, stream) {
+		payload.timelineStream = stream;
+		User.getMassUserDisplayName(from, function(err, names) {
+			var displayNames = {};
+			var userHandles = {};
 
-				for (name in names) {
-					displayNames[names[name].id] = names[name].displayname;
-					userHandles[names[name].id] = names[name].username;
-				}
+			for (name in names) {
+				displayNames[names[name].id] = names[name].displayname;
+				userHandles[names[name].id] = names[name].username;
+			}
 
-				payload.displayNames = displayNames;
-				payload.userHandles = userHandles;
+			payload.displayNames = displayNames;
+			payload.userHandles = userHandles;
 
-			User.getOnlineFriends(friends, function(err, onlinefriends) {
-				var friendsObj = {};
-				for (i in friends) {
-					friendsObj[friends[i]] = false;
-				}
-				for (i in onlinefriends) {
-					friendsObj[onlinefriends[i].id] = true;
-				}
-				payload.friends = friendsObj;
-
-		html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
-		response.write(html);
-		response.end();
+			html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
+			response.write(html);
+			response.end();
+		});
 	});
-			});
-			});
 }
 
 exports.showExternalPage = function(request, response) {

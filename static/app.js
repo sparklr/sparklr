@@ -3,7 +3,6 @@
 
 // Poll server for new data 
 setInterval("pollData();", 1500);
-setInterval("updateOnlineFriends();", 20000);
 
 // Event handlers 
 window.addEventListener("hashchange", function() { updatePages() });
@@ -53,15 +52,12 @@ var AUTHKEY;
 var curUser;
 
 var app = function(payload) { 
-	FRIENDS = payload.friends;
 	DISPLAYNAMES = payload.displayNames;
 	USERHANDLES = payload.userHandles;
 	IS_PRIVATE = payload.private;
 	AVATAR_IDS[curUser] = payload.avatarid;
 	HIDDEN_USERS = payload.blacklist;
 	joinedNetworks = payload.networks;
-
-	updateFriendsList();
 
 	addTimelineArray(payload.timelineStream, 0);
 

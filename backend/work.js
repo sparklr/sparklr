@@ -181,8 +181,6 @@ exports.run = function(request, response, uri, sessionid) {
 				}
 			} else {
 				if (uri.pathname.indexOf("/beacon") !== -1) {
-					User.updateActivity(userobj);
-
 					var args = { response: response, request: request, uri: uri, sessionid: sessionid, userobj: userobj };
 					Notification.getUserNotifications(userobj.id, uri.query.n, beaconNotifCallback, args);
 					
@@ -447,15 +445,6 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				return;
 		case "friends":
 			callback(null, userobj.following);
-			return;
-		case "onlinefriends":
-			var friends = [];
-			for (i in userobj.following) {
-				if (userobj.followers.indexOf(userobj.following[i]) !== -1)
-					friends.push(userobj.following[i]);
-			}
-
-			User.getOnlineFriends(friends, callback);
 			return;
 		case "settings":
 			userobj.password = null;
