@@ -66,7 +66,6 @@ function getNotificationBody(notification) {
 		break;
 		case 3: //chat
 			setUserAttention(notification.from, true);
-			newMessageFrom = getDisplayName(notification.from);
 			updatePageTitle();
 			body = "messaged you.";
 			action = "/#/chat/" + notification.from;
@@ -138,7 +137,6 @@ function handleNotifications() {
 		if (currentNotifications[id].type == N_CHAT) {
 			if (s[1] == "chat" && s[2] == currentNotifications[id].from) {
 				setUserAttention(currentNotifications[id].from, false);
-				newMessageFrom = "";
 				dismissNotification(id);				
 				setNewInbox(false);
 			}
