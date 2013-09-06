@@ -6,7 +6,9 @@
 	}
 	</script>
 	<% if (data.type == 1) %>
-	<div class='picturepost' id='picturepost_{data.id}' onClick='showImage("{ data.img }");' style='background-image: url({imgUrl(data.img)});'></div>
+	<div class='picturepost' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
+		<img src='{imgUrl(data.img)}'>
+	</div>
 	<% endif %>
 
 	<div id='event_{data.id}' class='fadein' style='padding: 7px; margin: -5px; word-wrap: break-word;' onClick='showEvent({data.id})'>
