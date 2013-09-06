@@ -115,7 +115,7 @@ function renderTags(item) {
 		html += item.tags[i].tag + "</div>";
 	}
 
-	post.innerHTML = html;
+	post.innerHTML += html;
 }
 
 function repost(id) {
@@ -423,6 +423,7 @@ function postToTimeline() {
 		vars.tags = [];
 		var a = _g("attachment").children;
 		for (var i = 0; i < a.length; i++) {
+			if (a[i].src) continue; // img element
 			vars.tags.push({ x: a[i].style.left.replace("px",""), 
 							 y: a[i].style.top.replace("px",""),
 							 tag: a[i].getAttribute("data-tag"),
@@ -445,7 +446,7 @@ function postToTimeline() {
 		}
 		//Complete
 		_g("attachment").style.display = "none";
-		_g("attachment").className = "picturepost";
+		_g("attachment").className = "attachment picturepost";
 		_g("attachment").innerHTML = "";
 
 		imgAttachments = null;
@@ -468,7 +469,7 @@ function uploadStreamImageCallback(e,id) {
 		res = "data:image/jpeg;" + res.substring(5);
 	}
 	id = id || "attachment";
-	_g(id).style.backgroundImage = "url(" + res + ")";
+	_g(id).innerHTML = "<img src='" + res + "'>";
 	_g(id).style.display = "block";
 	imgAttachments = e;
 }

@@ -508,16 +508,22 @@ div.like.liked {
 }
 
 div.picturepost {
-    box-shadow: 0px 0px 4px #000,
-    inset 0px 0px 9px rgba(255,255,255,0.4);
-    min-height: 443px;
-	background-color: #000;
     background-repeat: no-repeat;
 	background-position: center center;
     margin: -5px;
     margin-bottom: 10px;
-    border-bottom: solid 1px rgba(0,0,0,0.5);
     cursor: pointer;
+	padding: 0px;
+	text-align: center;
+}
+div.picturepost img {
+	max-width: 578px;
+	max-height: 443px;
+	margin-bottom: -4px;
+}
+div.contentwrapper div.picturepost {
+	margin: 0px;
+	margin-bottom: 10px;
 }
 div.picturepost h2 {
     opacity: 0.5;
@@ -571,7 +577,6 @@ div.minipreview {
 
 div.attachment {
 	display: none;
-	background-size: contain;
 }
 
 div.attachment div, div.picturepost div {
@@ -1225,6 +1230,9 @@ span.mod {
 		box-shadow: none;
 	}
 	div.commentcount {
+		box-shadow: none;
+	}
+	div.contentwrapper {
 		box-shadow: none;
 	}
 }

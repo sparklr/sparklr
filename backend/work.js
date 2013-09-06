@@ -159,7 +159,7 @@ exports.run = function(request, response, uri, sessionid) {
 						var args = { allowGif: true, width: 400, height: 443 };
 						var s = uri.pathname.split("/");
 						if (s[2] == "post")
-							args.width = 500;
+							args.width = 580;
 						if (s[2] == "avatar") 
 							args = { width: 50, height: 50, fill: true, id: userobj.id };
 						if (s[2] == "background") 
