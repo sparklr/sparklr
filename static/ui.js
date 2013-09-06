@@ -243,14 +243,14 @@ function expandTextarea(e) {
 	if (!e)
 		e = window.event;
 	var l = e.target.value.length;
-	e.target.style.height = (2 + Math.floor((l / 90))) * 20 + (20 * (e.target.value.split("\n").length - 1)) + "px";
+	e.target.style.height = (2 + Math.floor((l / 80))) * 20 + (20 * (e.target.value.split("\n").length - 1)) + "px";
 
 	var r = _g("remaining");
-	var toolong = l > 220;
+	var toolong = l > 420;
 
 	r.style.opacity = toolong ? 1 : 0;
 	r.style.display = toolong ? "block" : "none";
-	if (toolong) r.innerHTML = (300 - l);
+	if (toolong) r.innerHTML = (500 - l);
 	
 }
 
