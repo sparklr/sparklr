@@ -1177,6 +1177,7 @@ span.mod {
 	}
 	div.contentwrapper {
 		margin-bottom: 0px;
+		box-shadow: none;
 	}
 	div.contentwrapper.search #searchbox_mobile {
 		display: inline-block;
@@ -1218,7 +1219,12 @@ span.mod {
 		-webkit-tap-highlight-color: rgba(0,0,0,0);
 	}
 	#scrolltotop {
-		background-color: rgba(63,54,74,0.5);
-		border-radius: 10px;
+		display: none;
+	}
+	div.timelineitem {
+		box-shadow: none;
+	}
+	div.commentcount {
+		box-shadow: none;
 	}
 }
