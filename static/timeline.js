@@ -324,7 +324,7 @@ function renderComposer(caption, keydown, minipreview, id) {
 	if (minipreview) {
 		html += "<div id='attachment" + (id || "") + "' class='minipreview'></div>";
 	}
-	html += "<textarea id='" + (id || "composer") + "' placeholder='" + caption + "' onkeydown='isEnter(event, " + keydown + ");expandTextarea(event);' maxlength=300></textarea>";
+	html += "<textarea id='" + (id || "composer") + "' placeholder='" + caption + "' onkeydown='isEnter(event, " + keydown + ");expandTextarea(event);' maxlength=500></textarea>";
 	html += "<div class='composercontrols'><input id='attachfile' data-target='attachment" + (id || "") + "' onchange='attachfile_changed(event,\"" + (id || "") + "\")' type='file'></div>";
 	html += "</div></div>";
 	return html;

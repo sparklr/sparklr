@@ -210,7 +210,7 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 	var fragments = uri.pathname.split("/");
 	switch (fragments[2]) {
 		case "post":
-			if (postObject.body.length > 300)
+			if (postObject.body.length > 500)
 				return do400(response, 400, "Post too long");
 			Post.post(userobj.id, postObject, function(err,res) {
 				sendObject(response, res);
@@ -219,6 +219,9 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 		case "repost":
 			if (postObject.img)
 				postObject.reply = "[IMG" + postObject.img + "]" + postObject.reply;
+			if (postObject.reply.length > 520) 
+				return do400(response, 400, "Too long");
+
 			Post.repost(userobj.id, postObject.id, postObject.reply, function(err) {
 				if (err) return do500(response, err);
 				sendObject(response, {});
@@ -227,6 +230,8 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 		case "comment":
 			if (postObject.img)
 				postObject.comment = "[IMG" + postObject.img + "]" + postObject.comment;
+			if (postObject.comment.length > 520)
+				return do400(response, 400, "Too long");
 			Post.postComment(userobj.id, postObject, function(err) {
 				sendObject(response, {});
 			});
@@ -237,6 +242,8 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 
 			if (postObject.img)
 				postObject.message = "[IMG" + postObject.img + "]" + postObject.message;
+			if (postObject.message.length > 520)
+				return do400(response, 400, "Too long");
 
 			Database.postObject("messages", {
 				from: userobj.id,
