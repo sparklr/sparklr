@@ -1,0 +1,39 @@
+Sparklr Cheat Sheet
+===================
+
+Everything you need to know about Sparklr.
+
+# Must-know
+- The VPS is Debian 7 aka Wheezy. x64
+- p18 is written in JavaScript and runs on Node.js 
+- Nginx is a reverse-proxy that takes the incoming connections and routes them to the p18 server
+
+# Maintenance 
+
+## Checking server status 
+$ htop
+- This will display the CPU and memory usage for the server. If the CPU bars are less than 30% on average, we're good.
+- The uptime thing in the corner will give you load averages. They should be <0.50 for now. The maximum is 8.0 (1.0 full load * 8 cores).
+- The memory usage should be below 800. If it's not, reload the workers.
+
+## Reloading the workers 
+$ wget -qO- http://127.0.0.1:8080/rb/`cat /var/www/luna.pid`
+- What a mess. Basically, you're running http://127.0.0.1:8080/rb/$RELOADKEY from the local server
+- The reload key is saved to /var/www/luna.pid
+
+## Reloading nginx 
+$ /etc/init.d/nginx reload 
+
+## p18 freezes and needs a reboot 
+$ sudo restart p18
+$ sudo status p18
+
+# Development 
+
+## Luna 
+- Here's how Luna works: 
+-- Luna starts up and counts the CPUs, then forks itself 
+-- The forked process notices it's not the parent (cluster.isMaster), and instead loads a copy of backend.js.
+
+
+
