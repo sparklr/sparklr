@@ -569,10 +569,12 @@ div.comment {
 
 div.minipreview {
 	display: none;
-	width: 150px;
-	height: 80px;
-	background-size: cover;
 	margin: 2px;
+}
+
+div.minipreview img {
+	max-width: 150px;
+	max-height: 80px;
 }
 
 div.attachment {
