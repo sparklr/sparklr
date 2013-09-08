@@ -92,13 +92,16 @@ function addUserToList_Keydown(e, list) {
 }
 
 function addUserToList(list,user) {
-	_g(list ? "whitelist" : "blacklist").innerHTML += "<div style='min-height:50px;margin: 5px;'><img src='" + getAvatar(user) + "' class='avatar'> <b>" + getDisplayName(user) + "</b><div style='float:right;'><a href='javascript:addUserToServerList(" + list + ", " + user + ", 0);'>Remove</a></div></div>";
+	_g("blacklist").innerHTML += "<div style='min-height:50px;margin: 5px;'><img src='" + getAvatar(user) + "' class='avatar'> <b>" + getDisplayName(user) + "</b><div style='float:right;'><a href='javascript:addUserToServerList(" + list + ", " + user + ", 0);'>Remove</a></div></div>";
 }
 
 function addUserToServerList(type, id, action) {
 	ajaxGet("work/list", { type: type, action: action, user: id }, function() {
 		  if (!action) {
+				HIDDEN_USERS.splice(HIDDEN_USERS.indexOf(id),1);
 				location.href = location.href + "/#";
+		  } else {
+			  showBanner(getDisplayName(id) + " has been added to your blacklist and will no longer appear in any feed.", "bannerblacklisted", 5000);
 		  }
 	});
 }

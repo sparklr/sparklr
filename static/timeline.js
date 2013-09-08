@@ -8,9 +8,13 @@ var imgAttachments = null;
 var lastUpdateTime = Math.floor((new Date).getTime() / 1000);
 var LIKE_CHAR = "\u261D";
 
+var hiddenPostList = [];
+
 var joinedNetworks = [];
 
 function addTimelineEvent(item,append) {
+	if (hiddenPostList.indexOf(item.id) !== -1) return;
+
 	if (_g("event_" + item.id)) {
 		updateCommentCount(item.id, item.commentcount);
 		 return;
@@ -164,6 +168,20 @@ function deleteComment(id,postid) {
 		ajaxGet("work/delete/comment/"+ id, null, function() {
 			location.href = window.location + "#";
 		});
+	});
+}
+
+function hidePost(id,from) {
+	showConfirm("Hide post", "Are you sure you want to hide this post?", function () {
+		location.href = "#";
+		showBanner("Post hidden. If you continue to have issues with this user, you may <a href='javascript:addUserToServerList(0," + from + ",1);'>blacklist him/her</a>.", "bannerhidden", 5000);
+
+		hiddenPostList.push(id);
+		var g = _g("event_" + id);
+		if (g)
+			g.style.display = "none";
+		timelineEvents[0] = [];
+		lastUpdateTime = 0;
 	});
 }
 

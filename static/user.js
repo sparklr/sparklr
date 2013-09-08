@@ -156,9 +156,9 @@ function updateAccountSettings() {
 			obj = { password: form.currentpassword.value, newpassword: form.password1.value }		
 			type = "password";
 			break;
-		case "privacy":
-			obj = { private: form.private[0].checked }
-			type = "privacy";
+		case "blacklist":
+			type = "blacklist";
+			obj = { };
 			break;
 		case "account":
 			obj = { password: form.delete.value }

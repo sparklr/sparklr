@@ -3,7 +3,7 @@
 	 <div id='sidebar_links'>
 		  <a href='#/settings'>General</a>
 		  <a href='#/settings/password'>Change Password</a>
-		  <a href='#/settings/privacy'>Privacy</a>
+		  <a href='#/settings/blacklist'>Blacklist</a>
 		  <a href='#/settings/account'>Account</a>
 	 </div>
 
@@ -26,27 +26,11 @@
 				<input type='password' name='password2' onBlur='checkPasswords(this.value,password1.value);'>
 		  </fieldset>
 		  <% endif %>
-		  <% if (fragments[2] == "privacy") %>
-		  <fieldset>
-				<input type='radio' name='private' id='public' value='0'<% if (!data.private) %>checked<% endif %> onclick='updateLists()'>
-				<label for='public' class='radio'><b>Public</b><br>
-					 <p>The following users are hidden from your dashboard.</p>
-					 <div id='blacklist' style='margin:15px;padding-right:35px;display: {(data.private ? 'none' : 'block')}'>
-					  <input onblur='showSuggestionBox(false);' onkeydown='return addUserToList_Keydown(event,0);' type='text' placeholder='Type a user to blacklist' style='margin:5px;width:400px' class='t1'>
-					  </div>
-				</label>
-		  </fieldset>
-		  <fieldset>
-				<input type='radio' name='private' id='private' value='1'<% if (data.private) %>checked<% endif %> onclick='updateLists()'>
-				<label for='private' class='radio'><b>Private</b><br>
-					 <p>Only the following whitelisted users can see profile, posts, and respond to you.<br>
-					 <div id='whitelist' style='margin:15px;padding-right:35px;display: {(data.private ? 'block' : 'none')}'>
-						 <input onblur='showSuggestionBox(false);' onkeydown='return addUserToList_Keydown(event,1);' type='text' placeholder='Type a user to whitelist' style='margin:5px;width:400px' class='t1'>
-					 </div>
-					 </p>
-				</label>
-		  </fieldset>
-
+		  <% if (fragments[2] == "blacklist") %>
+			  <p>The following users are hidden from your dashboard.</p>
+			  <div id='blacklist' style='margin:15px;padding-right:115px;'>
+				  <input onblur='showSuggestionBox(false);' onkeydown='return addUserToList_Keydown(event,0);' type='text' placeholder='Type a user to blacklist' style='margin:5px;width:400px' class='t1'>
+			  </div>
 		  <br><br>
 		  <% endif %>
 		  <% if (fragments[2] == "account") %>	
@@ -81,20 +65,6 @@
 			if (!blacklist[i]) continue;
 			addUserToList(0, blacklist[i]);
 		 }
-		 var whitelist = (data.whitelist || "").split(",");
-		 for (i in whitelist) {
-			if (!whitelist[i]) continue;
-			addUserToList(1, whitelist[i]);
-		 }
 	},1);
 
-	window.updateLists = function() {
-		if (_g("public").checked) {
-			_g("blacklist").style.display = "block";
-			_g("whitelist").style.display = "none";
-		} else {
-			_g("blacklist").style.display = "none";
-			_g("whitelist").style.display = "block";
-		}
-	};
 </script>
