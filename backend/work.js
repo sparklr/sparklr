@@ -327,31 +327,19 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				}
 			});
 		break;
-		case "privacy":
-			userobj.private = (postObject.private ? 1 : 0);
-			Database.updateObject("users", userobj);
+		case "blacklist":
 			sendObject(response, { result: true, message: "" });
 		break;
 		case "list":
-			var list = (postObject.type ? userobj.whitelist : userobj.blacklist);
-			list = (list || "").split(",");
+			var list = (userobj.blacklist || "").split(",");
 
 			if (postObject.action) {
 				if (list.indexOf(postObject.user.toString()) === -1)
 					list.push(postObject.user);
-				if (postObject.type == 0)
-					User.removeFollower(userobj, postObject.user, function(err){});
 			} else {
 				list.splice(list.indexOf(postObject.user.toString()), 1);
-				if (postObject.type == 1)
-					User.removeFollower(userobj, postObject.user, function(){});
 			}
-
-			if (postObject.type) {
-				userobj.whitelist = list.join(",");
-			} else {
-				userobj.blacklist = list.join(",");
-			}
+			userobj.blacklist = list.join(",");
 
 			Database.updateObject("users", userobj);
 			sendObject(response, { result: true, message: "" });
