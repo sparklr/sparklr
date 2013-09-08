@@ -14,7 +14,9 @@
 	<div id='event_{data.id}' class='fadein' style='padding: 7px; margin: -5px; word-wrap: break-word;' onClick='showEvent({data.id})'>
 		<% if (data.from == curUser) %>
 		<div class='commentcount delete icon' onClick='deletePost("{data.id}");stopBubbling();'></div>
-		<% endif %>
+		<% else %>
+		<div class='commentcount delete icon' onClick='hidePost({data.id},{data.from});stopBubbling();'></div>
+		<% endelse %>
 		<div class='commentcount repost icon' onClick='repost("{data.id}");stopBubbling();'></div>
 		<div class='commentcount like icon' id='likebtn' onClick='likeEvent("{data.id}","{data.from}", this);stopBubbling();'></div>
 		<div style='display:inline-block;float:left;height:100%'>

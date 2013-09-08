@@ -194,3 +194,7 @@ exports.getPostRowsFromKeyQuery = function(table, key, value, since, starttime, 
 	});
 
 }
+
+exports.hidePost = function(id,callback) {
+
+}
