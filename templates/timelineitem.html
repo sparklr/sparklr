@@ -6,7 +6,9 @@
 
 <div id='commentcount_{ item.id }' class='commentcount' style='opacity:0'>+</div>
 <div class='commentcount repost icon' style='display:none;opacity: 0;' onClick='showEvent("{item.id}","repost");stopBubbling();'></div>
+<% if (item.from != curUser) %>
 <div class='commentcount delete icon' style='opacity:0' onClick='hidePost({item.id},{item.from});stopBubbling();'></div>
+<% endif %>
 <div class='commentcount like icon' style='opacity: 0;' onClick='likeEvent("{item.id}","{item.from}", this);stopBubbling();'></div>
 
 <div style='display:inline-block;float:left;height:100%'>
