@@ -33,12 +33,11 @@ var homepage = function() {
 		prehtml = "<div id='networkheader'></div>";
 		ajaxGet("work/networkinfo/" + subscribedStream, null, function(data) {
 			var html = "";
-			if (data[0] && data[0].title) {
-				html += "<input id='joinbtn' type='button' style='float:right'>";
-				html += "<h2 style='color:#fff'>" + data[0].title + " (/" + data[0].id + ")</h2>";
-			}
+			var title = (data && data[0]) ? data[0].title : subscribedStream;
+			html += "<input id='trackbtn' type='button' style='float:right'>";
+			html += "<h2 style='color:#fff'>" + title + "</h2>";
 			_g("networkheader").innerHTML = html;
-			updateJoinNetwork();
+			updateTrackNetwork();
 		});
 	}
 
