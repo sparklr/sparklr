@@ -198,6 +198,7 @@ div.contentwrapper {
     box-shadow: 0px 0px 5px 0px #000,
     inset 0px 0px 2px 0px #745B85;
     margin-bottom: 40px;
+	word-wrap: break-word;
 }
 #sidebar {
     color: #fff;
