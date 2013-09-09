@@ -746,9 +746,9 @@ div.profileheader input {
 
 div.friend {
 	display: inline-block;
-	min-height: 60px;
-	width: 49%;
-	margin-right: 5px;
+	min-height: 65px;
+	width: 282px;
+	margin-left: 7px;
 }
 
 div.friend input {
