@@ -745,33 +745,19 @@ div.profileheader input {
 }
 
 div.friend {
-    display: inline-block;
-    width: 284px;
-	position: relative;
-    height: 160px;
-    background-size: cover;
-    margin: 1px;
-    -webkit-transition: all 0.5s ease;
-    cursor: pointer;
-}
-
-div.friend:hover {
-    box-shadow: inset 0px 0px 30px #fff;
-}
-
-div.friend span {
-    display: inline-block;
-    width: 276px;
-    color: white;
-    padding: 4px;
-    background: rgba(0,0,0,0.5);
-}
-
-div.friend div.star {
 	display: inline-block;
-	width: 20px;
-	height: 20px;
-	background-image: url(star.png);
+	min-height: 60px;
+	width: 49%;
+	margin-right: 5px;
+}
+
+div.friend input {
+	float: right;
+	opacity: 0;
+}
+
+div.friend:hover input {
+	opacity: 1;
 }
 
 input[type=button], input[type=submit] {
@@ -1171,13 +1157,11 @@ span.mod {
 		right:15px;
 	}
 	div.friend {
-		width: 49%;
-		height: 160px;
+		width: inherit;
+		display: block;
 	}
-	div.friend span {
-		width: 100%;
-		margin: 0px;
-		padding: 0px;
+	div.friend input {
+		opacity: 1;
 	}
 	#feedbackbtn {
 		display: none;

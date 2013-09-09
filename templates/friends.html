@@ -5,18 +5,13 @@
 
 <h2>following</h2>
 <script>
-	var renderUser = function (user) {
-		var html = "";
-</script>
-<img src='{imgUrl(user,true)}' onload='_g("friendbox_{user}").style.opacity=1;' style='display:none'>
-<div id='friendbox_{user}' class='friend' onClick='location.href="#/user/{user}";' style='background-image: url({imgUrl(user,true)});opacity:0;-webkit-transition: all {(Math.random() * 1.5)}s'><div style='position: absolute; bottom: 2px; right: 5px;'>
-</div><span>{getDisplayName(user) }</span></div>
-<script>
-		return html;
-	};
-
 	for (var i = 0; i < data.length; i++) {
-		html += renderUser(data[i]);
+</script>
+	<div class='friend'>
+		<input type='button' value='Unfollow' onclick='unfollow({data[i]});'>
+		<a href='/#/user/{data[i]}' style='color:#000'><img src='{imgUrl(data[i])}' class='avatar'> <b>{getDisplayName(data[i])}</b></a>
+	</div>
+<script>
 	}
 </script>
 <% if (data.length < 1) %>
