@@ -501,29 +501,30 @@ function removeNetwork(network) {
 	_g("networks").removeChild(_g("network_" + network));
 }
 
-function joinNetwork() {
-	ajaxGet("work/join/" + subscribedStream, null, function() {
+function trackNetwork() {
+	ajaxGet("work/track/" + subscribedStream, null, function() {
 		joinedNetworks.push(subscribedStream);
 		addNetwork(subscribedStream);
-		updateJoinNetwork();
+		updateTrackNetwork();
 	});
 }
 
-function unjoinNetwork() {
-	ajaxGet("work/unjoin/" + subscribedStream, null, function() {
-		joinedNetworks.splice(subscribedStream,1);
+function untrackNetwork() {
+	ajaxGet("work/untrack/" + subscribedStream, null, function() {
+		joinedNetworks.splice(joinedNetworks.indexOf(subscribedStream),1);
 		removeNetwork(subscribedStream);
-		updateJoinNetwork();
+		updateTrackNetwork();
 	});
 }
 
-function updateJoinNetwork() {
+function updateTrackNetwork() {
+	var e = _g("trackbtn");
 	if (joinedNetworks.indexOf(subscribedStream) != -1) {
-		_g("joinbtn").value = "Leave";
-		_g("joinbtn").onclick = function() { unjoinNetwork(); };
+		e.value = "Untrack";
+		e.onclick = function() { untrackNetwork(); };
 	} else {
-		_g("joinbtn").value = "Join";
-		_g("joinbtn").onclick = function() { joinNetwork(); };
+		e.value = "Track";
+		e.onclick = function() { trackNetwork(); };
 	}
 }
 
