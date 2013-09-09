@@ -63,6 +63,12 @@ function fadeOutPage() {
 }
 
 function showConfirm(caption, message, action) {
+	if (MOBILE) {
+		if (confirm(message)) {
+			action();
+		}
+		return;
+	}
 	var popup = document.createElement("div");
 	popup.className = "confirm fadein";
 	popup.id = "popup_" + Math.random();
