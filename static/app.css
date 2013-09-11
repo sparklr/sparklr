@@ -125,16 +125,16 @@ hr {
 #navigation a.people {
     background-image: url(icons/people.png);
 }
+#navigation a.menu {
+    background-image: url(icons/menu.png);
+	display: none;
+}
 #navigation a.inbox {
     background-image: url(icons/chat.png);
 }
 #navigation a.inbox.pulse {
 	box-shadow: 0px 0px 51px #fff;
 	border-radius: 6px;
-}
-#navigation a.search {
-    background-image: url(icons/search.png);
-	display: none;
 }
 #navigation a:hover {
     opacity: 0.7;
@@ -340,6 +340,13 @@ div.confirm {
     -webkit-animation-delay: 0s;
 	box-shadow: 0px 0px 10px #fff;
 	margin-left: 9px;
+}
+.slideinfromright {
+    -webkit-animation-name: slideinfromright;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-duration: 0.3s;
+    -webkit-animation-timing-function: cubic-bezier;
+    -webkit-animation-delay: 0s;
 }
 .jiggle {
     -webkit-animation-name: jiggle;
@@ -993,6 +1000,15 @@ div.popup textarea {
     }
 }
 
+@-webkit-keyframes slideinfromright {
+    0% {
+        right: -200px;
+    }
+    100% {
+
+    }
+}
+
 @-webkit-keyframes slideinfrombottom {
     0% {
         bottom: -100px;
@@ -1073,6 +1089,45 @@ span.mod {
 	color: #980a40;
 }
 
+#dropdown {
+	position:absolute;
+	left: -200px;
+	top: 0px;
+	width: 200px;
+	padding: 5px;
+	background: #333;
+	min-height: 50px;
+	border: solid 1px #222;
+	display:none;
+	-webkit-transition: left 0.3s ease;
+}
+
+#dropdown a {
+	color: #fff;
+	font-weight: bold;
+	font-size: 22px;
+	display: block;
+	margin-bottom: 6px;
+}
+
+#dropdown img {
+	width: 28px;
+	height: 28px;
+	margin-right: 5px;
+	vertical-align: top;
+}
+
+#dropdowncover {
+	display: none;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	background: #000;
+	opacity: 0.1;
+	position:fixed;
+}
+
 @media all and (max-width: 799px) {
 	@-ms-viewport {
 		width: 480px;
@@ -1103,8 +1158,11 @@ span.mod {
 		float: right;
 		padding-right: 5px;
 	}
-	#navigation a.search {
+	#navigation a.menu {
 		display: inline-block;
+	}
+	#navigation a.me {
+		display: none;
 	}
 	#searchbox, #friendslist {
 		display: none;
@@ -1221,5 +1279,21 @@ span.mod {
 	}
 	div.contentwrapper {
 		box-shadow: none;
+	}
+	#navigation a.people {
+		display: none;
+	}
+	div.picturepost img {
+		max-width: 388px;
+	}
+	#networks {
+		display: none;
+	}
+	#mobilesearchbox {
+		font-size: 22px;
+		width: 175px;
+		background: #222;
+		color: #fff;
+		margin: 12px 0px;
 	}
 }
