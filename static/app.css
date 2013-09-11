@@ -1076,12 +1076,6 @@ input {
 	-webkit-appearance: none;
 }
 
-#notificationdot {
-	display: none;
-	position: fixed;
-	bottom:-100px;
-}
-
 #networkheader input {
 	margin: 4px;
 }
@@ -1256,19 +1250,6 @@ span.mod {
 		right: -20px;
 		display: none;
 	}
-	#notificationdot {
-		display: none;
-		position: fixed;
-		bottom: 10px;
-		right: 10px;
-		border-radius: 10px;
-		width: 65px;
-		height: 58px;
-		background: #a72b2b;
-		color: #fff;
-		font-size: 44px;
-		text-align: center;
-	}
 	* {
 		-webkit-tap-highlight-color: rgba(0,0,0,0);
 	}
@@ -1299,5 +1280,7 @@ span.mod {
 		background: #222;
 		color: #fff;
 		margin: 12px 0px;
+		border-radius: 4px;
+		border: solid 1px #111;
 	}
 }
