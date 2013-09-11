@@ -141,7 +141,7 @@ function processMedia(text,noImages) {
 		return "<a href='#/user/" + user + "'>" + match + "</a>";
 	});
 
-	var tagregex =  /(^|\s)#([\w-]+)/gi;
+	var tagregex =  /(^|\s)#([\w-]{1,40})/gi;
 	text = text.replace(tagregex, function(match, foo, tag) {
 		return " <a href='#/tag/" + tag + "' class='tag'>" + match + "</a>";
 	});

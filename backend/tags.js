@@ -3,7 +3,7 @@ var toolbox = require("./toolbox");
 var database = require("./database");
 
 exports.processPostTags = function(body, id) {
-	var tagregex =  /\B#([\w-]+)/gi;
+	var tagregex =  /\B#([\w-]{1,40})/gi;
 	var tags = body.match(tagregex);
 	if (!tags) return;
 	for (var i = 0; i < tags.length; i++) {
