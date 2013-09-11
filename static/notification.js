@@ -40,26 +40,17 @@ function addNotification(notification) {
 		parent.insertBefore(n, parent.children[0]);
 
 	notificationCount++;
-	_g("notificationdot").innerHTML = notificationCount;
-	_g("notificationdot").style.display = "block";
 	_g("notifs").className = "notifs jiggle";
 	updatePageTitle();
-	console.log("1");
 	if(_g("notifications")){
-		console.log("7");
 		addNotificationToPage(notification);
-		console.log("2");
 	}
-	console.log("3");
 }
 
 function addNotificationToPage(notification){
-	console.log("4");
 	if(!notification.click){
 		notification = getNotificationBody(notification);
-		console.log("5");
 	}
-	console.log("6");
 	var n = document.createElement("div");
 	
 	n.style.position = "relative";
@@ -73,9 +64,7 @@ function addNotificationToPage(notification){
 		parent.appendChild(n);
 	else
 		parent.insertBefore(n, parent.children[0]);
-	console.log("8");
 	_g("hailjeiluh").style.display = "none";
-	console.log("9");
 }
 
 function getNotificationBody(notification) {
@@ -146,10 +135,8 @@ function removeNotification(id) {
 
 	if (notificationCount > 0)
 		notificationCount--;
-	if (notificationCount == 0)
-		_g("notificationdot").style.display = "none";
-		_g("notifs").className = "notifs";
-	_g("notificationdot").innerHTML = notificationCount;
+
+	_g("notifs").className = "notifs";
 	updatePageTitle();
 }
 
