@@ -3,7 +3,7 @@ var TEMPLATES = TEMPLATES || [];
 function renderPageFromTemplate() {
 	var fragments = location.hash.split("/");
 	var renderPage = function(data) {
-		if (data.error === true) return;
+		if (data && data.error === true) return;
 
 		var templateData = getTemplate(fragments[1]);
 		console.log(templateData);
