@@ -96,6 +96,9 @@ function updatePages(loaded) {
 	//disable bg
 	hideBackground();
 
+	//hide dropdown 
+	hideDropdown();
+
 	var s = location.hash.split("/");
 
 	if (s[1] == "user" && !isNaN(parseInt(s[2])) && !s[3] && previousPage[1] != "user") {
