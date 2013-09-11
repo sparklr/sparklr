@@ -62,10 +62,11 @@ function pollData() {
 		case "STREAM":
 			query = streamUrl(getLastStreamTime(subscribedStream));
 			callback = function(data,xhr) {
+				if (query != streamUrl(getLastStreamTime(subscribedStream)))
+					return;
+
 				var items = data.data || data;
 				addTimelineArray(items,subscribedStream);
-				//if (subscribedStream != 0 && items[0] && subscribedStream != items[0].id)
-			//		return;
 				for (var i = items.length - 1; i >= 0; i--) {
 					addTimelineEvent(items[i], 0);
 				}
@@ -86,9 +87,7 @@ function pollData() {
 			break;
 	}
 
-	query += "&n=" + lastNotificationTime;
-
-	ajaxGet("beacon" + query,null, function(data,xhr) {
+	ajaxGet("beacon" + query + "&n=" + lastNotificationTime,null, function(data,xhr) {
 		if (data.notifications) {
 		 	for (var i=0;i<data.notifications.length;i++) {
 				addNotification(data.notifications[i]);
