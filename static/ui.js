@@ -445,3 +445,22 @@ function imgUrl(img,fullsize) {
 	if (img.indexOf(".") == -1) img += ".jpg";
 	return STATICHOST + "/" + (!fullsize ? "t" : "") + img;
 }
+
+function showDropdown() {
+	var s = _g("dropdown");
+	s.style.display = "block";
+	setTimeout(function() {
+	s.style.left = "0px";
+	},10);
+	_g("dropdowncover").style.display="block";
+	window.scrollTo(0,0);
+}
+
+function hideDropdown() {
+	var s = _g("dropdown");
+	s.style.left = "-200px";
+	setTimeout(function() {
+	s.style.display = "none";
+	},300);
+	_g("dropdowncover").style.display="none";
+}
