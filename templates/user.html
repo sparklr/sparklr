@@ -50,22 +50,25 @@
 		<div class='actions'>
 			<% if (data.user == curUser) %> 
 			<input id='editBtn' type='button' value='Edit' onClick='editProfile();'>
-			<input type='button' value='Settings' onClick='location.href="/#/settings";'>
-			<input type='button' value='Sign off' onClick='signOff();'>
+			<div id='sidebar_links'>
+				<div class='unimportant'>
+					<a href='#/settings'>Settings</a>
+					<a href='javascript:signOff();'>Sign off</a>
+				</div>
+			</div>
 			<% else %>
-			<input type='button' value='Mention' onClick='mention("{data.handle}");'>
-			<input type='button' value='Message' onClick='chatWith("{data.user}");'>
 				<% if (data.following) %>	
 					<input type='button' value='Unfollow' onClick='unfollow("{data.user}");'>
 				<% else %>
 					<input type='button' value='Follow' onClick='follow("{data.user}");'>
 				<% endelse %>
+			<input type='button' value='Mention' onClick='mention("{data.handle}");'>
+			<input type='button' value='Message' onClick='chatWith("{data.user}");'>
 			<% endelse %>
 		</div>
 		<div class='controls'>
 			<input type='button' value='Posts' onClick='location.href="#/user/{data.user}/";'>
 			<input type='button' value='Mentions' onClick='location.href="#/user/{data.user}/mentions";'>
-			<input type='button' value='Photos' onClick='location.href="#/user/{data.user}/photos";'>
 		</div>
 	</div>
 	<div id='backgroundTip' style='display:none;position:fixed;bottom:10px;left:0px'>
@@ -114,4 +117,3 @@
 		document.body.ondrop = function(e) { 
 			dropImage(e, backgroundUploadCallback); };
 	</script>
-
