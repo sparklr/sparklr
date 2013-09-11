@@ -171,5 +171,5 @@ function setUserStatus(user) {
 
 function setNewInbox(value) {
 	var e = _g("inbox");
-	e.className = "inbox" + (value ? " pulse" : "");
+	e.className = "inbox" + (value ? " jiggle" : "");
 }
