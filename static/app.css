@@ -1092,7 +1092,7 @@ span.mod {
 #dropdown {
 	position:absolute;
 	left: -200px;
-	top: 0px;
+	top: 20px;
 	width: 200px;
 	padding: 5px;
 	background: #333;
@@ -1137,6 +1137,7 @@ span.mod {
 		font-size: 19px;
 		padding: 0px;
 		margin: 0px;
+		margin-top: 10px;
 	}
 	h2 { 
 		font-size: 26px;
