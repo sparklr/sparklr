@@ -3,7 +3,7 @@ var currentPageType;
 
 var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "inbox", "notifications"];
 
-var staticPages = {  };
+var staticPages = { "notifications":1 };
 
 var previousPage = "";
 
