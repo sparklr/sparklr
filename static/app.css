@@ -147,9 +147,8 @@ hr {
 #navigation a.inbox {
     background-image: url(icons/chat.png);
 }
-#navigation a.inbox.pulse {
-	box-shadow: 0px 0px 51px #fff;
-	border-radius: 5px;
+#navigation a.inbox.jiggle {
+	background-image: url(icons/chat2.png);
 }
 #navigation a:hover {
     opacity: 0.7;
