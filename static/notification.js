@@ -24,12 +24,11 @@ function addNotification(notification) {
 		return;
 
 	notification = getNotificationBody(notification);
-	notification.body = "<img class='avatar' src='" + getAvatar(notification.from) + "'>" + getDisplayName(notification.from) + " " + notification.body;
 
 	var n = document.createElement("div");
 
 	n.id = "notification_" + notification.id;
-	n.innerHTML = "<span class='exit' onClick='dismissNotification(\"" + notification.id + "\");stopBubbling();'>x</span>" + notification.body;
+	n.innerHTML = "<span class='exit' onClick='dismissNotification(\"" + notification.id + "\");stopBubbling();'>x</span><img class='avatar' src='" + getAvatar(notification.from) + "'>" + getDisplayName(notification.from) + " " + notification.body;
 	n.className = "fadein";
 	n.onclick = function () { location.href = notification.click; };
 
@@ -43,7 +42,40 @@ function addNotification(notification) {
 	notificationCount++;
 	_g("notificationdot").innerHTML = notificationCount;
 	_g("notificationdot").style.display = "block";
+	_g("notifs").className = "notifs jiggle";
 	updatePageTitle();
+	console.log("1");
+	if(_g("notifications")){
+		console.log("7");
+		addNotificationToPage(notification);
+		console.log("2");
+	}
+	console.log("3");
+}
+
+function addNotificationToPage(notification){
+	console.log("4");
+	if(!notification.click){
+		notification = getNotificationBody(notification);
+		console.log("5");
+	}
+	console.log("6");
+	var n = document.createElement("div");
+	
+	n.style.position = "relative";
+	n.style.cursor = "pointer";
+	n.style.minHeight = "60px";
+	n.onclick = function () { location.href = notification.click };
+	n.innerHTML = "<div class='rightcontrols'><div class='time' data-time='" + notification.time + "'></div></div><img src='" + getAvatar(notification.from) +"' class='avatar'><b>"+ getDisplayName(notification.from) + "</b> " + notification.body + "<br><br>";
+
+	var parent = _g("notifications");
+	if (parent.children.length < 1)
+		parent.appendChild(n);
+	else
+		parent.insertBefore(n, parent.children[0]);
+	console.log("8");
+	_g("hailjeiluh").style.display = "none";
+	console.log("9");
 }
 
 function getNotificationBody(notification) {
@@ -116,6 +148,7 @@ function removeNotification(id) {
 		notificationCount--;
 	if (notificationCount == 0)
 		_g("notificationdot").style.display = "none";
+		_g("notifs").className = "notifs";
 	_g("notificationdot").innerHTML = notificationCount;
 	updatePageTitle();
 }
