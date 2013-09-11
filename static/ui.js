@@ -403,7 +403,7 @@ function showSuggestionBoxBelowElement(e) {
 	if (e.keyCode == 40)  //down
 		return suggestionBoxNextItem();
 	if (e.keyCode == 13) {
-		stopBubbling();
+		stopBubbling(e);
 		
 		var selected = selectedSuggestionBoxItem();
 		var userid = selected ? selected.getAttribute("data-id") : "";
