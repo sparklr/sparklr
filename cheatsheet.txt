@@ -35,5 +35,10 @@ $ sudo status p18
 -- Luna starts up and counts the CPUs, then forks itself 
 -- The forked process notices it's not the parent (cluster.isMaster), and instead loads a copy of backend.js.
 
+## Force build
+$ sudo /var/www/repos/p18/hooks/post-update 
+
+# Misc
+- Templates don't like comments lol
 
 
