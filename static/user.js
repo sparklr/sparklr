@@ -87,7 +87,9 @@ function updateAvatar(user, avatarid) {
 }
 
 function signOff() {
-	ajaxGet("work/signoff", null, function() { location.href='/'; });
+	showConfirm("Sign off", "Are you sure you want to sign off?", function() {
+		ajaxGet("work/signoff", null, function() { location.href='/'; });
+	});
 }
 
 function inviteFriend() {
