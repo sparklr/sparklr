@@ -79,9 +79,9 @@ var width = 480;
 var scale = 1.0;
 
 if (ua.match(/mobile/i)) {
-	if (ua.match(/safari/i)) {
-		width = 440;
-		scale = 0.7;
+	if (navigator.standalone || ua.match(/safari/i)) {
+		width = 400;
+		scale = 0.8;
 	}
 	if (ua.match(/chrome/i)) {
 		width = 440;
