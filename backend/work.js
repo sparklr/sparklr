@@ -249,7 +249,6 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				if (err || !rows || !rows[0]) return do500(response, err);
 
 				rows[0].blacklist = (rows[0].blacklist || "").split(",");
-				console.log(rows[0].blacklist);
 				if (rows[0].blacklist.indexOf(userobj.id.toString()) !== -1)
 					return do400(response, 403, "Blocked");
 
