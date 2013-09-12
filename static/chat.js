@@ -130,7 +130,10 @@ function sendChatMessage() {
 	if (!vars.message && !vars.postData) return;
 	addChatMessage(curUser, vars.message, getLastChatTime(), false, true);
 
-	ajaxGet("work/chat", vars, function() {
+	ajaxGet("work/chat", vars, function(data,xhr) {
+		if (data.error) {
+			showBanner("Sorry, that user has blocked you.", "bannerblocked", 4000);
+		}
 		imgAttachments = null;
 		pollData();
 	});
