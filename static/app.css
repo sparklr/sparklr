@@ -424,6 +424,9 @@ div.confirm {
 #notificationlist div .littleavatar {
 	margin-left: 0px;
 }
+#notificationlist div a {
+	color: #fff;
+}
 
 img { border: none }
 
