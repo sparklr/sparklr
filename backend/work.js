@@ -244,16 +244,25 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				postObject.message = "[IMG" + postObject.img + "]" + postObject.message;
 			if (postObject.message.length > 520)
 				return do400(response, 400, "Too long");
+			
+			User.getUserProfile(postObject.to, function(err,rows) {
+				if (err || !rows || !rows[0]) return do500(response, err);
 
-			Database.postObject("messages", {
-				from: userobj.id,
-				to: postObject.to,
-				time: Toolbox.time(),
-				message: postObject.message
-			}, function(err, data) {
-				if (err) return do500(response, err);
-				Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
-				sendObject(response, {});
+				rows[0].blacklist = (rows[0].blacklist || "").split(",");
+				console.log(rows[0].blacklist);
+				if (rows[0].blacklist.indexOf(userobj.id.toString()) !== -1)
+					return do400(response, 403, "Blocked");
+
+				Database.postObject("messages", {
+					from: userobj.id,
+					to: postObject.to,
+					time: Toolbox.time(),
+					message: postObject.message
+				}, function(err, data) {
+					if (err) return do500(response, err);
+					Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
+					sendObject(response, {});
+				});
 			});
 		return;
 		case "like":
