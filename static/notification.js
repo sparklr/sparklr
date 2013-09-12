@@ -28,7 +28,7 @@ function addNotification(notification) {
 	var n = document.createElement("div");
 
 	n.id = "notification_" + notification.id;
-	n.innerHTML = "<span class='exit' onClick='dismissNotification(\"" + notification.id + "\");stopBubbling();'>x</span><img class='avatar' src='" + getAvatar(notification.from) + "'>" + getDisplayName(notification.from) + " " + notification.body;
+	n.innerHTML = "<span class='exit' onClick='dismissNotification(\"" + notification.id + "\");stopBubbling();'>x</span><img class='littleavatar' src='" + getAvatar(notification.from) + "'><b>" + getDisplayName(notification.from) + "</b> " + notification.body;
 	n.className = "fadein";
 	n.onclick = function () { location.href = notification.click; };
 
@@ -99,7 +99,7 @@ function getNotificationBody(notification) {
 		break;
 	}
 
-	body = body.replace(/\[IMG([A-Za-z0-9\._-]+)\]/g,"");
+	body = processMedia(body);
 	notification.body = body;
 	notification.click = action;
 	

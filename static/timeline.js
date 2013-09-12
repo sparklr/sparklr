@@ -235,6 +235,7 @@ function getLastStreamTime(stream) {
 
 function addComments(comments) {
 	comments = comments.data || comments;
+	if (!comments.length) return;
 
 	if (scrollDistanceFromBottom() < 70)
 		setTimeout('window.scrollBy(0,0xFFFFFF);',0);

@@ -141,14 +141,14 @@ function processMedia(text,noImages) {
 		return "<a href='#/user/" + user + "'>" + match + "</a>";
 	});
 
-	var tagregex =  /(^|\s)#([\w-]+)/gi;
+	var tagregex =  /(^|\s)#([\w-]{1,40})/gi;
 	text = text.replace(tagregex, function(match, foo, tag) {
 		return " <a href='#/tag/" + tag + "' class='tag'>" + match + "</a>";
 	});
 
 	var imgregex = /\[IMG([A-Za-z0-9\._-]+)\]/g;
 	text = text.replace(imgregex, function(match, img) {
-		return "<img src='" + imgUrl(img) + "' onload='window.onload();'><br>";
+		return "<img src='" + imgUrl(img) + "' style='cursor:pointer' onload='window.onload();' onClick='showImage(\"" + img + "\");'><br>";
 	});
 
 	var countnewlines = 0;

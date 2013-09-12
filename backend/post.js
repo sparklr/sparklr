@@ -80,18 +80,17 @@ exports.postComment = function(user, data, callback) {
 		if (data.like) //only notify one person
 			return Notification.addUserNotification(data.to, data.comment, data.id, user, 1);
 
-		query = "SELECT DISTINCT `from` FROM `comments` WHERE postid = " + parseInt(data.id);
+		query = "SELECT `from` FROM `comments` WHERE postid = " + parseInt(data.id) + " ORDER BY `time` DESC LIMIT 15";
 		database.query(query, function(err,rows) {
-			var notified = false;
+			var notified = {};
+			
+			// notify the poster
+			rows.push({from: data.to});
+			
 			for (i in rows) {
-				if (rows[i].from == data.to) {
-					notified = true;
-				}
+				if (notified[rows[i].from]) continue;
 				Notification.addUserNotification(rows[i].from, data.comment, data.id, user, 1);
-			}
-
-			if (!notified) {
-				Notification.addUserNotification(data.to, data.comment, data.id, user, 1);
+				notified[rows[i].from] = 1;
 			}
 		});
 
