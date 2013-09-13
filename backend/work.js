@@ -95,6 +95,8 @@ exports.run = function(request, response, uri, sessionid) {
 			Database.postObject("newsletter", {
 				email: fragments[3]
 			}, function(err) {
+				fragments[3] = fragments[3].replace(/^(A-Za-z0-9\-_.\+\@)/, "");
+				Mail.sendMessageToEmail(fragments[3], "requestedinvite");
 				sendObject(response, err == null);
 			});
 			return;
@@ -244,16 +246,24 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				postObject.message = "[IMG" + postObject.img + "]" + postObject.message;
 			if (postObject.message.length > 520)
 				return do400(response, 400, "Too long");
+			
+			User.getUserProfile(postObject.to, function(err,rows) {
+				if (err || !rows || !rows[0]) return do500(response, err);
 
-			Database.postObject("messages", {
-				from: userobj.id,
-				to: postObject.to,
-				time: Toolbox.time(),
-				message: postObject.message
-			}, function(err, data) {
-				if (err) return do500(response, err);
-				Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
-				sendObject(response, {});
+				rows[0].blacklist = (rows[0].blacklist || "").split(",");
+				if (rows[0].blacklist.indexOf(userobj.id.toString()) !== -1)
+					return do400(response, 403, "Blocked");
+
+				Database.postObject("messages", {
+					from: userobj.id,
+					to: postObject.to,
+					time: Toolbox.time(),
+					message: postObject.message
+				}, function(err, data) {
+					if (err) return do500(response, err);
+					Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
+					sendObject(response, {});
+				});
 			});
 		return;
 		case "like":
