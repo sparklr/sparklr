@@ -3,6 +3,10 @@ html {
 	overflow-y: scroll;
 }
 
+blockquote{
+	margin-right: 0;
+}
+
 ::-webkit-scrollbar {
     width: 9px;
 }
