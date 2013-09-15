@@ -489,6 +489,9 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 		case "onlinefriends":
 			callback(null,0);
 			return;
+		case "explore":
+			Database.query("SELECT * FROM networks", callback);
+			return;
 		default:
 			if (fragments.length < 4 || fragments[3] == "") {
 				callback("Missing arguments: " + uri.pathname);
