@@ -196,6 +196,10 @@ hr {
     float: right;
     width: 180px;
 }
+#sidebarwrapper a {
+	color: #fff;
+	font-size: 12px;
+}
 div.contentwrapper {
     background: #fff;
     padding: 5px;
@@ -211,11 +215,8 @@ div.contentwrapper {
     font-size: 15px;
     margin-top: 4px;
 }
-#sidebar a {
+#sidebar > a, #sidebar div > a, #networks a {
     color: #fff;
-}
-#sidebar > a, #sidebar div > a {
-    color: rgba(255,255,255,0.9);;
     display: block;
     margin-bottom: 8px;
     opacity: 0.9;
@@ -225,6 +226,14 @@ div.contentwrapper {
     background: rgba(0,0,0,0.15);
     width: 180px;
     -webkit-transition: all 0.2s ease;
+}
+#sidebar div a:last-child {
+	margin-bottom: 25px;
+	font-color: #fff;
+}
+#networks a.active {
+	margin-left: -5px;
+    background: rgba(0,0,0,0.35);
 }
 #sidebar a:hover {
     opacity: 1;
@@ -1054,21 +1063,6 @@ div.popup textarea {
 }
 
 /* Tag system */
-#networks a {
-	padding: 5px;
-	color: #fff;
-	display: inline-block;
-	background: #2b2533;
-	color: #fff;
-	padding: 5px 10px;
-	border-radius: 4px;
-	-webkit-border-bottom-left-radius: 12px;
-	-webkit-border-top-left-radius: 12px;
-	border: solid 1px #43394f;
-	opacity: 0.6;
-	box-shadow: inset 0px 0px 3px #000;
-	margin: 3px;
-}
 h2 a.tag {
 	background: #2b2533;
 	border: solid 1px #43394f;

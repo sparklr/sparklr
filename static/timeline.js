@@ -495,7 +495,7 @@ function uploadStreamImageCallback(e,id) {
 
 function addNetwork(network) {
 	if (network == "" || network == "0") return;
-	_g("networks").innerHTML += "<a id='network_" + network + "' href='#/" + network + "'>" + network + "</a>";
+	_g("networks").innerHTML += "<a id='network_" + network + "' href='#/" + network + "'>/" + network + "</a>";
 	_g("dropdown_networklist").innerHTML += "<a id='d_network_" + network + "' href='#/" + network + "'>" + network + "</a>";
 }
 
