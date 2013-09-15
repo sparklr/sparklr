@@ -1,7 +1,7 @@
 //The current page type, i.e. stream, chat
 var currentPageType;
 
-var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "inbox", "notifications"];
+var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "inbox", "notifications", "explore"];
 
 var staticPages = { "notifications":1 };
 
@@ -31,14 +31,20 @@ var homepage = function() {
 		isNetwork = true;
 		lastUpdateTime = 0;
 		prehtml = "<div id='networkheader'></div>";
-		ajaxGet("work/networkinfo/" + subscribedStream, null, function(data) {
-			var html = "";
-			var title = (data && data[0]) ? data[0].title : subscribedStream;
-			html += "<input id='trackbtn' type='button' style='float:right'>";
-			html += "<h2 style='color:#fff'>" + title + "</h2>";
-			_g("networkheader").innerHTML = html;
-			updateTrackNetwork();
-		});
+		if (subscribedStream != "following") {
+			ajaxGet("work/networkinfo/" + subscribedStream, null, function(data) {
+				var html = "";
+				var title = (data && data[0]) ? data[0].title : subscribedStream;
+				html += "<input id='trackbtn' type='button' style='float:right'>";
+				html += "<h2 style='color:#fff'>" + title + "</h2>";
+				_g("networkheader").innerHTML = html;
+				updateTrackNetwork();
+			});
+		}
+	}
+	var e = _g("network_" + subscribedStream);
+	if (e) {
+		e.className = "active";
 	}
 
 	renderTimeline(prehtml);
@@ -60,6 +66,7 @@ var homepage = function() {
 }
 
 function dummySidebar() {
+	return;
 	var html = "";
 	if (!MOBILE) {
 		html += "<div class='unimportant'>";
@@ -75,6 +82,11 @@ function dummySidebar() {
 function updatePages(loaded) {
 	document.body.ondrop = document.body.ondragover = document.body.ondragenter = function (e) { dropPrevent(e); }
 	window.onload = null;
+
+	var e = _g("network_" + subscribedStream);
+	if (e) {
+		e.className = "";
+	}
 
 	isNetwork = false;
 
