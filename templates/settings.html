@@ -1,70 +1,67 @@
 <div class='contentwrapper'>
-	 <h2>settings</h2>
-	 <div id='sidebar_links'>
-		  <a href='#/settings'>General</a>
-		  <a href='#/settings/password'>Change Password</a>
-		  <a href='#/settings/blacklist'>Blacklist</a>
-		  <a href='#/settings/account'>Account</a>
-	 </div>
+	<h2>settings</h2>
 
-	 <form class='settings' method='POST' target='datapusher' id='form_settings' onSubmit='updateAccountSettings();return false;void(0);'>
-		  <% if (fragments[2] == "confirm") %>
-		  <% endif %>
-		  <% if (fragments[2] == "resend") %>
-		  <% endif %>
-		  <% if (fragments[2] == "password") %>
-		  <fieldset>
-				<label>Current password</label>
-				<input type='password' name='currentpassword'> 
-		  </fieldset>
-		  <fieldset>
-				<label>New password</label>
-				<input type='password' name='password1'>
-		  </fieldset>
-		  <fieldset>
-				<label>Confirm password</label>
-				<input type='password' name='password2' onBlur='checkPasswords(this.value,password1.value);'>
-		  </fieldset>
-		  <% endif %>
-		  <% if (fragments[2] == "blacklist") %>
-			  <p>The following users are hidden from your dashboard, and blocked from messaging you.</p>
-			  <div id='blacklist' style='margin:15px;padding-right:115px;'>
-				  <input onblur='showSuggestionBox(false);' onkeydown='return addUserToList_Keydown(event,0);' type='text' placeholder='Type a user to blacklist' style='margin:5px;width:400px' class='t1'>
-			  </div>
-		  <br><br>
-		  <% endif %>
-		  <% if (fragments[2] == "account") %>	
-		  <b>Account Deletion</b><br>Once your account is removed, there's no going back.<br><br>
-		  Type your password below to confirm:<br><input type='password' name='delete'><br><br>
-		  <b>Warning: The button below is the point of no return</b><br><br>
-		  <% endif %>
-		  <% if (!fragments[2]) %>
-		  <fieldset>
-				<label>Username</label>
-				<input type='text' name='username' value='{data.username}' onKeyUp='checkUsername(this.value)'>
-				<br><span id='username_callback' class='error'></span>
-		  </fieldset>
-		  <fieldset>
-				<label>Display name</label>
-				<input type='text' name='displayname' value='{data.displayname}'>
-		  </fieldset>
-		  <fieldset>
-				<label>Email</label>
-				<input type='text' name='email' value='{data.email}'>
-		  </fieldset>
-		  <% endif %>
-		  <input type='submit' id='savesettings' value='Save Settings'>
-		  <span id='settings_result'></span>
-	 </form>
+	<div class='tabs'>
+		<a href='#/settings'<% if (!fragments[2]) %> class='active'<% endif %>>General</a>
+		<a href='#/settings/password'<% if (fragments[2] == "password") %> class='active'<% endif %>>Change Password</a>
+		<a href='#/settings/blacklist'<% if (fragments[2] == "blacklist") %> class='active'<% endif %>>Blacklist</a>
+		<a href='#/settings/account'<% if (fragments[2] == "account") %> class='active'<% endif %>>Account</a>
+	</div>
+
+	<form class='settings' method='POST' target='datapusher' id='form_settings' onSubmit='updateAccountSettings();return false;void(0);'>
+		<% if (fragments[2] == "password") %>
+		<fieldset>
+			<label>Current password</label>
+			<input type='password' name='currentpassword'> 
+		</fieldset>
+		<fieldset>
+			<label>New password</label>
+			<input type='password' name='password1'>
+		</fieldset>
+		<fieldset>
+			<label>Confirm password</label>
+			<input type='password' name='password2' onBlur='checkPasswords(this.value,password1.value);'>
+		</fieldset>
+		<% endif %>
+		<% if (fragments[2] == "blacklist") %>
+		<p>The following users are hidden from your dashboard, and blocked from messaging you.</p>
+		<div id='blacklist' style='margin:15px;padding-right:115px;'>
+			<input onblur='showSuggestionBox(false);' onkeydown='return addUserToList_Keydown(event,0);' type='text' placeholder='Type a user to blacklist' style='margin:5px;width:400px' class='t1'>
+		</div>
+		<br><br>
+		<% endif %>
+		<% if (fragments[2] == "account") %>	
+		<b>Account Deletion</b><br>Once your account is removed, there's no going back.<br><br>
+		Type your password below to confirm:<br><input type='password' name='delete'><br><br>
+		<b>Warning: The button below is the point of no return</b><br><br>
+		<% endif %>
+		<% if (!fragments[2]) %>
+		<fieldset>
+			<label>Username</label>
+			<input type='text' name='username' value='{data.username}' onKeyUp='checkUsername(this.value)'>
+			<br><span id='username_callback' class='error'></span>
+		</fieldset>
+		<fieldset>
+			<label>Display name</label>
+			<input type='text' name='displayname' value='{data.displayname}'>
+		</fieldset>
+		<fieldset>
+			<label>Email</label>
+			<input type='text' name='email' value='{data.email}'>
+		</fieldset>
+		<% endif %>
+		<input type='submit' id='savesettings' value='Save Settings'>
+		<span id='settings_result'></span>
+	</form>
 </div>
 <script>
-	 USERHANDLES[curUser] = data.username;
-	 setTimeout(function() {
-		 var blacklist = (data.blacklist || "").split(",");
-		 for (i in blacklist) {
+	USERHANDLES[curUser] = data.username;
+	setTimeout(function() {
+			var blacklist = (data.blacklist || "").split(",");
+			for (i in blacklist) {
 			if (!blacklist[i]) continue;
 			addUserToList(0, blacklist[i]);
-		 }
-	},1);
+			}
+			},1);
 
 </script>

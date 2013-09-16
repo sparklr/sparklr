@@ -1132,6 +1132,16 @@ span.mod {
 	position:fixed;
 }
 
+div.tabs a {
+	padding: 4px 20px;
+	margin-left: 2px;
+	color: #555;
+	background: #f6f6f6;
+}
+div.tabs a.active {
+	background: #edebf5;
+}
+
 @media all and (max-width: 799px) {
 	@-ms-viewport {
 		width: 480px;
