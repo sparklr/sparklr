@@ -294,7 +294,7 @@ div.popup {
 	color: #555;
 }
 div.lightbox {
-    position: absolute;
+    position: fixed;
     top: 100px;
 	width: 100%;
 	text-align: center;
