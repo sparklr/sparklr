@@ -1305,7 +1305,7 @@ div.tabs a.active {
 		border: solid 1px #111;
 	}
 	div.tabs a{
-		width: 39%;
+		min-width: 30%;
 		margin-bottom: 2px;
 	}
 }
