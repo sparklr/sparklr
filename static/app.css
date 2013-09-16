@@ -98,10 +98,12 @@ hr {
     margin: 0px;
     width: 100%;
 	padding-top: 15px;
-	padding-bottom: 5px;
+	padding-bottom: 8px;
     top: 0px;
     text-align: center;
     background: #454050;
+	position: fixed;
+	z-index: 1000;
 }
 
 #navigation {
@@ -177,7 +179,7 @@ hr {
     min-height: 640px;
     position: relative;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 90px;
     margin-bottom: 20px;
     padding: 5px;
     color: #333;
@@ -203,12 +205,10 @@ hr {
 div.contentwrapper {
     background: #fff;
     padding: 5px;
-    border-radius: 3px;
-    border: solid 1px #000;
-    box-shadow: 0px 0px 5px 0px #000,
-    inset 0px 0px 2px 0px #745B85;
+    box-shadow: 0px 0px 5px 0px #000;
     margin-bottom: 40px;
 	word-wrap: break-word;
+	margin-top: 4px;
 }
 #sidebar {
     color: #fff;
@@ -461,9 +461,7 @@ div.timelineitem {
     min-height: 50px;
     padding: 6px;
     background: rgba(255,255,255,1);
-    border: solid 1px #454545;
 	box-shadow: 0px 0px 3px #000;
-    border-radius: 3px;
     position: relative;
 	word-wrap: break-word;
 }
@@ -742,7 +740,6 @@ div.profileheader a {
 	bottom: 0px;
 	right: 0px;
 	z-index: -1;
-	opacity: 0.6;
 	background-size: cover;
 }
 
@@ -1096,7 +1093,7 @@ span.mod {
 #dropdown {
 	position:absolute;
 	left: -200px;
-	top: 20px;
+	top: 75px;
 	width: 200px;
 	padding: 5px;
 	background: #333;
@@ -1104,6 +1101,7 @@ span.mod {
 	border: solid 1px #222;
 	display:none;
 	-webkit-transition: left 0.3s ease;
+	z-index: 9999;
 }
 
 #dropdown a {
@@ -1128,7 +1126,7 @@ span.mod {
 	left:0px;
 	right:0px;
 	background: #000;
-	opacity: 0.1;
+	opacity: 0;
 	position:fixed;
 }
 
@@ -1139,7 +1137,8 @@ div.tabs a {
 	background: #f6f6f6;
 }
 div.tabs a.active {
-	background: #edebf5;
+	background: #454050;
+	color: #fff;
 }
 
 @media all and (max-width: 799px) {
@@ -1206,7 +1205,7 @@ div.tabs a.active {
 		min-height: 0px;
 		margin: 0px;
 		padding: 0px;
-		margin-top: 5px;
+		margin-top: 80px;
 	}
 	#content {
 		width: 100%;
