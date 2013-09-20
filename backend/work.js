@@ -293,7 +293,7 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 
 			userobj.email = postObject.email;
 
-			if (postObject.displayname.length > 20) {
+			if (postObject.displayname.length > 25) {
 				message = "That display name is a little long...";
 				result = false;
 			} else {
