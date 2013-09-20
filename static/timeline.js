@@ -203,13 +203,10 @@ function renderComment(comment) {
 	html += "<a href='#/user/" + comment.from + "'><img class='littleavatar' src='" + getAvatar(comment.from) + "'></a>";
 	html += "</div> <div class='rightcontrols'><div class='time' style='opacity:0.5' data-time='" + comment.time + "'></div>";
 
-	if (comment.from == curUser) {
-		html += "<br><a class='delete' onClick='deleteComment(\"" + comment.id + "\", \"" + comment.postid + "\");'></a>";
-	}
-	html += "</div> <a class='person' href='#/user/" + comment.from + "'>" + getDisplayName(comment.from) + "</a>";
-	if (comment.from == 4 || comment.from == 6) {
-		html += " <span class='mod'>admin</span>";
-	}
+    if (comment.from == curUser) {
+        html += "<br><a class='delete' onClick='deleteComment(\"" + comment.id + "\", \"" + comment.postid + "\");'></a>";
+    }
+    html += "</div> <a class='person' href='#/user/" + comment.from + "'>" + getDisplayName(comment.from) + "</a>";
 	if (comment.like) {
 		html += " likes this<br><br>";
 	}
