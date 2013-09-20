@@ -20,8 +20,8 @@ function getDisplayName(id) {
 }
 
 function processDisplayName(name){
-	name = name.replace(CHARMOD,"<span class='mod'></span>");
-	name = name.replace(CHARADMIN,"<span class='admin'></span>");
+	name = name.replace(CHARMOD,"<span class='mod' title='Community Moderator'></span>");
+	name = name.replace(CHARADMIN,"<span class='admin' title='Admin'></span>");
 	return(name);
 }
 
