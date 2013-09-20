@@ -297,8 +297,13 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				message = "That display name is a little long...";
 				result = false;
 			} else {
-				userobj.displayname = postObject.displayname.replace(/(\<|\>)/g, "");
+				userobj.displayname = postObject.displayname.replace(/(\<|\>|[\u273B]|[\u273C])/g, "");
 			}
+			if (userobj.rank == 50)
+				userobj.displayname += "\u273B";
+			if (userobj.rank == 100)
+				userobj.displayname += "\u273C";
+
 
 			User.getUserProfileByUsername(userobj.username, function(err, res) {
 				if (err) return do500(response, err);
