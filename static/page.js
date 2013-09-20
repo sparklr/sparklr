@@ -106,7 +106,8 @@ function updatePages(loaded) {
 	_g("frame").style.minHeight = "640px";
 
 	//disable bg
-	hideBackground();
+	if (!MOBILE && curBackground)
+		updateBackground(curUser, curBackground);
 
 	//hide dropdown 
 	hideDropdown();

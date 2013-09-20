@@ -50,6 +50,7 @@ window.addEventListener("focus", function() {
 var MOBILE = navigator.userAgent.match(/mobile/i) ? true : false;
 var AUTHKEY;
 var curUser;
+var curBackground;
 
 var app = function(payload) { 
 	DISPLAYNAMES = payload.displayNames;
@@ -58,6 +59,7 @@ var app = function(payload) {
 	AVATAR_IDS[curUser] = payload.avatarid;
 	HIDDEN_USERS = payload.blacklist;
 	joinedNetworks = payload.networks;
+	curBackground = payload.background;
 
 	addTimelineArray(payload.timelineStream, 0);
 

@@ -17,12 +17,12 @@ function addTimelineEvent(item,append) {
 
 	if (_g("event_" + item.id)) {
 		updateCommentCount(item.id, item.commentcount);
-		 return;
+		return;
 	}
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
 	if (timelineEvents[subscribedStream]) {
 		for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
-			if (timelineEvents[subscribedStream][i].message == item.message && timelineEvents[subscribedStream][i].id != item.id && item.from != curUser) {
+			if (timelineEvents[subscribedStream][i].message == item.message && timelineEvents[subscribedStream][i].id != item.id && item.from != curUser && item.via) {
 				return;
 			}
 		}
@@ -33,10 +33,10 @@ function addTimelineEvent(item,append) {
 	ev.className = "timelineitem fadein";
 	ev.id = "event_" + item.id;
 	ev.onclick = function(e) { 
-					if (!e) e = window.event;
-					if (!e.target.onclick || e.target == ev)
-						location.href = "#/post/" + item.id; 
-				}
+		if (!e) e = window.event;
+		if (!e.target.onclick || e.target == ev)
+			location.href = "#/post/" + item.id; 
+	}
 
 	if (item.type == 1) {
 		item = processPostMeta(item);
@@ -45,7 +45,7 @@ function addTimelineEvent(item,append) {
 	eval(getTemplate("timelineitem"));
 
 	ev.innerHTML = html;
-	
+
 	var parent = _g("timeline_container");
 	if (append || parent.children.length < 1) {
 		parent.appendChild(ev);
@@ -199,7 +199,7 @@ function renderComment(comment) {
 			_g("likebtn").className += " liked";
 	}
 
-    var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
+	var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
 	html += "<a href='#/user/" + comment.from + "'><img class='littleavatar' src='" + getAvatar(comment.from) + "'></a>";
 	html += "</div> <div class='rightcontrols'><div class='time' style='opacity:0.5' data-time='" + comment.time + "'></div>";
 
@@ -212,9 +212,9 @@ function renderComment(comment) {
 	}
 	else
 		html += "<div style='margin-left: 50px;'>" + processMedia(escapeHTML(comment.message)) + "</div>";
-	
+
 	html += "</div>";
-    e.innerHTML += html;
+	e.innerHTML += html;
 	commentlist.appendChild(e);
 }
 
@@ -247,7 +247,7 @@ function addComments(comments) {
 function updateCommentCount(id, count) {
 	var ele = _g("commentcount_" + id);
 	if (ele == null) return; 
-		
+
 	ele.style.opacity = (count != 0) ? 1 : 0;
 	ele.innerHTML = count || "+";
 }
@@ -276,7 +276,7 @@ function postComment(e) {
 		imgAttachments = null;
 		pollData();
 	});
-	
+
 }
 
 function likeEvent(id, to, callback) {
@@ -289,7 +289,7 @@ function likeEvent(id, to, callback) {
 			callback.innerHTML = "Unlike";
 		else
 			callback.className += " jiggle";
-		
+
 		setTimeout(function() { callback.className = callback.className.replace(" jiggle", ""); }, 1000);
 		pollData();
 	});
@@ -441,9 +441,9 @@ function postToTimeline() {
 		for (var i = 0; i < a.length; i++) {
 			if (a[i].src) continue; // img element
 			vars.tags.push({ x: a[i].style.left.replace("px",""), 
-							 y: a[i].style.top.replace("px",""),
-							 tag: a[i].getAttribute("data-tag"),
-							 userid: a[i].getAttribute("data-userid"), });
+						   y: a[i].style.top.replace("px",""),
+						   tag: a[i].getAttribute("data-tag"),
+						   userid: a[i].getAttribute("data-userid"), });
 		}
 	} else {
 		if (!vars.body) return;
@@ -454,7 +454,7 @@ function postToTimeline() {
 	}
 
 	var xhr = new XMLHttpRequest();
-	
+
 	xhr.addEventListener("load", function() {
 		if (xhr.responseText == "2") {
 			showBanner("You've been posting a lot lately.. wait a few seconds. It'll keep people from being mad at you. ;)", "ratelimit", 5000);
