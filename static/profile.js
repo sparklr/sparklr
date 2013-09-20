@@ -1,12 +1,19 @@
 //profile pages and such
+var curRenderedBg = 0;
 function updateHeader(user, id) {
 	var h = _g("profileheader");
 	h.style.backgroundImage = 'url(' + imgUrl(user + '.jpg?' + id,true) + ')';
 }
 
 function updateBackground(user, id) {
+	if (curRenderedBg == id) return;
+	if (!id) return hideBackground();
+
 	var h = _g("profilebackground");
 	h.style.backgroundImage = 'url(' + imgUrl('b' + user + '.jpg?' + id,true) + ')';
+	if (user == curUser)
+		curBackground = id;
+	currentRenderedBg = id;
 }
 
 function hideBackground() {
@@ -71,6 +78,7 @@ function removeBackground() {
 	ajaxGet("work/background", { remove: true }, function() {
 		_g("removeBackground").style.display = "none";
 		_g("profilebackground").style.background = "";
+		curBackground = 0;
 	});
 }
 
