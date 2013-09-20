@@ -89,7 +89,11 @@ var buildCSSFromFile = function(file, callback) {
 				return "image: url(" + spritehash + ".png);\nbackground-position: 0px -" + y + "px;";
 			});
 
-			fs.writeFileSync("out/" + spritehash + ".png", fs.readFileSync(outputFileName));
+			try {
+				fs.writeFileSync("out/" + spritehash + ".png", fs.readFileSync(outputFileName));
+			} catch (err) {
+				console.log("Note: was not able to save image: " + err);
+			}
 
 			// CSS Sprite is now generated. Next step.
 			buildCSSPrefixes();

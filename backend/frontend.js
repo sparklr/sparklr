@@ -42,7 +42,6 @@ exports.run = function(user, request, response, sessionid) {
 	var html = frontendTemplate;
 
 	user.following = user.following.split(",").filter(function(e) { return e; });
-	user.followers = user.followers.split(",").filter(function(e) { return e; });
 	user.networks = (user.networks || "0").split(",").filter(function(e) {
 		return e;
 	});
@@ -53,7 +52,7 @@ exports.run = function(user, request, response, sessionid) {
 	var from = user.following;
 	from.push(user.id);
 
-	var payload = { private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist };
+	var payload = { private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist, background: user.background };
 	database.getStream("timeline", {
 		networks: user.networks.slice(0),
 		from: from,
