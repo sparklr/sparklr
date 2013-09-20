@@ -5,6 +5,8 @@ var HIDDEN_USERS = [];
 var IS_PRIVATE = false;
 var handlesToFetch = [];
 var fetchTaskAsync;
+var CHARMOD = '\u273B';
+var CHARADMIN = '\u273C';
 
 function getAvatar(id,plain) {
 	return imgUrl(id + ".jpg" + (plain || !AVATAR_IDS[id] ? "" : "?" + AVATAR_IDS[id]));
@@ -12,9 +14,15 @@ function getAvatar(id,plain) {
 
 function getDisplayName(id) {
 	if (DISPLAYNAMES[id])
-		return DISPLAYNAMES[id];
+		return processDisplayName(DISPLAYNAMES[id]);
 	fetchUserHandle(id);
 	return "<cite data-id='" + id + "'></cite>";
+}
+
+function processDisplayName(name){
+	name = name.replace(CHARMOD,"<span class='mod'></span>");
+	name = name.replace(CHARADMIN,"<span class='admin'></span>");
+	return(name);
 }
 
 function getUserHandle(id) {
@@ -48,7 +56,7 @@ function pullHandlesFromServerCallback(handles) {
 				if (tags[i].getAttribute("data-handle")) {
 					tags[i].innerHTML = handles[h].username;
 				} else {
-					tags[i].innerHTML = handles[h].displayname;
+					tags[i].innerHTML = processDisplayName(handles[h].displayname);
 				}
 			}
 			USERHANDLES[handles[h].id] = handles[h].username;

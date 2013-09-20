@@ -1085,10 +1085,17 @@ input {
 	margin: 4px;
 }
 
-span.mod {
-	font-weight: bold;
-	font-size: 12px;
-	color: #980a40;
+span.admin {
+	background-image: url(icons/adsta.png);
+}
+span.mod{
+	background-image: url(icons/babysta.png);
+}
+span.admin, span.mod{
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	margin-left: 3px;
 }
 
 #dropdown {
