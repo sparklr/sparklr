@@ -7,19 +7,12 @@ function updateHeader(user, id) {
 
 function updateBackground(user, id) {
 	if (curRenderedBg == id) return;
-	if (!id) return hideBackground();
 
-	var h = _g("profilebackground");
-	h.style.backgroundImage = 'url(' + imgUrl('b' + user + '.jpg?' + id,true) + ')';
+	document.body.style.backgroundImage = id ? 'url(' + imgUrl('b' + user + '.jpg?' + id,true) + ')' : "";
+
 	if (user == curUser)
 		curBackground = id;
-	currentRenderedBg = id;
-}
-
-function hideBackground() {
-	var s = _g("profilebackground").style;
-	s.background = "";
-	s.position = "fixed";
+	curRenderedBg = user + "_" + id;
 }
 
 function editProfile() {
@@ -65,19 +58,16 @@ function avatarUploadCallback(e) {
 }
 
 function backgroundUploadCallback(e) {
-	_g("profilebackground").className += " pulse";
-	_g("profilebackground").style.backgroundColor = "#000";
 	uploadImage(e, "work/background", function(xhr) {
 		updateBackground(curUser, xhr.responseText);
 		_g("removeBackground").style.display = "inline-block";
-		_g("profilebackground").className = "";
 	});
 }
 
 function removeBackground() {
 	ajaxGet("work/background", { remove: true }, function() {
 		_g("removeBackground").style.display = "none";
-		_g("profilebackground").style.background = "";
+		updateBackground(curUser,0);
 		curBackground = 0;
 	});
 }
