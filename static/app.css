@@ -47,6 +47,7 @@ div::-webkit-scrollbar-track {
 body { 
     color: #fff;
     background: #454050;
+	background-attachment: fixed;
     margin: 0px;
     padding: 0px;
 	font-family: 'PT Sans', sans-serif;
@@ -1141,6 +1142,18 @@ div.tabs a {
 div.tabs a.active {
 	background: #454050;
 	color: #fff;
+}
+
+#loading {
+	position: fixed;
+	display: block;
+	top: 0px;
+	left: 0px;
+	width: 0px;
+	height: 5px;
+	background: #756c88;
+	-webkit-transition: all 0.2s ease;
+	z-index: 1000;
 }
 
 @media all and (max-width: 799px) {
