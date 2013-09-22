@@ -432,7 +432,7 @@ function postToTimeline() {
 	if (imgAttachments != null) {
 		if (imgAttachments.target.result.length > 15728640) {
 			showBanner("That image is too large to upload. Please try one with a smaller file size.","toolarge",5000);
-			return;
+			//return;
 		}
 		_g("attachment").className += " pulse";
 		vars.img = true; 
@@ -467,7 +467,10 @@ function postToTimeline() {
 
 		imgAttachments = null;
 
+		hideProgress();
+
 	}, false);
+	xhr.upload.onprogress = uploadingProgress;
 	xhr.open("POST", "work/post");
 	xhr.setRequestHeader("X-X", AUTHKEY);
 

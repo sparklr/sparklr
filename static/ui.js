@@ -328,8 +328,10 @@ function uploadImage(e, url, callback) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
 			callback(xhr);
+			hideProgress();
 		}
 	}
+	xhr.upload.onprogress = uploadingProgress;
 	xhr.open("POST", url);
 	xhr.setRequestHeader("X-X", AUTHKEY);
 	xhr.setRequestHeader("X-DATA", JSON.stringify({ img: 1 }));

@@ -6,9 +6,11 @@ function ajaxGet(url, data, callback) {
 	}
 
 	var xhr = new XMLHttpRequest();
+	xhr.upload.onprogress = uploadingProgress;
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
+			hideProgress();
 			ajaxCooldown[url] = 0;
 
 			var data = xhr.responseText;
@@ -49,6 +51,19 @@ function ajaxGet(url, data, callback) {
 	
 	xhr.send(postData || null);
 	ajaxCooldown[url] = 1;
+}
+
+function uploadingProgress(evt) {
+	if (evt.lengthComputable) {
+		var e = _g("loading").style;
+		e.opacity = 1;
+		e.width = ((evt.loaded / evt.total) * 100) + "%";
+	}
+}
+function hideProgress() {
+	var e = _g("loading").style;
+	e.width = 0;
+	e.opacity = 0;
 }
 
 function pollData() {
