@@ -733,16 +733,6 @@ div.profileheader a {
 	color: white;
 }
 
-#profilebackground {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	bottom: 0px;
-	right: 0px;
-	z-index: -1;
-	background-size: cover;
-}
-
 p.headertitle {
     color: white;
     font-size: 28px;
