@@ -6,7 +6,7 @@ function updateHeader(user, id) {
 }
 
 function updateBackground(user, id) {
-	if (curRenderedBg == id) return;
+	if (curRenderedBg == user + "_" + id) return;
 
 	document.body.style.backgroundImage = id ? 'url(' + imgUrl('b' + user + '.jpg?' + id,true) + ')' : "";
 
