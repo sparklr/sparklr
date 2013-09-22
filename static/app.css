@@ -48,6 +48,7 @@ body {
     color: #fff;
     background: #454050;
 	background-attachment: fixed;
+	background-size: cover;
     margin: 0px;
     padding: 0px;
 	font-family: 'PT Sans', sans-serif;
@@ -196,7 +197,7 @@ hr {
 	padding-bottom: 15px;
 }
 #sidebarwrapper {
-    float: right;
+	float: right;
     width: 180px;
 }
 #sidebarwrapper a {
@@ -224,7 +225,7 @@ div.contentwrapper {
     padding: 5px;
     font-size: 15px;
     border: solid 1px rgba(0,0,0,0.3);
-    background: rgba(0,0,0,0.15);
+    background: rgba(0,0,0,0.3);
     width: 180px;
     -webkit-transition: all 0.2s ease;
 }
