@@ -8,9 +8,9 @@ var cleanCSS = require("clean-css");
 exports.build = function(callback) {
 	console.log("Building CSS...");
 
-	buildCSSFromFile("../static/app.css", function(cssHash) {
+	buildCSSFromFile(["stylesheet","mobile"], "app", function(cssHash) {
 		global.buildData.cssHash_frontend = cssHash;
-		buildCSSFromFile("../static/external.css", function(cssHash) {
+		buildCSSFromFile(["external"], "external", function(cssHash) {
 			global.buildData.cssHash_external = cssHash;
 
 			callback();
@@ -18,9 +18,13 @@ exports.build = function(callback) {
 	});
 }
 
-var buildCSSFromFile = function(file, callback) {
+var buildCSSFromFile = function(files, name, callback) {
+	var css = "";
+
 	// Load the source CSS
-	var css = fs.readFileSync(file).toString();
+	for (i in files) {
+		css += fs.readFileSync("../static/" + files[i] + ".css").toString();
+	}
 
 	// Generate a sha1 hash for the file name 
 	var cssHash = toolbox.sha1(css);
@@ -86,11 +90,11 @@ var buildCSSFromFile = function(file, callback) {
 					if (sorted[i] == img) break;
 					y += imgHeight[sorted[i]] + 4;
 				}
-				return "image: url(" + spritehash + ".png);\nbackground-position: 0px -" + y + "px;";
+				return "image: url(sprite.png);\nbackground-position: 0px -" + y + "px;";
 			});
 
 			try {
-				fs.writeFileSync("out/" + spritehash + ".png", fs.readFileSync(outputFileName));
+				fs.writeFileSync("out/sprite.png", fs.readFileSync(outputFileName));
 			} catch (err) {
 				console.log("Note: was not able to save image: " + err);
 			}
@@ -159,14 +163,14 @@ var buildCSSFromFile = function(file, callback) {
 		}
 		css = lines.join("\n");	
 
-		writeCSS();
+		writeCSS(name);
 	};
 
 	var writeCSS = function() {
 		// Last step: minify it 
 		css = cleanCSS.process(css);
 
-		fs.writeFileSync("out/" + cssHash + ".css", css);
+		fs.writeFileSync("out/" + name + ".css", css);
 		console.log("CSS written: " + cssHash);
 		callback(cssHash);
 	};

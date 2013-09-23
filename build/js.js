@@ -5,9 +5,9 @@ var toolbox = require("./toolbox");
 exports.build = function(templateData, callback) {
 	console.log("Building JS...");
 
-	buildJSFromHeaderFile("../templates/headers.html", templateData, function(jsHash) {
+	buildJSFromHeaderFile("../templates/headers.html", "app", templateData, function(jsHash) {
 		global.buildData.jsHash_frontend = jsHash;
-		buildJSFromHeaderFile("../templates/external.html", "", function(jsHash) {
+		buildJSFromHeaderFile("../templates/external.html", "external", "", function(jsHash) {
 			global.buildData.jsHash_external = jsHash;
 		});
 
@@ -15,7 +15,7 @@ exports.build = function(templateData, callback) {
 	});
 }
 
-var buildJSFromHeaderFile = function(headerFile, prepend, callback) {
+var buildJSFromHeaderFile = function(headerFile, name, prepend, callback) {
 	// Load the headers file for file list
 	var header = fs.readFileSync(headerFile).toString();
 
@@ -35,7 +35,7 @@ var buildJSFromHeaderFile = function(headerFile, prepend, callback) {
 
 	var jsHash = toolbox.sha1(result.code);
 
-	fs.writeFileSync("out/" + jsHash + ".js", result.code);
+	fs.writeFileSync("out/"+name+".js", result.code);
 	console.log("JS written: " + jsHash);
 	
 	callback(jsHash);

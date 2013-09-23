@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Sparklr</title>
-<link rel='stylesheet' href='{global.secureCommonHost}/{buildData.cssHash_external}.css'>
+<link rel='stylesheet' href='{global.secureCommonHost}/external.css?{buildData.cssHash_external}'>
 <link rel='canonical' href='http://sparklr.me/'>
 <meta name="viewport" content="target-densitydpi=device-dpi, width=440, initial-scale=0.7, maximum-scale=0.7, user-scalable=0" />
 <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
@@ -12,7 +12,7 @@
 <script src='{global.commonHost}/ui.js'></script>
 <script src='{global.commonHost}/data.js'></script>
 <% else %>
-<script data-live src='{global.secureCommonHost}/{buildData.jsHash_external}.js'></script>
+<script data-live src='{global.secureCommonHost}/external.js?{buildData.jsHash_external}'></script>
 <% endelse %>
 <script>
 	var STATICHOST = "{global.staticHost}";
