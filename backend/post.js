@@ -97,18 +97,31 @@ exports.postComment = function(user, data, callback) {
 		processMentions(data.comment, user, data.id);
 	});
 }
-exports.deleteComment = function(user, id, callback) {
+exports.deletePost = function(userobj, id, callback) {
+	var args = { id: id };
+	if (userobj.rank < 50) {
+		args.from = userobj.id;
+	}
+	database.deleteObject("timeline", args, function(err,rows) {
+		if (err || rows.affectedRows < 1) {
+			callback(false);
+			return false;
+		}
+		database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(id), callback);
+	});
+}
+exports.deleteComment = function(userobj, id, callback) {
 	database.getObject("comments", id, function(err, rows) {
 		if (err || rows.length < 1) {
 			callback(false);
 			return false;
 		}
-		if (rows[0].from != user) {
+		if (rows[0].from != userobj.id && userobj.rank < 50) {
 			callback(false);
 			return false;
 		}
 
-		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(user);
+		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(userobj.id);
 		database.query(query, function(){});
 		exports.updateCommentCount(rows[0].postid, -1);
 		callback(true);

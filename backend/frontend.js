@@ -71,6 +71,7 @@ exports.run = function(user, request, response, sessionid) {
 
 			payload.displayNames = displayNames;
 			payload.userHandles = userHandles;
+			payload.isMod = (user.rank > 49);
 
 			html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
 			response.write(html);

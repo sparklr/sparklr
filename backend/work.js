@@ -731,13 +731,10 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					}, callback);
 					break;
 				case "post":
-					Database.deleteObject("timeline", {
-						from: userobj.id,
-						id: fragments[4]
-					}, callback);
+					Post.deletePost(userobj, parseInt(fragments[4]), callback);
 					break;
 				case "comment":
-					Post.deleteComment(userobj.id, parseInt(fragments[4]), callback);
+					Post.deleteComment(userobj, parseInt(fragments[4]), callback);
 					break;
 			}
 			break;
