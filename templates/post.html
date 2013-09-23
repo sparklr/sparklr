@@ -12,7 +12,7 @@
 	<% endif %>
 
 	<div id='event_{data.id}' class='fadein' style='padding: 7px; margin: -5px; word-wrap: break-word;' onClick='showEvent({data.id})'>
-		<% if (data.from == curUser) %>
+		<% if (data.from == curUser || isMod) %>
 		<div class='commentcount delete icon' onClick='deletePost("{data.id}");stopBubbling();'></div>
 		<% else %>
 		<div class='commentcount delete icon' onClick='hidePost({data.id},{data.from});stopBubbling();'></div>

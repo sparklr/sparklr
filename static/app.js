@@ -51,6 +51,7 @@ var MOBILE = navigator.userAgent.match(/mobile/i) ? true : false;
 var AUTHKEY;
 var curUser;
 var curBackground;
+var isMod;
 
 var app = function(payload) { 
 	DISPLAYNAMES = payload.displayNames;
@@ -60,6 +61,7 @@ var app = function(payload) {
 	HIDDEN_USERS = payload.blacklist;
 	joinedNetworks = payload.networks;
 	curBackground = payload.background;
+	isMod = payload.isMod;
 
 	addTimelineArray(payload.timelineStream, 0);
 
