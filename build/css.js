@@ -90,11 +90,11 @@ var buildCSSFromFile = function(files, name, callback) {
 					if (sorted[i] == img) break;
 					y += imgHeight[sorted[i]] + 4;
 				}
-				return "image: url(sprite.png);\nbackground-position: 0px -" + y + "px;";
+				return "image: url(" + name + ".png?" + cssHash + ");\nbackground-position: 0px -" + y + "px;";
 			});
 
 			try {
-				fs.writeFileSync("out/sprite.png", fs.readFileSync(outputFileName));
+				fs.writeFileSync("out/" + name + ".png", fs.readFileSync(outputFileName));
 			} catch (err) {
 				console.log("Note: was not able to save image: " + err);
 			}
