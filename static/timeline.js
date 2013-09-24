@@ -15,8 +15,9 @@ var joinedNetworks = [];
 function addTimelineEvent(item,append) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
-	if (_g("event_" + item.id)) {
+	if (e = _g("event_" + item.id)) {
 		updateCommentCount(item.id, item.commentcount);
+		_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
 	}
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
@@ -151,6 +152,15 @@ function showImage(img) {
 	} else {
 		showPopup("<img src='"+imgpath+"' onload='this.style.opacity=1'>", "lightbox");
 	}
+}
+
+function editPost() {
+	_g("post").contentEditable = true;
+}
+function savePost() {
+	ajaxGet("work/editpost", { post: subscribedStream, body: _g("post").textContent }, function() {
+		_g("post").contentEditable = false;
+	});
 }
 
 function deletePost(id) {

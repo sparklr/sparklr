@@ -18,6 +18,11 @@ exports.getComments = function(postid, since, callback) {
 	database.query(query, callback);
 }
 
+exports.edit = function(user, id, body, callback) {
+	if (body.length > 500) return callback(false);
+	database.query("UPDATE `timeline` SET `message` = " + database.escape(body) + ", `modified` = '" + toolbox.time() + "' WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(user), callback);
+}
+
 exports.post = function(user, data, callback) {
 	data.time = toolbox.time();
 	data.from = user;

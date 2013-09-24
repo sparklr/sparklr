@@ -238,6 +238,11 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				sendObject(response, {});
 			});
 		return;
+		case "editpost":
+			Post.edit(userobj.id, postObject.post, postObject.body, function(err) {
+				sendObject(response, {});
+			});
+			break;
 		case "chat":
 			postObject.to = parseInt(postObject.to);
 			if (postObject.to == userobj.id) return do400(response, "stop that");
