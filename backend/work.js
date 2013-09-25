@@ -285,21 +285,34 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 		case "settings":
 			var result = true;
 			var message = "";
-			if (postObject.username.length > 20) {
-				message = "That username is a little long...";
-				result = false;
-			} else {
-				userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
+			if (postObject.username) {
+				if (postObject.username.length > 20) {
+					message = "That username is a little long...";
+					result = false;
+				} else {
+					userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
+				}
 			}
 
-			if (postObject.email != userobj.email) {
-				userobj.emailverified = 0;
-			}
 
-			userobj.email = postObject.email;
+			if (postObject.bio) {
+				if (postObject.bio.length < 300) {
+					userobj.bio = postObject.bio;
+				}
+			}
+			
+			if (postObject.email) {
+				if (postObject.email != userobj.email) {
+					userobj.emailverified = 0;
+				}
+				userobj.email = postObject.email;
+			}
 
 			if (postObject.displayname.length > 25) {
 				message = "That display name is a little long...";
+				result = false;
+			} else if (postObject.displayname.length < 1) {
+				message = "You actually need a display name. I know, tough.";
 				result = false;
 			} else {
 				userobj.displayname = postObject.displayname.replace(/(\<|\>|[\u273B]|[\u273C])/g, "");
@@ -410,16 +423,6 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 					sendObject(response, result);
 				}
 			});
-		break;
-		case "profile":
-			if (postObject.displayname.length < 30) {
-				userobj.displayname = postObject.displayname.replace(/(\<|\>)/g, "");
-			}
-			if (postObject.bio.length < 300) {
-				userobj.bio = postObject.bio;
-			}
-			Database.updateObject("users", userobj);
-			sendObject(response, {});
 		break;
 		case "avatar":
 			userobj.avatarid = Toolbox.time();
