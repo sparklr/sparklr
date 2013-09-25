@@ -286,14 +286,16 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 			var result = true;
 			var message = "";
 			if (postObject.username) {
-				if (postObject.username.length > 20) {
+				if (postObject.username.match(/^\d+$/)) {
+					message = "That username is a number. (fact of the day)";
+					result = false;
+				} else if (postObject.username.length > 20) {
 					message = "That username is a little long...";
 					result = false;
 				} else {
 					userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
 				}
 			}
-
 
 			if (postObject.bio) {
 				if (postObject.bio.length < 300) {
@@ -547,10 +549,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			Post.getComments(fragments[3], since, callback);
 			break;
 		case "stream":
-			var stream = parseInt(fragments[3]);
-			if (isNaN(stream)) {
-				stream = fragments[3];
+			var stream = fragments[3];
+			if (!stream.match(/^\d+$/)) {
 				uri.query.network = 1;
+			} else {
+				stream = parseInt(stream);
 			}
 			var args = {};
 			if (stream === 0) {
@@ -587,7 +590,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "user":
 			var userid = fragments[3];
-			if (!isNaN(parseInt(userid))) {
+			if (userid.match(/^\d+$/)) {
 				User.getUserProfile(userid, cb);
 			} else {
 				User.getUserProfileByUsername(userid, cb);
