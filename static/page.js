@@ -114,13 +114,6 @@ function updatePages(loaded) {
 
 	var s = location.hash.split("/");
 
-	if (s[1] == "user" && !isNaN(parseInt(s[2])) && !s[3] && previousPage[1] != "user") {
-		if (USERHANDLES[parseInt(s[2])]) {
-			location.href = "/#/user/" + USERHANDLES[parseInt(s[2])];
-			return;
-		}
-	}
-
 	previousPage = s;	
 
 	for (i = 0; i < definedPages.length; i++) {
