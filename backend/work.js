@@ -285,21 +285,36 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 		case "settings":
 			var result = true;
 			var message = "";
-			if (postObject.username.length > 20) {
-				message = "That username is a little long...";
-				result = false;
-			} else {
-				userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
+			if (postObject.username) {
+				if (postObject.username.match(/^\d+$/)) {
+					message = "That username is a number. (fact of the day)";
+					result = false;
+				} else if (postObject.username.length > 20) {
+					message = "That username is a little long...";
+					result = false;
+				} else {
+					userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
+				}
 			}
 
-			if (postObject.email != userobj.email) {
-				userobj.emailverified = 0;
+			if (postObject.bio) {
+				if (postObject.bio.length < 300) {
+					userobj.bio = postObject.bio;
+				}
 			}
-
-			userobj.email = postObject.email;
+			
+			if (postObject.email) {
+				if (postObject.email != userobj.email) {
+					userobj.emailverified = 0;
+				}
+				userobj.email = postObject.email;
+			}
 
 			if (postObject.displayname.length > 25) {
 				message = "That display name is a little long...";
+				result = false;
+			} else if (postObject.displayname.length < 1) {
+				message = "You actually need a display name. I know, tough.";
 				result = false;
 			} else {
 				userobj.displayname = postObject.displayname.replace(/(\<|\>|[\u273B]|[\u273C])/g, "");
@@ -410,16 +425,6 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 					sendObject(response, result);
 				}
 			});
-		break;
-		case "profile":
-			if (postObject.displayname.length < 30) {
-				userobj.displayname = postObject.displayname.replace(/(\<|\>)/g, "");
-			}
-			if (postObject.bio.length < 300) {
-				userobj.bio = postObject.bio;
-			}
-			Database.updateObject("users", userobj);
-			sendObject(response, {});
 		break;
 		case "avatar":
 			userobj.avatarid = Toolbox.time();
@@ -547,10 +552,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			Post.getComments(fragments[3], since, callback);
 			break;
 		case "stream":
-			var stream = parseInt(fragments[3]);
-			if (isNaN(stream)) {
-				stream = fragments[3];
+			var stream = fragments[3];
+			if (!stream.match(/^\d+$/)) {
 				uri.query.network = 1;
+			} else {
+				stream = parseInt(stream);
 			}
 			var args = {};
 			if (stream === 0) {
@@ -587,7 +593,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			break;
 		case "user":
 			var userid = fragments[3];
-			if (!isNaN(parseInt(userid))) {
+			if (userid.match(/^\d+$/)) {
 				User.getUserProfile(userid, cb);
 			} else {
 				User.getUserProfileByUsername(userid, cb);

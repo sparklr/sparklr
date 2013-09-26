@@ -55,6 +55,11 @@ exports.post = function(user, data, callback) {
 			if (err) return callback(err);
 			Tags.processPostTags(data.body, rows.insertId);		
 			processMentions(data.body, user, rows.insertId);
+			for (i in data.tags) {
+				if (data.tags[i].userid) {
+					mentionUser(data.tags[i].userid, data.from, rows.insertId);
+				}
+			}
 			data.message = data.body;
 			data.id = rows.insertId;
 
@@ -177,14 +182,18 @@ function processMentions(post, mentioner, postid) {
 		var user = matches[i].substring(1);
 		User.getUserProfileByUsername(user, function(err,rows) {
 			if (rows.length > 0) {
-				Notification.addUserNotification(rows[0].id, "", postid, mentioner, Notification.N_MENTION);
-
-			database.postObject("mentions", { user: rows[0].id, postid: postid, time: toolbox.time() }, function(err) {
-				if (err) console.log(err);
-			});
+				mentionUser(rows[0].id, mentioner, postid);
 			}
 		});
 	}
+}
+
+function mentionUser(userid, mentioner, postid) {
+	Notification.addUserNotification(userid, "", postid, mentioner, Notification.N_MENTION);
+
+	database.postObject("mentions", { user: userid, postid: postid, time: toolbox.time() }, function(err) {
+		if (err) console.log(err);
+	});
 }
 
 exports.getPostRowsFromKeyQuery = function(table, key, value, since, starttime, callback) {

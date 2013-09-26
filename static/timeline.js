@@ -12,6 +12,8 @@ var hiddenPostList = [];
 
 var joinedNetworks = [];
 
+var missingPosts = [];
+
 function addTimelineEvent(item,append) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
@@ -20,6 +22,11 @@ function addTimelineEvent(item,append) {
 		_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
 	}
+	if ((document.body.scrollTop || document.documentElement.scrollTop) > 10) {
+		missingPosts.push(item);
+		return;
+	}
+	
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
 	if (timelineEvents[subscribedStream]) {
 		for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
@@ -314,10 +321,7 @@ function streamUrl(since,start) {
 	if (currentPageType == "MENTIONS")
 		part = "mentions/";
 
-	if (start || (document.body.scrollTop || document.documentElement.scrollTop) < 10)
-		query += part + subscribedStream + "?since=" + since;
-	else 
-		query = "?";
+	query += part + subscribedStream + "?since=" + since;
 
 	if (start)
 		query += "&starttime=" + start;
