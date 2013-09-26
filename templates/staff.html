@@ -6,7 +6,7 @@
 	</script>
 	<div style='width: 280px;display:inline-block;padding: 5px;'>
 		<img src='{getAvatar(data[i].id)}' class='avatar'>
-		<a href='/#/user/{data[i].username}' style='font-weight:bold'>{getDisplayName(data[i].id)}</a>
+		<a href='/#/user/{data[i].username}' class='person'>{getDisplayName(data[i].id)}</a>
 		<br>
 		<a href='/#/chat/{data[i].id}'>Message</a> - <a href='/#/mention/{data[i].username}'>Mention</a>
 	</div>
@@ -20,7 +20,7 @@
 	</script>
 	<div style='width: 280px;display:inline-block;padding: 5px;'>
 		<img src='{getAvatar(data[j].id)}' class='avatar'>
-		<a href='/#/user/{data[j].username}' style='font-weight:bold'>{getDisplayName(data[j].id)}</a>
+		<a href='/#/user/{data[j].username}' class='person'>{getDisplayName(data[j].id)}</a>
 		<br>
 		<a href='/#/chat/{data[j].id}'>Message</a> - <a href='/#/mention/{data[j].username}'>Mention</a>
 	</div>
