@@ -41,7 +41,8 @@ function editProfile() {
 			"bio": _g("userBio").textContent
 		};
 
-		ajaxGet("work/profile", data);
+		ajaxGet("work/settings", data, function() {
+		});
 	
 		_g("editBtn").value = "Edit";
 	}
