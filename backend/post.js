@@ -90,7 +90,7 @@ exports.postComment = function(user, data, callback) {
 		if (data.like) //only notify one person
 			return Notification.addUserNotification(data.to, data.comment, data.id, user, 1);
 
-		query = "SELECT `from` FROM `comments` WHERE postid = " + parseInt(data.id) + " ORDER BY `time` DESC LIMIT 15";
+		query = "SELECT `from` FROM `comments` WHERE postid = " + parseInt(data.id) + " ORDER BY `time` DESC LIMIT 7";
 		database.query(query, function(err,rows) {
 			var notified = {};
 			
