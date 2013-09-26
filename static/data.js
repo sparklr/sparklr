@@ -83,6 +83,12 @@ function pollData() {
 				}
 
 				var items = data.data || data;
+
+				if (missingPosts.length > 0) {
+					items = items.concat(missingPosts);
+					missingPosts = [];
+				}
+
 				addTimelineArray(items,subscribedStream);
 				for (var i = items.length - 1; i >= 0; i--) {
 					addTimelineEvent(items[i], 0);
