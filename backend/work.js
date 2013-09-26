@@ -496,6 +496,9 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				to: [userobj.id],
 			}, callback);
 			return;
+		case "staff":
+			Database.query("SELECT * FROM `users` WHERE `rank` = 100 OR `rank` = 50 ORDER BY `rank` DESC", callback);
+			return;
 		case "onlinefriends":
 			callback(null,0);
 			return;
