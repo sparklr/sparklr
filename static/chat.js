@@ -131,7 +131,7 @@ function sendChatMessage() {
 	addChatMessage(curUser, vars.message, getLastChatTime(), false, true);
 
 	ajaxGet("work/chat", vars, function(data,xhr) {
-		if (data.error) {
+		if (data.error && data.info == "Blocked") {
 			showBanner("Sorry, that user has blocked you.", "bannerblocked", 4000);
 		}
 		imgAttachments = null;
