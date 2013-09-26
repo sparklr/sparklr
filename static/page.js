@@ -1,7 +1,7 @@
 //The current page type, i.e. stream, chat
 var currentPageType;
 
-var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "inbox", "notifications", "explore"];
+var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "inbox", "notifications", "explore", "staff"];
 
 var staticPages = { "notifications":1 };
 
