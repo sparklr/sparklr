@@ -22,7 +22,7 @@ function addTimelineEvent(item,append) {
 		_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
 	}
-	if ((document.body.scrollTop || document.documentElement.scrollTop) > 10) {
+	if (!append && (document.body.scrollTop || document.documentElement.scrollTop) > 10) {
 		missingPosts.push(item);
 		return;
 	}
