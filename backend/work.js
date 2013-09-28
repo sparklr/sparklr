@@ -15,8 +15,7 @@ exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
 	switch (fragments[2]) {
 		case "areyouawake":
-			response.writeHead(200);
-			response.end("success");
+			sendObject(response, "success");
 			return;
 		case "signoff":
 			response.writeHead(200, {
@@ -36,8 +35,7 @@ exports.run = function(request, response, uri, sessionid) {
 					});
 					response.end();
 				} else {
-					response.writeHead(403);
-					response.end();
+					do400(response, 403);
 				}
 				request = userobj = uri = sessionid = null;
 			});
@@ -61,33 +59,34 @@ exports.run = function(request, response, uri, sessionid) {
 			return;
 		case "reset":
 			if (!fragments[3]) return do400(response, 400);
+
 			User.getUserProfile(fragments[3], function(err, rows) {
 				if (err) return do500(response, err);
-				if (rows && rows.length > 0) {
-					if (rows[0].password == "RESET:" + fragments[4]) {
-						if (fragments[5].length < 3) {
-							sendObject(response, 0);
+				if (!rows || rows.length < 1) return sendObject(response,-2);
+
+				if (rows[0].password != "RESET:" + fragments[4]) 
+					return sendObject(response, -2);
+
+				if (fragments[5].length < 3)
+					return sendObject(response, 0);
+
+				User.generatePass(fragments[5], function(err, hash) {
+					if (err) return do500(response, err);
+
+					rows[0].authkey = User.generateAuthkey(rows[0].id);
+					rows[0].password = hash;
+
+					Database.updateObject("users", rows[0], function(err, data) {
+						if (err) {
+							sendObject(response, -1);
 						} else {
-							User.generatePass(fragments[5], function(err, hash) {
-								if (err) return do500(response, err);
-								rows[0].authkey = User.generateAuthkey(rows[0].id);
-								rows[0].password = hash;
-								Database.updateObject("users", rows[0], function(err, data) {
-									if (err) {
-										sendObject(response, -1);
-									} else {
-										response.writeHead(200, {
-											"Set-Cookie": "D=" + rows[0].id + "," + rows[0].authkey + "; Path=/"
-										});
-										response.end("1");
-									}
-								});
+							response.writeHead(200, {
+								"Set-Cookie": "D=" + rows[0].id + "," + rows[0].authkey + "; Path=/"
 							});
+							response.end("1");
 						}
-					} else {
-						sendObject(response, -2);
-					}
-				}
+					});
+				});
 			});
 			return;
 		case "requestinvite":
@@ -278,7 +277,7 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 					sendObject(response, { deleted: true });
 					return;
 				}
-				Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D", like: true});
+				Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D", like: true}, function(){});
 				sendObject(response, {});
 			});
 		return;
