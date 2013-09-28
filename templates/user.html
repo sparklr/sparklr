@@ -32,6 +32,9 @@
 <% if (pageType == "step2") %>
 	<input type='button' value='Next' onClick='editProfile();location.href="/#/invite/step3";' style='margin:7px 4px;float:right'>
 	<h2 style='color:#fff'>Customize your profile</h2>
+	<div class='bubbleout'><div class='bubble leftb' style='margin-top: -60px;'>Here you can change your display name, description, icon, and background.</div></div>
+	<div class='bubbleout'><div class='bubble leftb' style='margin-top: 200px;'>When you change your background image, you change the background of the main site as well! This gives you some customization when it comes to how you want your dashboard to look.</div></div>
+
 <% endif %>
 <% if (data.user == curUser) %>
 <div id='profileheader' class='profileheader' onDrop='dropImage(event, avatarUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'>
