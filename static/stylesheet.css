@@ -1157,3 +1157,27 @@ div.tabs a.active {
 	z-index: 1000;
 }
 
+.bubbleout{
+	position: relative;
+	display: block;
+	
+}
+.bubble{
+	position: absolute;
+	display: block;
+	padding: 5px;
+	background: rgba(0,0,0,0.3);
+	color: #fff;
+	width: 200px;
+	border: 1px solid #111;
+}
+.leftb{
+	left: -220px;
+	border-radius: 10px 10px 0 10px;
+}
+.rightb{
+	right: -220px;
+	border-radius: 0 10px 10px 10px;
+}
+
+
