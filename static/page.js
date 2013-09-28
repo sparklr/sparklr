@@ -21,8 +21,8 @@ var homepage = function() {
 	if (args[1] == "welcome") {
 		prehtml = "<input type='button' value='Next' onClick='location.href=\"/#/user/"+curUser+"/step2\";' style='margin:7px 4px;float:right'><h2 style='color:#fff'>Welcome to Sparklr! Say hello!</h2>"
 		prehtml += "<div class='bubbleout'><div class='bubble leftb' style='margin-top:-60px;'>Why don't you take a moment to introduce yourself so that the other users can get to know you~</div></div>"
-		prehtml += "<div class='bubbleout'><div class='bubble leftb' style='margin-top: 50px;'>This is the Dash, where you will see posts from all users on the site, not just the users that you follow. It may take a bit to get used to, but it makes it easier to meet other users. c:</div></div>";
-		prehtml += "<div class='bubbleout'><div class='bubble rightb' style='margin-top: 40px;'>These buttons allow you to change the posts that you see on the dash. When you follow a Network, the button for the Network will appear here as well.</div></div>";
+		prehtml += "<div class='bubbleout'><div class='bubble leftb' style='margin-top: 72px;'>This is the Dash, where everyone sees everything. It may take a bit to get used to, but it makes it easier to meet other users. c:</div></div>";
+		prehtml += "<div class='bubbleout'><div class='bubble rightb' style='margin-top: 40px;'>These buttons allow you to filter what you see on the dash. When you follow a Network, a tab will appear here as well.</div></div>";
 		composertext = "#introducing ";
 	}
 	if (args[1] == "mention") {
