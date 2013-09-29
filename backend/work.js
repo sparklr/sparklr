@@ -181,10 +181,13 @@ exports.run = function(request, response, uri, sessionid) {
 					processPostRequest(request, response, postObject, uri, sessionid, userobj);
 				}
 			} else {
+				if (userobj.id == 1615 || userobj.id == 36)
+				{
+					console.log((new Date).toString() + ": " + userobj.id + ": " + uri.pathname + " " + request.headers['user-agent']);
+				}
 				if (uri.pathname.indexOf("/beacon") !== -1) {
 					var args = { response: response, request: request, uri: uri, sessionid: sessionid, userobj: userobj };
 					Notification.getUserNotifications(userobj.id, uri.query.n, beaconNotifCallback, args);
-					
 					return;
 				} else {
 					processGetRequest(request, response, uri, sessionid, userobj, function(err,rows) {
