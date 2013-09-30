@@ -1,12 +1,7 @@
-var database = require("./database");
+var Database = require("./database");
 var Notification = require("./notification");
 var User = require("./user");
-var Tags = require("./tags");
-var toolbox = require("./toolbox");
-var events = require("events");
-var util = require("util");
-
-exports.evt = new events.EventEmitter;
+var Toolbox = require("./toolbox");
 
 exports.getComments = function(postid, since, callback) {
 	var query = "SELECT * FROM comments WHERE postid=" + parseInt(postid);
@@ -15,19 +10,19 @@ exports.getComments = function(postid, since, callback) {
 	}
 	// For some odd reason, this actually decreases execution time.
 	query += " ORDER BY `time` ASC";
-	database.query(query, callback);
+	Database.query(query, callback);
 }
 
 exports.edit = function(user, id, body, callback) {
 	if (body.length > 500) return callback(false);
-	database.query("UPDATE `timeline` SET `message` = " + database.escape(body) + ", `modified` = '" + toolbox.time() + "' WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(user), callback);
+	Database.query("UPDATE `timeline` SET `message` = " + Database.escape(body) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(user), callback);
 }
 
 exports.post = function(user, data, callback) {
-	data.time = toolbox.time();
+	data.time = Toolbox.time();
 	data.from = user;
 
-	database.query("SELECT `time` FROM `timeline` WHERE `from` = " + parseInt(user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
+	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + parseInt(user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
 		if (err) return callback(err);
 		if (rows && rows.length > 1) {
 			return callback(null,2); // as in, 2 many posts
@@ -37,7 +32,7 @@ exports.post = function(user, data, callback) {
 		querystr += parseInt(user) + ",";
 		querystr += data.time + ",";
 		querystr += data.time + ",";
-		querystr += database.escape(data.body) + ",";
+		querystr += Database.escape(data.body) + ",";
 
 		var meta = "";
 		if (data.img)
@@ -46,14 +41,15 @@ exports.post = function(user, data, callback) {
 			meta += "," + JSON.stringify(data.tags);
 		}
 
-		querystr += (meta ? database.escape(meta) : "\"\"") + ",";
+		querystr += (meta ? Database.escape(meta) : "\"\"") + ",";
 		querystr += (data.img ? 1 : 0) + ",";
 		querystr += "1,";
-		querystr += (database.escape(data.network || "0"));
+		querystr += (Database.escape(data.network || "0"));
 		querystr += ");";
-		database.query(querystr,function(err,rows) {
+
+		Database.query(querystr,function(err,rows) {
 			if (err) return callback(err);
-			Tags.processPostTags(data.body, rows.insertId);		
+			processPostTags(data.body, rows.insertId);		
 			processMentions(data.body, user, rows.insertId);
 			for (i in data.tags) {
 				if (data.tags[i].userid) {
@@ -64,13 +60,11 @@ exports.post = function(user, data, callback) {
 			data.id = rows.insertId;
 
 			callback(err,"");
-		});//callback);
+		});
 	});
-	//processMentions(data.body, user, );
-	//
 }
 exports.postComment = function(user, data, callback) {
-	database.getObject("timeline", data.id, function(err, rows) {
+	Database.getObject("timeline", data.id, function(err, rows) {
 		if (rows.length < 1) {
 			callback(false);
 			return false;
@@ -81,17 +75,17 @@ exports.postComment = function(user, data, callback) {
 		}
 
 		var query = "INSERT INTO `comments` (`postid`, `from`, `message`, `time`) ";
-		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+database.escape(data.comment) + "," +  Math.floor((new Date).getTime() / 1000) + ")";
+		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+Database.escape(data.comment) + "," +  Math.floor((new Date).getTime() / 1000) + ")";
 
-		database.query(query, callback);
+		Database.query(query, callback);
 		var count = (rows[0].commentcount + 1 || 1);
-		database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + toolbox.time() + " WHERE id=" + parseInt(data.id));
+		Database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(data.id));
 
 		if (data.like) //only notify one person
 			return Notification.addUserNotification(data.to, data.comment, data.id, user, 1);
 
 		query = "SELECT `from` FROM `comments` WHERE postid = " + parseInt(data.id) + " ORDER BY `time` DESC LIMIT 7";
-		database.query(query, function(err,rows) {
+		Database.query(query, function(err,rows) {
 			var notified = {};
 			
 			// notify the poster
@@ -112,16 +106,16 @@ exports.deletePost = function(userobj, id, callback) {
 	if (userobj.rank < 50) {
 		args.from = userobj.id;
 	}
-	database.deleteObject("timeline", args, function(err,rows) {
+	Database.deleteObject("timeline", args, function(err,rows) {
 		if (err || rows.affectedRows < 1) {
 			callback(false);
 			return false;
 		}
-		database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(id), callback);
+		Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(id), callback);
 	});
 }
 exports.deleteComment = function(userobj, id, callback) {
-	database.getObject("comments", id, function(err, rows) {
+	Database.getObject("comments", id, function(err, rows) {
 		if (err || rows.length < 1) {
 			callback(false);
 			return false;
@@ -132,18 +126,18 @@ exports.deleteComment = function(userobj, id, callback) {
 		}
 
 		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(userobj.id);
-		database.query(query, function(){});
+		Database.query(query, function(){});
 		exports.updateCommentCount(rows[0].postid, -1);
 		callback(true);
 	});
 }
 
 exports.updateCommentCount = function(postid, x) {
-	database.query("UPDATE `timeline` SET commentcount = commentcount + " + parseInt(x) + ", modified = " + toolbox.time() + " WHERE id=" + parseInt(postid), function(){});
+	Database.query("UPDATE `timeline` SET commentcount = commentcount + " + parseInt(x) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(postid), function(){});
 }
 
 exports.repost = function(user, postid, reply, callback) {
-	database.getObject('timeline', postid, function(err,rows) {
+	Database.getObject('timeline', postid, function(err,rows) {
 		if (rows.length < 1) return;
 
 		var post = rows[0];
@@ -163,17 +157,29 @@ exports.repost = function(user, postid, reply, callback) {
 		post.message = msg;
 		post.via = post.from;
 		post.from = user;
-		post.time = toolbox.time();
-		post.modified = toolbox.time();
+		post.time = post.modified = Toolbox.time();
 		post.commentcount = 0;
-		
 
-		database.postObject('timeline', post, function(err,rows) {
+		Database.postObject('timeline', post, function(err,rows) {
 			callback(err,rows);
 			if (!err)
 				Notification.addUserNotification(origfrom, "", rows.insertId, user, Notification.N_REPOST);
 		});
 	});
+}
+
+function processPostTags(body, id) {
+	var tagregex =  /\B#([\w-]{1,40})/gi;
+	var tags = body.match(tagregex);
+	if (!tags) return;
+	for (var i = 0; i < tags.length; i++) {
+		tags[i] = tags[i].substring(1);
+
+		Database.postObject("tags", { postid: id, tag: tags[i], time: toolbox.time() }, function(err) {
+			if (err)
+				console.log(err);
+		});
+	}
 }
 
 function processMentions(post, mentioner, postid) {
@@ -191,20 +197,20 @@ function processMentions(post, mentioner, postid) {
 function mentionUser(userid, mentioner, postid) {
 	Notification.addUserNotification(userid, "", postid, mentioner, Notification.N_MENTION);
 
-	database.postObject("mentions", { user: userid, postid: postid, time: toolbox.time() }, function(err) {
+	Database.postObject("mentions", { user: userid, postid: postid, time: Toolbox.time() }, function(err) {
 		if (err) console.log(err);
 	});
 }
 
 exports.getPostRowsFromKeyQuery = function(table, key, value, since, starttime, callback) {
-	var query = "SELECT `postid` FROM " + database.escapeId(table) + " WHERE " + database.escapeId(key) + " = " + database.escape(value);
+	var query = "SELECT `postid` FROM " + Database.escapeId(table) + " WHERE " + Database.escapeId(key) + " = " + Database.escape(value);
 	if (since)
 		query += " AND `time` > " + parseInt(since);
 	if (starttime)
 		query += " AND `time` < " + parseInt(starttime);
 
 
-	database.query(query, function(err,rows) {
+	Database.query(query, function(err,rows) {
 		if (err)
 			return callback(err);
 
@@ -216,11 +222,6 @@ exports.getPostRowsFromKeyQuery = function(table, key, value, since, starttime, 
 		for (id in rows)
 			postids.push(rows[id].postid);
 		
-		database.getStream("timeline", { id: postids }, callback);
+		Database.getStream("timeline", { id: postids }, callback);
 	});
-
-}
-
-exports.hidePost = function(id,callback) {
-
 }
