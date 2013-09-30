@@ -1,5 +1,6 @@
 var Database = require("./database");
-var toolbox = require("./toolbox");
+var Mail = require("./mail");
+
 var bcrypt = require("bcrypt");
 var crypto = require("crypto");
 
@@ -30,38 +31,32 @@ exports.getUserProfileByAnything = function(query,callback) {
 	Database.query("SELECT * FROM `users` WHERE `email` = " + Database.escape(query) + " OR `username` = " + Database.escape(query), callback);
 }
 
-exports.getMassUserDisplayName = function(following,callback) {
-	var querystr = "SELECT `displayname`, `username`, `id` FROM `users` WHERE `id` IN (";
-	for (var i = 0; i < following.length - 1; i++)
-		querystr += "'" + following[i] + "',";
-	querystr += "'" + following[following.length - 1] + "')";
-
-	Database.query(querystr, callback);
-}
-
-exports.canSeeUser = function(targetUser, fromUser) {
-	if (targetUser.id == fromUser) return true;
-
-	var blacklist = (targetUser.blacklist || "").split(",");
-	if (blacklist.indexOf(fromUser.toString()) !== -1)
-		return false;
-
-	if (targetUser.private) {
-		var whitelist = (targetUser.whitelist || "").split(",");
-		if (whitelist.indexOf(fromUser.toString()) === -1)
-			return false;
+exports.getMassUserDisplayName = function(users,callback) {
+	// sanitize
+	for (var i = 0; i < users.length; i++) {
+		users[i] = parseInt(users[i]);
 	}
 
-	return true;
+	Database.query("SELECT `displayname`, `username`, `id` FROM `users` WHERE `id` IN (" + users.join(",")+")", callback);
 }
 
-exports.trySignin = function(user,pass,callback) {
-	Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(user) + " OR `email` = " + Database.escape(user) + ";", function(err,rows) 
+exports.trySignin = function(user,pass,response) {
+	Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(user) + " OR `email` = " + Database.escape(user), function(err,rows) 
 	{
 		if (rows.length < 1 || err) return callback(false);
 		bcrypt.compare(pass, rows[0].password, function(err,match) {
-			if (err) return callback(false);
-			callback(match,rows[0]);
+			if (err || !match) {
+				response.writeHead(403);
+				response.end();
+			} else {
+				var sessionid = rows[0].id + "," + rows[0].authkey;
+				response.writeHead(200, {
+					"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT",
+					"Cache-Control": "no-cache"
+				});
+				response.end();
+			}
+			user = pass = err = rows = null;
 		});
 	});
 }
@@ -116,9 +111,26 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 						});
 					}
 				});
-
 			});
+		});
+	});
+}
 
+exports.deleteUser = function(userobj, postObject, callback) {
+	bcrypt.compare(postObject.password, userobj.password, function(err, match) { 
+		if (err) return callback(err);
+		if (!match) return callback(null, false);
+
+		Database.deleteObject("users", { id: userobj.id }, function(err) {
+			if (err) return callback(err);
+			Database.deleteObject("timeline", { from: userobj.id }, function(err) {
+				Database.deleteObject("messages", { from: userobj.id }, function(err) {
+					Database.deleteObject("comments", { from: userobj.id }, function(err) {
+						if (err) return callback(err);
+						callback(false, true);
+					});
+				});
+			});
 		});
 	});
 }
@@ -146,8 +158,20 @@ exports.unfollow = function(userobj, tofollow, callback) {
 	}
 }
 
-exports.removeFollower = function(userobj, tofollow, callback) {
-	if (userobj.followers.indexOf(tofollow) != -1) {
-		userobj.followers.splice(userobj.followers.indexOf(tofollow), 1);
-	}
+exports.forgotPass = function(user, callback, response) {
+	User.getUserProfileByAnything(user, function(err, rows) {
+		if (rows && rows.length > 0) {
+			var token = this.resetPassword(rows[0]);
+
+			Mail.sendMessage(rows[0].id, "forgot", {
+				token: token
+			});
+
+			callback(response, 1);
+		} else {
+			callback(response, 0);
+		}
+		request = userobj = uri = sessionid = null;
+	});
 }
+
