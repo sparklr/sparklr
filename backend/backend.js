@@ -5,24 +5,16 @@ var cluster = require("cluster");
 var url = require("url");
 var http = require("http");
 
-var frontend = require("./frontend");
-var user = require("./user");
-var work = require("./work");
-var database = require("./database");
+var Frontend = require("./frontend");
+var User = require("./user");
+var Work = require("./work");
+var Database = require("./database");
 
-/*if (process.platform != "iwin32") {
-	var memwatch = require('memwatch');
-	var hd = new memwatch.HeapDiff();
-	memwatch.on("leak", function(info) {
-		console.log((new Date).toString() + ": MemoryLeak");
-		console.log(info);
-		console.log(JSON.stringify(hd.end(), null, 3));
-		process.exit(1);
-	});
-}
-*/
 //var agent = require('webkit-devtools-agent');
-database.init(global.database);
+Database.init(global.database);
+
+var memwatch = require("memwatch");
+var hd = new memwatch.HeapDiff();
 
 var server = http.createServer(handleRequests);
 server.listen(8080);
@@ -39,29 +31,29 @@ function handleRequests(request,response) {
 		relayReload(requesturi.pathname);
 		response.end();
 	}
-
-	if (requesturi.pathname.indexOf("heap") !== -1) {
+	if (requesturi.pathname.indexOf("/heap") !== -1) {
+		var diff = hd.end();
 		response.writeHead(200);
-		response.write(JSON.stringify(hd.end(), null, 3));
+		response.write(JSON.stringify(diff, null, 3));
 		response.end();
 		hd = new memwatch.HeapDiff();
 		return;
 	}
 
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
-		work.run(request,response,requesturi,sessionid);
+		Work.run(request,response,requesturi,sessionid);
 	} else {
 		if (sessionid != null && sessionid != "") {
 			var s = sessionid.split(",");
 
-			user.verifyAuth(s[0],s[1], function(success,userobj) {
+			User.verifyAuth(s[0],s[1], function(success,userobj) {
 				if (success)
-					frontend.run(userobj,request,response,sessionid);
+					Frontend.run(userobj,request,response,sessionid);
 				else
-					frontend.showExternalPage(request,response);
+					Frontend.showExternalPage(request,response);
 			});
 		} else {
-			frontend.showExternalPage(request,response);
+			Frontend.showExternalPage(request,response);
 		}
 	}
 }
