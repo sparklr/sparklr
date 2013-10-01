@@ -44,6 +44,10 @@ exports.query = function(query, callback, args) {
 			}
 			if (res.fetchAll) {
 				res.fetchAll(function(err,res) {
+					if (err) { 
+						console.log((new Date) + ": err: " + query);
+						console.log(res);
+					}
 					callback(err,res,args);
 					query = null;
 					callback = null;

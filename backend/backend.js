@@ -13,8 +13,8 @@ var Database = require("./database");
 //var agent = require('webkit-devtools-agent');
 Database.init(global.database);
 
-var memwatch = require("memwatch");
-var hd = new memwatch.HeapDiff();
+//var memwatch = require("memwatch");
+//var hd = new memwatch.HeapDiff();
 
 var server = http.createServer(handleRequests);
 server.listen(8080);
@@ -31,7 +31,7 @@ function handleRequests(request,response) {
 		relayReload(requesturi.pathname);
 		response.end();
 	}
-	if (requesturi.pathname.indexOf("/heap") !== -1) {
+	/*if (requesturi.pathname.indexOf("/heap") !== -1) {
 		var diff = hd.end();
 		response.writeHead(200);
 		response.write(JSON.stringify(diff, null, 3));
@@ -39,6 +39,7 @@ function handleRequests(request,response) {
 		hd = new memwatch.HeapDiff();
 		return;
 	}
+	*/
 
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		Work.run(request,response,requesturi,sessionid);
