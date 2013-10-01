@@ -9,9 +9,10 @@ window.addEventListener("hashchange", function() { updatePages() });
 window.addEventListener("load", function() { updatePages(true) });
 
 var newPageToFetch = false;
+var doctop = 0;
 
 var scrollHandler = function() {
-	var doctop = document.body.scrollTop || document.documentElement.scrollTop;
+	doctop = document.body.scrollTop || document.documentElement.scrollTop;
 	if (scrollDistanceFromBottom() < 600) {
 		if (newPageToFetch) {
 			console.log("Fetching posts");
