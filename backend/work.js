@@ -539,7 +539,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 				if (users.length < 1) {
 					return do400(response, 404, "no such user");
 				}
-					console.log();
+
 				var profile = users[0];
 
 				var obj = {
