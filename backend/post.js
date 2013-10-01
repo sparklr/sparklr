@@ -175,7 +175,7 @@ function processPostTags(body, id) {
 	for (var i = 0; i < tags.length; i++) {
 		tags[i] = tags[i].substring(1);
 
-		Database.postObject("tags", { postid: id, tag: tags[i], time: toolbox.time() }, function(err) {
+		Database.postObject("tags", { postid: id, tag: tags[i], time: Toolbox.time() }, function(err) {
 			if (err)
 				console.log(err);
 		});
