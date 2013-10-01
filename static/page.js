@@ -64,22 +64,7 @@ var homepage = function() {
 		composer.selectionStart = composer.value.length;
 	}
 	window.scrollTo(0,timelineTop);
-	dummySidebar();
 	pollData();
-}
-
-function dummySidebar() {
-	return;
-	var html = "";
-	if (!MOBILE) {
-		html += "<div class='unimportant'>";
-		html += "<a href='/#/'>The World</a>";
-		html += "<a href='/#/following'>People I follow</a>";
-		html += "<a href='/#/invite/'>Invite friends</a>";
-		html += "<a href='javascript:meetSomeoneRandom();'>Meet someone random</a>";
-		html += "</div>";
-	}
-	_g("sidebar").innerHTML = html;
 }
 
 function updatePages(loaded) {

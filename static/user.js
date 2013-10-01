@@ -2,7 +2,6 @@ var DISPLAYNAMES = [];
 var USERHANDLES = [];
 var AVATAR_IDS = [];
 var HIDDEN_USERS = [];
-var IS_PRIVATE = false;
 var handlesToFetch = [];
 var fetchTaskAsync;
 var CHARMOD = '\u273B';
@@ -193,9 +192,9 @@ function updateAccountSettings() {
 	_g("savesettings").value = "Saving...";
 }
 function updateSettingsCallback(result, message) {
-	console.log(result);
-	_g("settings_result").innerHTML = message;
-	_g("settings_result").className = result == true ? "ok" : "error";
+	var r_ele = _g("settings_result");
+	r_ele.innerHTML = message;
+	r_ele.className = result == true ? "ok" : "error";
 
 	if (result) {
 		_g("savesettings").value = "Saved";
@@ -213,13 +212,6 @@ function getUserSuggestions(input) {
 		}
 	}
 	return items;
-}
-
-function requestWhitelist(user) {
-	ajaxGet("work/requestwhitelist/" + user, null, function() {
-		_g("btnWhitelist").disabled = true;
-		_g("btnWhitelist").value = "Request Sent";
-	});
 }
 
 function meetSomeoneRandom() {

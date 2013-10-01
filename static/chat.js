@@ -9,7 +9,7 @@ var chat_downloadingOlder;
 
 var chatMessages = [];
 
-var scrollUpHandler = function(e) {
+function scrollUpHandler(e) {
 	if (!_g("scrollUpContent"))
 		return;
 
@@ -63,7 +63,8 @@ function addChatMessages(data) {
 	for (var i = data.length - 1; i >= 0; i--) {
 		addChatMessage(data[i].from, data[i].message, data[i].time, false);
 	}
-	hideUnconfirmedMessages();
+	if (data.length > 0)
+		hideUnconfirmedMessages();
 }
 
 function addChatMessage(from, msg, time, prepend, unconfirmed) {
@@ -75,12 +76,9 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 	if (typeof(unconfirmed) != "undefined" && unconfirmed)
 		ele.className += " unconfirmedchat";
 
-	console.log(lastMessageFrom);
-	console.log(from);
-
 	ele.id = "msg_" + time;
 	var html = "";
-	if (lastMessageFrom != from) {
+	if (lastMessageFrom != from || prepend && lastMessageFrom == from) {
 		html += "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>";
 	}
 	html += "<div style='display:block;margin-left: 25px'>" + processMedia(escapeHTML(msg)) + "</div>";
@@ -98,7 +96,6 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 
 	if (!unconfirmed)
 		lastMessageFrom = from;
-
 }
 
 function hideUnconfirmedMessages() {
@@ -139,11 +136,6 @@ function sendChatMessage() {
 	});
 }
 
-
-function addFriend(id, status) {
-	FRIENDS[id] = status;
-}
-
 function addFriendElement(id) {
 	var e = document.createElement("a");
 	e.id = "friendicon_" + id;
@@ -152,12 +144,6 @@ function addFriendElement(id) {
 	
 	_g("friendslist").appendChild(e);
 	return e;
-}
-
-function updateFriendsList() {
-	for (id in FRIENDS) {
-		setUserStatus(id);
-	}
 }
 
 function setUserAttention(user, on) {

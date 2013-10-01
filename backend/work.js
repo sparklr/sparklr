@@ -239,7 +239,7 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 					message: postObject.message
 				}, function(err, data) {
 					if (err) return do500(response, err);
-					Notification.addUserNotification(parseInt(postObject.to), "", 0, userobj.id, Notification.N_CHAT);
+					Notification.addUserNotification(parseInt(postObject.to), postObject.message, 0, userobj.id, Notification.N_CHAT);
 					sendObject(response, {});
 				});
 			});

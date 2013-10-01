@@ -7,6 +7,14 @@ setInterval("pollData();", 1500);
 // Event handlers 
 window.addEventListener("hashchange", function() { updatePages() });
 window.addEventListener("load", function() { updatePages(true) });
+window.addEventListener("scroll", scrollHandler);
+window.addEventListener("blur", function() {
+	pageActive = false;
+});
+window.addEventListener("focus", function() {
+	pageActive = true;
+	handleNotifications();
+});
 
 var newPageToFetch = false;
 var doctop = 0;
@@ -35,19 +43,7 @@ var scrollHandler = function() {
     }
 }
 
-window.addEventListener("scroll", scrollHandler);
-
-window.addEventListener("blur", function() {
-	pageActive = false;
-});
-
-window.addEventListener("focus", function() {
-	pageActive = true;
-	handleNotifications();
-});
-
 // Render/process data sent from the server (initial payload)
-
 var MOBILE = navigator.userAgent.match(/mobile/i) ? true : false;
 var AUTHKEY;
 var curUser;
@@ -57,7 +53,6 @@ var isMod;
 var app = function(payload) { 
 	DISPLAYNAMES = payload.displayNames;
 	USERHANDLES = payload.userHandles;
-	IS_PRIVATE = payload.private;
 	AVATAR_IDS[curUser] = payload.avatarid;
 	HIDDEN_USERS = payload.blacklist;
 	joinedNetworks = payload.networks;
@@ -69,7 +64,6 @@ var app = function(payload) {
 	for (var i = 0; i < joinedNetworks.length; i++) {
 		addNetwork(joinedNetworks[i]);
 	}
-
 }
 
 var s = document.cookie.match(/D\=([^\s|^\;]+)\;?/)[1].split(",");
