@@ -1,15 +1,11 @@
 var lastNotificationTime = 0;
 var currentNotifications = [];
 var notificationCount = 0;
-var newMessageFrom = "";
 
 var N_REPOST = 6;
-var N_BOARD = 4;
 var N_CHAT = 3;
 var N_MENTION = 2;
 var N_EVENT = 1;
-
-var EMAIL_NOT_VERIFIED = "Pst: Your email address is unverified. <a href='#/settings/resend'>Resend verification</a>";
 
 function addNotification(notification) {
 	if (currentNotifications[notification.id]) return; //duplicate
@@ -32,7 +28,6 @@ function addNotification(notification) {
 	n.className = "fadein";
 	n.onclick = function () { location.href = notification.click; };
 
-	//TODO: notifications may not work in IE
 	var parent = _g("notificationlist");
 	if (parent.children.length < 1)
 		parent.appendChild(n);
@@ -40,7 +35,10 @@ function addNotification(notification) {
 		parent.insertBefore(n, parent.children[0]);
 
 	notificationCount++;
-	_g("notifs").className = "notifs jiggle";
+
+	if (notification.type != N_CHAT)
+		_g("notifs").className = "notifs jiggle";
+
 	updatePageTitle();
 	if(_g("notifications")){
 		addNotificationToPage(notification);
@@ -71,7 +69,7 @@ function getNotificationBody(notification) {
 	var body = "";
 	switch (parseInt(notification.type)) {
 		case 1: //commented on post 
-			if  (notification.body == LIKE_CHAR) 
+			if (notification.body == LIKE_CHAR) 
 				body = "likes your post.";
 			else
 				body = "commented:<br>" + notification.body;
@@ -89,13 +87,9 @@ function getNotificationBody(notification) {
 		case 3: //chat
 			setUserAttention(notification.from, true);
 			updatePageTitle();
-			body = "messaged you.";
+			body = "says: " + notification.body;
 			action = "/#/chat/" + notification.from;
 			setNewInbox(true);
-		break;
-		case 7: //whitelist
-			body = "wants to be whitelisted.";
-			action = "/#/user/" + notification.from;
 		break;
 	}
 
@@ -104,21 +98,6 @@ function getNotificationBody(notification) {
 	notification.click = action;
 	
 	return notification;
-}
-
-function showNotifications() {
-	var l = 0;
-	var n;
-	for (i in currentNotifications) {
-		l++;
-		n = currentNotifications[i];
-	}
-	if (l < 2) {
-		n = getNotificationBody(n);
-		location.href=n.click;
-	} else {
-		location.href="/#/notifications";
-	}
 }
 
 function removeNotification(id) {
@@ -151,10 +130,6 @@ function handleNotifications() {
 			dismissNotification(id);
 			continue;
 		}
-		if (s[1] == "user" && s[2] == curUser && currentNotifications[id].type == N_BOARD) {
-			dismissNotification(id);
-			continue;
-		}
 		if (currentNotifications[id].type == N_CHAT) {
 			if (s[1] == "chat" && s[2] == currentNotifications[id].from) {
 				setUserAttention(currentNotifications[id].from, false);
@@ -162,7 +137,6 @@ function handleNotifications() {
 				setNewInbox(false);
 			}
 		}
-
 	}
 }
 
