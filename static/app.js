@@ -7,7 +7,6 @@ setInterval("pollData();", 1500);
 // Event handlers 
 window.addEventListener("hashchange", function() { updatePages() });
 window.addEventListener("load", function() { updatePages(true) });
-window.addEventListener("scroll", scrollHandler);
 window.addEventListener("blur", function() {
 	pageActive = false;
 });
@@ -42,6 +41,7 @@ var scrollHandler = function() {
         a.style.opacity = 0;
     }
 }
+window.addEventListener("scroll", scrollHandler);
 
 // Render/process data sent from the server (initial payload)
 var MOBILE = navigator.userAgent.match(/mobile/i) ? true : false;

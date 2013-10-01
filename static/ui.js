@@ -206,8 +206,8 @@ function updateUI() { //interval that scans DOM, updates UI
 setInterval("updateUI();", 2000);
 
 function scrollDistanceFromBottom() {
-	var doctop = document.body.scrollTop || document.documentElement.scrollTop;
-	return diff = document.documentElement.scrollHeight - (doctop + window.innerHeight);
+	doctop = document.body.scrollTop || document.documentElement.scrollTop;
+	return document.documentElement.scrollHeight - (doctop + window.innerHeight);
 }
 
 function scrollToTop() {
