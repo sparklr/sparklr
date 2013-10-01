@@ -5,7 +5,6 @@ function _g(id) { return document.getElementById(id); }
 
 //Popups
 function showPopup(content,classname) {
-	
 	fadeOutPage();
 
 	var popup = document.createElement("div");
@@ -19,12 +18,9 @@ function showPopup(content,classname) {
 
 	popup.id = "popup_" + Math.random();
 	
-	
 	setTimeout(function() { popup.style.opacity = 1; }, 10);
 	
-	
 	popup.innerHTML = content;
-	
 	document.body.appendChild(popup);	
 }
 
@@ -87,7 +83,7 @@ function processPost(post) {
 	var message = processMedia(escapeHTML(post.message));
 
 	var lines = message.split("\n");
-	var lineexp = /^\[([\d]+)\](.*)/gm; //liine starts with [ID]
+	var lineexp = /^\[([\d]+)\](.*)/gm; //line starts with [ID]
 	var result = "";
 	for (var i = 0; i < lines.length; i++) {
 		if (lines[i].substring(0,1) == "[") {
@@ -207,7 +203,7 @@ function updateUI() { //interval that scans DOM, updates UI
 	}
 }
 
-setInterval("updateUI();", 1000);
+setInterval("updateUI();", 2000);
 
 function scrollDistanceFromBottom() {
 	var doctop = document.body.scrollTop || document.documentElement.scrollTop;
@@ -265,7 +261,6 @@ function search(query) {
 }
 
 function stopBubbling(e) {
-	console.log("bubble");
 	if (!e)
 		e = window.event;
 	
@@ -276,13 +271,10 @@ function stopBubbling(e) {
 
 function updatePageTitle() {
 	var title = "Sparklr";
-	if (newMessageFrom != "") {
-		title = newMessageFrom + " messaged you";
-	}
 	if (notificationCount != 0) {
 		title = notificationCount + "* " + title;
 	}
-	setTimeout(function () { window.document.title = title; }, 0);
+	setTimeout(function () { window.document.title = title; }, 10);
 }
 
 function escapeHTML(text) {

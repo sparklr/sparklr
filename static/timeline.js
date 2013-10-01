@@ -23,7 +23,6 @@ function addTimelineEvent(item,append) {
 		return;
 	}
 	if (!append && doctop > 10) {
-		console.log(item);
 		missingPosts.push(item);
 		return;
 	}
