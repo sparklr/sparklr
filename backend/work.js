@@ -126,6 +126,7 @@ exports.run = function(request, response, uri, sessionid) {
 				try {
 					postObject = request.headers['x-data'] ? JSON.parse(request.headers['x-data']) : {};
 				} catch (e) {
+					console.log("Bad post data: " + request.headers['x-data']);
 					return do500(response, e);
 				}
 				
