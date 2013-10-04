@@ -128,7 +128,7 @@ exports.deleteComment = function(userobj, id, callback) {
 		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(userobj.id);
 		Database.query(query, function(){});
 		exports.updateCommentCount(rows[0].postid, -1);
-		callback(true);
+		callback(null,true);
 	});
 }
 
