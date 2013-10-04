@@ -43,7 +43,12 @@ exports.getMassUserDisplayName = function(users,callback) {
 exports.trySignin = function(user,pass,response) {
 	Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(user) + " OR `email` = " + Database.escape(user), function(err,rows) 
 	{
-		if (rows.length < 1 || err) return callback(false);
+		if (rows.length < 1 || err) {
+			response.writeHead(403);
+			response.write("false");
+			response.end();
+			return;
+		}
 		bcrypt.compare(pass, rows[0].password, function(err,match) {
 			if (err || !match) {
 				response.writeHead(403);
@@ -159,9 +164,9 @@ exports.unfollow = function(userobj, tofollow, callback) {
 }
 
 exports.forgotPass = function(user, callback, response) {
-	User.getUserProfileByAnything(user, function(err, rows) {
+	exports.getUserProfileByAnything(user, function(err, rows) {
 		if (rows && rows.length > 0) {
-			var token = this.resetPassword(rows[0]);
+			var token = exports.resetPassword(rows[0]);
 
 			Mail.sendMessage(rows[0].id, "forgot", {
 				token: token
