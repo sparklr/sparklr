@@ -48,6 +48,12 @@ function pullHandlesFromServer() {
 
 function pullHandlesFromServerCallback(handles) {
 	var tags = document.getElementsByTagName("cite");
+	for (var h in handles) {
+		USERHANDLES[handles[h].id] = handles[h].username;
+		DISPLAYNAMES[handles[h].id] = handles[h].displayname;
+		AVATAR_IDS[handles[h].id] = handles[h].avatarid;
+		updateAvatar(handles[h].id, handles[h].avatarid);
+	}
 	for (var i = 0; i < tags.length; i++) {
 		for (var h in handles) {
 			var id = handles[h].id;
@@ -58,8 +64,6 @@ function pullHandlesFromServerCallback(handles) {
 					tags[i].innerHTML = processDisplayName(handles[h].displayname);
 				}
 			}
-			USERHANDLES[handles[h].id] = handles[h].username;
-			DISPLAYNAMES[handles[h].id] = handles[h].displayname;
 		}
 	}
 }
