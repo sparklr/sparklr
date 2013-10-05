@@ -37,7 +37,7 @@ exports.getMassUserDisplayName = function(users,callback) {
 		users[i] = parseInt(users[i]);
 	}
 
-	Database.query("SELECT `displayname`, `username`, `id` FROM `users` WHERE `id` IN (" + users.join(",")+")", callback);
+	Database.query("SELECT `displayname`, `username`, `id`, `avatarid` FROM `users` WHERE `id` IN (" + users.join(",")+")", callback);
 }
 
 exports.trySignin = function(user,pass,response) {
