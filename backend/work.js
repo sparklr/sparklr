@@ -277,8 +277,10 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 			}
 
 			if (postObject.bio) {
-				if (postObject.bio.length < 300) {
+				if (postObject.bio.length < 400) {
 					userobj.bio = postObject.bio;
+				} else {
+					userobj.bio = postObject.bio.substring(0,397) + "...";
 				}
 			}
 			
