@@ -213,7 +213,12 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 			});
 		return;
 		case "editpost":
-			Post.edit(userobj.id, postObject.post, postObject.body, function(err) {
+			Post.edit(userobj.id, postObject.id, postObject.body, userobj.rank, function(err) {
+				sendObject(response, {});
+			});
+			break;
+		case "editcomment":
+			Post.editcomment(userobj.id, postObject.id, postObject.body, userobj.rank, function(err) {
 				sendObject(response, {});
 			});
 			break;
