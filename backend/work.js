@@ -137,9 +137,11 @@ exports.run = function(request, response, uri, sessionid) {
 						if (s[2] == "post")
 							args.width = 580;
 						if (s[2] == "avatar") 
-							args = { width: 50, height: 50, fill: true, id: userobj.id };
+							args = { thumbOnly: true, width: 50, height: 50, fill: true, id: userobj.id };
+						if (s[2] == "header") 
+							args = { noThumb: true, width: 570, height: 290, fill: true, id: userobj.id };
 						if (s[2] == "background") 
-							args = { id: userobj.id, category: "b" };
+							args = { noThumb: true, id: userobj.id, category: "b" };
 						
 						Upload.handleUpload(postBody, userobj, args, function(err, id) {
 							postBody = null;
@@ -383,6 +385,11 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 			userobj.avatarid = Toolbox.time();
 			Database.updateObject("users", userobj);
 			sendObject(response, userobj.avatarid);
+		break;
+		case "header":
+			userobj.avatarid = Toolbox.time();
+			Database.updateObject("users", userobj);
+			sendObject(response, Toolbox.time());
 		break;
 		case "background":
 			if (postObject.remove) {
