@@ -13,9 +13,14 @@ exports.getComments = function(postid, since, callback) {
 	Database.query(query, callback);
 }
 
-exports.edit = function(user, id, body, callback) {
+exports.edit = function(user, id, body, rank, callback) {
 	if (body.length > 500) return callback(false);
-	Database.query("UPDATE `timeline` SET `message` = " + Database.escape(body) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(user), callback);
+	Database.query("UPDATE `timeline` SET `message` = " + Database.escape(body) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), callback);
+}
+
+exports.editcomment = function(user, id, body, rank, callback) {
+	if (body.length > 500) return callback(false);
+	Database.query("UPDATE `comments` SET `message` = " + Database.escape(body) + " WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), callback);
 }
 
 exports.post = function(user, data, callback) {
@@ -125,7 +130,10 @@ exports.deleteComment = function(userobj, id, callback) {
 			return false;
 		}
 
-		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id) + " AND `from` = " + parseInt(userobj.id);
+		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id);
+		if (userobj.rank < 50) 
+			query += " AND `from` = " + parseInt(userobj.id);
+
 		Database.query(query, function(){});
 		exports.updateCommentCount(rows[0].postid, -1);
 		callback(null,true);

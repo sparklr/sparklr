@@ -162,11 +162,13 @@ function showImage(img) {
 }
 
 function editPost() {
-	_g("post").contentEditable = true;
+	ajaxGet("work/editpost", {  id: subscribedStream, body: _g("post").textContent }, function() {
+	});
 }
-function savePost() {
-	ajaxGet("work/editpost", { post: subscribedStream, body: _g("post").textContent }, function() {
-		_g("post").contentEditable = false;
+function editComment(e) {
+	e = e || window.event;
+
+	ajaxGet("work/editcomment", { id: e.target.getAttribute("data-id"), body: e.target.textContent }, function() {
 	});
 }
 
@@ -220,15 +222,18 @@ function renderComment(comment) {
 	html += "<a href='#/user/" + comment.from + "'><img class='littleavatar' src='" + getAvatar(comment.from) + "'></a>";
 	html += "</div> <div class='rightcontrols'><div class='time' style='opacity:0.5' data-time='" + comment.time + "'></div>";
 
-    if (comment.from == curUser) {
+	var canEdit = comment.from == curUser || isMod;
+
+    if (canEdit) {
         html += "<br><a class='delete' onClick='deleteComment(\"" + comment.id + "\", \"" + comment.postid + "\");'></a>";
     }
+
     html += "</div> <a class='person' href='#/user/" + comment.from + "'>" + getDisplayName(comment.from) + "</a>";
 	if (comment.like) {
 		html += " likes this<br><br>";
 	}
 	else
-		html += "<div style='margin-left: 50px;'>" + processMedia(escapeHTML(comment.message)) + "</div>";
+		html += "<div style='margin-left: 50px;'" + (canEdit ? " contenteditable onblur='editComment(event)' data-id='" + comment.id + "'" : "") + ">" + processMedia(escapeHTML(comment.message)) + "</div>";
 
 	html += "</div>";
 	e.innerHTML += html;
