@@ -31,14 +31,20 @@ exports.handleUpload = function(data, userobj, args, callback) {
 		data = null;
 
 		if (err) callback(err);
-		resizeImage(tmpfile, outfile, function() {
-			if (args.width) {
-				makeThumb(tmpfile, outthumb, args, function() {
-					callback(null,imgid);
-				});
-			} else 
+		if (args.thumbOnly) {
+			makeThumb(tmpfile, outthumb, args, function() {
 				callback(null,imgid);
-		});
+			});
+		} else {
+			resizeImage(tmpfile, outfile, function() {
+				if (!args.noThumb) {
+					makeThumb(tmpfile, outthumb, args, function() {
+						callback(null,imgid);
+					});
+				} else 
+					callback(null,imgid);
+			});
+		}
 	});
 }
 

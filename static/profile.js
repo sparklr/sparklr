@@ -23,8 +23,7 @@ function editProfile() {
 			bio.innerHTML = "About me:&nbsp;";
 		bio.setAttribute("contenteditable", true);
 
-		_g("userTip").style.display = "inline-block";
-		_g("backgroundTip").style.display = "inline-block";
+		_g("editContainer").style.display = "block";
 		_g("editBtn").value = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
@@ -33,8 +32,7 @@ function editProfile() {
 			bio.textContent = bio.textContent.substring(9);
 		}
 		bio.setAttribute("contenteditable", false);
-		_g("userTip").style.display = "none";
-		_g("backgroundTip").style.display = "none";
+		_g("editContainer").style.display = "none";
 	
 		var data = { 
 			"displayname": _g("userDisplayName").textContent,
@@ -49,11 +47,19 @@ function editProfile() {
 }
 
 function avatarUploadCallback(e) {
-	_g("profileheader").className += " pulse";
+	_g("useravatar").className += " pulse";
 	uploadImage(e, "work/avatar", function(xhr) {
 		var avatarid = xhr.responseText;
-		updateHeader(curUser, avatarid, true);
 		updateAvatar(curUser, avatarid);
+		_g("useravatar").className = "avatar";
+	});
+}
+
+function headerUploadCallback(e) {
+	_g("profileheader").className += " pulse";
+	uploadImage(e, "work/header", function(xhr) {
+		var id = xhr.responseText;
+		updateHeader(curUser, id, true);
 		_g("profileheader").className = "profileheader";
 	});
 }
