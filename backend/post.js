@@ -80,9 +80,13 @@ exports.postComment = function(user, data, callback) {
 		}
 
 		var query = "INSERT INTO `comments` (`postid`, `from`, `message`, `time`) ";
-		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+Database.escape(data.comment) + "," +  Math.floor((new Date).getTime() / 1000) + ")";
+		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+Database.escape(data.comment) + "," +  Toolbox.time() + ")";
 
 		Database.query(query, callback);
+		console.log(query);
+		
+		process.send({ t: 0, postid: data.id, from: user, message: data.comment, time: Toolbox.time() });
+
 		var count = (rows[0].commentcount + 1 || 1);
 		Database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(data.id));
 
