@@ -6,7 +6,7 @@
 	}
 	</script>
 	<% if (data.type == 1) %>
-	<div class='picturepost' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
+	<div class='picturepost mini' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
 		<img src='{imgUrl(data.img)}'>
 	</div>
 	<% endif %>
@@ -33,7 +33,7 @@
 	<div id='responseholder'>
 		<div id='comments_{data.id}' style='padding:5px;'></div>
 		<div class='fadein' style='padding:5px;'>
-			{ renderComposer('Respond...', 'postComment', true) }
+			{ renderComposer('Respond...', 'postComment', true, data.id) }
 		</div>
 	</div>
 	<div id='reblogholder' class='fadein' style='display:none;min-height:100px'>
