@@ -21,7 +21,11 @@ function showPopup(content,classname) {
 	setTimeout(function() { popup.style.opacity = 1; }, 10);
 	
 	popup.innerHTML = content;
+	popup.style.top = doctop + "px";
+
 	document.body.appendChild(popup);	
+
+	return popup.id;
 }
 
 function hidePopup(id) {
@@ -211,10 +215,12 @@ function scrollDistanceFromBottom() {
 }
 
 function scrollToTop() {
-	scrollTo(document.body.scrollTop ? document.body : document.documentElement, 0, 500);
+	animScrollTo(document.body.scrollTop ? document.body : document.documentElement, 0, 500);
 }
  
-function scrollTo(element, to, duration) {
+function animScrollTo(element, to, duration) {
+	console.log(to);
+
     var initial = element.scrollTop,
         delta = to - initial,
         curtime = 0,
