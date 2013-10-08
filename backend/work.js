@@ -249,6 +249,8 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 					if (err) return do500(response, err);
 					Notification.addUserNotification(parseInt(postObject.to), postObject.message, 0, userobj.id, Notification.N_CHAT);
 					sendObject(response, {});
+		
+					process.send({ t: 1, to: postObject.to, from: userobj.id, message: postObject.message, time: Toolbox.time() });
 				});
 			});
 		return;
