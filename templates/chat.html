@@ -1,17 +1,18 @@
 <script>
-	var s = location.hash.split("/");
-	curChatUser = s[2];
+	var user = fragments[2] || fragments[1];
 	lastMessageFrom = null;
 </script>
 
 <div class='contentwrapper'>
-	<div style='background-image: url({imgUrl(curChatUser,true)}); margin: -5px -5px; width: 578px; height:200px;' class='profileheader'>
-		<p class='headertitle fadein'><a href='#/user/{curChatUser}'>{ getDisplayName(curChatUser) }</a></p>
+	<a href='#/user/{user}'>
+		<img src='{getAvatar(user)}' class='avatar'>
+		{ getDisplayName(user) }
+	</a>
 </div>
 <div class='fadein' style='margin: 4px;'>
-	<div id='scrollUpContent'>
+	<div class='scrollUpContent' id='scrollUpContent_{user}'>
 	</div>
-	{ renderComposer('Type a message...', 'sendChatMessage', true) }
+	{ renderComposer('Type a message...', 'sendChatMessage', true, 'chat_' + user) }
 </div>
 </div>
 <script>

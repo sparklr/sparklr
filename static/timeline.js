@@ -28,13 +28,6 @@ function addTimelineEvent(item,append) {
 	}
 	
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
-	if (timelineEvents[subscribedStream]) {
-		for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
-			if (timelineEvents[subscribedStream][i].message == item.message && timelineEvents[subscribedStream][i].id != item.id && item.from != curUser && item.via) {
-				return;
-			}
-		}
-	}
 
 	var ev = document.createElement("div");
 
@@ -43,7 +36,7 @@ function addTimelineEvent(item,append) {
 	ev.onclick = function(e) { 
 		if (!e) e = window.event;
 		if (!e.target.onclick || e.target == ev)
-			location.href = "#/post/" + item.id; 
+			showEvent(item.id);
 	}
 
 	if (item.type == 1) {
@@ -91,6 +84,11 @@ function addTimelineArray(arr, timeline, append) {
 }
 
 function showEvent(id,args) {
+	var pid = addWindow("c" + id);
+	renderTemplate("post/" + id, pid)
+	subscribeToStream("c" + id);
+	return;
+
 	if (typeof(args) === "undefined")
 		var args = "";
 
@@ -204,7 +202,7 @@ function hidePost(id,from) {
 	});
 }
 
-function renderComment(comment) {
+function renderComment(comment,scroll) {
 	var commentlist = _g("comments_" + comment.postid);
 
 	var e = document.createElement("div");
@@ -238,6 +236,13 @@ function renderComment(comment) {
 	html += "</div>";
 	e.innerHTML += html;
 	commentlist.appendChild(e);
+
+	if (scroll) {
+		var g = _g("window_c"+comment.postid);
+		console.log(g.scrollHeight - g.scrollTop);
+		if (g.scrollHeight - g.scrollTop < 500)
+			g.scrollTop = 99999999999;
+	}
 }
 
 function getLastCommentTime() {
@@ -275,10 +280,11 @@ function updateCommentCount(id, count) {
 }
 
 function postComment(e) {
+	var id = e.target.getAttribute("data-id");
 	var vars = {
 		to: currentPostBy,
-		id: subscribedStream,
-		comment: _g("composer").value
+		id: id,
+		comment: _g('composer_'+id).value
 	}
 
 	if (imgAttachments) {
@@ -288,7 +294,7 @@ function postComment(e) {
 	}
 
 	setTimeout(function() {
-		_g("composer").value="";
+		_g('composer_'+id).value="";
 		expandTextarea(e);
 	},10);
 
@@ -359,7 +365,7 @@ function renderComposer(caption, keydown, minipreview, id) {
 	if (minipreview) {
 		html += "<div id='attachment" + (id || "") + "' class='minipreview'></div>";
 	}
-	html += "<textarea id='" + (id || "composer") + "' placeholder='" + caption + "' onkeydown='isEnter(event, " + keydown + ");expandTextarea(event);' maxlength=500></textarea>";
+	html += "<textarea data-id='" + id + "' id='composer_" + (id || "composer") + "' placeholder='" + caption + "' onkeydown='isEnter(event, " + keydown + ");expandTextarea(event);' maxlength=500></textarea>";
 	html += "<div class='composercontrols'><input id='attachfile' data-target='attachment" + (id || "") + "' onchange='attachfile_changed(event,\"" + (id || "") + "\")' type='file'></div>";
 	html += "</div></div>";
 	return html;

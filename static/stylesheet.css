@@ -554,6 +554,10 @@ div.picturepost img {
 	max-height: 443px;
 	margin-bottom: -4px;
 }
+div.picturepost.mini img {
+	max-width: 290px;
+	max-height: 220px;
+}
 div.contentwrapper div.picturepost {
 	margin: 0px;
 	margin-bottom: 10px;
@@ -659,7 +663,7 @@ div.attachment:hover div, div.picturepost:hover div {
 }
 #composerframe textarea {
 	border: none;
-	width: 455px;
+	width: calc(100% - 10px);
 	-webkit-transition: all 0.3s ease;
 }
 
@@ -699,8 +703,8 @@ img.avatar {
 
 img.inlineimage {
 	margin: 5px;
-	max-width: 500px;
-	max-height: 300px;
+	max-width: 200px;
+	max-height: 200px;
 }
 
 div.photos {
@@ -852,12 +856,13 @@ textarea {
 	overflow: auto;
 }
 
-#scrollUpContent {
+div.scrollUpContent {
     display: inline-block;
-    height: 400px;
+    height: 272px;
     width: 100%;
     overflow: auto;
 	padding-top: 8px;
+	margin-top: 5px;
 }
 
 div.time {
@@ -1193,4 +1198,43 @@ div.tabs a.active {
 	border-radius: 0 10px 10px 10px;
 }
 
+#windowcontainer {
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	position: fixed;
+}
 
+div.window {
+	display: inline-block;
+	width: 310px;
+	height: 400px;
+	background: #fff;
+	position:absolute;
+	bottom: 5px;
+	margin: 0px 10px;
+	overflow: auto;
+	overflow-x: hidden;
+	-webkit-transition: left 0.1s ease;
+	border: solid 1px #999;
+	color: #333;
+}
+
+div.window div.contentwrapper {
+	border: none;
+	box-shadow: none;
+	margin: 0px;
+}
+
+div.popup_post {
+    position: absolute;
+    display: inline-block;
+	-webkit-transition: all 0.7s ease-in-out;
+	opacity: 0;
+    width: 580px;
+    margin-left: -390px;
+    margin-top: 100px;    
+    left: 50%;
+	z-index: 100;
+	color: #555;
+}

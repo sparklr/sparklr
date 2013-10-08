@@ -1,4 +1,6 @@
 var ajaxCooldown = [];
+var subscribedStreams = [];
+var ws;
 
 function ajaxGet(url, data, callback) {
 	if (ajaxCooldown[url]) {
@@ -67,6 +69,9 @@ function hideProgress() {
 }
 
 function pollData() {
+	if (ws != null && ws.p18Connected)
+		return;
+
 	var query;
 	var callback;
 
@@ -120,3 +125,54 @@ function pollData() {
 	});
 }
 
+function subscribeToStream(stream) {
+	if (subscribedStreams.indexOf(stream) == -1)
+		subscribedStreams.push(stream);
+	ws.send("S" + stream);
+}
+
+function unsubscribeFromStream(stream) {
+	if ((i = subscribedStreams.indexOf(stream)) == -1)
+		subscribedStreams.splice(i,1);
+	ws.send("U" + stream);
+}
+
+function connectSocket() {
+	ws = new WebSocket("ws://127.0.0.1:8081")
+	ws.onopen = function(e) {
+		ws.send(curUser + "," + AUTHKEY);	
+	};
+	ws.onmessage = socketMessage;
+	ws.onclose = ws.onerror = function() {
+		setTimeout(connectSocket, 1000);
+	}
+	ws.p18Connected = false;
+}
+
+function socketMessage(e) {
+	if (!ws.p18Connected) {
+		if (e.data == "c:")
+			ws.p18Connected = true;
+		broadcastSubscriptions();
+		return;
+	}
+	var data = JSON.parse(e.data);
+	console.log(data);
+	switch (data.t) {
+		case 0: // add comment
+			renderComment(data,true);
+			console.log("rendered");
+		break;
+		case 1: // chat
+			addChatMessage(data.from, data.message, data.time, false);
+			console.log("rendered");
+		break;
+	}
+}
+
+function broadcastSubscriptions() {
+	ws.send("s" + subscribedStreams.join(","));
+	console.log("broad");
+}
+
+setTimeout(connectSocket,100);

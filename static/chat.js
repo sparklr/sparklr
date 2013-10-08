@@ -1,4 +1,3 @@
-var curChatUser;
 var FRIENDS = {};
 var newMessageUsers = [];
 
@@ -34,10 +33,11 @@ function scrollUpHandler(e) {
 
 function setupScrollHandler() {
 	var e = _g("scrollUpContent");
-	e.addEventListener("DOMMouseScroll", scrollUpHandler);
-	e.addEventListener("mousewheel", scrollUpHandler);
+	//e.addEventListener("DOMMouseScroll", scrollUpHandler);
+	//e.addEventListener("mousewheel", scrollUpHandler);
 }
 
+// TODO
 function getNewChatMessages() {
 	chat_downloadingOlder = true;
 	console.log("getting older");
@@ -68,7 +68,7 @@ function addChatMessages(data) {
 }
 
 function addChatMessage(from, msg, time, prepend, unconfirmed) {
-	var sc = _g("scrollUpContent");
+	var sc = _g("scrollUpContent_"+from);
 
 	var ele = document.createElement("div");
 	ele.className = "chatmsg";
@@ -107,10 +107,11 @@ function hideUnconfirmedMessages() {
 	}
 }
 
-function sendChatMessage() {
+function sendChatMessage(e) {
+	var id = e.target.getAttribute("data-id");
 	var vars = {
-		to: curChatUser,
-		message: _g("composer").value
+		to: id.replace("chat_",""),
+		message: _g("composer_"+id).value
 	};
 	
 	if (imgAttachments) {
@@ -120,8 +121,8 @@ function sendChatMessage() {
 	}
 
 	setTimeout(function() {
-		_g("composer").value="";
-		expandTextarea(_g("composer"));
+		_g("composer_"+id).value="";
+		expandTextarea(_g("composer_"+id));
 	},10);
 
 	if (!vars.message && !vars.postData) return;
@@ -161,4 +162,15 @@ function setUserStatus(user) {
 function setNewInbox(value) {
 	var e = _g("inbox");
 	e.className = "inbox" + (value ? " jiggle" : "");
+}
+
+function chatWith(id) {
+	var pid = addWindow("m" + id, function() {
+		// closed
+	});
+	renderTemplate("chat/" + id, pid)
+	console.log(id);
+	return;
+	location.href = '/#/chat/' + id;
+
 }
