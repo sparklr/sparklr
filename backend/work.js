@@ -398,6 +398,17 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				sendObject(response, true);
 				return;
 			}
+			if(typeof(postObject.style) !== 'undefined'){
+				if (postObject.style) {
+					userobj.background = Math.abs(userobj.background);
+				}
+				else{
+					userobj.background = -Math.abs(userobj.background);
+				}
+				Database.updateObject("users", userobj);
+				sendObject(response, userobj.background);
+				return;
+			}
 			userobj.background = Toolbox.time();
 			Database.updateObject("users", userobj, function() {
 				sendObject(response, userobj.background);
