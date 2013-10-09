@@ -48,7 +48,6 @@ body {
     color: #fff;
     background: #454050;
 	background-attachment: fixed;
-	background-size: cover;
     margin: 0px;
     padding: 0px;
 	font-family: 'PT Sans', sans-serif;
@@ -1080,10 +1079,6 @@ h2 a.tag {
 cite {
 	font-style: inherit;
 	font-weight: inherit;
-}
-
-input {
-	-webkit-appearance: none;
 }
 
 #networkheader input {
