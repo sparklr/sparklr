@@ -54,7 +54,7 @@ function addNotificationToPage(notification){
 	n.style.position = "relative";
 	n.style.cursor = "pointer";
 	n.style.minHeight = "60px";
-	n.onclick = function () { location.href = notification.click };
+	n.onclick = function () { location.href = notification.href };
 	n.innerHTML = "<div class='rightcontrols'><div class='time' data-time='" + notification.time + "'></div></div><img src='" + getAvatar(notification.from) +"' class='avatar'><b>"+ getDisplayName(notification.from) + "</b> " + notification.body + "<br><br>";
 
 	var parent = _g("notifications");
@@ -74,21 +74,22 @@ function getNotificationBody(notification) {
 			else
 				body = "commented:<br>" + notification.body;
 
-			action = "/#/post/" + notification.action + "/new"; 
+			action = "javascript:showEvent('" + notification.action + "')"; 
 		break;
 		case 2: //mentioned
 			body = "mentioned you.";
-			action = "/#/post/" + notification.action; 
+			action = "javascript:showEvent('" + notification.action + "')"; 
+		break;
 		break;
 		case 6: // repost
 			body = "reposted your post.";
-			action = "/#/post/" + notification.action; 
+			action = "javascript:showEvent('" + notification.action + "')"; 
 		break;
 		case 3: //chat
 			setUserAttention(notification.from, true);
 			updatePageTitle();
 			body = "says: " + notification.body;
-			action = "/#/chat/" + notification.from;
+			action = "javascript:chatWith('" + notification.from + "')"; 
 			setNewInbox(true);
 		break;
 	}
@@ -122,13 +123,34 @@ function removeNotification(id) {
 function handleNotifications() {
 	if (!pageActive) return;
 
+	var s = location.hash.split("/");
+	
+	notificationLoop:
 	for (id in currentNotifications) {
 		if (!currentNotifications[id]) continue;
-		var s = location.hash.split("/");
 
-		if (s[1] == "post" && s[2] == currentNotifications[id].action && [N_EVENT, N_MENTION, N_REPOST].indexOf(parseInt(currentNotifications[id].type)) != -1) {
+		if (s[1] == "post" && s[2] == currentNotifications[id].action) {
 			dismissNotification(id);
 			continue;
+		}
+		for (i in activeWindows) {
+			if (activeWindows[i] == "c" + currentNotifications[id].action) {
+				var g = _g("window_"+activeWindows[i]);
+				if (g.scrollHeight - g.scrollTop < 500) {
+					dismissNotification(id);
+					continue notificationLoop;
+				}
+			}
+			if (currentNotifications[id].type == N_CHAT && activeWindows[i] == "m" + currentNotifications[id].from + "," + curUser) {
+				// TODO: abstract
+				var g = _g("window_"+activeWindows[i]);
+				if (g.scrollHeight - g.scrollTop < 500) {
+					setUserAttention(currentNotifications[id].from, false);
+					dismissNotification(id);				
+					setNewInbox(false);
+					continue notificationLoop;
+				}
+			}
 		}
 		if (currentNotifications[id].type == N_CHAT) {
 			if (s[1] == "chat" && s[2] == currentNotifications[id].from) {
@@ -140,8 +162,10 @@ function handleNotifications() {
 	}
 }
 
+setInterval(handleNotifications,1000);
+
 function dismissNotification(id) {
-	ajaxGet("work/delete/notification/" + id);
+	//ajaxGet("work/delete/notification/" + id);
 	removeNotification(id);
 }
 

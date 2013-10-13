@@ -7,7 +7,7 @@ var staticPages = { "notifications":1 };
 
 var previousPage = "";
 
-var homepage = function() {
+var homepage = function(posts) {
 	if (location.href.indexOf("/welcome") != -1 && location.hash == "") {
 		location.href = "/#/welcome";
 		return;
@@ -51,10 +51,16 @@ var homepage = function() {
 	}
 
 	renderTimeline(prehtml);
-	if (timelineEvents[subscribedStream]) {
-		for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
-			addTimelineEvent(timelineEvents[subscribedStream][i]);
+	if (posts) {
+		for (var i = 0; i < posts.length; i++) {
+			addTimelineEvent(posts[i]);
 		}
+	} else {
+		ajaxGet("work/stream/" + subscribedStream, null, function(data) {
+			for (var i = 0; i < data.length; i++) {
+				addTimelineEvent(data[i],true);
+			}
+		});
 	}
 
 	if (composertext) {

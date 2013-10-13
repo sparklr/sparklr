@@ -128,7 +128,7 @@ process.on("message", function(e) {
 			}
 		}
 	}
-	if (e.t === 1) {
+	if (e.t === 1 || e.t === 3) {
 		for (i in clients) {
 			if (!clients[i]) continue;
 			if (clients[i].p18User == e.to) {

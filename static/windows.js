@@ -24,6 +24,8 @@ function addWindow(id,closeAction) {
 
 	positionWindows();
 
+	handleNotifications();
+
 	return "window_" + id;
 }
 
