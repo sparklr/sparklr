@@ -69,8 +69,8 @@ exports.run = function(request, response, uri, sessionid) {
 			Database.postObject("newsletter", {
 				email: fragments[3]
 			}, function(err) {
-				fragments[3] = fragments[3].replace(/^(A-Za-z0-9\-_.\+\@)/, "");
-				Mail.sendMessageToEmail(fragments[3], "requestedinvite");
+				//fragments[3] = fragments[3].replace(/^(A-Za-z0-9\-_.\+\@)/, "");
+				//Mail.sendMessageToEmail(fragments[3], "requestedinvite");
 				sendObject(response, err == null);
 			});
 			return;
