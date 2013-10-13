@@ -58,15 +58,18 @@
 		</div>
 	</div>
 	<div id='editContainer' style='display:none' class='timelineitem'>
+		<div style='float: right;'>
+			<b>Background</b><br>
+			<input type='file' onchange='loadImage(this.files[0], backgroundUploadCallback)'><br>
+			<input type='radio' value='stretched' name='background' <% if (data.background > 0 || !data.background) %>checked<% endif %> onchange='backgroundStyle(true)'>Stretched 
+			<input type='radio' value='tiled' name='background' <% if (data.background < 0) %>checked<% endif %> onchange='backgroundStyle(false)'>Tiled<br>
+			<a href='javascript:removeBackground();' id='removeBackground' style='<% if (!data.background) %>display: none;<% endif %>'>Remove background</a><br>
+		</div>
 		<b>Avatar</b><br>
 		<input type='file' onchange='loadImage(this.files[0], avatarUploadCallback)'><br>
 		<b>Header</b><br>
-		<input type='file' onchange='loadImage(this.files[0], headerUploadCallback)'><br>
-		<b>Background</b><br>
-		<input type='file' onchange='loadImage(this.files[0], backgroundUploadCallback)'><br>
-			<a href='javascript:removeBackground();' id='removeBackground' style='<% if (!data.background) %>display: none;<% endif %>'>Remove background</a><br>
-		
-	</div>
+			<input type='file' onchange='loadImage(this.files[0], headerUploadCallback)'><br>
+			</div>
 	<script>
 		currentPageType = "STREAM";
 

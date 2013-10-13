@@ -9,6 +9,12 @@ function updateBackground(user, id) {
 	if (curRenderedBg == user + "_" + id) return;
 
 	document.body.style.backgroundImage = id ? 'url(' + imgUrl('b' + user + '.jpg?' + id,true) + ')' : "";
+	if(id < 0){
+		document.body.style.backgroundRepeat = 'repeat';
+		document.body.style.backgroundSize = '';
+	}
+	else
+		document.body.style.backgroundSize = 'cover';
 
 	if (user == curUser)
 		curBackground = id;
@@ -76,6 +82,13 @@ function removeBackground() {
 		_g("removeBackground").style.display = "none";
 		updateBackground(curUser,0);
 		curBackground = 0;
+	});
+}
+
+function backgroundStyle(value){
+	ajaxGet("work/background", { style: value }, function(data) {
+		updateBackground(curUser,data);
+		console.log(data);
 	});
 }
 
