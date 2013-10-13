@@ -291,7 +291,7 @@ function postComment(e) {
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
 		vars.img = 2;
-		_g("attachment").style.display = "none";
+		_g("attachment"+id).style.display = "none";
 	}
 
 	setTimeout(function() {
