@@ -87,7 +87,7 @@ function getNotificationBody(notification) {
 		case 3: //chat
 			setUserAttention(notification.from, true);
 			updatePageTitle();
-			body = "says: " + notification.body;
+			body = "says: <br>" + notification.body;
 			action = "/#/chat/" + notification.from;
 			setNewInbox(true);
 		break;
