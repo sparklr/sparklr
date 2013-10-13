@@ -87,16 +87,11 @@ exports.postComment = function(user, data, callback) {
 			callback(false);
 			return false;
 		}
-		if (rows[0].from != data.to) {
-			callback(false);
-			return false;
-		}
 
 		var query = "INSERT INTO `comments` (`postid`, `from`, `message`, `time`) ";
 		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+Database.escape(data.comment) + "," +  Toolbox.time() + ")";
 
 		Database.query(query, callback);
-		console.log(query);
 		
 		process.send({ t: 0, postid: data.id, from: user, message: data.comment, time: Toolbox.time() });
 
@@ -104,14 +99,15 @@ exports.postComment = function(user, data, callback) {
 		Database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(data.id));
 
 		if (data.like) //only notify one person
-			return Notification.addUserNotification(data.to, data.comment, data.id, user, 1);
+			return Notification.addUserNotification(rows[0].from, data.comment, data.id, user, 1);
 
 		query = "SELECT `from` FROM `comments` WHERE postid = " + parseInt(data.id) + " ORDER BY `time` DESC LIMIT 7";
+		var postfrom = rows[0].from;
 		Database.query(query, function(err,rows) {
 			var notified = {};
 			
 			// notify the poster
-			rows.push({from: data.to});
+			rows.push({from: postfrom});
 			
 			for (i in rows) {
 				if (notified[rows[i].from]) continue;

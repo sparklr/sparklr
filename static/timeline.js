@@ -2,7 +2,6 @@ var timelineEvents = [[]];
 var timelineTop = 0;
 var subscribedStream;
 var isNetwork;
-var currentPostBy;
 var currentComments = [];
 var imgAttachments = null;
 var lastUpdateTime = Math.floor((new Date).getTime() / 1000);
@@ -15,6 +14,7 @@ var joinedNetworks = [];
 var missingPosts = [];
 
 function addTimelineEvent(item,append) {
+	console.log(item);
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (e = _g("event_" + item.id)) {
@@ -30,7 +30,6 @@ function addTimelineEvent(item,append) {
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
 
 	var ev = document.createElement("div");
-	subscribeToStream('n'+subscribedStream);
 
 	ev.className = "timelineitem fadein";
 	ev.id = "event_" + item.id;
@@ -186,6 +185,7 @@ function deletePost(id) {
 function deleteComment(id,postid) {
 	showConfirm("Delete comment", "Are you sure you want to delete this comment?", function () {
 		ajaxGet("work/delete/comment/"+ id, null, function() {
+			console.log(item);
 			location.href = window.location + "#";
 		});
 	});
@@ -284,7 +284,6 @@ function updateCommentCount(id, count) {
 function postComment(e) {
 	var id = e.target.getAttribute("data-id");
 	var vars = {
-		to: currentPostBy,
 		id: id,
 		comment: _g('composer_'+id).value
 	}

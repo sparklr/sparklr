@@ -169,18 +169,19 @@ function socketMessage(e) {
 	switch (data.t) {
 		case 0: // add comment
 			renderComment(data,true);
-			console.log("rendered");
 		break;
 		case 1: // chat
 			addChatMessage(data.from, data.to, data.message, data.time, false);
-			console.log("rendered");
 		break;
 		case 2:
-			console.log(data);
 			if (subscribedStream == data.network || subscribedStream == e.from)
 				addTimelineEvent(data,0);
-			else if (joinedNetworks.indexOf(data.network) !== -1)
+			/*else if (joinedNetworks.indexOf(data.network) !== -1)
 				highlightNetwork(data.network);
+				*/
+		break;
+		case 3: // notification
+			addNotification(data);
 		break;
 	}
 }
