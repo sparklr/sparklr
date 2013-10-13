@@ -1,31 +1,27 @@
 <script>
 	var user = fragments[2] || fragments[1];
-	lastMessageFrom = null;
+	var convoid = user + "," + curUser;
 </script>
 
-<div class='contentwrapper'>
-	<a href='#/user/{user}'>
-		<img src='{getAvatar(user)}' class='avatar'>
-		{ getDisplayName(user) }
-	</a>
+<div class='scrollUpContent' id='scrollUpContent_{convoid}'>
 </div>
-<div class='fadein' style='margin: 4px;'>
-	<div class='scrollUpContent' id='scrollUpContent_{user}'>
-	</div>
+<div style='position: absolute;padding:5px;width:345px;bottom:0px;background:#fff'>
 	{ renderComposer('Type a message...', 'sendChatMessage', true, 'chat_' + user) }
 </div>
 </div>
 <script>
 	setTimeout(function() { 
 		for (var i = data.length - 1; i >= 0; i--) {
-			addChatMessage(data[i].from, data[i].message, data[i].time, false);
+			addChatMessage(data[i].from, data[i].to, data[i].message, data[i].time, false);
 		}
 
 		currentPageType = "CHAT";
 		setupScrollHandler();
-		_g("composer").focus();
+		_g("composer_chat_"+user).focus();
 		window.onload = function() {
-			_g("scrollUpContent").scrollTop = 0xFFFFFF; 
+			_g("window_m"+convoid).scrollTop = 0xFFFFFF; 
 		};
+
+		setWindowTitle('m'+convoid, getDisplayName(user));
 	}, 0);
 </script>

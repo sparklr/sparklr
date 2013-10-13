@@ -30,6 +30,7 @@ function addTimelineEvent(item,append) {
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
 
 	var ev = document.createElement("div");
+	subscribeToStream('n'+subscribedStream);
 
 	ev.className = "timelineitem fadein";
 	ev.id = "event_" + item.id;
@@ -84,7 +85,9 @@ function addTimelineArray(arr, timeline, append) {
 }
 
 function showEvent(id,args) {
-	var pid = addWindow("c" + id);
+	var pid = addWindow("c" + id, function() {
+		unsubscribeFromStream("c" + id);
+	});
 	renderTemplate("post/" + id, pid)
 	subscribeToStream("c" + id);
 	return;
@@ -239,9 +242,8 @@ function renderComment(comment,scroll) {
 
 	if (scroll) {
 		var g = _g("window_c"+comment.postid);
-		console.log(g.scrollHeight - g.scrollTop);
 		if (g.scrollHeight - g.scrollTop < 500)
-			g.scrollTop = 99999999999;
+			g.scrollTop = 0xFFFFFF;
 	}
 }
 
@@ -449,10 +451,10 @@ function renderTimeline(prehtml) {
 
 function postToTimeline() {
 	var vars = {
-		body: _g("composer").value
+		body: _g("composer_composer").value
 	};
 
-	setTimeout('_g("composer").value = "";expandTextarea({ target: _g("composer") });',10);
+	setTimeout('_g("composer_composer").value = "";expandTextarea({ target: _g("composer_composer") });',10);
 
 	if (imgAttachments != null) {
 		if (imgAttachments.target.result.length > 15728640) {
@@ -556,3 +558,6 @@ function updateTrackNetwork() {
 	}
 }
 
+function highlightNetwork(network) {
+	_g("network_" + network).className += " highlight";
+}

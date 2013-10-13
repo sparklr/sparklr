@@ -1,7 +1,7 @@
 var FRIENDS = {};
 var newMessageUsers = [];
 
-var lastMessageFrom;
+var lastMessageFrom = {};
 
 //If true, the scroll handler will ignore upscrolling events
 var chat_downloadingOlder;
@@ -67,8 +67,15 @@ function addChatMessages(data) {
 		hideUnconfirmedMessages();
 }
 
-function addChatMessage(from, msg, time, prepend, unconfirmed) {
-	var sc = _g("scrollUpContent_"+from);
+function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
+	var convoid;
+	if (from == curUser)
+		convoid = to + "," + from;
+	else 
+		convoid = from + "," + to;
+
+	console.log(convoid);
+	var sc = _g("scrollUpContent_"+convoid);
 
 	var ele = document.createElement("div");
 	ele.className = "chatmsg";
@@ -78,7 +85,7 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 
 	ele.id = "msg_" + time;
 	var html = "";
-	if (lastMessageFrom != from || prepend && lastMessageFrom == from) {
+	if (lastMessageFrom[convoid] != from || prepend && lastMessageFrom[convoid] == from) {
 		html += "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>";
 	}
 	html += "<div style='display:block;margin-left: 25px'>" + processMedia(escapeHTML(msg)) + "</div>";
@@ -90,12 +97,11 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 		chatMessages.unshift([from,msg,time]);
 	} else {
 		sc.appendChild(ele);
-		setTimeout(function() { sc.scrollTop = 0xFFFFFF; },5);
+		setTimeout(function() { _g('window_m'+convoid).scrollTop = 0xFFFFFF; },5);
 		chatMessages.push([from,msg,time]);
 	}
 
-	if (!unconfirmed)
-		lastMessageFrom = from;
+	lastMessageFrom[convoid] = from;
 }
 
 function hideUnconfirmedMessages() {
@@ -126,7 +132,7 @@ function sendChatMessage(e) {
 	},10);
 
 	if (!vars.message && !vars.postData) return;
-	addChatMessage(curUser, vars.message, getLastChatTime(), false, true);
+	addChatMessage(curUser, vars.to, vars.message, getLastChatTime(), false, true);
 
 	ajaxGet("work/chat", vars, function(data,xhr) {
 		if (data.error && data.info == "Blocked") {
@@ -165,7 +171,7 @@ function setNewInbox(value) {
 }
 
 function chatWith(id) {
-	var pid = addWindow("m" + id, function() {
+	var pid = addWindow("m" + id + "," + curUser, function() {
 		// closed
 	});
 	renderTemplate("chat/" + id, pid)

@@ -65,6 +65,7 @@ var homepage = function() {
 	}
 	window.scrollTo(0,timelineTop);
 	pollData();
+	subscribeToStream(subscribedStream);
 }
 
 function updatePages(loaded) {
@@ -77,6 +78,8 @@ function updatePages(loaded) {
 	}
 
 	isNetwork = false;
+
+	unsubscribeFromStream(subscribedStream);
 
 	//set timeline position
 	if (subscribedStream == 0 && currentPageType == "STREAM")
