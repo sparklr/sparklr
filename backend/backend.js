@@ -68,12 +68,17 @@ process.on('uncaughtException', function(err) {
 });
 
 var wss = new wsServer({ port: 8081 });
-var clients = [];
+var clients = {};
+var p18Index = 0;
 
 wss.on("connection", function(ws) {
 	ws.p18Authenticated = false;
 	ws.on("close", function() {
-		clients.splice(clients.indexOf(ws),1);
+		//console.log(clients.indexOf(ws));
+		//console.log(clients[clients.indexOf(ws)].p18User);
+		//
+		//p18Index wont work because the index changes as the array shifts
+	   clients[ws.p18Index] = null;
 	});
 	ws.on("message", function(message,e2,e3) {
 		if (!ws.p18Authenticated) {
@@ -88,7 +93,9 @@ wss.on("connection", function(ws) {
 
 				ws.send("c:");
 
-				clients.push(ws);
+				ws.p18Index = p18Index;
+				clients[p18Index] = ws;
+				p18Index++;
 				console.log("connected");
 			});
 			return;
@@ -110,20 +117,32 @@ wss.on("connection", function(ws) {
 });
 
 process.on("message", function(e) {
-	//console.log(e);
-	
+	console.log(e);
+	var str;
+
 	if (e.t === 0) {
-		var str;
 		for (i in clients) {
+			if (!clients[i]) continue;
 			if (clients[i].p18SubscribedTo.indexOf("c" + e.postid) !== -1) {
 				clients[i].send(str || (str = JSON.stringify(e)));
 			}
 		}
 	}
 	if (e.t === 1) {
-		var str;
 		for (i in clients) {
+			if (!clients[i]) continue;
 			if (clients[i].p18User == e.to) {
+				console.log("sent: " + clients[i].p18User);
+				clients[i].send(str || (str = JSON.stringify(e)));
+			} else {
+				console.log("not: " + clients[i].p18User);
+			}
+		}
+	}
+	if (e.t === 2) {
+		for (i in clients) {
+			if (!clients[i]) continue;
+			if (clients[i].p18SubscribedTo.indexOf(e.network) !== -1 || clients[i].p18SubscribedTo.indexOf(e.from) !== -1) {
 				clients[i].send(str || (str = JSON.stringify(e)));
 			}
 		}

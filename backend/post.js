@@ -54,6 +54,19 @@ exports.post = function(user, data, callback) {
 
 		Database.query(querystr,function(err,rows) {
 			if (err) return callback(err);
+
+			process.send({ t: 2, 
+				id: rows.insertId, 
+				from: parseInt(user), 
+				message: data.body, 
+				modified: Toolbox.time(), 
+				time: Toolbox.time(),
+				meta: meta,
+				type: data.img ? 1 : 0,
+				network: data.network || "0",
+				via: null
+			});
+
 			processPostTags(data.body, rows.insertId);		
 			processMentions(data.body, user, rows.insertId);
 			for (i in data.tags) {

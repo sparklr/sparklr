@@ -128,13 +128,21 @@ function pollData() {
 function subscribeToStream(stream) {
 	if (subscribedStreams.indexOf(stream) == -1)
 		subscribedStreams.push(stream);
-	ws.send("S" + stream);
+	try {
+		ws.send("S" + stream);
+	} catch(e) {
+	}
 }
 
 function unsubscribeFromStream(stream) {
-	if ((i = subscribedStreams.indexOf(stream)) == -1)
+	if (joinedNetworks.indexOf(stream) !== -1) return;
+
+	if ((i = subscribedStreams.indexOf(stream)) !== -1)
 		subscribedStreams.splice(i,1);
-	ws.send("U" + stream);
+	try {
+		ws.send("U" + stream);
+	} catch(e) {
+	}
 }
 
 function connectSocket() {
@@ -164,8 +172,15 @@ function socketMessage(e) {
 			console.log("rendered");
 		break;
 		case 1: // chat
-			addChatMessage(data.from, data.message, data.time, false);
+			addChatMessage(data.from, data.to, data.message, data.time, false);
 			console.log("rendered");
+		break;
+		case 2:
+			console.log(data);
+			if (subscribedStream == data.network || subscribedStream == e.from)
+				addTimelineEvent(data,0);
+			else if (joinedNetworks.indexOf(data.network) !== -1)
+				highlightNetwork(data.network);
 		break;
 	}
 }
