@@ -252,12 +252,12 @@ function expandTextarea(e) {
 		e = window.event;
 	var l = e.target.value.length;
 	e.target.style.height = (2 + Math.floor((l / 80))) * 20 + (20 * (e.target.value.split("\n").length - 1)) + "px";
-
+return;
 	var r = _g("remaining");
 	var toolong = l > 420;
 
 	r.style.opacity = toolong ? 1 : 0;
-	r.style.display = toolong ? "block" : "none";
+	r.style.display = toolong ? "inline-block" : "none";
 	if (toolong) r.innerHTML = (500 - l);
 	
 }

@@ -237,6 +237,9 @@ div.contentwrapper {
 	margin-left: -5px;
     background: rgba(0,0,0,0.35);
 }
+#networks a.highlight {
+	color: red;
+}
 #sidebar a:hover {
     opacity: 1;
     color: #fff;
@@ -535,9 +538,7 @@ div.like {
 }
 
 div.like.liked {
-    box-shadow: 0px 0px 10px #c7316d, 
-	0px 0px 10px #9b365e,
-    0px 0px 2px #000;
+	background-color: #7e5a82;
 }
 
 div.picturepost {
@@ -858,11 +859,7 @@ textarea {
 
 div.scrollUpContent {
     display: inline-block;
-    height: 272px;
-    width: 100%;
-    overflow: auto;
-	padding-top: 8px;
-	margin-top: 5px;
+	padding-bottom: 50px;
 }
 
 div.time {
@@ -1206,18 +1203,40 @@ div.tabs a.active {
 }
 
 div.window {
+	position: absolute;
 	display: inline-block;
-	width: 310px;
-	height: 400px;
 	background: #fff;
-	position:absolute;
-	bottom: 5px;
+	bottom: 0px;
 	margin: 0px 10px;
-	overflow: auto;
-	overflow-x: hidden;
 	-webkit-transition: left 0.1s ease;
 	border: solid 1px #999;
 	color: #333;
+}
+
+div.window div.title {
+	background: #454050;
+	color: #fff;
+	height: 24px;
+	padding: 2px;
+}
+
+div.window div.title a {
+	float: right;
+	color: #fff;
+	cursor: pointer;
+	padding-right: 5px;
+	font-weight: bold;
+	margin: 0px;
+}
+
+div.windowcontent {
+	display: inline-block;
+	overflow: auto;
+	overflow-x: hidden;
+	width: 360px;
+	height: 400px;
+	margin: 0px;
+	padding: 0px;
 }
 
 div.window div.contentwrapper {
