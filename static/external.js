@@ -164,9 +164,13 @@ function signUp(username,email,password,errors) {
 	if (errors.value != "") return;
 
 	ajaxGet("work/signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + encodeURIComponent(password.value), null, function(data) {
+		console.log(data);
 		if (data === 1) {
 			trySignin(username,password,"http://sparklr.me/welcome");
 		} else {
+			if (data === 3) {
+				callback("Your IP address has been disabled for abuse reasons. Please contact app@sparklr.me to have this corrected. Sorry about that. Spammers suck and make everyone's lives harder.");
+			}
 			if (data === 2) {
 				callback("It appears that your email is already in use.");
 			} else {
