@@ -75,9 +75,13 @@ exports.run = function(request, response, uri, sessionid) {
 			});
 			return;
 		case "signup":
+			if (['207.81.39.235','66.183.50.85'].indexOf(request.headers['x-real-ip']) !== -1) return sendObject(response, 3);
 			if (!fragments[6]) return do400(response, 400);
 			User.signupUser(fragments[3], fragments[4], fragments[5], decodeURIComponent(fragments[6]), function(err, rows) {
-				sendObject(response, err || 1);
+				if (rows === 2)
+					sendObject(response, 2);
+				else
+					sendObject(response, err || 1);
 			});
 			return;
 		case "checkusername":

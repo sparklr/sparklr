@@ -76,7 +76,7 @@ exports.resetPassword = function(userobj) {
 exports.signupUser = function(inviteid, username, email, password, callback) {
 	Database.query("SELECT * FROM `invites` WHERE `id` = " + Database.escape(inviteid), function(err, inviterows) {
 		if (err) return callback(err);
-		if (!inviterows[0]) return callback(err,1);
+		if (!inviterows[0]) return callback(-1);
 
 		if (username.length > 20) return callback(1);
 
