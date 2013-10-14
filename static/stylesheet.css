@@ -1188,4 +1188,13 @@ div.tabs a.active {
 	border-radius: 0 10px 10px 10px;
 }
 
-
+#layer {
+	background-image: url(halloween.png);
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	display: block;
+	z-index: -1;
+}
