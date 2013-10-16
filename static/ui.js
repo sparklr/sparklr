@@ -21,7 +21,6 @@ function showPopup(content,classname) {
 	setTimeout(function() { popup.style.opacity = 1; }, 10);
 	
 	popup.innerHTML = content;
-	popup.style.top = doctop + "px";
 
 	document.body.appendChild(popup);	
 
