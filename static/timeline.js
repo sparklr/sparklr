@@ -131,21 +131,22 @@ function renderTags(item) {
 }
 
 function repost(id) {
-	_g("responseholder").style.display = "none";
-	_g("reblogholder").style.display = "block";
-	_g("repostcomment").focus();
+	_g("responseholder_"+id).style.display = "none";
+	_g("reblogholder_"+id).style.display = "block";
+	_g("repost"+id).focus();
 }
 
-function publishRepost() {
+function publishRepost(e) {
+	var id = e.target.getAttribute('data-id');
 	var vars = {
-		id: subscribedStream,
-		reply: _g("repostcomment").value
+		id: id,
+		reply: _g("composer_r"+id).value
 	}
 
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
 		vars.img = 2;
-		_g("attachment").style.display = "none";
+		_g("attachmentr"+id).style.display = "none";
 	}
 
 	ajaxGet("work/repost", vars);
