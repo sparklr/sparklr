@@ -38,8 +38,9 @@ function setWindowTitle(id,title) {
 	}
 }
 
-function closeWindow(e) {
-	var id = e.target.id.split("_")[1];
+function closeWindow(e,id) {
+	if (!id)
+		var id = e.target.id.split("_")[1];
 	closeActions[id]();
 	console.log(activeWindows);
 	console.log(id);

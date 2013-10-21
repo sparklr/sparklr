@@ -133,11 +133,11 @@ function renderTags(item) {
 function repost(id) {
 	_g("responseholder_"+id).style.display = "none";
 	_g("reblogholder_"+id).style.display = "block";
-	_g("repost"+id).focus();
+	_g("composer_r"+id).focus();
 }
 
 function publishRepost(e) {
-	var id = e.target.getAttribute('data-id');
+	var id = e.target.getAttribute('data-id').substring(1);
 	var vars = {
 		id: id,
 		reply: _g("composer_r"+id).value
@@ -150,7 +150,7 @@ function publishRepost(e) {
 	}
 
 	ajaxGet("work/repost", vars);
-	location.href="#";
+	closeWindow(null,'c'+id);
 }
 
 function showImage(img) {
