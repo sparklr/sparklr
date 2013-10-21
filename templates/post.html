@@ -30,18 +30,18 @@
 		<br>
 	</div>
 	<hr>
-	<div id='responseholder'>
+	<div id='responseholder_{data.id}'>
 		<div id='comments_{data.id}' style='padding:5px;'></div>
 		<div class='fadein' style='padding:5px;'>
 			{ renderComposer('Respond...', 'postComment', true, data.id) }
 		</div>
 	</div>
-	<div id='reblogholder' class='fadein' style='display:none;min-height:100px'>
+	<div id='reblogholder_{data.id}' class='fadein' style='display:none;min-height:100px'>
 		<div class='fadein' style='padding:5px;'>
-			{ renderComposer('Share something (optional)', 'publishRepost', true, 'repostcomment') }
+			{ renderComposer('Share something (optional)', 'publishRepost', true, 'r' + data.id) }
 		</div>
 		<div style='width: 100%; display: inline-block; text-align: right'>
-			<input type='button' value='Repost to Followers' style='margin-right: 5px' onClick='publishRepost();'>
+			<input type='button' value='Repost to Followers' data-id='{data.id}' style='margin-right: 5px' onClick='publishRepost(event);'>
 		</div>
 	</div>
 </div>
