@@ -165,7 +165,7 @@ function handleNotifications() {
 setInterval(handleNotifications,1000);
 
 function dismissNotification(id) {
-	//ajaxGet("work/delete/notification/" + id);
+	ajaxGet("work/delete/notification/" + id);
 	removeNotification(id);
 }
 
