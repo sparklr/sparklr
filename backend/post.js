@@ -185,6 +185,9 @@ exports.repost = function(user, postid, reply, callback) {
 			callback(err,rows);
 			if (!err)
 				Notification.addUserNotification(origfrom, "", rows.insertId, user, Notification.N_REPOST);
+			post.t = 2;
+			post.id = rows.insertId;
+			process.send(post);
 		});
 	});
 }
