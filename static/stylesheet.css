@@ -4,7 +4,7 @@ html {
 }
 
 blockquote{
-	margin-right: 0;
+	margin: 0 0 10px 25px;
 }
 
 ::-webkit-scrollbar {
@@ -860,6 +860,9 @@ textarea {
 div.scrollUpContent {
     display: inline-block;
 	padding-bottom: 50px;
+}
+div.scrollUpContent img.littleavatar{
+	margin-top: 0;
 }
 
 div.time {
