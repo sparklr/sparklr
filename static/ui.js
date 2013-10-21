@@ -21,7 +21,6 @@ function showPopup(content,classname) {
 	setTimeout(function() { popup.style.opacity = 1; }, 10);
 	
 	popup.innerHTML = content;
-	popup.style.top = doctop + "px";
 
 	document.body.appendChild(popup);	
 
@@ -148,7 +147,7 @@ function processMedia(text,noImages) {
 
 	var imgregex = /\[IMG([A-Za-z0-9\._-]+)\]/g;
 	text = text.replace(imgregex, function(match, img) {
-		return "<img src='" + imgUrl(img) + "' style='cursor:pointer' onload='window.onload();' onClick='showImage(\"" + img + "\");'><br>";
+		return "<img src='" + imgUrl(img) + "' style='cursor:pointer' class='inlineimage' onload='window.onload();' onClick='showImage(\"" + img + "\");'><br>";
 	});
 
 	var countnewlines = 0;
