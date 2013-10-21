@@ -30,7 +30,12 @@ function addWindow(id,closeAction) {
 }
 
 function setWindowTitle(id,title) {
-	_g("windowtitle_"+id).innerHTML = title;
+	if(title.length < 45){
+		_g("windowtitle_"+id).innerHTML = title;
+	}
+	else{
+		_g("windowtitle_"+id).innerHTML = title.substring(0, 42) + "...";
+	}
 }
 
 function closeWindow(e) {
