@@ -97,7 +97,7 @@ function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
 		chatMessages.unshift([from,msg,time]);
 	} else {
 		sc.appendChild(ele);
-		setTimeout(function() { _g('window_m'+convoid).scrollTop = 0xFFFFFF; },5);
+		setTimeout(function() { (_g('window_m'+convoid) || _g('scrollUpContent_'+convoid)).scrollTop = 0xFFFFFF; },5);
 		chatMessages.push([from,msg,time]);
 	}
 
@@ -123,7 +123,7 @@ function sendChatMessage(e) {
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
 		vars.img = 1;
-		_g("attachment").style.display = "none";
+		_g("attachment"+id).style.display = "none";
 	}
 
 	setTimeout(function() {
@@ -171,6 +171,10 @@ function setNewInbox(value) {
 }
 
 function chatWith(id) {
+	if (MOBILE) {
+		location.href = "#/chat/" + id;
+		return;
+	}
 	var pid = addWindow("m" + id + "," + curUser, function() {
 		// closed
 	});

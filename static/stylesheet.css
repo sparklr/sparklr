@@ -857,14 +857,6 @@ textarea {
 	overflow: auto;
 }
 
-div.scrollUpContent {
-    display: inline-block;
-	padding-bottom: 50px;
-}
-div.scrollUpContent img.littleavatar{
-	margin-top: 0;
-}
-
 div.time {
     position: absolute;
     bottom: 5px;
@@ -1242,10 +1234,35 @@ div.windowcontent {
 	padding: 0px;
 }
 
+div.windowcontent .chatcomposer {
+	position: absolute;padding:5px;width:345px;bottom:0px;background:#fff
+}
+
 div.window div.contentwrapper {
 	border: none;
 	box-shadow: none;
 	margin: 0px;
+}
+
+div.scrollUpContent img.littleavatar{
+	margin-top: 0;
+}
+
+div.scrollUpContent {
+	overflow-y: auto;
+	overflow-x: hidden;
+	word-wrap: break-word;
+	height: 350px;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.window div.scrollUpContent {
+    display: inline-block;
+	padding-bottom: 50px;
+	overflow: none;
+	height: inherit;
 }
 
 div.popup_post {
