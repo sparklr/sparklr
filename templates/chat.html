@@ -2,12 +2,14 @@
 	var user = fragments[2] || fragments[1];
 	var convoid = user + "," + curUser;
 </script>
-
-<div class='scrollUpContent' id='scrollUpContent_{convoid}'>
-</div>
-<div style='position: absolute;padding:5px;width:345px;bottom:0px;background:#fff'>
-	{ renderComposer('Type a message...', 'sendChatMessage', true, 'chat_' + user) }
-</div>
+<div class='contentwrapper'>
+	<h2>{ getDisplayName(user) }</h2>
+	<div class='scrollUpContent' id='scrollUpContent_{convoid}'>
+	</div>
+	<div class='chatcomposer' >
+		{ renderComposer('Type a message...', 'sendChatMessage', true, 'chat_' + user) }
+	</div>
+	</div>
 </div>
 <script>
 	setTimeout(function() { 

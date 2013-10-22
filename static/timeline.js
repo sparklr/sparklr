@@ -84,6 +84,10 @@ function addTimelineArray(arr, timeline, append) {
 }
 
 function showEvent(id,args) {
+	if (MOBILE) {
+		location.href = "#/post/" + id + "/" + args;
+		return;
+	}
 	var pid = addWindow("c" + id, function() {
 		unsubscribeFromStream("c" + id);
 	});
