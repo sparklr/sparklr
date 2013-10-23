@@ -233,7 +233,7 @@ function renderComment(comment) {
 		html += " likes this<br><br>";
 	}
 	else
-		html += "<div style='margin-left: 50px;'" + (canEdit ? " contenteditable onblur='editComment(event)' data-id='" + comment.id + "'" : "") + ">" + processMedia(escapeHTML(comment.message)) + "</div>";
+		html += "<div style='margin-left: 50px;'" + (canEdit ? " data-id='" + comment.id + "'" : "") + ">" + processMedia(escapeHTML(comment.message)) + "</div>";
 
 	html += "</div>";
 	e.innerHTML += html;
