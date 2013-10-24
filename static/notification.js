@@ -11,7 +11,8 @@ function addNotification(notification) {
 	if (currentNotifications[notification.id]) return; //duplicate
 	currentNotifications[notification.id] = notification;
 
-	handleNotifications();
+	if (!MOBILE)
+		handleNotifications();
 
 	if (parseInt(notification.time) > lastNotificationTime)
 		lastNotificationTime = parseInt(notification.time);
@@ -162,7 +163,8 @@ function handleNotifications() {
 	}
 }
 
-setInterval(handleNotifications,1000);
+if (!MOBILE)
+	setInterval(handleNotifications,1000);
 
 function dismissNotification(id) {
 	ajaxGet("work/delete/notification/" + id);
