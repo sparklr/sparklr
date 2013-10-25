@@ -107,7 +107,7 @@ function pollData() {
 			callback = addComments;
 		break;
 		case "CHAT":
-			query = "/chat/" + curChatUser + "?since=" + getLastChatTime();
+			query = "/chat/" + location.hash.split("/")[2] + "?since=" + getLastChatTime();
 			callback = addChatMessages;
 			break;
 		default:
