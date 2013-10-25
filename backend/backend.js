@@ -131,7 +131,7 @@ process.on("message", function(e) {
 	if (e.t === 1 || e.t === 3) {
 		for (i in clients) {
 			if (!clients[i]) continue;
-			if (clients[i].p18User == e.to) {
+			if (clients[i].p18User == e.to || (clients[i].p18User == e.from && e.t === 1)) {
 				console.log("sent: " + clients[i].p18User);
 				clients[i].send(str || (str = JSON.stringify(e)));
 			} else {

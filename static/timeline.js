@@ -84,7 +84,7 @@ function addTimelineArray(arr, timeline, append) {
 }
 
 function showEvent(id,args) {
-	if (MOBILE) {
+	if (MOBILE || !ws || !ws.p18Connected) {
 		location.href = "#/post/" + id + "/" + args;
 		return;
 	}

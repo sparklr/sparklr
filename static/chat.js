@@ -61,7 +61,7 @@ function getLastChatTime() {
 function addChatMessages(data) {
 	data = data.data || data;
 	for (var i = data.length - 1; i >= 0; i--) {
-		addChatMessage(data[i].from, data[i].message, data[i].time, false);
+		addChatMessage(data[i].from, data[i].to, data[i].message, data[i].time, false);
 	}
 	if (data.length > 0)
 		hideUnconfirmedMessages();
@@ -128,11 +128,11 @@ function sendChatMessage(e) {
 
 	setTimeout(function() {
 		_g("composer_"+id).value="";
-		expandTextarea(_g("composer_"+id));
+		expandTextarea(e);
 	},10);
 
 	if (!vars.message && !vars.postData) return;
-	addChatMessage(curUser, vars.to, vars.message, getLastChatTime(), false, true);
+	//addChatMessage(curUser, vars.to, vars.message, getLastChatTime(), false, true);
 
 	ajaxGet("work/chat", vars, function(data,xhr) {
 		if (data.error && data.info == "Blocked") {
@@ -171,7 +171,7 @@ function setNewInbox(value) {
 }
 
 function chatWith(id) {
-	if (MOBILE) {
+	if (MOBILE || !ws || !ws.p18Connected) {
 		location.href = "#/chat/" + id;
 		return;
 	}

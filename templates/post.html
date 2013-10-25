@@ -53,7 +53,8 @@
 	}
 	
 	currentComments = data.comments;
-
+	currentPageType = "POST";
+	subscribedStream = data.id;
 
 	if (location.hash.indexOf("new") != -1) 
 		_g('composer').focus();
