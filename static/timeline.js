@@ -18,10 +18,14 @@ function addTimelineEvent(item,append) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (e = _g("event_" + item.id)) {
-		updateCommentCount(item.id, item.commentcount);
-		_g("postcontent_" + item.id).innerHTML = processPost(item);
+		if (item.commentcount)
+			updateCommentCount(item.id, item.commentcount);
+		if (item.message)
+			_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
 	}
+	if (!item.message) return;
+
 	if (!append && doctop > 10) {
 		missingPosts.push(item);
 		return;
@@ -247,7 +251,7 @@ function renderComment(comment,scroll) {
 
 	if (scroll) {
 		var g = _g("window_c"+comment.postid);
-		if (g.scrollHeight - g.scrollTop < 500)
+		if (g.scrollHeight - g.scrollTop < 600)
 			g.scrollTop = 0xFFFFFF;
 	}
 }

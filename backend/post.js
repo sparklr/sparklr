@@ -96,6 +96,9 @@ exports.postComment = function(user, data, callback) {
 		process.send({ t: 0, postid: data.id, from: user, message: data.comment, time: Toolbox.time() });
 
 		var count = (rows[0].commentcount + 1 || 1);
+
+		process.send({ t: 2, postid: data.id, commentcount: count, network: '0', from: 0 });
+
 		Database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(data.id));
 
 		if (data.like) //only notify one person

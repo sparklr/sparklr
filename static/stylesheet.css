@@ -1235,13 +1235,20 @@ div.windowcontent {
 }
 
 div.windowcontent .chatcomposer {
-	position: absolute;padding:5px;width:345px;bottom:0px;background:#fff
+	position: absolute;
+	padding:5px;
+	width:340px;
+	bottom:0px;
+	background:#fff;
 }
 
 div.window div.contentwrapper {
 	border: none;
 	box-shadow: none;
 	margin: 0px;
+}
+div.window div.windowhidden {
+	display:none;
 }
 
 div.scrollUpContent img.littleavatar{

@@ -64,6 +64,9 @@ var app = function(payload) {
 	for (var i = 0; i < joinedNetworks.length; i++) {
 		addNetwork(joinedNetworks[i]);
 	}
+	for (var i = 0; i < payload.notifications.length; i++) {
+		addNotification(payload.notifications[i]);
+	}
 }
 
 var s = document.cookie.match(/D\=([^\s|^\;]+)\;?/)[1].split(",");

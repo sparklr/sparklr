@@ -146,7 +146,7 @@ function unsubscribeFromStream(stream) {
 }
 
 function connectSocket() {
-	ws = new WebSocket("ws://127.0.0.1:8081")
+	ws = new WebSocket(WSHOST)
 	ws.onopen = function(e) {
 		ws.send(curUser + "," + AUTHKEY);	
 	};
@@ -176,9 +176,6 @@ function socketMessage(e) {
 		case 2:
 			if (subscribedStream == data.network || subscribedStream == e.from)
 				addTimelineEvent(data,0);
-			/*else if (joinedNetworks.indexOf(data.network) !== -1)
-				highlightNetwork(data.network);
-				*/
 		break;
 		case 3: // notification
 			addNotification(data);
