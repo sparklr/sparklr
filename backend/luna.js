@@ -24,7 +24,6 @@ if (cluster.isMaster) {
 	});
 
 	function handleMsg(data) {
-		console.log("Msg received: " + data);
 		if (data != "R:" + rbkey) { 
 			for (id in cluster.workers) {
 				cluster.workers[id].send(data);

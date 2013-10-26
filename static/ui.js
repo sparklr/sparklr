@@ -250,7 +250,7 @@ function expandTextarea(e) {
 	if (!e)
 		e = window.event;
 	var l = e.target.value.length;
-	e.target.style.height = (2 + Math.floor((l / 80))) * 20 + (20 * (e.target.value.split("\n").length - 1)) + "px";
+	e.target.style.height = (2 + Math.floor((l / 60))) * 20 + (20 * (e.target.value.split("\n").length - 1)) + "px";
 return;
 	var r = _g("remaining");
 	var toolong = l > 420;

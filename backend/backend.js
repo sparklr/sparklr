@@ -74,9 +74,6 @@ var p18Index = 0;
 wss.on("connection", function(ws) {
 	ws.p18Authenticated = false;
 	ws.on("close", function() {
-		//console.log(clients.indexOf(ws));
-		//console.log(clients[clients.indexOf(ws)].p18User);
-		//
 		//p18Index wont work because the index changes as the array shifts
 	   clients[ws.p18Index] = null;
 	});
@@ -96,11 +93,9 @@ wss.on("connection", function(ws) {
 				ws.p18Index = p18Index;
 				clients[p18Index] = ws;
 				p18Index++;
-				console.log("connected");
 			});
 			return;
 		}
-		console.log(message.toString());
 		var c = message.substring(0,1);
 		var body = message.substring(1);
 		switch (c) {
@@ -117,7 +112,6 @@ wss.on("connection", function(ws) {
 });
 
 process.on("message", function(e) {
-	console.log(e);
 	var str;
 
 	if (e.t === 0) {
@@ -132,10 +126,7 @@ process.on("message", function(e) {
 		for (i in clients) {
 			if (!clients[i]) continue;
 			if (clients[i].p18User == e.to || (clients[i].p18User == e.from && e.t === 1)) {
-				console.log("sent: " + clients[i].p18User);
 				clients[i].send(str || (str = JSON.stringify(e)));
-			} else {
-				console.log("not: " + clients[i].p18User);
 			}
 		}
 	}
