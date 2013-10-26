@@ -3,6 +3,7 @@ var templates = require("./templates");
 var database = require("./database");
 var Post = require("./post");
 var User = require("./user");
+var Notification = require("./notification");
 
 var frontendTemplate = "";
 var externalTemplate = "";
@@ -73,9 +74,12 @@ exports.run = function(user, request, response, sessionid) {
 			payload.userHandles = userHandles;
 			payload.isMod = (user.rank > 49);
 
-			html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
-			response.write(html);
-			response.end();
+			Notification.getUserNotifications(user.id, 0, function(err,rows) {
+				payload.notifications = rows;
+				html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
+				response.write(html);
+				response.end();
+			});
 		});
 	});
 }
