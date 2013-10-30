@@ -29,27 +29,6 @@ var homepage = function(posts) {
 		composertext = "@" + args[2] + " ";
 	}
 
-	if (args[1] && args[1] != "" && args[1] != "welcome" && args[1] != "mention") {
-		subscribedStream = args[1];
-		isNetwork = true;
-		lastUpdateTime = 0;
-		prehtml = "<div id='networkheader'></div>";
-		if (subscribedStream != "following") {
-			ajaxGet("work/networkinfo/" + subscribedStream, null, function(data) {
-				var html = "";
-				var title = (data && data[0]) ? data[0].title : subscribedStream;
-				html += "<input id='trackbtn' type='button' style='float:right'>";
-				html += "<h2 style='color:#fff'>" + title + "</h2>";
-				_g("networkheader").innerHTML = html;
-				updateTrackNetwork();
-			});
-		}
-	}
-	var e = _g("network_" + subscribedStream);
-	if (e) {
-		e.className = "active";
-	}
-
 	renderTimeline(prehtml);
 	if (posts) {
 		for (var i = 0; i < posts.length; i++) {
@@ -69,6 +48,7 @@ var homepage = function(posts) {
 		composer.focus();
 		composer.selectionStart = composer.value.length;
 	}
+
 	window.scrollTo(0,timelineTop);
 	pollData();
 	subscribeToStream(subscribedStream);
@@ -77,13 +57,6 @@ var homepage = function(posts) {
 function updatePages(loaded) {
 	document.body.ondrop = document.body.ondragover = document.body.ondragenter = function (e) { dropPrevent(e); }
 	window.onload = null;
-
-	var e = _g("network_" + subscribedStream);
-	if (e) {
-		e.className = "";
-	}
-
-	isNetwork = false;
 
 	unsubscribeFromStream(subscribedStream);
 
@@ -112,6 +85,10 @@ function updatePages(loaded) {
 	var s = location.hash.split("/");
 
 	previousPage = s;	
+	if (s[1] === "post") {
+		subscribedStream = s[2];
+		subscribeToStream(s[2]);
+	}
 
 	for (i = 0; i < definedPages.length; i++) {
 		if (definedPages[i] == s[1]) {

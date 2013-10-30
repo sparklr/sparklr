@@ -188,4 +188,3 @@ function broadcastSubscriptions() {
 	console.log("broad");
 }
 
-setTimeout(connectSocket,100);
