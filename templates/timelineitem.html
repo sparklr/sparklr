@@ -21,9 +21,6 @@
 <% if (item.via !== null) %>
  via <a href='#/user/{ item.via }'>@{ getUserHandle(item.via) }</a>
 <% endif %>
-<% if (item.network != "0") %>
- &gt; <a href='/#/{item.network}'>/{item.network}</a>
-<% endif %>
 
 <h2>@{getUserHandle(item.from)}</h2>
 <div class='content' id='postcontent_{item.id}'>{processPost(item)}</div>

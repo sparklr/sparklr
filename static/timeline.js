@@ -1,14 +1,12 @@
 var timelineEvents = [[]];
 var timelineTop = 0;
 var subscribedStream;
-var isNetwork;
 var currentComments = [];
 var imgAttachments = null;
 var lastUpdateTime = Math.floor((new Date).getTime() / 1000);
 var LIKE_CHAR = "\u261D";
 
 var hiddenPostList = [];
-
 var joinedNetworks = [];
 
 var missingPosts = [];
@@ -349,8 +347,6 @@ function streamUrl(since,start) {
 
 	if (currentPageType == "PHOTO")
 		query += "&photo=1";
-	if (isNetwork)
-		query += "&network=1";
 
 	return query;
 }
@@ -482,10 +478,6 @@ function postToTimeline() {
 		}
 	} else {
 		if (!vars.body) return;
-	}
-
-	if (isNetwork) {
-		vars.network = subscribedStream;
 	}
 
 	var xhr = new XMLHttpRequest();

@@ -130,11 +130,6 @@ function processMedia(text,noImages) {
 		return html;
 		});
 
-	var slashregex = /(^|\s)\/([\w-]+)/gi;
-	text = text.replace(slashregex, function(match, foo, network) {
-		return " <a href='#/" + network + "'>" + match + "</a>";
-	});
-
 	var mentionregex = /\B@([\w-]+)/gi;
 	text = text.replace(mentionregex, function(match, user) {
 		return "<a href='#/user/" + user + "'>" + match + "</a>";
