@@ -189,7 +189,8 @@ function editComment(e) {
 function deletePost(id) {
 	showConfirm("Delete post", "Are you sure you want to delete this post?", function () {
 		ajaxGet("work/delete/post/" + id, null, function() {
-			location.href = "#";
+			removeDomElement('event_'+id);
+			closeWindow(null,'c'+id);
 		});
 		timelineEvents[0] = [];
 		lastUpdateTime = 0;
