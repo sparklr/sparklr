@@ -458,3 +458,10 @@ function hideDropdown() {
 	},300);
 	_g("dropdowncover").style.display="none";
 }
+
+function removeDomElement(id) {
+	var e = _g(id);
+	if (e) {
+		e.parentNode.removeChild(e);
+	}
+}

@@ -29,7 +29,7 @@ exports.post = function(user, data, callback) {
 
 	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + parseInt(user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
 		if (err) return callback(err);
-		if (rows && rows.length > 1) {
+		if (rows && rows.length > 101) {
 			return callback(null,2); // as in, 2 many posts
 		}
 
@@ -91,13 +91,14 @@ exports.postComment = function(user, data, callback) {
 		var query = "INSERT INTO `comments` (`postid`, `from`, `message`, `time`) ";
 		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+Database.escape(data.comment) + "," +  Toolbox.time() + ")";
 
-		Database.query(query, callback);
-		
-		process.send({ t: 0, postid: data.id, from: user, message: data.comment, time: Toolbox.time() });
+		Database.query(query, function(err,res) {
+			process.send({ t: 0, postid: data.id, from: user, message: data.comment, time: Toolbox.time(), id: res.insertId });
+			callback(err,res);
+		});
 
 		var count = (rows[0].commentcount + 1 || 1);
 
-		process.send({ t: 2, postid: data.id, commentcount: count, network: '0', from: 0 });
+		process.send({ t: 2, message: false, id: data.id, commentcount: count, network: '0', from: 0 });
 
 		Database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(data.id));
 
@@ -152,6 +153,9 @@ exports.deleteComment = function(userobj, id, callback) {
 
 		Database.query(query, function(){});
 		exports.updateCommentCount(rows[0].postid, -1);
+		process.send({ t: 2, message: false, delta: true, id: rows[0].postid, commentcount: -1, network: '0', from: 0 });
+		process.send({ t: 0, postid: rows[0].postid, id: id, deleted: true });
+
 		callback(null,true);
 	});
 }

@@ -53,12 +53,15 @@ exports.run = function(user, request, response, sessionid) {
 	var from = user.following;
 	from.push(user.id);
 
-	var payload = { private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist, background: user.background };
+	var payload = { 
+		private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist, background: user.background,
+		following: user.following
+	};
 	database.getStream("timeline", {
 		networks: user.networks.slice(0),
 		from: from,
 		since: 1,
-		sortby: "modified"
+		sortby: "modified",
 	}, function(err, stream) {
 		payload.timelineStream = stream;
 		User.getMassUserDisplayName(from, function(err, names) {
