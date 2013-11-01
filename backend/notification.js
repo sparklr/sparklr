@@ -22,8 +22,8 @@ exports.addUserNotification = function (user, notification, action, from, type) 
 	query += Toolbox.time();
 	query += ")";
 
-	Database.query(query,function(){
-		process.send({ t: 3, from: from, to: user, body: notification, action: action.toString(), type: parseInt(type), time: Toolbox.time() });
+	Database.query(query,function(err,res){
+		process.send({ t: 3, id: res.insertId, from: from, to: user, body: notification, action: action.toString(), type: parseInt(type), time: Toolbox.time() });
 	});
 };
 
