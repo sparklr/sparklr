@@ -259,6 +259,7 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				if (rows.affectedRows > 0) {
 					Post.updateCommentCount(postObject.id, -1);
 					sendObject(response, { deleted: true });
+					process.send({ t: 2, message: false, delta: true, id: parseInt(postObject.id), commentcount: -1, network: '0', from: 0 });
 					return;
 				}
 				Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D", like: true}, function(){});
@@ -505,6 +506,7 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			Post.getComments(fragments[3], since, callback);
 			break;
 		case "stream":
+			// TODO: add tag support
 			var stream = parseInt(fragments[3]);
 			var args = {};
 			if (stream === 0) {
@@ -676,10 +678,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					}, callback);
 					break;
 				case "post":
-					Post.deletePost(userobj, parseInt(fragments[4]), callback);
+					//TODO: better sanitization
+					Post.deletePost(userobj, parseInt(fragments[4]) || 0, callback);
 					break;
 				case "comment":
-					Post.deleteComment(userobj, parseInt(fragments[4]), callback);
+					Post.deleteComment(userobj, parseInt(fragments[4]) || 0, callback);
 					break;
 			}
 			break;

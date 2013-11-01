@@ -131,9 +131,22 @@ process.on("message", function(e) {
 		}
 	}
 	if (e.t === 2) {
+		if (e.message !== false)
+			var tags = e.message.match(/\B#([\w-]{1,40})/gi);
+		else
+			var tags = [];
+
 		for (i in clients) {
 			if (!clients[i]) continue;
-			if (clients[i].p18SubscribedTo.indexOf(e.network) !== -1 || clients[i].p18SubscribedTo.indexOf(e.from) !== -1) {
+			subTag = false;
+			for (tag in tags) {
+				if (clients[i].p18SubscribedTo.indexOf(tags[tag]) !== -1) {
+					subTag = true;
+					break;
+				}
+			}
+			console.log(clients[i].p18SubscribedTo);
+			if (subTag || clients[i].p18SubscribedTo.indexOf(e.from.toString()) !== -1) {
 				clients[i].send(str || (str = JSON.stringify(e)));
 			}
 		}
