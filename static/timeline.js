@@ -11,13 +11,20 @@ var joinedNetworks = [];
 
 var missingPosts = [];
 
+var commentCounts = {};
+
 function addTimelineEvent(item,append) {
 	console.log(item);
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
-	if (e = _g("event_" + item.id)) {
-		if (item.commentcount)
-			updateCommentCount(item.id, item.commentcount);
+	if (_g("event_" + item.id)) {
+		console.log(item.commentcount);
+		if (item.commentcount) {
+			if (item.delta)
+				updateCommentCount(item.id, commentCounts[item.id] + item.commentcount);
+			else
+				updateCommentCount(item.id, item.commentcount);
+		}
 		if (item.message)
 			_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
@@ -213,17 +220,25 @@ function hidePost(id,from) {
 }
 
 function renderComment(comment,scroll) {
+	console.log(comment);
+	if (comment.deleted) {
+		console.log('deleted ' + comment.id);
+		removeDomElement('comment_' + comment.id);
+		return;
+	}
 	var commentlist = _g("comments_" + comment.postid);
 
 	var e = document.createElement("div");
+	e.id = 'comment_' + comment.id;
 	e.className = "comment";
 	comment.like = comment.message == LIKE_CHAR;	
 	if (comment.like) {
-		if (_g("like_" + comment.from))
-			return;
-		e.id = "like_" + comment.from;
+		var likeid = "like_" + comment.postid + "_" + comment.from;
+		if (_g(likeid))	return;
+
+		e.id = likeid;
 		if (comment.from == curUser) 
-			_g("likebtn").className += " liked";
+			_g("likebtn_"+comment.postid).className += " liked";
 	}
 
 	var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
@@ -286,6 +301,8 @@ function updateCommentCount(id, count) {
 
 	ele.style.opacity = (count != 0) ? 1 : 0;
 	ele.innerHTML = count || "+";
+
+	commentCounts[id] = count;
 }
 
 function postComment(e) {
@@ -317,14 +334,12 @@ function postComment(e) {
 
 function likeEvent(id, to, callback) {
 	ajaxGet("work/like", { id: id, to: to }, function(result) {
-		if (result.deleted && callback.id == "likebtn") {
-			location.href = location.href + "#";
+		if (result.deleted) {
+			removeDomElement('like_' + id + '_' + curUser);
+			callback.className = callback.className.replace('liked','');
 			return;
 		}
-		if (callback.innerHTML == "Like") 
-			callback.innerHTML = "Unlike";
-		else
-			callback.className += " jiggle";
+		callback.className += " jiggle";
 
 		setTimeout(function() { callback.className = callback.className.replace(" jiggle", ""); }, 1000);
 		pollData();
