@@ -8,7 +8,9 @@ var N_MENTION = 2;
 var N_EVENT = 1;
 
 function addNotification(notification) {
-	if (currentNotifications[notification.id]) return; //duplicate
+	if (currentNotifications[notification.id]) {
+		return; //duplicate
+	}
 	currentNotifications[notification.id] = notification;
 
 	if (!MOBILE)
