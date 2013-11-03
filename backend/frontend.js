@@ -3,6 +3,7 @@ var templates = require("./templates");
 var database = require("./database");
 var Post = require("./post");
 var User = require("./user");
+var Notification = require("./notification");
 
 var frontendTemplate = "";
 var externalTemplate = "";
@@ -52,12 +53,15 @@ exports.run = function(user, request, response, sessionid) {
 	var from = user.following;
 	from.push(user.id);
 
-	var payload = { private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist, background: user.background };
+	var payload = { 
+		private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist, background: user.background,
+		following: user.following
+	};
 	database.getStream("timeline", {
 		networks: user.networks.slice(0),
 		from: from,
 		since: 1,
-		sortby: "modified"
+		sortby: "modified",
 	}, function(err, stream) {
 		payload.timelineStream = stream;
 		User.getMassUserDisplayName(from, function(err, names) {
@@ -73,9 +77,12 @@ exports.run = function(user, request, response, sessionid) {
 			payload.userHandles = userHandles;
 			payload.isMod = (user.rank > 49);
 
-			html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
-			response.write(html);
-			response.end();
+			Notification.getUserNotifications(user.id, 0, function(err,rows) {
+				payload.notifications = rows;
+				html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
+				response.write(html);
+				response.end();
+			});
 		});
 	});
 }

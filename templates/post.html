@@ -1,62 +1,57 @@
 <div class='contentwrapper'>
 	<script>
-		
-	if (data.type == 1) {
-		data = processPostMeta(data);
-	}
+	data = processPostMeta(data);
 	</script>
 	<% if (data.type == 1) %>
-	<div class='picturepost' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
+	<div class='picturepost mini' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
 		<img src='{imgUrl(data.img)}'>
 	</div>
 	<% endif %>
 
-	<div id='event_{data.id}' class='fadein' style='padding: 7px; margin: -5px; word-wrap: break-word;'>
+	<div id='post_{data.id}' class='fadein' style='padding: 7px; margin: -5px; word-wrap: break-word;'>
 		<% if (data.from == curUser || isMod) %>
 		<div class='commentcount delete icon' onClick='deletePost("{data.id}");stopBubbling();'></div>
 		<% else %>
 		<div class='commentcount delete icon' onClick='hidePost({data.id},{data.from});stopBubbling();'></div>
 		<% endelse %>
 		<div class='commentcount repost icon' onClick='repost("{data.id}");stopBubbling();'></div>
-		<div class='commentcount like icon' id='likebtn' onClick='likeEvent("{data.id}","{data.from}", this);stopBubbling();'></div>
+		<div class='commentcount like icon' id='likebtn_{data.id}' onClick='likeEvent("{data.id}","{data.from}", this);stopBubbling();'></div>
 		<div style='display:inline-block;float:left;height:100%'>
 			<img class='avatar' src='{getAvatar(data.from)}'>
 		</div>
 		<a href='#/user/{data.from}' class='person'>{getDisplayName(data.from)}</a><br>
 		<div style='font-size: 13px;color:#999' class='time_raw' data-time='{data.time}'></div><br>
-		<span style='outline:none' id='post' <% if (data.from == curUser) %>contenteditable onblur='editPost();'<% endif %>>
-			{processPost(data)}
+		{data.originalMessage}
+		<span style='outline:none' data-id='{data.id}' <% if (data.from == curUser) %> onclick='editPostStart(event)' onblur='editPost(event);'<% endif %>>
+			{data.formattedMessage}
 		</span>
 		<br>
 	</div>
 	<hr>
-	<div id='responseholder'>
+	<div id='responseholder_{data.id}'>
 		<div id='comments_{data.id}' style='padding:5px;'></div>
 		<div class='fadein' style='padding:5px;'>
-			{ renderComposer('Respond...', 'postComment', true) }
+			{ renderComposer('Respond...', 'postComment', true, data.id) }
 		</div>
 	</div>
-	<div id='reblogholder' class='fadein' style='display:none;min-height:100px'>
+	<div id='reblogholder_{data.id}' class='fadein' style='display:none;min-height:100px'>
 		<div class='fadein' style='padding:5px;'>
-			{ renderComposer('Share something (optional)', 'publishRepost', true, 'repostcomment') }
+			{ renderComposer('Share something (optional)', 'publishRepost', true, 'r' + data.id) }
 		</div>
 		<div style='width: 100%; display: inline-block; text-align: right'>
-			<input type='button' value='Repost to Followers' style='margin-right: 5px' onClick='publishRepost();'>
+			<input type='button' value='Repost' data-id='r{data.id}' style='margin-right: 5px' onClick='publishRepost(event);'>
 		</div>
 	</div>
 </div>
 
 <script>
-	currentPageType = "POST";
-	subscribedStream = data.id;
-	currentPostBy = data.from;
 	setTimeout(function() { 
 	for (var i = 0; i < data.comments.length; i++) {
 		renderComment(data.comments[i]);
 	}
 	
 	currentComments = data.comments;
-
+	currentPageType = "POST";
 
 	if (location.hash.indexOf("new") != -1) 
 		_g('composer').focus();
@@ -66,6 +61,11 @@
 
 	renderTags(data);
 	}, 0);
+	
+	var lineexp = /^\[([\d]+)\]/gm;
+	setWindowTitle("c"+data.id, data.message.replace(lineexp, function(match,num){
+		return getDisplayName(num);
+	}));
 
 </script>
 

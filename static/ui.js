@@ -21,7 +21,10 @@ function showPopup(content,classname) {
 	setTimeout(function() { popup.style.opacity = 1; }, 10);
 	
 	popup.innerHTML = content;
+
 	document.body.appendChild(popup);	
+
+	return popup.id;
 }
 
 function hidePopup(id) {
@@ -79,6 +82,19 @@ function showConfirm(caption, message, action) {
 	};
 }
 
+function htmlToPost(html) {
+	console.log(html);
+	html = html.replace(/\<img src=\".*\/t([A-Za-z0-9_]+).*\"(^\>)*\>/, function(match, img) {
+		return "[IMG"+img+"]";
+	});
+	html = html.replace(/\<a href=[\"\']([^\"\']*)[\"\'](.*)<\/a\>/, function(match, href) {
+		return href;
+	});
+	html = html.replace(/\<br\>/g, "");
+	console.log("scrub: " + html);
+	return html;
+}
+
 function processPost(post) {
 	var message = processMedia(escapeHTML(post.message));
 
@@ -119,18 +135,13 @@ function processMedia(text,noImages) {
 
 		if (!noImages) {
 			if (url.indexOf(".jpg") != -1 || url.indexOf(".png") != -1 || url.indexOf(".gif") != -1) {
-				html += "<img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"block\";window.onload();'><br>";
+				html += "<br><img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"inline-block\";window.onload();'><br>";
 			}
 		}
 		html += match + "</a>";
 
 		return html;
 		});
-
-	var slashregex = /(^|\s)\/([\w-]+)/gi;
-	text = text.replace(slashregex, function(match, foo, network) {
-		return " <a href='#/" + network + "'>" + match + "</a>";
-	});
 
 	var mentionregex = /\B@([\w-]+)/gi;
 	text = text.replace(mentionregex, function(match, user) {
@@ -144,7 +155,7 @@ function processMedia(text,noImages) {
 
 	var imgregex = /\[IMG([A-Za-z0-9\._-]+)\]/g;
 	text = text.replace(imgregex, function(match, img) {
-		return "<img src='" + imgUrl(img) + "' style='cursor:pointer' onload='window.onload();' onClick='showImage(\"" + img + "\");'><br>";
+		return "<img src='" + imgUrl(img) + "' style='cursor:pointer' class='inlineimage' onload='window.onload();' onClick='showImage(\"" + img + "\");'><br>";
 	});
 
 	var countnewlines = 0;
@@ -211,10 +222,12 @@ function scrollDistanceFromBottom() {
 }
 
 function scrollToTop() {
-	scrollTo(document.body.scrollTop ? document.body : document.documentElement, 0, 500);
+	animScrollTo(document.body.scrollTop ? document.body : document.documentElement, 0, 500);
 }
  
-function scrollTo(element, to, duration) {
+function animScrollTo(element, to, duration) {
+	console.log(to);
+
     var initial = element.scrollTop,
         delta = to - initial,
         curtime = 0,
@@ -245,13 +258,13 @@ function expandTextarea(e) {
 	if (!e)
 		e = window.event;
 	var l = e.target.value.length;
-	e.target.style.height = (2 + Math.floor((l / 80))) * 20 + (20 * (e.target.value.split("\n").length - 1)) + "px";
-
+	e.target.style.height = (2 + Math.floor((l / 60))) * 20 + (20 * (e.target.value.split("\n").length - 1)) + "px";
+return;
 	var r = _g("remaining");
 	var toolong = l > 420;
 
 	r.style.opacity = toolong ? 1 : 0;
-	r.style.display = toolong ? "block" : "none";
+	r.style.display = toolong ? "inline-block" : "none";
 	if (toolong) r.innerHTML = (500 - l);
 	
 }
@@ -444,7 +457,7 @@ function showDropdown() {
 	var s = _g("dropdown");
 	s.style.display = "block";
 	setTimeout(function() {
-	s.style.left = "0px";
+	s.style.right = "0px";
 	},10);
 	_g("dropdowncover").style.display="block";
 	window.scrollTo(0,0);
@@ -452,9 +465,16 @@ function showDropdown() {
 
 function hideDropdown() {
 	var s = _g("dropdown");
-	s.style.left = "-200px";
+	s.style.right = "-200px";
 	setTimeout(function() {
 	s.style.display = "none";
 	},300);
 	_g("dropdowncover").style.display="none";
+}
+
+function removeDomElement(id) {
+	var e = _g(id);
+	if (e) {
+		e.parentNode.removeChild(e);
+	}
 }

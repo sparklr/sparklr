@@ -49,7 +49,7 @@ exports.handleUpload = function(data, userobj, args, callback) {
 }
 
 function resizeImage(input, output, callback) {
-	var process = spawn("convert", [input, "-resize", ">1920x1080", "-strip", output]);
+	var process = spawn("convert", [input, "-resize", ">1920x1080", "-auto-orient", "-strip", output]);
 	process.on("close", function(code) {
 		callback(code);
 	});
@@ -63,6 +63,7 @@ function makeThumb(input, output, size, callback) {
 						(size.width) + "x" + (size.height) + ">" + (size.fill ? "^" : ""),
 						"-crop",
 						size.width + "x" + size.height + "+0+0",
+						"-auto-orient",
 						"-strip",
 						output
 	]);

@@ -4,7 +4,7 @@ html {
 }
 
 blockquote{
-	margin-right: 0;
+	margin: 0 0 10px 25px;
 }
 
 ::-webkit-scrollbar {
@@ -235,6 +235,9 @@ div.contentwrapper {
 #networks a.active {
 	margin-left: -5px;
     background: rgba(0,0,0,0.35);
+}
+#networks a.highlight {
+	color: red;
 }
 #sidebar a:hover {
     opacity: 1;
@@ -534,9 +537,7 @@ div.like {
 }
 
 div.like.liked {
-    box-shadow: 0px 0px 10px #c7316d, 
-	0px 0px 10px #9b365e,
-    0px 0px 2px #000;
+	background-color: #7e5a82;
 }
 
 div.picturepost {
@@ -552,6 +553,10 @@ div.picturepost img {
 	max-width: 578px;
 	max-height: 443px;
 	margin-bottom: -4px;
+}
+div.picturepost.mini img {
+	max-width: 290px;
+	max-height: 220px;
 }
 div.contentwrapper div.picturepost {
 	margin: 0px;
@@ -658,7 +663,7 @@ div.attachment:hover div, div.picturepost:hover div {
 }
 #composerframe textarea {
 	border: none;
-	width: 455px;
+	width: calc(100% - 10px);
 	-webkit-transition: all 0.3s ease;
 }
 
@@ -698,8 +703,8 @@ img.avatar {
 
 img.inlineimage {
 	margin: 5px;
-	max-width: 500px;
-	max-height: 300px;
+	max-width: 200px;
+	max-height: 200px;
 }
 
 div.photos {
@@ -849,14 +854,6 @@ textarea {
     resize: none;
 	font-size: 15px;
 	overflow: auto;
-}
-
-#scrollUpContent {
-    display: inline-block;
-    height: 400px;
-    width: 100%;
-    overflow: auto;
-	padding-top: 8px;
 }
 
 div.time {
@@ -1100,7 +1097,7 @@ span.admin, span.mod{
 
 #dropdown {
 	position:absolute;
-	left: -200px;
+	right: -200px;
 	top: 75px;
 	width: 200px;
 	padding: 5px;
@@ -1108,7 +1105,7 @@ span.admin, span.mod{
 	min-height: 50px;
 	border: solid 1px #222;
 	display:none;
-	-webkit-transition: left 0.3s ease;
+	-webkit-transition: right 0.3s ease;
 	z-index: 9999;
 }
 
@@ -1188,13 +1185,97 @@ div.tabs a.active {
 	border-radius: 0 10px 10px 10px;
 }
 
-#layer {
-	background-image: url(halloween.png);
-	position: fixed;
-	top: 0px;
+#windowcontainer {
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
+	position: fixed;
+}
+
+div.window {
+	position: absolute;
+	display: inline-block;
+	background: #fff;
 	bottom: 0px;
-	display: block;
-	z-index: -1;
+	margin: 0px 10px;
+	-webkit-transition: left 0.1s ease;
+	border: solid 1px #999;
+	color: #333;
+}
+
+div.window div.title {
+	background: #454050;
+	color: #fff;
+	height: 24px;
+	padding: 2px;
+}
+
+div.window div.title a {
+	float: right;
+	color: #fff;
+	cursor: pointer;
+	padding-right: 5px;
+	font-weight: bold;
+	margin: 0px;
+}
+
+div.windowcontent {
+	display: inline-block;
+	overflow: auto;
+	overflow-x: hidden;
+	width: 360px;
+	height: 400px;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.windowcontent .chatcomposer {
+	position: absolute;
+	padding:5px;
+	width:340px;
+	bottom:0px;
+	background:#fff;
+}
+
+div.window div.contentwrapper {
+	border: none;
+	box-shadow: none;
+	margin: 0px;
+}
+div.window div.windowhidden {
+	display:none;
+}
+
+div.scrollUpContent img.littleavatar{
+	margin-top: 0;
+}
+
+div.scrollUpContent {
+	overflow-y: auto;
+	overflow-x: hidden;
+	word-wrap: break-word;
+	height: 350px;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.window div.scrollUpContent {
+    display: inline-block;
+	padding-bottom: 50px;
+	overflow: none;
+	height: inherit;
+}
+
+div.popup_post {
+    position: absolute;
+    display: inline-block;
+	-webkit-transition: all 0.7s ease-in-out;
+	opacity: 0;
+    width: 580px;
+    margin-left: -390px;
+    margin-top: 100px;    
+    left: 50%;
+	z-index: 100;
+	color: #555;
 }

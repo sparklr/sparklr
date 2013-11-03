@@ -7,7 +7,7 @@
 			var msg = data[i];
 			msg.img = imgUrl(msg.from.toString());
 	</script>
-	<div style='position:relative;cursor:pointer;' onClick='location.href="/#/chat/{msg.from}";'>
+	<div style='position:relative;cursor:pointer;' onClick='chatWith("{msg.from}");'>
 		<div class='rightcontrols'>
 			<div class='time' data-time='{msg.time}'></div>
 		</div>
