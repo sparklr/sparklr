@@ -48,9 +48,7 @@ function addTimelineEvent(item,append) {
 			showEvent(item.id);
 	}
 
-	if (item.type == 1) {
-		item = processPostMeta(item);
-	}
+	item = processPostMeta(item);
 
 	eval(getTemplate("timelineitem"));
 
@@ -124,6 +122,27 @@ function processPostMeta(data) {
 		}
 	}
 
+	var message = processMedia(escapeHTML(data.message));
+	var original = "";
+
+	console.log(message);
+
+	if (data.via) {
+		var last = "";
+		var laststr = "";
+		var lineexp = /\[([\d]+)\]([^$\[]*)/g; //line starts with [ID]
+		message = message.replace(lineexp, function(match, num, text) {
+			original = "<blockquote>" + original + "</blockquote>" + last;
+			last = "<img src='" + getAvatar(num) + "' class='littleavatar'><a href='#/user/" + num + "'>" + getDisplayName(num) + "</a>: " + text + "";
+			laststr = text;
+			return "";
+		});
+		message += laststr;
+	}
+
+	data.formattedMessage = message;
+	data.originalMessage = "<blockquote>" + original + "</blockquote>";
+
 	return data;
 }
 function renderTags(item) {
@@ -175,9 +194,21 @@ function showImage(img) {
 	}
 }
 
-function editPost() {
-	ajaxGet("work/editpost", {  id: subscribedStream, body: _g("post").textContent }, function() {
+function editPostStart(e) {
+	e = e || window.event;
+	if (e.target.getAttribute('contenteditable') == 'true') return;
+
+	e.target.setAttribute('contenteditable', true);
+}
+
+function editPost(e) {
+	console.log('saving');
+	e = e || window.event;
+	ajaxGet("work/editpost", { id: e.target.getAttribute('data-id'), body: htmlToPost(e.target.innerHTML) }, function() {
+		e.target.innerHTML = processPost({ message: e.target.textContent, from: curUser });
 	});
+	e.target.setAttribute('data-message', e.target.textContent);
+	e.target.setAttribute('contenteditable', false);
 }
 function editComment(e) {
 	e = e || window.event;
