@@ -1,8 +1,6 @@
 <div class='contentwrapper'>
 	<script>
-	if (data.type == 1) {
-		data = processPostMeta(data);
-	}
+	data = processPostMeta(data);
 	</script>
 	<% if (data.type == 1) %>
 	<div class='picturepost mini' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
@@ -23,8 +21,9 @@
 		</div>
 		<a href='#/user/{data.from}' class='person'>{getDisplayName(data.from)}</a><br>
 		<div style='font-size: 13px;color:#999' class='time_raw' data-time='{data.time}'></div><br>
-		<span style='outline:none' id='post' <% if (data.from == curUser) %>contenteditable onblur='editPost();'<% endif %>>
-			{processPost(data)}
+		{data.originalMessage}
+		<span style='outline:none' data-id='{data.id}' <% if (data.from == curUser) %> onclick='editPostStart(event)' onblur='editPost(event);'<% endif %>>
+			{data.formattedMessage}
 		</span>
 		<br>
 	</div>

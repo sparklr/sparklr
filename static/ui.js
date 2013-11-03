@@ -82,6 +82,14 @@ function showConfirm(caption, message, action) {
 	};
 }
 
+function htmlToPost(html) {
+	html = html.replace(/\<img src=\".*\/t([A-Za-z0-9_]+).*\"(^\>)*\>/, function(match, img) {
+		return "[IMG"+img+"]";
+	});
+	html = html.replace(/\<br\>/g, "");
+	return html;
+}
+
 function processPost(post) {
 	var message = processMedia(escapeHTML(post.message));
 
