@@ -5,7 +5,7 @@
 			<a href='#/friends' class='people' title='People'></a>
 			<a href='#/notifications' class='notifs' title='Notifications' id='notifs'></a>
 			<a href='#/inbox' class='inbox' title='Inbox' id='inbox'></a>
-			<a href='javascript:showDropdown(true);stopBubbling();' class='menu' title='Menu'></a>
+			<a href='javascript:showDropdown(true);stopBubbling(event);' class='menu' title='Menu'></a>
 			<a href="#/user/{curUser}" title='Me' class='me'><img src='{imgUrl(curUser)}' width=45 height=45></a>
 			<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
 		</div>
