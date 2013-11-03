@@ -145,8 +145,7 @@ process.on("message", function(e) {
 					break;
 				}
 			}
-			console.log(clients[i].p18SubscribedTo);
-			if (subTag || clients[i].p18SubscribedTo.indexOf(e.from.toString()) !== -1) {
+			if (subTag || clients[i].p18SubscribedTo.indexOf(e.from.toString()) !== -1 || clients[i].p18SubscribedTo.indexOf(e.network.toString()) !== -1) {
 				clients[i].send(str || (str = JSON.stringify(e)));
 			}
 		}
