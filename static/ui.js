@@ -452,7 +452,7 @@ function showDropdown() {
 	var s = _g("dropdown");
 	s.style.display = "block";
 	setTimeout(function() {
-	s.style.left = "0px";
+	s.style.right = "0px";
 	},10);
 	_g("dropdowncover").style.display="block";
 	window.scrollTo(0,0);
@@ -460,7 +460,7 @@ function showDropdown() {
 
 function hideDropdown() {
 	var s = _g("dropdown");
-	s.style.left = "-200px";
+	s.style.right = "-200px";
 	setTimeout(function() {
 	s.style.display = "none";
 	},300);
