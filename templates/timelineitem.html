@@ -23,5 +23,5 @@
 <% endif %>
 
 <h2>@{getUserHandle(item.from)}</h2>
-<div class='content' id='postcontent_{item.id}'>{processPost(item)}</div>
+<div class='content' id='postcontent_{item.id}'>{item.originalMessage}{item.formattedMessage}</div>
 
