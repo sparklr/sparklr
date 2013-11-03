@@ -15,7 +15,25 @@ exports.getComments = function(postid, since, callback) {
 
 exports.edit = function(user, id, body, rank, callback) {
 	if (body.length > 500) return callback(false);
-	Database.query("UPDATE `timeline` SET `message` = " + Database.escape(body) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), callback);
+	Database.query("SELECT * FROM `timeline` WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), function(err,rows) {
+		if (err || rows.length < 1)
+			return callback(err || true);
+		var message = "";
+		if (rows[0].via) {
+			var last = "";
+			var lineexp = /\[([\d]+)\]([^$\[]*)/g; //line starts with [ID]
+			rows[0].message = rows[0].message.replace(lineexp, function(match, num, text) {
+				message += last;
+				last = match;
+				return "";
+			});
+
+			message += "[" + user + "] " + body;
+		} else {
+			message = body;
+		}
+		Database.query("UPDATE `timeline` SET `message` = " + Database.escape(message) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), callback);
+	});
 }
 
 exports.editcomment = function(user, id, body, rank, callback) {

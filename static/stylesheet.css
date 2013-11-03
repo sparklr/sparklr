@@ -1102,7 +1102,7 @@ span.admin, span.mod{
 
 #dropdown {
 	position:absolute;
-	left: -200px;
+	right: -200px;
 	top: 75px;
 	width: 200px;
 	padding: 5px;
@@ -1110,7 +1110,7 @@ span.admin, span.mod{
 	min-height: 50px;
 	border: solid 1px #222;
 	display:none;
-	-webkit-transition: left 0.3s ease;
+	-webkit-transition: right 0.3s ease;
 	z-index: 9999;
 }
 

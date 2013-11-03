@@ -205,7 +205,7 @@ function editPost(e) {
 	console.log('saving');
 	e = e || window.event;
 	ajaxGet("work/editpost", { id: e.target.getAttribute('data-id'), body: htmlToPost(e.target.innerHTML) }, function() {
-		e.target.innerHTML = processPost({ message: e.target.textContent, from: curUser });
+		e.target.innerHTML = processPostMeta({ message: htmlToPost(e.target.innerHTML), from: curUser }).formattedMessage;
 	});
 	e.target.setAttribute('data-message', e.target.textContent);
 	e.target.setAttribute('contenteditable', false);
