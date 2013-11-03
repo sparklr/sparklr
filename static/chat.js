@@ -1,8 +1,7 @@
-var curChatUser;
 var FRIENDS = {};
 var newMessageUsers = [];
 
-var lastMessageFrom;
+var lastMessageFrom = {};
 
 //If true, the scroll handler will ignore upscrolling events
 var chat_downloadingOlder;
@@ -34,10 +33,11 @@ function scrollUpHandler(e) {
 
 function setupScrollHandler() {
 	var e = _g("scrollUpContent");
-	e.addEventListener("DOMMouseScroll", scrollUpHandler);
-	e.addEventListener("mousewheel", scrollUpHandler);
+	//e.addEventListener("DOMMouseScroll", scrollUpHandler);
+	//e.addEventListener("mousewheel", scrollUpHandler);
 }
 
+// TODO
 function getNewChatMessages() {
 	chat_downloadingOlder = true;
 	console.log("getting older");
@@ -61,14 +61,21 @@ function getLastChatTime() {
 function addChatMessages(data) {
 	data = data.data || data;
 	for (var i = data.length - 1; i >= 0; i--) {
-		addChatMessage(data[i].from, data[i].message, data[i].time, false);
+		addChatMessage(data[i].from, data[i].to, data[i].message, data[i].time, false);
 	}
 	if (data.length > 0)
 		hideUnconfirmedMessages();
 }
 
-function addChatMessage(from, msg, time, prepend, unconfirmed) {
-	var sc = _g("scrollUpContent");
+function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
+	var convoid;
+	if (from == curUser)
+		convoid = to + "," + from;
+	else 
+		convoid = from + "," + to;
+
+	console.log(convoid);
+	var sc = _g("scrollUpContent_"+convoid);
 
 	var ele = document.createElement("div");
 	ele.className = "chatmsg";
@@ -78,7 +85,7 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 
 	ele.id = "msg_" + time;
 	var html = "";
-	if (lastMessageFrom != from || prepend && lastMessageFrom == from) {
+	if (lastMessageFrom[convoid] != from || prepend && lastMessageFrom[convoid] == from) {
 		html += "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>";
 	}
 	html += "<div style='display:block;margin-left: 25px'>" + processMedia(escapeHTML(msg)) + "</div>";
@@ -90,12 +97,11 @@ function addChatMessage(from, msg, time, prepend, unconfirmed) {
 		chatMessages.unshift([from,msg,time]);
 	} else {
 		sc.appendChild(ele);
-		setTimeout(function() { sc.scrollTop = 0xFFFFFF; },5);
+		setTimeout(function() { (_g('window_m'+convoid) || _g('scrollUpContent_'+convoid)).scrollTop = 0xFFFFFF; },5);
 		chatMessages.push([from,msg,time]);
 	}
 
-	if (!unconfirmed)
-		lastMessageFrom = from;
+	lastMessageFrom[convoid] = from;
 }
 
 function hideUnconfirmedMessages() {
@@ -107,25 +113,26 @@ function hideUnconfirmedMessages() {
 	}
 }
 
-function sendChatMessage() {
+function sendChatMessage(e) {
+	var id = e.target.getAttribute("data-id");
 	var vars = {
-		to: curChatUser,
-		message: _g("composer").value
+		to: id.replace("chat_",""),
+		message: _g("composer_"+id).value
 	};
 	
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
 		vars.img = 1;
-		_g("attachment").style.display = "none";
+		_g("attachment"+id).style.display = "none";
 	}
 
 	setTimeout(function() {
-		_g("composer").value="";
-		expandTextarea(_g("composer"));
+		_g("composer_"+id).value="";
+		expandTextarea(e);
 	},10);
 
 	if (!vars.message && !vars.postData) return;
-	addChatMessage(curUser, vars.message, getLastChatTime(), false, true);
+	//addChatMessage(curUser, vars.to, vars.message, getLastChatTime(), false, true);
 
 	ajaxGet("work/chat", vars, function(data,xhr) {
 		if (data.error && data.info == "Blocked") {
@@ -139,7 +146,7 @@ function sendChatMessage() {
 function addFriendElement(id) {
 	var e = document.createElement("a");
 	e.id = "friendicon_" + id;
-	e.onclick = function() { location.href='#/chat/' + id; };
+	e.onclick = function() { chatWith(id); };
 	e.innerHTML = "<img src='" + getAvatar(id) + "'><div class='names'>" + getDisplayName(id) + "</div></a>";
 	
 	_g("friendslist").appendChild(e);
@@ -161,4 +168,19 @@ function setUserStatus(user) {
 function setNewInbox(value) {
 	var e = _g("inbox");
 	e.className = "inbox" + (value ? " jiggle" : "");
+}
+
+function chatWith(id) {
+	if (MOBILE || !ws || !ws.p18Connected) {
+		location.href = "#/chat/" + id;
+		return;
+	}
+	var pid = addWindow("m" + id + "," + curUser, function() {
+		// closed
+	});
+	renderTemplate("chat/" + id, pid)
+	console.log(id);
+	return;
+	location.href = '/#/chat/' + id;
+
 }

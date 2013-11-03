@@ -59,11 +59,21 @@ var app = function(payload) {
 	curBackground = payload.background;
 	isMod = payload.isMod;
 
-	addTimelineArray(payload.timelineStream, 0);
+	for (var i = 0; i < payload.following.length; i++) {
+		subscribeToStream(payload.following[i]);
+	}
+	subscribeToStream(curUser);
 
+	addTimelineArray(payload.timelineStream, 0);
+/*
 	for (var i = 0; i < joinedNetworks.length; i++) {
 		addNetwork(joinedNetworks[i]);
 	}
+	*/
+	for (var i = 0; i < payload.notifications.length; i++) {
+		addNotification(payload.notifications[i]);
+	}
+	setTimeout(connectSocket,100);
 }
 
 var s = document.cookie.match(/D\=([^\s|^\;]+)\;?/)[1].split(",");
@@ -97,3 +107,7 @@ if (ua.match(/MSIE/i)) {
 		showPopup(html);
 	}
 }
+
+if (!MOBILE)
+	setInterval(handleNotifications,1000);
+
