@@ -83,10 +83,15 @@ function showConfirm(caption, message, action) {
 }
 
 function htmlToPost(html) {
+	console.log(html);
 	html = html.replace(/\<img src=\".*\/t([A-Za-z0-9_]+).*\"(^\>)*\>/, function(match, img) {
 		return "[IMG"+img+"]";
 	});
+	html = html.replace(/\<a href=[\"\']([^\"\']*)[\"\'](.*)<\/a\>/, function(match, href) {
+		return href;
+	});
 	html = html.replace(/\<br\>/g, "");
+	console.log("scrub: " + html);
 	return html;
 }
 
