@@ -130,7 +130,7 @@ function processMedia(text,noImages) {
 
 		if (!noImages) {
 			if (url.indexOf(".jpg") != -1 || url.indexOf(".png") != -1 || url.indexOf(".gif") != -1) {
-				html += "<img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"block\";window.onload();'><br>";
+				html += "<br><img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"inline-block\";window.onload();'><br>";
 			}
 		}
 		html += match + "</a>";
