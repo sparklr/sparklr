@@ -253,6 +253,8 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 					if (err) return do500(response, err);
 					Notification.addUserNotification(parseInt(postObject.to), postObject.message, 0, userobj.id, Notification.N_CHAT);
 					sendObject(response, {});
+		
+					process.send({ t: 1, to: postObject.to, from: userobj.id, message: postObject.message, time: Toolbox.time() });
 				});
 			});
 		return;
@@ -261,6 +263,7 @@ function processPostRequest(request, response, postObject, uri, sessionid, usero
 				if (rows.affectedRows > 0) {
 					Post.updateCommentCount(postObject.id, -1);
 					sendObject(response, { deleted: true });
+					process.send({ t: 2, message: false, delta: true, id: parseInt(postObject.id), commentcount: -1, network: '0', from: 0 });
 					return;
 				}
 				Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D", like: true}, function(){});
@@ -518,22 +521,12 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			Post.getComments(fragments[3], since, callback);
 			break;
 		case "stream":
-			var stream = fragments[3];
-			if (!stream.match(/^\d+$/)) {
-				uri.query.network = 1;
-			} else {
-				stream = parseInt(stream);
-			}
+			// TODO: add tag support
+			var stream = parseInt(fragments[3]);
 			var args = {};
 			if (stream === 0) {
-				args.networks = userobj.networks.slice(0);
 				args.from = userobj.following.slice(0); // get a copy, not a reference
 				args.from.push(userobj.id);
-			} else if (stream === "following") {
-				args.from = userobj.following.slice(0); // get a copy, not a reference
-				args.from.push(userobj.id);
-			} else if (uri.query.network) {
-				args.networks = [stream.toString()];
 			} else {
 				args.from = [stream];
 			}
@@ -700,10 +693,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 					}, callback);
 					break;
 				case "post":
-					Post.deletePost(userobj, parseInt(fragments[4]), callback);
+					//TODO: better sanitization
+					Post.deletePost(userobj, parseInt(fragments[4]) || 0, callback);
 					break;
 				case "comment":
-					Post.deleteComment(userobj, parseInt(fragments[4]), callback);
+					Post.deleteComment(userobj, parseInt(fragments[4]) || 0, callback);
 					break;
 			}
 			break;

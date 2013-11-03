@@ -24,8 +24,12 @@ if (cluster.isMaster) {
 	});
 
 	function handleMsg(data) {
-		console.log("Msg received: " + data);
-		if (data != "R:" + rbkey) return;
+		if (data != "R:" + rbkey) { 
+			for (id in cluster.workers) {
+				cluster.workers[id].send(data);
+			}
+			return;
+		}
 		console.log((new Date).toString() + ": Reloading app...");
 
 		delete require.cache;

@@ -1,4 +1,5 @@
 var Database = require("./database");
+var Toolbox = require("./toolbox");
 
 exports.N_EVENT = 1;
 exports.N_MENTION = 2;
@@ -18,10 +19,12 @@ exports.addUserNotification = function (user, notification, action, from, type) 
 	query += Database.escape(notification) + ",";
 	query += Database.escape(action.toString()) + ",";
 	query += parseInt(type) + ",";
-	query += Math.floor((new Date).getTime() / 1000);
+	query += Toolbox.time();
 	query += ")";
 
-	Database.query(query,function(){});
+	Database.query(query,function(err,res){
+		process.send({ t: 3, id: res.insertId, from: from, to: user, body: notification, action: action.toString(), type: parseInt(type), time: Toolbox.time() });
+	});
 };
 
 function getUserNotifications(userid, since, callback, args) {

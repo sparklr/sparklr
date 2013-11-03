@@ -1,40 +1,42 @@
 var timelineEvents = [[]];
 var timelineTop = 0;
 var subscribedStream;
-var isNetwork;
-var currentPostBy;
 var currentComments = [];
 var imgAttachments = null;
 var lastUpdateTime = Math.floor((new Date).getTime() / 1000);
 var LIKE_CHAR = "\u261D";
 
 var hiddenPostList = [];
-
 var joinedNetworks = [];
 
 var missingPosts = [];
 
+var commentCounts = {};
+
 function addTimelineEvent(item,append) {
+	console.log(item);
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
-	if (e = _g("event_" + item.id)) {
-		updateCommentCount(item.id, item.commentcount);
-		_g("postcontent_" + item.id).innerHTML = processPost(item);
+	if (_g("event_" + item.id)) {
+		console.log(item.commentcount);
+		if (item.commentcount) {
+			if (item.delta)
+				updateCommentCount(item.id, commentCounts[item.id] + item.commentcount);
+			else
+				updateCommentCount(item.id, item.commentcount);
+		}
+		if (item.message)
+			_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
 	}
+	if (!item.message) return;
+
 	if (!append && doctop > 10) {
 		missingPosts.push(item);
 		return;
 	}
 	
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
-	if (timelineEvents[subscribedStream]) {
-		for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
-			if (timelineEvents[subscribedStream][i].message == item.message && timelineEvents[subscribedStream][i].id != item.id && item.from != curUser && item.via) {
-				return;
-			}
-		}
-	}
 
 	var ev = document.createElement("div");
 
@@ -43,12 +45,10 @@ function addTimelineEvent(item,append) {
 	ev.onclick = function(e) { 
 		if (!e) e = window.event;
 		if (!e.target.onclick || e.target == ev)
-			location.href = "#/post/" + item.id; 
+			showEvent(item.id);
 	}
 
-	if (item.type == 1) {
-		item = processPostMeta(item);
-	}
+	item = processPostMeta(item);
 
 	eval(getTemplate("timelineitem"));
 
@@ -91,6 +91,17 @@ function addTimelineArray(arr, timeline, append) {
 }
 
 function showEvent(id,args) {
+	if (MOBILE || !ws || !ws.p18Connected) {
+		location.href = "#/post/" + id + "/" + args;
+		return;
+	}
+	var pid = addWindow("c" + id, function() {
+		unsubscribeFromStream("c" + id);
+	});
+	renderTemplate("post/" + id, pid)
+	subscribeToStream("c" + id);
+	return;
+
 	if (typeof(args) === "undefined")
 		var args = "";
 
@@ -110,6 +121,27 @@ function processPostMeta(data) {
 			} catch (er) { }
 		}
 	}
+
+	var message = processMedia(escapeHTML(data.message));
+	var original = "";
+
+	console.log(message);
+
+	if (data.via) {
+		var last = "";
+		var laststr = "";
+		var lineexp = /\[([\d]+)\]([^$\[]*)/g; //line starts with [ID]
+		message = message.replace(lineexp, function(match, num, text) {
+			original = "<blockquote>" + original + "</blockquote>" + last;
+			last = "<img src='" + getAvatar(num) + "' class='littleavatar'><a href='#/user/" + num + "'>" + getDisplayName(num) + "</a>: " + text + "";
+			laststr = text;
+			return "";
+		});
+		message += laststr;
+	}
+
+	data.formattedMessage = message;
+	data.originalMessage = "<blockquote>" + original + "</blockquote>";
 
 	return data;
 }
@@ -131,25 +163,26 @@ function renderTags(item) {
 }
 
 function repost(id) {
-	_g("responseholder").style.display = "none";
-	_g("reblogholder").style.display = "block";
-	_g("repostcomment").focus();
+	_g("responseholder_"+id).style.display = "none";
+	_g("reblogholder_"+id).style.display = "block";
+	_g("composer_r"+id).focus();
 }
 
-function publishRepost() {
+function publishRepost(e) {
+	var id = e.target.getAttribute('data-id').substring(1);
 	var vars = {
-		id: subscribedStream,
-		reply: _g("repostcomment").value
+		id: id,
+		reply: _g("composer_r"+id).value
 	}
 
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
 		vars.img = 2;
-		_g("attachment").style.display = "none";
+		_g("attachmentr"+id).style.display = "none";
 	}
 
 	ajaxGet("work/repost", vars);
-	location.href="#";
+	closeWindow(null,'c'+id);
 }
 
 function showImage(img) {
@@ -161,9 +194,21 @@ function showImage(img) {
 	}
 }
 
-function editPost() {
-	ajaxGet("work/editpost", {  id: subscribedStream, body: _g("post").textContent }, function() {
+function editPostStart(e) {
+	e = e || window.event;
+	if (e.target.getAttribute('contenteditable') == 'true') return;
+
+	e.target.setAttribute('contenteditable', true);
+}
+
+function editPost(e) {
+	console.log('saving');
+	e = e || window.event;
+	ajaxGet("work/editpost", { id: e.target.getAttribute('data-id'), body: htmlToPost(e.target.innerHTML) }, function() {
+		e.target.innerHTML = processPostMeta({ message: htmlToPost(e.target.innerHTML), from: curUser }).formattedMessage;
 	});
+	e.target.setAttribute('data-message', e.target.textContent);
+	e.target.setAttribute('contenteditable', false);
 }
 function editComment(e) {
 	e = e || window.event;
@@ -175,7 +220,8 @@ function editComment(e) {
 function deletePost(id) {
 	showConfirm("Delete post", "Are you sure you want to delete this post?", function () {
 		ajaxGet("work/delete/post/" + id, null, function() {
-			location.href = "#";
+			removeDomElement('event_'+id);
+			closeWindow(null,'c'+id);
 		});
 		timelineEvents[0] = [];
 		lastUpdateTime = 0;
@@ -185,6 +231,7 @@ function deletePost(id) {
 function deleteComment(id,postid) {
 	showConfirm("Delete comment", "Are you sure you want to delete this comment?", function () {
 		ajaxGet("work/delete/comment/"+ id, null, function() {
+			console.log(item);
 			location.href = window.location + "#";
 		});
 	});
@@ -204,18 +251,26 @@ function hidePost(id,from) {
 	});
 }
 
-function renderComment(comment) {
+function renderComment(comment,scroll) {
+	console.log(comment);
+	if (comment.deleted) {
+		console.log('deleted ' + comment.id);
+		removeDomElement('comment_' + comment.id);
+		return;
+	}
 	var commentlist = _g("comments_" + comment.postid);
 
 	var e = document.createElement("div");
+	e.id = 'comment_' + comment.id;
 	e.className = "comment";
 	comment.like = comment.message == LIKE_CHAR;	
 	if (comment.like) {
-		if (_g("like_" + comment.from))
-			return;
-		e.id = "like_" + comment.from;
+		var likeid = "like_" + comment.postid + "_" + comment.from;
+		if (_g(likeid))	return;
+
+		e.id = likeid;
 		if (comment.from == curUser) 
-			_g("likebtn").className += " liked";
+			_g("likebtn_"+comment.postid).className += " liked";
 	}
 
 	var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
@@ -238,6 +293,12 @@ function renderComment(comment) {
 	html += "</div>";
 	e.innerHTML += html;
 	commentlist.appendChild(e);
+
+	if (scroll) {
+		var g = _g("window_c"+comment.postid);
+		if (g.scrollHeight - g.scrollTop < 600)
+			g.scrollTop = 0xFFFFFF;
+	}
 }
 
 function getLastCommentTime() {
@@ -272,23 +333,25 @@ function updateCommentCount(id, count) {
 
 	ele.style.opacity = (count != 0) ? 1 : 0;
 	ele.innerHTML = count || "+";
+
+	commentCounts[id] = count;
 }
 
 function postComment(e) {
+	var id = e.target.getAttribute("data-id");
 	var vars = {
-		to: currentPostBy,
-		id: subscribedStream,
-		comment: _g("composer").value
+		id: id,
+		comment: _g('composer_'+id).value
 	}
 
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
 		vars.img = 2;
-		_g("attachment").style.display = "none";
+		_g("attachment"+id).style.display = "none";
 	}
 
 	setTimeout(function() {
-		_g("composer").value="";
+		_g('composer_'+id).value="";
 		expandTextarea(e);
 	},10);
 
@@ -303,14 +366,12 @@ function postComment(e) {
 
 function likeEvent(id, to, callback) {
 	ajaxGet("work/like", { id: id, to: to }, function(result) {
-		if (result.deleted && callback.id == "likebtn") {
-			location.href = location.href + "#";
+		if (result.deleted) {
+			removeDomElement('like_' + id + '_' + curUser);
+			callback.className = callback.className.replace('liked','');
 			return;
 		}
-		if (callback.innerHTML == "Like") 
-			callback.innerHTML = "Unlike";
-		else
-			callback.className += " jiggle";
+		callback.className += " jiggle";
 
 		setTimeout(function() { callback.className = callback.className.replace(" jiggle", ""); }, 1000);
 		pollData();
@@ -333,8 +394,6 @@ function streamUrl(since,start) {
 
 	if (currentPageType == "PHOTO")
 		query += "&photo=1";
-	if (isNetwork)
-		query += "&network=1";
 
 	return query;
 }
@@ -359,7 +418,7 @@ function renderComposer(caption, keydown, minipreview, id) {
 	if (minipreview) {
 		html += "<div id='attachment" + (id || "") + "' class='minipreview'></div>";
 	}
-	html += "<textarea id='" + (id || "composer") + "' placeholder='" + caption + "' onkeydown='isEnter(event, " + keydown + ");expandTextarea(event);' maxlength=500></textarea>";
+	html += "<textarea data-id='" + id + "' id='composer_" + (id || "composer") + "' placeholder='" + caption + "' onkeydown='isEnter(event, " + keydown + ");expandTextarea(event);' maxlength=500></textarea>";
 	html += "<div class='composercontrols'><input id='attachfile' data-target='attachment" + (id || "") + "' onchange='attachfile_changed(event,\"" + (id || "") + "\")' type='file'></div>";
 	html += "</div></div>";
 	return html;
@@ -443,10 +502,10 @@ function renderTimeline(prehtml) {
 
 function postToTimeline() {
 	var vars = {
-		body: _g("composer").value
+		body: _g("composer_composer").value
 	};
 
-	setTimeout('_g("composer").value = "";expandTextarea({ target: _g("composer") });',10);
+	setTimeout('_g("composer_composer").value = "";expandTextarea({ target: _g("composer_composer") });',10);
 
 	if (imgAttachments != null) {
 		if (imgAttachments.target.result.length > 15728640) {
@@ -466,10 +525,6 @@ function postToTimeline() {
 		}
 	} else {
 		if (!vars.body) return;
-	}
-
-	if (isNetwork) {
-		vars.network = subscribedStream;
 	}
 
 	var xhr = new XMLHttpRequest();
@@ -550,3 +605,6 @@ function updateTrackNetwork() {
 	}
 }
 
+function highlightNetwork(network) {
+	_g("network_" + network).className += " highlight";
+}

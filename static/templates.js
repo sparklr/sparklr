@@ -22,6 +22,17 @@ function renderPageFromTemplate() {
 		renderPage();
 }
 
+function renderTemplate(page,destination) {
+	var fragments = page.split("/");
+	ajaxGet("work/" + page, null, function(data) {
+		console.log(data);
+		var templateData = getTemplate(fragments[0]);
+		console.log(templateData);
+		eval(templateData);
+		_g(destination).innerHTML = html;
+	});
+}
+
 function getTemplate(id) {
 	if (!TEMPLATES[id]) {
 		var templatedata = "";

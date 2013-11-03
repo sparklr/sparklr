@@ -1,4 +1,6 @@
 var ajaxCooldown = [];
+var subscribedStreams = [];
+var ws;
 
 function ajaxGet(url, data, callback) {
 	if (ajaxCooldown[url]) {
@@ -67,6 +69,9 @@ function hideProgress() {
 }
 
 function pollData() {
+	if (ws != null && ws.p18Connected)
+		return;
+
 	var query;
 	var callback;
 
@@ -102,7 +107,7 @@ function pollData() {
 			callback = addComments;
 		break;
 		case "CHAT":
-			query = "/chat/" + curChatUser + "?since=" + getLastChatTime();
+			query = "/chat/" + location.hash.split("/")[2] + "?since=" + getLastChatTime();
 			callback = addChatMessages;
 			break;
 		default:
@@ -118,5 +123,68 @@ function pollData() {
 		}
 		callback(data,xhr);
 	});
+}
+
+function subscribeToStream(stream) {
+	if (subscribedStreams.indexOf(stream) == -1)
+		subscribedStreams.push(stream);
+	try {
+		ws.send("S" + stream);
+	} catch(e) {
+	}
+}
+
+function unsubscribeFromStream(stream) {
+	if (joinedNetworks.indexOf(stream) !== -1) return;
+
+	if ((i = subscribedStreams.indexOf(stream)) !== -1)
+		subscribedStreams.splice(i,1);
+	try {
+		ws.send("U" + stream);
+	} catch(e) {
+	}
+}
+
+function connectSocket() {
+	ws = new WebSocket(WSHOST)
+	ws.onopen = function(e) {
+		ws.send(curUser + "," + AUTHKEY);	
+	};
+	ws.onmessage = socketMessage;
+	ws.onclose = ws.onerror = function() {
+		setTimeout(connectSocket, 1000);
+	}
+	ws.p18Connected = false;
+}
+
+function socketMessage(e) {
+	if (!ws.p18Connected) {
+		if (e.data == "c:")
+			ws.p18Connected = true;
+		broadcastSubscriptions();
+		return;
+	}
+	var data = JSON.parse(e.data);
+	console.log(data);
+	switch (data.t) {
+		case 0: // add comment
+			renderComment(data,true);
+		break;
+		case 1: // chat
+			addChatMessage(data.from, data.to, data.message, data.time, false);
+		break;
+		case 2:
+			if (subscribedStream == data.network || subscribedStream == e.from)
+				addTimelineEvent(data,0);
+		break;
+		case 3: // notification
+			addNotification(data);
+		break;
+	}
+}
+
+function broadcastSubscriptions() {
+	ws.send("s" + subscribedStreams.join(","));
+	console.log("broad");
 }
 

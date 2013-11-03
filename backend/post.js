@@ -15,7 +15,25 @@ exports.getComments = function(postid, since, callback) {
 
 exports.edit = function(user, id, body, rank, callback) {
 	if (body.length > 500) return callback(false);
-	Database.query("UPDATE `timeline` SET `message` = " + Database.escape(body) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), callback);
+	Database.query("SELECT * FROM `timeline` WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), function(err,rows) {
+		if (err || rows.length < 1)
+			return callback(err || true);
+		var message = "";
+		if (rows[0].via) {
+			var last = "";
+			var lineexp = /\[([\d]+)\]([^$\[]*)/g; //line starts with [ID]
+			rows[0].message = rows[0].message.replace(lineexp, function(match, num, text) {
+				message += last;
+				last = match;
+				return "";
+			});
+
+			message += "[" + user + "] " + body;
+		} else {
+			message = body;
+		}
+		Database.query("UPDATE `timeline` SET `message` = " + Database.escape(message) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), callback);
+	});
 }
 
 exports.editcomment = function(user, id, body, rank, callback) {
@@ -29,7 +47,7 @@ exports.post = function(user, data, callback) {
 
 	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + parseInt(user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
 		if (err) return callback(err);
-		if (rows && rows.length > 1) {
+		if (rows && rows.length > 101) {
 			return callback(null,2); // as in, 2 many posts
 		}
 
@@ -54,6 +72,19 @@ exports.post = function(user, data, callback) {
 
 		Database.query(querystr,function(err,rows) {
 			if (err) return callback(err);
+
+			process.send({ t: 2, 
+				id: rows.insertId, 
+				from: parseInt(user), 
+				message: data.body, 
+				modified: Toolbox.time(), 
+				time: Toolbox.time(),
+				meta: meta,
+				type: data.img ? 1 : 0,
+				network: data.network || "0",
+				via: null
+			});
+
 			processPostTags(data.body, rows.insertId);		
 			processMentions(data.body, user, rows.insertId);
 			for (i in data.tags) {
@@ -74,27 +105,31 @@ exports.postComment = function(user, data, callback) {
 			callback(false);
 			return false;
 		}
-		if (rows[0].from != data.to) {
-			callback(false);
-			return false;
-		}
 
 		var query = "INSERT INTO `comments` (`postid`, `from`, `message`, `time`) ";
-		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+Database.escape(data.comment) + "," +  Math.floor((new Date).getTime() / 1000) + ")";
+		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+Database.escape(data.comment) + "," +  Toolbox.time() + ")";
 
-		Database.query(query, callback);
+		Database.query(query, function(err,res) {
+			process.send({ t: 0, postid: data.id, from: user, message: data.comment, time: Toolbox.time(), id: res.insertId });
+			callback(err,res);
+		});
+
 		var count = (rows[0].commentcount + 1 || 1);
+
+		process.send({ t: 2, message: false, id: data.id, commentcount: count, network: '0', from: 0 });
+
 		Database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(data.id));
 
 		if (data.like) //only notify one person
-			return Notification.addUserNotification(data.to, data.comment, data.id, user, 1);
+			return Notification.addUserNotification(rows[0].from, data.comment, data.id, user, 1);
 
 		query = "SELECT `from` FROM `comments` WHERE postid = " + parseInt(data.id) + " ORDER BY `time` DESC LIMIT 7";
+		var postfrom = rows[0].from;
 		Database.query(query, function(err,rows) {
 			var notified = {};
 			
 			// notify the poster
-			rows.push({from: data.to});
+			rows.push({from: postfrom});
 			
 			for (i in rows) {
 				if (notified[rows[i].from]) continue;
@@ -136,6 +171,9 @@ exports.deleteComment = function(userobj, id, callback) {
 
 		Database.query(query, function(){});
 		exports.updateCommentCount(rows[0].postid, -1);
+		process.send({ t: 2, message: false, delta: true, id: rows[0].postid, commentcount: -1, network: '0', from: 0 });
+		process.send({ t: 0, postid: rows[0].postid, id: id, deleted: true });
+
 		callback(null,true);
 	});
 }
@@ -172,6 +210,9 @@ exports.repost = function(user, postid, reply, callback) {
 			callback(err,rows);
 			if (!err)
 				Notification.addUserNotification(origfrom, "", rows.insertId, user, Notification.N_REPOST);
+			post.t = 2;
+			post.id = rows.insertId;
+			process.send(post);
 		});
 	});
 }
