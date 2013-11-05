@@ -542,6 +542,7 @@ function postToTimeline() {
 		imgAttachments = null;
 
 		hideProgress();
+		pollData();
 
 	}, false);
 	xhr.upload.onprogress = uploadingProgress;

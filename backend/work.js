@@ -521,12 +521,22 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			Post.getComments(fragments[3], since, callback);
 			break;
 		case "stream":
-			// TODO: add tag support
-			var stream = parseInt(fragments[3]);
+			var stream = fragments[3];
+			if (!stream.match(/^\d+$/)) {
+				uri.query.network = 1;
+			} else {
+				stream = parseInt(stream);
+			}
 			var args = {};
 			if (stream === 0) {
+				args.networks = userobj.networks.slice(0);
 				args.from = userobj.following.slice(0); // get a copy, not a reference
 				args.from.push(userobj.id);
+			} else if (stream === "following") {
+				args.from = userobj.following.slice(0); // get a copy, not a reference
+				args.from.push(userobj.id);
+			} else if (uri.query.network) {
+				args.networks = [stream.toString()];
 			} else {
 				args.from = [stream];
 			}
