@@ -91,6 +91,9 @@ function addTimelineArray(arr, timeline, append) {
 }
 
 function showEvent(id,args) {
+	if (typeof(args) === "undefined")
+		var args = "";
+
 	if (MOBILE || !ws || !ws.p18Connected) {
 		location.href = "#/post/" + id + "/" + args;
 		return;
@@ -102,8 +105,6 @@ function showEvent(id,args) {
 	subscribeToStream("c" + id);
 	return;
 
-	if (typeof(args) === "undefined")
-		var args = "";
 
 	for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
 		if (timelineEvents[subscribedStream][i].id == id) {

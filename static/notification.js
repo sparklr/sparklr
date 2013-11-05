@@ -57,7 +57,7 @@ function addNotificationToPage(notification){
 	n.style.position = "relative";
 	n.style.cursor = "pointer";
 	n.style.minHeight = "60px";
-	n.onclick = function () { location.href = notification.href };
+	n.onclick = function () { location.href = notification.click };
 	n.innerHTML = "<div class='rightcontrols'><div class='time' data-time='" + notification.time + "'></div></div><img src='" + getAvatar(notification.from) +"' class='avatar'><b>"+ getDisplayName(notification.from) + "</b> " + notification.body + "<br><br>";
 
 	var parent = _g("notifications");
