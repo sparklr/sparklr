@@ -13,6 +13,8 @@ var missingPosts = 0;
 
 var commentCounts = {};
 
+var oldestPost = Number.MAX_VALUE;
+
 function addTimelineEvent(item,append) {
 	console.log(item);
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
@@ -74,6 +76,8 @@ function addTimelineEvent(item,append) {
 
 	if (item.time > lastUpdateTime)
 		lastUpdateTime = item.time;
+	if (item.time < oldestPost)
+		oldestPost = item.time;
 }
 
 function addTimelineArray(arr, timeline, append) {
@@ -401,8 +405,8 @@ function streamUrl(since,start) {
 }
 
 function fetchOlderPosts() {
-	if (subscribedStream == null || !timelineEvents[subscribedStream] || timelineEvents[subscribedStream].length < 1) return;
-	var query = "work" + streamUrl(0,timelineEvents[subscribedStream][0].time);
+	if (subscribedStream == null) return;
+	var query = "work" + streamUrl(0,oldestPost);
 
 	ajaxGet(query,null,function(data) {
 		var items = data.timeline || data;
