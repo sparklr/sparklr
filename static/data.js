@@ -89,11 +89,6 @@ function pollData() {
 
 				var items = data.data || data;
 
-				if (missingPosts.length > 0) {
-					items = items.concat(missingPosts);
-					missingPosts = [];
-				}
-
 				addTimelineArray(items,subscribedStream);
 				for (var i = items.length - 1; i >= 0; i--) {
 					addTimelineEvent(items[i], 0);
@@ -174,7 +169,7 @@ function socketMessage(e) {
 			addChatMessage(data.from, data.to, data.message, data.time, false);
 		break;
 		case 2:
-			if (subscribedStream == data.network || subscribedStream == e.from)
+			if (subscribedStream == data.network || subscribedStream == data.from)
 				addTimelineEvent(data,0);
 		break;
 		case 3: // notification
