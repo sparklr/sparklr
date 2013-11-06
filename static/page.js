@@ -82,6 +82,7 @@ function updatePages(loaded) {
 	}
 
 	missingPosts = 0;
+	oldestPost = Number.MAX_VALUE;
 
 	isNetwork = false;
 
