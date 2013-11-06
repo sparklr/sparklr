@@ -29,6 +29,27 @@ var homepage = function(posts) {
 		composertext = "@" + args[2] + " ";
 	}
 
+	if (args[1] && args[1] != "" && args[1] != "welcome" && args[1] != "mention") {
+		subscribedStream = args[1];
+		isNetwork = true;
+		lastUpdateTime = 0;
+		prehtml = "<div id='networkheader'></div>";
+		if (subscribedStream != "following") {
+			ajaxGet("work/networkinfo/" + subscribedStream, null, function(data) {
+				var html = "";
+				var title = (data && data[0]) ? data[0].title : subscribedStream;
+				html += "<input id='trackbtn' type='button' style='float:right'>";
+				html += "<h2 style='color:#fff'>" + title + "</h2>";
+				_g("networkheader").innerHTML = html;
+				updateTrackNetwork();
+			});
+		}
+	}
+	var e = _g("network_" + subscribedStream);
+	if (e) {
+		e.className = "active";
+	}
+
 	renderTimeline(prehtml);
 	if (posts) {
 		for (var i = 0; i < posts.length; i++) {
@@ -59,6 +80,13 @@ function updatePages(loaded) {
 	window.onload = null;
 
 	unsubscribeFromStream(subscribedStream);
+
+	var e = _g("network_" + subscribedStream);
+	if (e) {
+		e.className = "";
+	}
+
+	isNetwork = false;
 
 	//set timeline position
 	if (subscribedStream == 0 && currentPageType == "STREAM")
