@@ -106,7 +106,12 @@ wss.on("connection", function(ws) {
 			case "S":
 				// subscribe
 				ws.p18SubscribedTo.push(body);
-			break;
+				break;
+			case "U":
+				// subscribe
+				if ((i = ws.p18SubscribedTo.indexOf(body)) !== -1)
+					ws.p18SubscribedTo.splice(i,1);
+				break;
 		}
 	});
 });

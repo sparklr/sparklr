@@ -9,7 +9,7 @@ var LIKE_CHAR = "\u261D";
 var hiddenPostList = [];
 var joinedNetworks = [];
 
-var missingPosts = [];
+var missingPosts = 0;
 
 var commentCounts = {};
 
@@ -32,7 +32,8 @@ function addTimelineEvent(item,append) {
 	if (!item.message) return;
 
 	if (!append && doctop > 10) {
-		missingPosts.push(item);
+		missingPosts++;
+		newPosts(missingPosts);
 		return;
 	}
 	
@@ -430,7 +431,7 @@ function renderTimeline(prehtml) {
 	html += "<div class='timelineitem'>";
 	html += "<div class='picturepost attachment' id='attachment'></div>";
 	html += renderComposer("Post something...", "postToTimeline");
-	html += "</div><div id='timeline_container'></div>";
+	html += "</div><div id='newposts' onclick='updatePages()'></div><div id='timeline_container'></div>";
 	_g("content").innerHTML = html;
 	_g("attachment").onmousedown = function (e) {
 		console.log(e);
@@ -499,6 +500,16 @@ function renderTimeline(prehtml) {
 	document.body.ondrop = function (e) { dropImage(e, uploadStreamImageCallback); }
 
 	currentPageType = "STREAM";
+}
+
+function newPosts(num) {
+	var e = _g("newposts");
+
+	if (!e) return;
+
+	e.style.display = 'block';
+	e.className = 'fadein';
+	e.innerHTML = num + ' new post' + ((num != 1) ? 's' : '');
 }
 
 function postToTimeline() {
