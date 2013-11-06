@@ -84,6 +84,7 @@
 		}
 
 	</script>
+	<div id='newposts' onclick='updatePages()'></div>
 	<div id='timeline_container'></div>
 	<script>
 		setTimeout(function() {
@@ -105,7 +106,7 @@
 		}, 0);
 
 		subscribedStream = data.user;
-		subscribeToStream('n'+subscribedStream);
+		subscribeToStream(data.user.toString());
 		_g("content").style.minHeight = 0;
 
 		document.body.ondrop = function(e) { 

@@ -51,20 +51,15 @@ var homepage = function(posts) {
 	}
 
 	renderTimeline(prehtml);
-	if (posts) {
-		for (var i = 0; i < posts.length; i++) {
-			addTimelineEvent(posts[i]);
+	ajaxGet("work/stream/" + subscribedStream, null, function(data) {
+		timelineEvents[subscribedStream] = [];
+		for (var i = 0; i < data.length; i++) {
+			addTimelineEvent(data[i],true);
 		}
-	} else {
-		ajaxGet("work/stream/" + subscribedStream, null, function(data) {
-			for (var i = 0; i < data.length; i++) {
-				addTimelineEvent(data[i],true);
-			}
-		});
-	}
+	});
 
 	if (composertext) {
-		var composer = _g("composer");
+		var composer = _g("composer_composer");
 		composer.value = composertext;
 		composer.focus();
 		composer.selectionStart = composer.value.length;
@@ -85,6 +80,8 @@ function updatePages(loaded) {
 	if (e) {
 		e.className = "";
 	}
+
+	missingPosts = 0;
 
 	isNetwork = false;
 
