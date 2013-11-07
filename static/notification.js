@@ -70,6 +70,7 @@ function addNotificationToPage(notification){
 
 function getNotificationBody(notification) {
 	var body = "";
+	notification.body = escapeHTML(notification.body);
 	switch (parseInt(notification.type)) {
 		case 1: //commented on post 
 			if (notification.body == LIKE_CHAR) 
