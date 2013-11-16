@@ -529,12 +529,11 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 			}
 			var args = {};
 			if (stream === 0) {
-				args.networks = userobj.networks.slice(0);
+				//args.networks = userobj.networks.slice(0);
 				args.from = userobj.following.slice(0); // get a copy, not a reference
 				args.from.push(userobj.id);
-			} else if (stream === "following") {
-				args.from = userobj.following.slice(0); // get a copy, not a reference
-				args.from.push(userobj.id);
+			} else if (stream === "world") {
+				args.networks = ["0"];
 			} else if (uri.query.network) {
 				args.networks = [stream.toString()];
 			} else {
