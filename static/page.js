@@ -34,7 +34,7 @@ var homepage = function(posts) {
 		isNetwork = true;
 		lastUpdateTime = 0;
 		prehtml = "<div id='networkheader'></div>";
-		if (subscribedStream != "following") {
+		if (subscribedStream != "world") {
 			ajaxGet("work/networkinfo/" + subscribedStream, null, function(data) {
 				var html = "";
 				var title = (data && data[0]) ? data[0].title : subscribedStream;
