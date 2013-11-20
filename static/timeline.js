@@ -258,45 +258,32 @@ function hidePost(id,from) {
 }
 
 function renderComment(comment,scroll) {
-	console.log(comment);
 	if (comment.deleted) {
-		console.log('deleted ' + comment.id);
 		removeDomElement('comment_' + comment.id);
 		return;
 	}
+
 	var commentlist = _g("comments_" + comment.postid);
 
 	var e = document.createElement("div");
 	e.id = 'comment_' + comment.id;
 	e.className = "comment";
+
 	comment.like = comment.message == LIKE_CHAR;	
+
 	if (comment.like) {
 		var likeid = "like_" + comment.postid + "_" + comment.from;
+
 		if (_g(likeid))	return;
 
 		e.id = likeid;
+
 		if (comment.from == curUser) 
 			_g("likebtn_"+comment.postid).className += " liked";
 	}
-
-	var html = "<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>";
-	html += "<a href='#/user/" + comment.from + "'><img class='littleavatar' src='" + getAvatar(comment.from) + "'></a>";
-	html += "</div> <div class='rightcontrols'><div class='time' style='opacity:0.5' data-time='" + comment.time + "'></div>";
-
-	var canEdit = comment.from == curUser || isMod;
-
-    if (canEdit) {
-        html += "<br><a class='delete' onClick='deleteComment(\"" + comment.id + "\", \"" + comment.postid + "\");'></a>";
-    }
-
-    html += "</div> <a class='person' href='#/user/" + comment.from + "'>" + getDisplayName(comment.from) + "</a>";
-	if (comment.like) {
-		html += " likes this<br><br>";
-	}
-	else
-		html += "<div style='margin-left: 50px;'" + (canEdit ? " data-id='" + comment.id + "'" : "") + ">" + processMedia(escapeHTML(comment.message)) + "</div>";
-
-	html += "</div>";
+	
+	eval(getTemplate("comment"));
+	
 	e.innerHTML += html;
 	commentlist.appendChild(e);
 
@@ -435,7 +422,7 @@ function renderTimeline(prehtml) {
 	html += "<div class='timelineitem'>";
 	html += "<div class='picturepost attachment' id='attachment'></div>";
 	html += renderComposer("Post something...", "postToTimeline");
-	html += "</div><div id='newposts' onclick='updatePages()'></div><div id='timeline_container'></div>";
+	html += "</div><div id='newposts' onclick='updatePages()'></div><span id='timeline_container'></span>";
 	_g("content").innerHTML = html;
 	_g("attachment").onmousedown = function (e) {
 		console.log(e);
