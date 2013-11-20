@@ -7,9 +7,12 @@
 <script>
 	for (var i = 0; i < data.length; i++) {
 </script>
-	<div class='friend'>
+	<div style='background-image:url({imgUrl(data[i],true)})' class='friend'>
 		<input type='button' value='Unfollow' onclick='unfollow({data[i]});'>
-		<a href='/#/user/{data[i]}' style='color:#000'><img src='{imgUrl(data[i])}' class='avatar'> <b>{getDisplayName(data[i])}</b></a>
+			<a href='/#/user/{data[i]}' style='color:#000'>
+				<img src='{imgUrl(data[i])}' class='avatar'>
+				<b>{getDisplayName(data[i])}</b>
+			</a>
 	</div>
 <script>
 	}
