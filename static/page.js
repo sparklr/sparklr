@@ -99,7 +99,7 @@ function updatePages(loaded) {
 	scrollHandler();
 
 	//fix height
-	_g("frame").style.minHeight = "640px";
+	//_g("frame").style.minHeight = "640px";
 
 	//disable bg
 	if (!MOBILE)

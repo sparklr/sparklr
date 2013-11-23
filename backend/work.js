@@ -136,10 +136,10 @@ exports.run = function(request, response, uri, sessionid) {
 				
 				if (postObject.img) {
 					var f = function() {
-						var args = { allowGif: true, width: 400, height: 443 };
+						var args = { allowGif: true, width: 400, height: 620 };
 						var s = uri.pathname.split("/");
 						if (s[2] == "post")
-							args.width = 580;
+							args.width = 700;
 						if (s[2] == "avatar") 
 							args = { thumbOnly: true, width: 50, height: 50, fill: true, id: userobj.id };
 						if (s[2] == "header") 
