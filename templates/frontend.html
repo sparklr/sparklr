@@ -1,13 +1,16 @@
 <div id='header'>
+	<a href='#' title='Home'>
+		<div id='logo'></div>
+	</a>
+	<a href="#/user/{curUser}" title='Me'>
+		<div class='me' style='background-image: url({imgUrl(curUser,true)});'></div>
+	</a>
 	<div id='navigation'>
-		<div id='logo' onClick='location.href="#";'></div>
 		<div id='links'>
 			<a href='#/friends' class='people' title='People'></a>
 			<a href='#/notifications' class='notifs' title='Notifications' id='notifs'></a>
 			<a href='#/inbox' class='inbox' title='Inbox' id='inbox'></a>
 			<a href='javascript:showDropdown(true);stopBubbling(event);' class='menu' title='Menu'></a>
-			<a href="#/user/{curUser}" title='Me' class='me'><img src='{imgUrl(curUser)}' width=45 height=45></a>
-			<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
 		</div>
 		<div id='sidebarwrapper'>
 			<div id='sidebar'></div>
@@ -20,6 +23,7 @@
 	</div>
 </div>
 
+<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
 <div id='frame'>
 	<div id='content'></div>
 </div>

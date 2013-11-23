@@ -85,7 +85,6 @@ hr {
 
 #logo {
 	position: relative;
-	margin-left: 50px;
     cursor: pointer;
 	display: inline-block;
 	width: 130px;
@@ -97,11 +96,9 @@ hr {
 #header {
     font-size: 22px;
     margin: 0px;
-    width: 270px;
-	padding-top: 15px;
-	padding-bottom: 8px;
-	padding-left: 20px;
-    top: 0px;
+    width: 240px;
+	padding: 15px 10px 8px 10px;
+	top: 0px;
 	left: 0px;
 	bottom: 0px;
     text-align: center;
@@ -111,12 +108,14 @@ hr {
 }
 
 #navigation {
-    display: inline-block;
-    text-align: left;
+    text-align: center;
 }
 
-#navigation a {
-    margin-left: 15px;
+#links {
+	margin-bottom: 15px;
+}
+#links a {
+    margin: 0 18px;
     display: inline-block;
     margin-top: 7px;
     color: #fff;
@@ -128,41 +127,55 @@ hr {
     opacity: 1;
 	margin-right: 5px;
 }
-#navigation a.people {
+#links a.people {
     background-image: url(icons/people.png);
 }
-#navigation a.menu {
+#links a.menu {
     background-image: url(icons/menu.png);
 	display: none;
 }
-#navigation a.notifs {
+#links a.notifs {
     background-image: url(icons/notifs.png);
 }
-#navigation a.notifs.jiggle {
+#links a.notifs.jiggle {
     background-image: url(icons/notifs2.png);
 }
-#navigation a.inbox {
+#links a.inbox {
     background-image: url(icons/chat.png);
 }
-#navigation a.inbox.jiggle {
+#links a.inbox.jiggle {
 	background-image: url(icons/chat2.png);
-}
-#navigation a:hover {
-    opacity: 0.7;
 }
 #header img {
     vertical-align: baseline;
 }
-#navigation a img {
+#header #logo{
+	background-image: url(logo_sml.png);
+	display: block;
+	width: 120px;
+	height: 44px;
+	margin: auto;
+	margin-bottom: 15px;
+}
+#header .me{
+	display: block;
+	border-radius: 60px;
+	width: 120px;
+	height: 120px;
+	margin: auto;
+	margin-bottom: 15px;
+	background-size: cover;
+	background-position: center;
+	cursor: pointer;
+}
+#links a img {
     box-shadow: 0px 0px 7px rgba(0,0,0,0.3),
-    inset 0px 0px 15px rgba(0,0,0,0.3)
-    ;
+    inset 0px 0px 15px rgba(0,0,0,0.3);
     width: 32px;
     height: 32px;
 }
 #navigation input {
     width: 174px;
-    border-radius: 5px;
     border: solid 1px rgba(0,0,0,0.4);
     box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
     color: #fff;
@@ -172,8 +185,6 @@ hr {
     font-size: 15px;
     height: 15px;
     vertical-align: top;
-    margin-top: 7px;
-    margin-left: 20px;
 }
 
 #frame {
@@ -194,11 +205,15 @@ hr {
 	padding-bottom: 15px;
 }
 #sidebarwrapper {
-    width: 180px;
+	display: block;
+	margin-left: -10px;
+	margin-right: -10px;
 }
 #sidebarwrapper a {
 	color: #fff;
 	font-size: 12px;
+	height: auto;
+	text-align: left;
 }
 div.contentwrapper {
 }
@@ -210,18 +225,14 @@ div.contentwrapper {
 #sidebar > a, #sidebar div > a, #networks a {
     color: #fff;
     display: block;
-    margin-bottom: 8px;
-    opacity: 0.9;
     padding: 5px;
-    font-size: 15px;
-    border: solid 1px rgba(0,0,0,0.3);
-    background: rgba(0,0,0,0.3);
-    width: 180px;
+	padding-left: 45px;
+    font-size: 16px;
     -webkit-transition: all 0.2s ease;
+	margin-bottom: 5px;
 }
-#sidebar div a:last-child {
-	margin-bottom: 25px;
-	font-color: #fff;
+#sidebar > a:hover, #sidebar div > a:hover, #networks a:hover {
+	background-color: #6a5f80;
 }
 #networks a.active {
 	margin-left: -5px;
@@ -231,7 +242,6 @@ div.contentwrapper {
 	color: red;
 }
 #sidebar a:hover {
-    opacity: 1;
     color: #fff;
 }
 #sidebar a.star {
@@ -497,7 +507,7 @@ div.timelineitem:hover div.commentcount {
     opacity: 1 !important;
 }
 
-div.commentcount.icon {
+div.comm,trueentcount.icon {
 	padding:0px;
 	background-repeat: no-repeat;
 	width: 28px;
