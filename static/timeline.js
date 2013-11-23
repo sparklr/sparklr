@@ -405,23 +405,13 @@ function fetchOlderPosts() {
 
 function renderComposer(caption, keydown, minipreview, id) {
 	imgAttachments = null;
-	var html = "<div style='position:relative' class='composer'>";
-	html += "<div style='float:left'><img src='" + getAvatar(curUser) + "' class='avatar'><div class='remaining' id='remaining_composer_" + (id || "composer") + "'></div></div><div id='composerframe'>";
-	if (minipreview) {
-		html += "<div id='attachment" + (id || "") + "' class='minipreview'></div>";
-	}
-	html += "<textarea data-id='" + id + "' id='composer_" + (id || "composer") + "' placeholder='" + caption + "' onkeydown='isEnter(event, " + keydown + ");expandTextarea(event);' maxlength=500></textarea>";
-	html += "<div class='composercontrols'><input id='attachfile' data-target='attachment" + (id || "") + "' onchange='attachfile_changed(event,\"" + (id || "") + "\")' type='file'></div>";
-	html += "</div></div>";
+	eval(getTemplate('composer'));
 	return html;
 }
 
 function renderTimeline(prehtml) {
-	var html = prehtml || "";
-	html += "<div class='grid'><div class='timelineitem'>";
-	html += "<div class='picturepost attachment' id='attachment'></div>";
-	html += renderComposer("Post something...", "postToTimeline");
-	html += "</div><div id='newposts' onclick='updatePages()'></div><div id='timeline_container'></div></div>";
+	eval(getTemplate('timeline'));
+	html = (prehtml || "") + html;
 	_g("content").innerHTML = html;
 	_g("attachment").onmousedown = function (e) {
 		console.log(e);
@@ -565,6 +555,7 @@ function uploadStreamImageCallback(e,id) {
 		res = "data:image/jpeg;" + res.substring(5);
 	}
 	id = id || "attachment";
+	console.log(id);
 	_g(id).innerHTML = "<img src='" + res + "'>";
 	_g(id).style.display = "block";
 	imgAttachments = e;
