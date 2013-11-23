@@ -136,7 +136,7 @@ exports.run = function(request, response, uri, sessionid) {
 				
 				if (postObject.img) {
 					var f = function() {
-						var args = { allowGif: true, width: 400, height: 443 };
+						var args = { allowGif: true, width: 400, height: 520 };
 						var s = uri.pathname.split("/");
 						if (s[2] == "post")
 							args.width = 580;

@@ -16,7 +16,6 @@ var commentCounts = {};
 var oldestPost = Number.MAX_VALUE;
 
 function addTimelineEvent(item,append) {
-	console.log(item);
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (_g("event_" + item.id)) {
@@ -58,11 +57,13 @@ function addTimelineEvent(item,append) {
 	ev.innerHTML = html;
 
 	var parent = _g("timeline_container");
+	console.log(parent);
 	if (append || parent.children.length < 1) {
 		parent.appendChild(ev);
 	} else {
 		parent.insertBefore(ev, parent.children[0]);
 	}
+
 
 	if (item.tags) {
 		renderTags(item);
@@ -392,6 +393,7 @@ function streamUrl(since,start) {
 }
 
 function fetchOlderPosts() {
+	console.log('getting some old posts');
 	if (subscribedStream == null) return;
 	var query = "work" + streamUrl(0,oldestPost);
 
@@ -419,10 +421,10 @@ function renderComposer(caption, keydown, minipreview, id) {
 
 function renderTimeline(prehtml) {
 	var html = prehtml || "";
-	html += "<div class='timelineitem'>";
+	html += "<div class='grid'><div class='timelineitem'>";
 	html += "<div class='picturepost attachment' id='attachment'></div>";
 	html += renderComposer("Post something...", "postToTimeline");
-	html += "</div><div id='newposts' onclick='updatePages()'></div><span id='timeline_container'></span>";
+	html += "</div><div id='newposts' onclick='updatePages()'></div><div id='timeline_container'></div></div>";
 	_g("content").innerHTML = html;
 	_g("attachment").onmousedown = function (e) {
 		console.log(e);
@@ -611,4 +613,8 @@ function updateTrackNetwork() {
 
 function highlightNetwork(network) {
 	_g("network_" + network).className += " highlight";
+}
+
+function addBrick(html) {
+
 }
