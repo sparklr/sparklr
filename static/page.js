@@ -68,6 +68,12 @@ var homepage = function(posts) {
 	window.scrollTo(0,timelineTop);
 	pollData();
 	subscribeToStream(subscribedStream);
+
+	var links = '';
+	links += "<a href='#/user/"+curUser+"'>" + getUserHandle(curUser) + "</a>"
+	links += "<a href='#/friends'>Following</a>"
+	links += "<a href='#/inbox'>Inbox</a>"
+	_g('sidebar').innerHTML = links;
 }
 
 function updatePages(loaded) {

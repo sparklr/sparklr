@@ -2,7 +2,7 @@
 var curRenderedBg = 0;
 function updateHeader(user, id) {
 	var h = _g("profileheader");
-	h.style.backgroundImage = 'url(' + imgUrl(user + '.jpg?' + id,true) + ')';
+	h.style.backgroundImage = 'url(' + imgUrl('b' + user + '.jpg?' + id,true) + ')';
 }
 
 function updateBackground(user, id) {
@@ -22,7 +22,7 @@ function updateBackground(user, id) {
 }
 
 function editProfile() {
-	if (_g("editBtn").value == "Edit") {
+	if (_g("editBtn").innerHTML == "Edit") {
 		_g("userDisplayName").setAttribute("contenteditable", true);
 		var bio = _g("userBio");
 		if (bio.textContent.length < 2)
@@ -30,7 +30,7 @@ function editProfile() {
 		bio.setAttribute("contenteditable", true);
 
 		_g("editContainer").style.display = "block";
-		_g("editBtn").value = "Save";
+		_g("editBtn").innerHTML = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
 		var bio = _g("userBio");
@@ -48,7 +48,7 @@ function editProfile() {
 		ajaxGet("work/settings", data, function() {
 		});
 	
-		_g("editBtn").value = "Edit";
+		_g("editBtn").innerHTML = "Edit";
 	}
 }
 
