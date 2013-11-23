@@ -16,11 +16,9 @@ var commentCounts = {};
 var oldestPost = Number.MAX_VALUE;
 
 function addTimelineEvent(item,append) {
-	console.log(item);
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (_g("event_" + item.id)) {
-		console.log(item.commentcount);
 		if (item.commentcount) {
 			if (item.delta)
 				updateCommentCount(item.id, commentCounts[item.id] + item.commentcount);
@@ -31,7 +29,7 @@ function addTimelineEvent(item,append) {
 			_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
 	}
-	if (!item.message) return;
+	if (!item.message && item.type !== 1) return;
 
 	if (!append && doctop > 10) {
 		missingPosts++;
@@ -392,6 +390,7 @@ function streamUrl(since,start) {
 }
 
 function fetchOlderPosts() {
+	console.log('getting some old posts');
 	if (subscribedStream == null) return;
 	var query = "work" + streamUrl(0,oldestPost);
 
@@ -406,23 +405,13 @@ function fetchOlderPosts() {
 
 function renderComposer(caption, keydown, minipreview, id) {
 	imgAttachments = null;
-	var html = "<div style='position:relative' class='composer'>";
-	html += "<div style='float:left'><img src='" + getAvatar(curUser) + "' class='avatar'><div id='remaining'></div></div><div id='composerframe'>";
-	if (minipreview) {
-		html += "<div id='attachment" + (id || "") + "' class='minipreview'></div>";
-	}
-	html += "<textarea data-id='" + id + "' id='composer_" + (id || "composer") + "' placeholder='" + caption + "' onkeydown='isEnter(event, " + keydown + ");expandTextarea(event);' maxlength=500></textarea>";
-	html += "<div class='composercontrols'><input id='attachfile' data-target='attachment" + (id || "") + "' onchange='attachfile_changed(event,\"" + (id || "") + "\")' type='file'></div>";
-	html += "</div></div>";
+	eval(getTemplate('composer'));
 	return html;
 }
 
 function renderTimeline(prehtml) {
-	var html = prehtml || "";
-	html += "<div class='timelineitem'>";
-	html += "<div class='picturepost attachment' id='attachment'></div>";
-	html += renderComposer("Post something...", "postToTimeline");
-	html += "</div><div id='newposts' onclick='updatePages()'></div><span id='timeline_container'></span>";
+	eval(getTemplate('timeline'));
+	html = (prehtml || "") + html;
 	_g("content").innerHTML = html;
 	_g("attachment").onmousedown = function (e) {
 		console.log(e);
@@ -566,6 +555,7 @@ function uploadStreamImageCallback(e,id) {
 		res = "data:image/jpeg;" + res.substring(5);
 	}
 	id = id || "attachment";
+	console.log(id);
 	_g(id).innerHTML = "<img src='" + res + "'>";
 	_g(id).style.display = "block";
 	imgAttachments = e;
@@ -611,4 +601,8 @@ function updateTrackNetwork() {
 
 function highlightNetwork(network) {
 	_g("network_" + network).className += " highlight";
+}
+
+function addBrick(html) {
+
 }
