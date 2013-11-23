@@ -54,7 +54,7 @@ exports.run = function(user, request, response, sessionid) {
 	from.push(user.id);
 
 	var payload = { 
-		private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist, background: user.background,
+		private: user.private, networks: user.networks, avatarid: user.avatarid, blacklist: user.blacklist,
 		following: user.following
 	};
 	database.getStream("timeline", {
