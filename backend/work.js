@@ -141,11 +141,9 @@ exports.run = function(request, response, uri, sessionid) {
 						if (s[2] == "post")
 							args.width = 700;
 						if (s[2] == "avatar") 
-							args = { thumbOnly: true, width: 50, height: 50, fill: true, id: userobj.id };
+							args = { fullWidth: 200, fullHeight: 200, width: 50, height: 50, fill: true, id: userobj.id };
 						if (s[2] == "header") 
-							args = { noThumb: true, width: 570, height: 290, fill: true, id: userobj.id };
-						if (s[2] == "background") 
-							args = { noThumb: true, id: userobj.id, category: "b" };
+							args = { noThumb: true, fill: true, id: userobj.id, category: "b" };
 						
 						Upload.handleUpload(postBody, userobj, args, function(err, id) {
 							postBody = null;
