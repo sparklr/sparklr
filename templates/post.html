@@ -3,7 +3,7 @@
 	data = processPostMeta(data);
 	</script>
 	<% if (data.type == 1) %>
-	<div class='picturepost mini' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
+	<div class='picturepost full' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
 		<img src='{imgUrl(data.img)}'>
 	</div>
 	<% endif %>
@@ -28,7 +28,7 @@
 		<br>
 	</div>
 	<hr>
-	<div id='responseholder_{data.id}'>
+	<div id='responseholder_{data.id}' class='commentholder'>
 		<div id='comments_{data.id}' style='padding:5px;'></div>
 		<div class='fadein' style='padding:5px;'>
 			{ renderComposer('Respond...', 'postComment', true, data.id) }
