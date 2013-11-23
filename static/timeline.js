@@ -19,7 +19,6 @@ function addTimelineEvent(item,append) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (_g("event_" + item.id)) {
-		console.log(item.commentcount);
 		if (item.commentcount) {
 			if (item.delta)
 				updateCommentCount(item.id, commentCounts[item.id] + item.commentcount);
@@ -30,7 +29,7 @@ function addTimelineEvent(item,append) {
 			_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
 	}
-	if (!item.message) return;
+	if (!item.message && item.type !== 1) return;
 
 	if (!append && doctop > 10) {
 		missingPosts++;
@@ -57,13 +56,11 @@ function addTimelineEvent(item,append) {
 	ev.innerHTML = html;
 
 	var parent = _g("timeline_container");
-	console.log(parent);
 	if (append || parent.children.length < 1) {
 		parent.appendChild(ev);
 	} else {
 		parent.insertBefore(ev, parent.children[0]);
 	}
-
 
 	if (item.tags) {
 		renderTags(item);
@@ -409,7 +406,7 @@ function fetchOlderPosts() {
 function renderComposer(caption, keydown, minipreview, id) {
 	imgAttachments = null;
 	var html = "<div style='position:relative' class='composer'>";
-	html += "<div style='float:left'><img src='" + getAvatar(curUser) + "' class='avatar'><div id='remaining'></div></div><div id='composerframe'>";
+	html += "<div style='float:left'><img src='" + getAvatar(curUser) + "' class='avatar'><div class='remaining' id='remaining_composer_" + (id || "composer") + "'></div></div><div id='composerframe'>";
 	if (minipreview) {
 		html += "<div id='attachment" + (id || "") + "' class='minipreview'></div>";
 	}

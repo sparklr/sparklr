@@ -660,7 +660,7 @@ div.attachment:hover div, div.picturepost:hover div {
 }
 #composerframe textarea {
 	border: none;
-	width: calc(100% - 10px);
+	width: calc(100% - 70px);
 	-webkit-transition: all 0.3s ease;
 }
 
@@ -684,9 +684,9 @@ div.composer:hover div.composercontrols {
 	opacity: 0.3;
 }
 
-#remaining {
-	opacity: 0;
-	margin-top: 60px;
+div.remaining {
+	opacity: 1;
+	margin-top: 20px;
 	-webkit-transition: all 0.3s ease;
 }
 
