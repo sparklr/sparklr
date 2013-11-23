@@ -51,6 +51,7 @@ body {
     margin: 0px;
     padding: 0px;
 	font-family: 'PT Sans', sans-serif;
+	font-size: 18px;
 }
 
 img { outline: 0 }
@@ -178,12 +179,10 @@ hr {
 
 #frame {
     display: block;
-    min-height: 640px;
     position: relative;
     padding: 5px;
     color: #333;
-	margin-left: 350px;
-    margin-bottom: 20px;
+	margin-left: 325px;
 }
 
 #content {
@@ -450,18 +449,24 @@ span.header {
     display: inline-block;
 }
 
+div.grid {
+	-webkit-column-count: auto;
+	-webkit-column-width: 435px;
+	-webkit-column-gap: 0px;
+	overflow:hidden;
+}
+
 div.timelineitem {
-    margin: 4px;
-    margin-bottom: 10px;
     min-height: 50px;
     padding: 6px;
-    position: relative;
+	margin: 4px;
+	margin-bottom: 10px;
 	word-wrap: break-word;
 	display: inline-block;
-	width: 325px;
+	width: 425px;
 	border: solid 1px #ccc;
 	background: #fff;
-	vertical-align: top;
+	position: relative;
 }
 div.timelineitem .time {
     opacity: 0.65;
@@ -491,6 +496,7 @@ div.commentcount {
     cursor: pointer;
     -webkit-transition: all 0.2s ease-in-out;
     border: solid 1px rgba(255,255,255,0.3);
+	font-size: 16px;
 }
 
 div.timelineitem:hover div.commentcount {
@@ -541,8 +547,8 @@ div.picturepost {
 	text-align: center;
 }
 div.picturepost img {
-	max-width: 578px;
-	max-height: 443px;
+	max-width: 435px;
+	max-height: 540px;
 	margin-bottom: -4px;
 }
 div.picturepost.mini img {
@@ -848,10 +854,9 @@ textarea {
 }
 
 div.time {
-    position: absolute;
+	position: absolute;
     bottom: 5px;
     right: 0px;
-    float: right;
     margin-right: 5px;
     font-size: 11px;
     -webkit-transition: all 0.1s ease-in-out;
