@@ -1,25 +1,20 @@
-<div style='float:right'>
-	<input type='button' value='Invite Friends' onClick='inviteFriend();'>
-</div>
-
 <h2>following</h2>
 <script>
 	for (var i = 0; i < data.length; i++) {
 </script>
-	<div style='background-image:url({imgUrl(data[i],true)})' class='friend'>
-		<input type='button' value='Unfollow' onclick='unfollow({data[i]});'>
-			<a href='/#/user/{data[i]}' style='color:#000'>
-				<img src='{imgUrl(data[i])}' class='avatar'>
-				<b>{getDisplayName(data[i])}</b>
-			</a>
-	</div>
+	<a href='/#/user/{data[i]}' style='color:#000'>
+		<div style='background-image:url({imgUrl(data[i],true)})' class='friend'>
+			<input type='button' value='Unfollow' onclick='unfollow({data[i]});'>
+			<b>{getDisplayName(data[i])}</b>
+		</div>
+	</a>
 <script>
 	}
 </script>
 <% if (data.length < 1) %>
 You aren't following anyone right now! Try meeting someone random or inviting friends.
 <% endif %>
-<br><br>
-<div style='text-align:center;margin:9px;'>
-	<input type='button' value='Meet someone random' onclick='meetSomeoneRandom();'>
+<div id='sidebar_links'>
+	<a href='javascript:inviteFriend()'>Invite friends</a>
+	<a href='javascript:meetSomeoneRandom()'>Meet someone random</a>
 </div>

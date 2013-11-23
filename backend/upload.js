@@ -36,7 +36,7 @@ exports.handleUpload = function(data, userobj, args, callback) {
 				callback(null,imgid);
 			});
 		} else {
-			resizeImage(tmpfile, outfile, function() {
+			resizeImage(tmpfile, outfile, args, function() {
 				if (!args.noThumb) {
 					makeThumb(tmpfile, outthumb, args, function() {
 						callback(null,imgid);
@@ -48,8 +48,8 @@ exports.handleUpload = function(data, userobj, args, callback) {
 	});
 }
 
-function resizeImage(input, output, callback) {
-	var process = spawn("convert", [input, "-resize", ">1920x1080", "-auto-orient", "-strip", output]);
+function resizeImage(input, output, args, callback) {
+	var process = spawn("convert", [input, "-resize", ">" + (args.fullWidth || 1920) + "x" + (args.fullHeight || 1080), "-auto-orient", "-strip", output]);
 	process.on("close", function(code) {
 		callback(code);
 	});
