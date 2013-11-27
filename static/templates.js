@@ -13,6 +13,8 @@ function renderPageFromTemplate() {
 		if (_g("sidebar_links")) {
 			_g("sidebar").innerHTML = _g("sidebar_links").innerHTML;
 			_g("sidebar_links").innerHTML = "";
+		} else {
+			defaultSidebar();
 		}
 		updateUI();
 	}

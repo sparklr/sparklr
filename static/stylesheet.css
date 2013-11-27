@@ -799,11 +799,21 @@ div.friend {
 	display: inline-block;
 	background-size: cover;
 	border: solid 1px #aaa;
-	margin: 10px;
+	margin: 6px;
+	position: relative;
+}
+
+div.friend b {
+	background: rgba(0,0,0,0.5);
+	color: #fff;
+	display: block;
+	padding: 3px;
 }
 
 div.friend input {
-	float: right;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
 	opacity: 0;
 }
 
@@ -956,14 +966,14 @@ div.popup textarea {
 	height: 140px;
 	margin: 2px;
 }
-#feedbackbtn {
-	position: fixed;
+#footer {
+	position: absolute;
 	bottom: 5px;
-	right: 5px;
 	font-size: 11px;
+	color: #fff;
 }
-#feedbackbtn a {
-	color: #333;
+#footer a {
+	color: #fff;
 }
 
 .pulse {
