@@ -69,6 +69,10 @@ var homepage = function(posts) {
 	pollData();
 	subscribeToStream(subscribedStream);
 
+	defaultSidebar();
+}
+
+function defaultSidebar() {
 	var links = '';
 	links += "<a href='#/user/"+curUser+"'>" + getUserHandle(curUser) + "</a>"
 	links += "<a href='#/friends'>Following</a>"
