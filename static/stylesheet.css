@@ -802,6 +802,7 @@ div.friend {
 	background-size: cover;
 	border: solid 1px #aaa;
 	margin: 6px;
+	margin-right: 26px;
 	position: relative;
 }
 

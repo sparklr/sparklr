@@ -12,12 +12,11 @@
 			for (var i = 0; i < data.users.length; i++) {
 				USERHANDLES[data.users[i].id] = data.users[i].username;
 	</script>
-	<div style='min-height:55px;margin-left: 10px;'>
-		<a href='/#/user/{data.users[i].id}' class='person'>
-			<img src='{getAvatar(data.users[i].id)}' class='avatar'>
-			{getDisplayName(data.users[i].id)}
-		</a>
-	</div>
+	<a href='/#/user/{data.users[i].id}' style='color:#000'>
+		<div style='background-image:url({imgUrl(data.users[i].id,true)})' class='friend'>
+			<b>{getDisplayName(data.users[i].id)}</b>
+		</div>
+	</a>
 	<script>
 			}
 		}
