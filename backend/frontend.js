@@ -6,8 +6,8 @@ var User = require("./user");
 var Notification = require("./notification");
 
 var frontendTemplate = "";
+var mobileFrontendTemplate = "";
 var externalTemplate = "";
-
 
 // need a better loading for reload cases
 var loadTemplates = function() {
@@ -22,6 +22,11 @@ var loadTemplates = function() {
 		frontendTemplate = html + "<body>";
 	});
 
+	fs.readFile("../../p18mobile/templates/headers.html", function(err, data) {
+		eval(templates.parse(data.toString()));
+		mobileFrontendTemplate = html + "<body>";
+	});
+
 	fs.readFile("../templates/external.html", function(err, data) {
 		eval(templates.parse(data.toString()));
 		externalTemplate = html;
@@ -34,13 +39,21 @@ exports.run = function(user, request, response, sessionid) {
 		response.end();
 		return;
 	}
+
+	var html;
+
+	if (request.headers['user-agent'].indexOf('obile') !== -1) {
+		html = mobileFrontendTemplate;
+	} else {
+		html = frontendTemplate;
+	}
+
 	response.writeHead(200, {
 		"Content-type": "text/html"
 	});
 	var sessiondata = sessionid.split(",");
 	var authkey = sessiondata[1];
 
-	var html = frontendTemplate;
 
 	user.following = user.following.split(",").filter(function(e) { return e; });
 	user.networks = (user.networks || "0").split(",").filter(function(e) {

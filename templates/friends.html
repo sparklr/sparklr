@@ -2,12 +2,10 @@
 <script>
 	for (var i = 0; i < data.length; i++) {
 </script>
-	<a href='/#/user/{data[i]}' style='color:#000'>
-		<div style='background-image:url({imgUrl(data[i],true)})' class='friend'>
-			<input type='button' value='Unfollow' onclick='unfollow({data[i]});'>
-			<b>{getDisplayName(data[i])}</b>
-		</div>
-	</a>
+<div style='background-image:url({imgUrl(data[i],true)})' class='friend' onclick='location.href="#/user/{data[i]}";'>
+		<input type='button' value='Unfollow' onclick='unfollow({data[i]});stopBubbling();'>
+		<b>{getDisplayName(data[i])}</b>
+	</div>
 <script>
 	}
 </script>
