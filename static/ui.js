@@ -449,6 +449,7 @@ function search_Keydown(e) {
 }
 
 function imgUrl(img,fullsize) {
+	img = "" + img;
 	if (img.indexOf(".") == -1) img += ".jpg";
 	return STATICHOST + "/" + (!fullsize ? "t" : "") + img;
 }
