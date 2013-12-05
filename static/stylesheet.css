@@ -1303,3 +1303,10 @@ div.popup_post {
 	border: solid 1px #887C91;
 	cursor: pointer;
 }
+
+input.t1 {
+	border: solid 1px #ccc;
+	padding:6px;
+	width:275px;
+	margin:7px;
+}
