@@ -62,12 +62,6 @@ function fadeOutPage() {
 }
 
 function showConfirm(caption, message, action) {
-	if (MOBILE) {
-		if (confirm(message)) {
-			action();
-		}
-		return;
-	}
 	var popup = document.createElement("div");
 	popup.className = "confirm fadein";
 	popup.id = "popup_" + Math.random();
@@ -452,25 +446,6 @@ function imgUrl(img,fullsize) {
 	img = "" + img;
 	if (img.indexOf(".") == -1) img += ".jpg";
 	return STATICHOST + "/" + (!fullsize ? "t" : "") + img;
-}
-
-function showDropdown() {
-	var s = _g("dropdown");
-	s.style.display = "block";
-	setTimeout(function() {
-	s.style.right = "0px";
-	},10);
-	_g("dropdowncover").style.display="block";
-	window.scrollTo(0,0);
-}
-
-function hideDropdown() {
-	var s = _g("dropdown");
-	s.style.right = "-200px";
-	setTimeout(function() {
-	s.style.display = "none";
-	},300);
-	_g("dropdowncover").style.display="none";
 }
 
 function removeDomElement(id) {

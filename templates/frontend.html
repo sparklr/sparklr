@@ -10,7 +10,6 @@
 			<a href='#/friends' class='people' title='People'></a>
 			<a href='#/notifications' class='notifs' title='Notifications' id='notifs'></a>
 			<a href='#/inbox' class='inbox' title='Inbox' id='inbox'></a>
-			<a href='javascript:showDropdown(true);stopBubbling(event);' class='menu' title='Menu'></a>
 		</div>
 		<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
 		<div id='sidebarwrapper'>
@@ -22,9 +21,9 @@
 		</div>
 	</div>
 	<div id='footer'>
-		<a href='tos.html' target="_blank">Terms of Service</a> | 
-		<a href='etiquette.html' target="_blank">Etiquette</a> | 
-		<a href='/#/staff'>Staff</a> | 
+		<a href='tos.html' target="_blank">Terms of Service</a> - 
+		<a href='etiquette.html' target="_blank">Etiquette</a> - 
+		<a href='/#/staff'>Staff</a> - 
 		<a href='javascript:showFeedbackForm();'>Feedback</a>
 	</div>
 </div>
@@ -44,14 +43,4 @@
 	</form>
 </div>
 
-<div id='dropdowncover' onclick='hideDropdown()'></div>
-<div id='dropdown'>
-	<a href='#/user/{curUser}/'><img src='{imgUrl(curUser)}' width=45 height=45> My profile</a>
-	<input type='text' id='mobilesearchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
-	<a href='#/friends'>People</a>
-	<hr>
-	<a href='#/settings'>Settings</a>
-	<hr>
-	<a href='javascript:signOff();'>Sign off</a>
-</div>
 <div id='windowcontainer'></div>

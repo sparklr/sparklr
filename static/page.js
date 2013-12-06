@@ -112,11 +112,7 @@ function updatePages(loaded) {
 	//_g("frame").style.minHeight = "640px";
 
 	//disable bg
-	if (!MOBILE)
-		updateBackground(curUser, curBackground);
-
-	//hide dropdown 
-	hideDropdown();
+	updateBackground(curUser, curBackground);
 
 	var s = location.hash.split("/");
 
