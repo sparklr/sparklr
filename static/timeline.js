@@ -97,23 +97,7 @@ function showEvent(id,args) {
 	if (typeof(args) === "undefined")
 		var args = "";
 
-	if (MOBILE || !ws || !ws.p18Connected) {
-		location.href = "#/post/" + id + "/" + args;
-		return;
-	}
-	var pid = addWindow("c" + id, function() {
-		unsubscribeFromStream("c" + id);
-	});
-	renderTemplate("post/" + id, pid)
-	subscribeToStream("c" + id);
-	return;
-
-
-	for (var i = 0; i < timelineEvents[subscribedStream].length; i++) {
-		if (timelineEvents[subscribedStream][i].id == id) {
-			location.href = "#/post/" + id + "/" + args;
-		}
-	}
+	location.href = "#/post/" + id + "/" + args;
 }
 
 function processPostMeta(data) {
@@ -191,11 +175,7 @@ function publishRepost(e) {
 
 function showImage(img) {
 	var imgpath = imgUrl(img,true);
-	if (MOBILE) {
-		window.open(imgpath);
-	} else {
-		showPopup("<img src='"+imgpath+"' onload='this.style.opacity=1'>", "lightbox");
-	}
+	showPopup("<img src='"+imgpath+"' onload='this.style.opacity=1'>", "lightbox");
 }
 
 function editPostStart(e) {
