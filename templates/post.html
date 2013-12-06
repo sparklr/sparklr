@@ -61,11 +61,5 @@
 
 	renderTags(data);
 	}, 0);
-	
-	var lineexp = /^\[([\d]+)\]/gm;
-	setWindowTitle("c"+data.id, data.message.replace(lineexp, function(match,num){
-		return getDisplayName(num);
-	}));
-
 </script>
 

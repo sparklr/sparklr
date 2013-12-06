@@ -1,4 +1,3 @@
-<input type='text' id='searchbox_mobile' class='t1' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)' value='{ unescape(location.hash.substring(9)).replace(/</g, '&lt;').replace(/>/g, '&gt;') }'>
 <h2>searching for: "{ unescape(location.hash.substring(9)).replace(/</g, '&lt;').replace(/>/g, '&gt;') }"</h2>
 <% if (!data.error && data !== false) %>
 	<% if (!data.users && !data.posts) %>

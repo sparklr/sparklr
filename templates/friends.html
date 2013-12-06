@@ -2,7 +2,7 @@
 <script>
 	for (var i = 0; i < data.length; i++) {
 </script>
-<div style='background-image:url({imgUrl(data[i],true)})' class='friend' onclick='location.href="#/user/{data[i]}";'>
+	<div style='background-image:url({imgUrl(data[i],true)})' class='friend' onclick='location.href="#/user/{data[i]}";'>
 		<input type='button' value='Unfollow' onclick='unfollow({data[i]});stopBubbling();'>
 		<b>{getDisplayName(data[i])}</b>
 	</div>

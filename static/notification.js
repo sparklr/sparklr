@@ -13,8 +13,7 @@ function addNotification(notification) {
 	}
 	currentNotifications[notification.id] = notification;
 
-	if (!MOBILE)
-		handleNotifications();
+	handleNotifications();
 
 	if (parseInt(notification.time) > lastNotificationTime)
 		lastNotificationTime = parseInt(notification.time);

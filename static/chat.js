@@ -171,16 +171,9 @@ function setNewInbox(value) {
 }
 
 function chatWith(id) {
-	if (MOBILE || !ws || !ws.p18Connected) {
-		location.href = "#/chat/" + id;
-		return;
-	}
 	var pid = addWindow("m" + id + "," + curUser, function() {
 		// closed
+		// we're always subscribed to notifications sent to the user
 	});
 	renderTemplate("chat/" + id, pid)
-	console.log(id);
-	return;
-	location.href = '/#/chat/' + id;
-
 }
