@@ -413,9 +413,8 @@ div.confirm {
 }
 
 #notificationlist div {
-    border: solid 1px #222;
-	border-radius: 5px;
-	background: rgba(0,0,0,0.3);
+    border: solid 1px #333;
+	background: #454050;
     color: #fff;
     padding: 4px;
 	padding-top: 7px;

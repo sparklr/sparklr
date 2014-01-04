@@ -17,6 +17,12 @@ function renderPageFromTemplate() {
 		eval(templateData);
 
 		_g("content").innerHTML = html;
+		if (_g("sidebar_links")) {
+			_g("sidebar").innerHTML = _g("sidebar_links").innerHTML;
+			_g("sidebar_links").innerHTML = "";
+		} else {
+			defaultSidebar();
+		}
 		updateUI();
 	}
 	if (staticPages[fragments[1]])
