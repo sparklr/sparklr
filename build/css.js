@@ -8,12 +8,15 @@ var cleanCSS = require("clean-css");
 exports.build = function(callback) {
 	console.log("Building CSS...");
 
-	buildCSSFromFile(["stylesheet","mobile"], "app", function(cssHash) {
+	buildCSSFromFile(["stylesheet"], "app", function(cssHash) {
 		global.buildData.cssHash_frontend = cssHash;
-		buildCSSFromFile(["external"], "external", function(cssHash) {
-			global.buildData.cssHash_external = cssHash;
+		buildCSSFromFile(["../mobile/static/stylesheet"], "mobile", function(cssHash) {
+			global.buildData.cssHash_mobile = cssHash;
+			buildCSSFromFile(["external"], "external", function(cssHash) {
+				global.buildData.cssHash_external = cssHash;
 
-			callback();
+				callback();
+			});
 		});
 	});
 }
