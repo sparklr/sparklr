@@ -30,12 +30,6 @@ function addNotification(notification) {
 	n.className = "fadein";
 	n.onclick = function () { location.href = notification.click; };
 
-	var parent = _g("notificationlist");
-	if (parent.children.length < 1)
-		parent.appendChild(n);
-	else
-		parent.insertBefore(n, parent.children[0]);
-
 	notificationCount++;
 
 	if (notification.type != N_CHAT)
