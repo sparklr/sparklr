@@ -79,6 +79,7 @@ exports.getObject = function(table, id, callback) {
 
 exports.getStream = function(table, args, callback) {
 	var query = "SELECT * FROM " + exports.escapeId(table) + " WHERE (";
+	var conditionExists = false;
 	if (args.from) {
 		query += "`from` IN (";
 		for (var i = 0; i < args.from.length - 1; i++)
@@ -91,6 +92,7 @@ exports.getStream = function(table, args, callback) {
 		if (args.networks) {
 			query += "OR ";
 		}
+		conditionExists = true;
 	}
 	if (args.to) {
 		query += "`to` IN (";
@@ -98,6 +100,7 @@ exports.getStream = function(table, args, callback) {
 		query += parseInt(args.to[i]) + ",";
 		query += parseInt(args.to[args.to.length - 1]);
 		query += ") ";
+		conditionExists = true;
 
 	}
 	if (args.networks && args.networks.length > 0) {
@@ -106,6 +109,7 @@ exports.getStream = function(table, args, callback) {
 		query += exports.escape(args.networks[i]) + ",";
 		query += exports.escape(args.networks[args.networks.length - 1]);
 		query += ") ";
+		conditionExists = true;
 	}
 	
 	if (args.id) {
@@ -113,6 +117,7 @@ exports.getStream = function(table, args, callback) {
 		for (var i = 0; i < args.id.length -1; i++) 
 			query += parseInt(args.id[i]) + ",";
 		query += parseInt(args.id[args.id.length - 1]) + ") ";
+		conditionExists = true;
 	}
 	if (args.type)
 	{
@@ -120,7 +125,8 @@ exports.getStream = function(table, args, callback) {
 	}
 	if (args.since)
 	{
-		query += ") AND (";
+		if (conditionExists)
+			query += ") AND (";
 		if (args.modified)
 			query += "`modified` > "+parseInt(args.modified);
 		else
@@ -129,12 +135,13 @@ exports.getStream = function(table, args, callback) {
 	}
 	if (args.starttime)
 	{
-		query += ") AND (`time` < "+parseInt(args.starttime);
+		if (conditionExists)
+			query += ") AND (";
+		query += "`time` < "+parseInt(args.starttime);
 	}
 	
 	query += ") ORDER BY " + (args.sortby ? exports.escapeId(args.sortby) : "`time`") + " DESC LIMIT 20";
 	exports.query(query, callback);
-	//console.log(query);
 }
 
 exports.postObject = function(table, obj, callback) {

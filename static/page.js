@@ -5,6 +5,17 @@ var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat
 
 var staticPages = { "notifications":1 };
 
+var networks = {
+	"everything": "Everything",
+	"following": "Following",
+	"music": "Music",
+	"funny": "Funny",
+	"tech": "Tech",
+	"gaming": "Gaming",
+	"art": "Art",
+	"misc": "Misc",
+};
+
 var previousPage = "";
 
 var homepage = function(posts) {
@@ -13,18 +24,14 @@ var homepage = function(posts) {
 		return;
 	}
 
+	defaultSidebar();
+
 	subscribedStream = 0;
 
 	var args = location.hash.split("/");
 	var prehtml = "";
 	var composertext = "";
-	if (args[1] == "welcome") {
-		prehtml = "<input type='button' value='Next' onClick='location.href=\"/#/user/"+curUser+"/step2\";' style='margin:7px 4px;float:right'><h2 style='color:#fff'>Welcome to Sparklr! Say hello!</h2>"
-		prehtml += "<div class='bubbleout'><div class='bubble leftb' style='margin-top:-60px;'>Why don't you take a moment to introduce yourself so that the other users can get to know you~</div></div>"
-		prehtml += "<div class='bubbleout'><div class='bubble leftb' style='margin-top: 72px;'>This is the Dash, where everyone sees everything. It may take a bit to get used to, but it makes it easier to meet other users. c:</div></div>";
-		prehtml += "<div class='bubbleout'><div class='bubble rightb' style='margin-top: 40px;'>These buttons allow you to filter what you see on the dash. When you follow a Network, a tab will appear here as well.</div></div>";
-		composertext = "#introducing ";
-	}
+
 	if (args[1] == "mention") {
 		composertext = "@" + args[2] + " ";
 	}
@@ -33,21 +40,10 @@ var homepage = function(posts) {
 		subscribedStream = args[1];
 		isNetwork = true;
 		lastUpdateTime = 0;
-		prehtml = "<div id='networkheader'></div>";
-		if (subscribedStream != "world") {
-			ajaxGet("work/networkinfo/" + subscribedStream, null, function(data) {
-				var html = "";
-				var title = (data && data[0]) ? data[0].title : subscribedStream;
-				html += "<input id='trackbtn' type='button' style='float:right'>";
-				html += "<h2 style='color:#fff'>" + title + "</h2>";
-				_g("networkheader").innerHTML = html;
-				updateTrackNetwork();
-			});
-		}
 	}
 	var e = _g("network_" + subscribedStream);
 	if (e) {
-		e.className = "active";
+		e.className = "network active";
 	}
 
 	renderTimeline(prehtml);
@@ -69,14 +65,16 @@ var homepage = function(posts) {
 	pollData();
 	subscribeToStream(subscribedStream);
 
-	defaultSidebar();
+	if (localStorage)
+		localStorage.setItem("lastnetwork", subscribedStream);
 }
 
 function defaultSidebar() {
 	var links = '';
-	links += "<a href='#/user/"+curUser+"'>" + getUserHandle(curUser) + "</a>"
-	links += "<a href='#/friends'>Following</a>"
-	links += "<a href='#/inbox'>Inbox</a>"
+	for (id in networks) {
+		links += "<a href='#/"+id+"' id='network_" + id + "'>" + networks[id] + "</a>"
+	}
+
 	_g('sidebar').innerHTML = links;
 }
 
@@ -108,6 +106,9 @@ function updatePages(loaded) {
 	//Page reload, thus scroll height has changed
 	scrollHandler();
 
+	if (typeof(hideDropdown) !== 'undefined')
+		hideDropdown();
+
 	//fix height
 	//_g("frame").style.minHeight = "640px";
 
@@ -129,6 +130,13 @@ function updatePages(loaded) {
 		}
 	}
 
+	if (s[0] == "") {
+		if (localStorage && (n = localStorage.getItem("lastnetwork")))
+			location.href = '/#/' + n;
+		else
+			location.href = '/#/everything';
+		return;
+	}
 	//page not found, go home
 	//reset sidebar
 	_g("sidebar").innerHTML = "";
