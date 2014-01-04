@@ -1,0 +1,20 @@
+<% if (fragments[2] == "step3") %>
+	<input type='button' value='Finish' onClick='location.href="/#/";' style='margin-top:5px;float:right'>
+	<h2 style='color:#fff'>Almost done: Invite your friends!</h2>
+<% endif %>
+<div class='contentwrapper'>
+	<div style='text-align:center'>
+		<b>Invite friends to join Sparklr</b>
+		<br><br>
+		Now that you're in the beta, you can invite your friends to join you!<br><br>
+		<form onSubmit='inviteUser(to.value,sendbtn);return false;'>
+			<input type='text' class='t1' id='inviteField' name='to' placeholder='friend@example.com'>
+			<input type='submit' name='sendbtn' value='Send Invitation' style='width:290px'>
+		</form>
+		<br>
+		<b>-or-</b><br><br>
+		Use this link on IM, forums, social networking, etc.<br>
+		<input type='text' value='https://sparklr.me/signup/{data}/' style='border: solid 1px #ccc;padding:10px;width:270px;margin:7px;' onClick='this.select()'><br><br>
+		You will follow each other automatically once your friend signs in.
+	</div>
+</div>

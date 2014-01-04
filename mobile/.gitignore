@@ -1,0 +1,17 @@
+#ignore the config file
+backend/config.js
+
+#OS junk
+Thumbs.db
+*.swp
+*.swo
+ctags.tmp
+tags
+
+#compiled stuff
+static/out
+build/out
+
+.tingle.vim
+backend/.tingle.vim
+

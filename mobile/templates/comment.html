@@ -1,0 +1,25 @@
+<div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>
+	<a href='#/user/{comment.from}'><img class='littleavatar' src='{getAvatar(comment.from)}'></a>
+</div>
+<div class='rightcontrols'>
+	<div class='time' style='opacity:0.5' data-time='{comment.time}'></div>
+	<script>
+	var canEdit = comment.from == curUser || isMod;
+
+    if (canEdit) {
+	</script>
+		<br>
+		<a class='delete' onClick='deleteComment("{comment.id}", "{comment.postid}");'></a>
+	<script>
+    }
+	</script>
+</div>
+<a class='person' href='#/user/{comment.from}'>{getDisplayName(comment.from)}</a>
+<% if (comment.like) %>
+	 likes this<br><br>
+<% else %>
+<div style='margin-left: 50px;'<% if (canEdit) %> data-id='{comment.id}'<% endif %>>
+	{processMedia(escapeHTML(comment.message))}
+</div>
+<% endelse %>
+</div>

@@ -1,3 +1,10 @@
+/* Sparklr
+ * templates.js: Very small, simple template engine
+ *
+ * Shared with mobile
+ */
+
+// define templates, or, if compiled, it already exists
 var TEMPLATES = TEMPLATES || [];
 
 function renderPageFromTemplate() {
@@ -10,18 +17,12 @@ function renderPageFromTemplate() {
 		eval(templateData);
 
 		_g("content").innerHTML = html;
-		if (_g("sidebar_links")) {
-			_g("sidebar").innerHTML = _g("sidebar_links").innerHTML;
-			_g("sidebar_links").innerHTML = "";
-		} else {
-			defaultSidebar();
-		}
 		updateUI();
 	}
-	if (!staticPages[fragments[1]])
-		ajaxGet("work/" + location.hash.substring(2), null, renderPage);
-	else
+	if (staticPages[fragments[1]])
 		renderPage();
+	else
+		ajaxGet("work/" + location.hash.substring(2), null, renderPage);
 }
 
 function renderTemplate(page,destination) {
@@ -55,6 +56,12 @@ function getTemplate(id) {
 	}
 }
 
+/*
+ * string -> html = "string"
+ * {{ expression }} to " + expression + "
+ *
+ *
+ */
 function t(data) {
 	var obj = "" + data;
 	obj = obj.replace(/\"/g, "\\\"");
