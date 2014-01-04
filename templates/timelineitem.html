@@ -22,6 +22,10 @@
  via <a href='#/user/{ item.via }'>@{ getUserHandle(item.via) }</a>
 <% endif %>
 
+<% if (item.network !== null && item.network != 0 && item.network != 'everything') %>
+ in <a href='#/{item.network}'>/{item.network}</a>
+<% endif %>
+
 <h2>@{getUserHandle(item.from)}</h2>
 <div class='content' id='postcontent_{item.id}'>{item.originalMessage}{item.formattedMessage}</div>
 
