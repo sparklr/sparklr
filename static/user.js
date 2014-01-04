@@ -81,10 +81,6 @@ function unfollow(id) {
 	ajaxGet("work/unfollow/"+id, null, function() { location.href += "/#"; });
 }
 
-function mention(handle) {
-	location.href='#/mention/'+handle;
-}
-
 //Current user actions
 
 function updateAvatar(user, avatarid) {
