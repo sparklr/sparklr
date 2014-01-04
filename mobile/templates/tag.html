@@ -1,0 +1,22 @@
+<div id='sidebar_links'>
+	<a href='javascript:trackTag("{fragments[2]}");' id='trackbtn' style='display:none'>Track</a>
+	<a href='javascript:untrackTag("{fragments[2]}");' id='untrackbtn' style='display:none'>Untrack</a>
+</div>
+<h2 style='color:#fff'><a href='/#/tag/{fragments[2]}' class='tag'>#{fragments[2]}</a></h2>
+<div id='timeline_container'></div>
+<script>console.log(data);
+	
+	subscribedStream = fragments[2];
+	currentPageType = "TAG";
+	setTimeout(function() {
+		var arr = data;
+
+		for(var i = arr.length-1; i >= 0; i--) {
+			addTimelineEvent(arr[i]);
+		}
+
+		addTimelineArray(arr,subscribedStream);
+
+		updateTrackTagBtns(fragments[2]);
+	}, 10);
+</script>
