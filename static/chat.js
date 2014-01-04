@@ -76,6 +76,8 @@ function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
 
 	console.log(convoid);
 	var sc = _g("scrollUpContent_"+convoid);
+	if (!sc)
+		return;
 
 	var ele = document.createElement("div");
 	ele.className = "chatmsg";
@@ -132,7 +134,7 @@ function sendChatMessage(e) {
 	},10);
 
 	if (!vars.message && !vars.postData) return;
-	//addChatMessage(curUser, vars.to, vars.message, getLastChatTime(), false, true);
+	addChatMessage(curUser, vars.to, vars.message, getLastChatTime(), false, true);
 
 	ajaxGet("work/chat", vars, function(data,xhr) {
 		if (data.error && data.info == "Blocked") {

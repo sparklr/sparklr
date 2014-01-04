@@ -18,7 +18,6 @@
 			addChatMessage(data[i].from, data[i].to, data[i].message, data[i].time, false);
 		}
 
-		currentPageType = "CHAT";
 		setupScrollHandler();
 		_g("composer_chat_"+user).focus();
 		window.onload = function() {
