@@ -42,7 +42,7 @@ exports.run = function(user, request, response, sessionid) {
 
 	var html;
 
-	if (true || request.headers['user-agent'].indexOf('obile') !== -1) {
+	if (request.headers['user-agent'].indexOf('obile') !== -1) {
 		html = mobileFrontendTemplate;
 	} else {
 		html = frontendTemplate;
