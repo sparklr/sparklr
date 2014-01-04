@@ -215,7 +215,6 @@ function deletePost(id) {
 function deleteComment(id,postid) {
 	showConfirm("Delete comment", "Are you sure you want to delete this comment?", function () {
 		ajaxGet("work/delete/comment/"+ id, null, function() {
-			console.log(item);
 			location.href = window.location + "#";
 		});
 	});
