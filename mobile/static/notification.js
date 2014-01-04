@@ -13,6 +13,8 @@ function addNotification(notification) {
 	}
 	currentNotifications[notification.id] = notification;
 
+	handleNotifications();
+
 	if (parseInt(notification.time) > lastNotificationTime)
 		lastNotificationTime = parseInt(notification.time);
 
@@ -87,7 +89,6 @@ function getNotificationBody(notification) {
 			action = "javascript:showEvent('" + notification.action + "')"; 
 		break;
 		case 3: //chat
-			setUserAttention(notification.from, true);
 			updatePageTitle();
 			body = "says: <br>" + notification.body;
 			action = "javascript:chatWith('" + notification.from + "')"; 
@@ -122,6 +123,7 @@ function removeNotification(id) {
 }
 
 function handleNotifications() {
+	console.log("handling");
 	if (!pageActive) return;
 
 	var s = location.hash.split("/");
@@ -134,28 +136,9 @@ function handleNotifications() {
 			dismissNotification(id);
 			continue;
 		}
-		for (i in activeWindows) {
-			if (activeWindows[i] == "c" + currentNotifications[id].action) {
-				var g = _g("window_"+activeWindows[i]);
-				if (g.scrollHeight - g.scrollTop < 500) {
-					dismissNotification(id);
-					continue notificationLoop;
-				}
-			}
-			if (currentNotifications[id].type == N_CHAT && activeWindows[i] == "m" + currentNotifications[id].from + "," + curUser) {
-				// TODO: abstract
-				var g = _g("window_"+activeWindows[i]);
-				if (g.scrollHeight - g.scrollTop < 500) {
-					setUserAttention(currentNotifications[id].from, false);
-					dismissNotification(id);				
-					setNewInbox(false);
-					continue notificationLoop;
-				}
-			}
-		}
 		if (currentNotifications[id].type == N_CHAT) {
-			if (s[1] == "chat" && s[2] == currentNotifications[id].from) {
-				setUserAttention(currentNotifications[id].from, false);
+			console.log(s);
+			if (s[1] == "chat" && +s[2] == currentNotifications[id].from) {
 				dismissNotification(id);				
 				setNewInbox(false);
 			}

@@ -67,6 +67,7 @@ function fadeOutPage() {
 	document.body.appendChild(f);
 }
 
+// TODO: desktop only
 function showConfirm(caption, message, action) {
 	var popup = document.createElement("div");
 	popup.className = "confirm fadein";
