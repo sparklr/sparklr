@@ -45,8 +45,7 @@ function closeWindow(e,id) {
 	if (!id)
 		var id = e.target.id.split("_")[1];
 	closeActions[id]();
-	console.log(activeWindows);
-	console.log(id);
+
 	activeWindows.splice(activeWindows.indexOf(id),1);
 	var ele = _g("windowc_"+id);
 	ele.parentElement.removeChild(ele);
@@ -55,8 +54,7 @@ function closeWindow(e,id) {
 }
 
 function positionWindows() {
-	var x = 20;
-	console.log(activeWindows);
+	var x = 280;
 	for (i in activeWindows) {
 		_g("windowc_"+activeWindows[i]).style.left = x + "px";
 		x += 380;
