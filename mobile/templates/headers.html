@@ -9,8 +9,8 @@
 		var COMMONHOST = "{global.mobileHost}";
 	</script>
 	<% if (global.liveSite) %>
-		<link rel='stylesheet' href='{global.mobileHost}/app.css?{buildData.cssHash_frontend}'>
-		<script data-live src='{global.mobileHost}/app.js?{buildData.jsHash_frontend}'></script>
+		<link rel='stylesheet' href='{global.mobileHost}/app.css?{buildData.cssHash_mobile}'>
+		<script data-live src='{global.mobileHost}/app.js?{buildData.jsHash_mobile}'></script>
 	<% else %>
 		<script src='{global.commonHost}/templates.js'></script>
 		<script src='{global.commonHost}/page.js'></script>

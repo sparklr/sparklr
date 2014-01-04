@@ -2,13 +2,14 @@ var fs = require("fs");
 
 var templateFormatter = require("../static/templates.js");
 
-exports.build = function(callback) {
-	var templateData = "var TEMPLATES = [];";
+exports.build = function(dir, callback) {
 	console.log("Building templates...");
 
-	fs.readdir("../templates", function(err, files) {
+	var templateData = "var TEMPLATES = [];";
+
+	fs.readdir(dir, function(err, files) {
 		for (var i = 0; i < files.length; i++) {
-			var data = fs.readFileSync("../templates/" + files[i]);
+			var data = fs.readFileSync(dir + "/" + files[i]);
 			var id = files[i].split(".");
 			id = id[0];
 
