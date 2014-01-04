@@ -1,9 +1,16 @@
+/* Sparklr
+ * ui.js: Code related to common ui functions, such as formatting text
+ * and handling the DOM
+ *
+ * Shared with mobile
+ */
+
 var pageActive = true;
 
-//Time savers
+// Time saver
 function _g(id) { return document.getElementById(id); }
 
-//Popups
+// Popups
 function showPopup(content,classname) {
 	fadeOutPage();
 
@@ -35,7 +42,6 @@ function hidePopup(id) {
 	setTimeout(function() { _g(id).parentNode.removeChild(popup); }, 800);
 }
 
-
 function hideAllPopups() {
 	var divs = document.getElementsByTagName("div");
 	
@@ -66,6 +72,7 @@ function showConfirm(caption, message, action) {
 	popup.className = "confirm fadein";
 	popup.id = "popup_" + Math.random();
 	
+	//TODO
 	popup.innerHTML = "<h2>" + caption + "</h2>" + message + "<br><div style='float:right'><input type='button' id='confirmdialog_yes' value='Yes'><input type='button' onClick='hideAllPopups();' value='No'></div>";
 
 	document.body.appendChild(popup);
@@ -76,8 +83,8 @@ function showConfirm(caption, message, action) {
 	};
 }
 
+//TODO: buggy. get rid of it, honestly.
 function htmlToPost(html) {
-	console.log(html);
 	html = html.replace(/\<img src=\".*\/t([A-Za-z0-9_]+).*\"(^\>)*\>/, function(match, img) {
 		return "[IMG"+img+"]";
 	});
@@ -85,10 +92,10 @@ function htmlToPost(html) {
 		return href;
 	});
 	html = html.replace(/\<br\>/g, "");
-	console.log("scrub: " + html);
 	return html;
 }
 
+// Handle the repost via: stuff.
 function processPost(post) {
 	var message = processMedia(escapeHTML(post.message));
 
@@ -112,12 +119,13 @@ function processPost(post) {
 	return result;
 }
 
-
+// Parse links, hashtags, @, imgs, etc
 function processMedia(text,noImages) {
+	//TODO: matches too many URLs
 	var urlexp = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:([^\s()<>.]+[.]?)+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’]))/gi; 
-		text = text.replace(urlexp, function (match, p1, p2, p3, p4, p5) {
+	text = text.replace(urlexp, function (match, p1, p2, p3, p4, p5) {
 		var url = match;
-	
+
 		if (match.indexOf("http") == -1)
 			url = "http://" + match;
 		
@@ -135,7 +143,7 @@ function processMedia(text,noImages) {
 		html += match + "</a>";
 
 		return html;
-		});
+	});
 
 	var mentionregex = /\B@([\w-]+)/gi;
 	text = text.replace(mentionregex, function(match, user) {
@@ -169,8 +177,11 @@ function processMedia(text,noImages) {
 	return text;
 }
 
+// Returns a string of fuzzy time, i.e. "one minute ago"
+// given a unix timestamp
 function getRelativeTime(time) {
-	time = ((new Date).getTime() / 1000) - time; // Convert to relative time
+	// Convert to relative time
+	time = ((new Date).getTime() / 1000) - time;
 
 	var str = "";
 	if (time < 60) {
@@ -199,7 +210,8 @@ function getRelativeTime(time) {
 	return str + " ago";
 }
 
-function updateUI() { //interval that scans DOM, updates UI
+// scans DOM, updates time elements
+function updateUI() { 
 	var arr = document.getElementsByTagName("div");
 	for (i=0;i<arr.length;i++) {
 		if (arr[i].className == "time" || arr[i].className.indexOf("time_raw") != -1) {
@@ -207,9 +219,9 @@ function updateUI() { //interval that scans DOM, updates UI
 		}
 	}
 }
+setInterval("updateUI();", 10000);
 
-setInterval("updateUI();", 2000);
-
+// calculate how far we are from the bottom
 function scrollDistanceFromBottom() {
 	doctop = document.body.scrollTop || document.documentElement.scrollTop;
 	return document.documentElement.scrollHeight - (doctop + window.innerHeight);
@@ -220,26 +232,22 @@ function scrollToTop() {
 }
  
 function animScrollTo(element, to, duration) {
-	console.log(to);
-
     var initial = element.scrollTop,
         delta = to - initial,
         curtime = 0,
-        step = 20;
-       
-    var animate = function() {        
-        curtime += step;
-       
-        if (curtime == duration)
-            return element.scrollTop = initial + delta;
-        else
-            element.scrollTop = initial + delta * (1 - Math.pow(2.5, -10 * curtime / duration));
-       
-        setTimeout(animate, step);
-    };
+        step = 20,
+	animate = function() {
+		curtime += step;
+	   
+		if (curtime == duration)
+			return element.scrollTop = initial + delta;
+		else
+			element.scrollTop = initial + delta * (1 - Math.pow(2.5, -10 * curtime / duration));
+	   
+		setTimeout(animate, step);
+	};
     animate();
 }
-
 
 function isEnter(e,callback) {
 	if (!e)
@@ -261,10 +269,6 @@ function expandTextarea(e) {
 	r.style.display = toolong ? "inline-block" : "none";
 	if (toolong) r.innerHTML = (500 - l);
 	
-}
-
-function search(query) {
-	location.href = "/#/search/" + escape(query);
 }
 
 function stopBubbling(e) {
@@ -290,8 +294,6 @@ function escapeHTML(text) {
 
 	return text;
 }
-
-// File uploads
 
 function dropImage(e, callback) {
 	if (!e) e = window.event;
@@ -322,20 +324,6 @@ function dropPrevent(e) {
 	return false;
 }
 
-function uploadImage(e, url, callback) {
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-		if (xhr.readyState == 4) {
-			callback(xhr);
-			hideProgress();
-		}
-	}
-	xhr.upload.onprogress = uploadingProgress;
-	xhr.open("POST", url);
-	xhr.setRequestHeader("X-X", AUTHKEY);
-	xhr.setRequestHeader("X-DATA", JSON.stringify({ img: 1 }));
-	xhr.send(e.target.result);
-}
 function attachfile_changed(e) {
 	if (!e) e = window.event;
 	loadImage(e.target.files[0], uploadStreamImageCallback, e.target.getAttribute("data-target"));
@@ -425,6 +413,10 @@ function showSuggestionBoxBelowElement(e) {
 	};
 }
 
+function search(query) {
+	location.href = "/#/search/" + escape(query);
+}
+
 function search_Keydown(e) {
 	if (!e)
 		e = window.event;
@@ -442,15 +434,18 @@ function search_Keydown(e) {
 	}
 }
 
+// Returns an image url on the static host
 function imgUrl(img,fullsize) {
 	img = "" + img;
 	if (img.indexOf(".") == -1) img += ".jpg";
 	return STATICHOST + "/" + (!fullsize ? "t" : "") + img;
 }
 
+// Strips a DOM element from its parent
 function removeDomElement(id) {
 	var e = _g(id);
 	if (e) {
 		e.parentNode.removeChild(e);
 	}
 }
+
