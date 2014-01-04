@@ -1,0 +1,15 @@
+<div class='contentwrapper'>
+	<h2>notifications</h2>
+	<div id='notifications'></div>
+	<div id='hailjeiluh'>
+		You have no notifications. Hailjeiluh!
+	</div>
+	<script>
+		setTimeout(function() {
+			for(var i in currentNotifications){
+				if(!currentNotifications[i]) continue;
+				addNotificationToPage(currentNotifications[i]);
+			}
+		}, 10);
+	</script>
+</div>

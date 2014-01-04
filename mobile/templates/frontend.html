@@ -1,0 +1,35 @@
+<div id='header'>
+	<div id='links'>
+		<a href='#/notifications' class='notifs' title='Notifications' id='notifs'></a>
+		<a href='#/inbox' class='inbox' title='Inbox' id='inbox'></a>
+		<a href='javascript:showDropdown(true);' class='menu' title='Menu'></a>
+	</div>
+	<a href='#' title='Home'>
+		<div id='logo'></div>
+	</a>
+</div>
+
+<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
+<div id='content'></div>
+
+<div id='notificationlist'></div>
+<div id='loading'></div>
+<div id='suggestionbox'></div>
+<div id='feedback' style='display:none'>
+	<form onsubmit='sendFeedback(desc.value);return false;'>
+		<textarea name='desc'></textarea>
+		<input type='submit' value='Send Feedback'>
+	</form>
+</div>
+
+<div id='dropdowncover' onclick='hideDropdown()'></div>
+<div id='dropdown'>
+	<a href='#/user/{curUser}/'><img src='{imgUrl(curUser)}' width=45 height=45> My profile</a>
+	<input type='text' id='mobilesearchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
+	<div id='sidebar'></div>
+	<a href='#/friends'>People</a>
+	<hr>
+	<a href='#/settings'>Settings</a>
+	<hr>
+	<a href='javascript:signOff();'>Sign off</a>
+</div>
