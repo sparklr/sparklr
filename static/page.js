@@ -32,11 +32,7 @@ var homepage = function(posts) {
 	var prehtml = "";
 	var composertext = "";
 
-	if (args[1] == "mention") {
-		composertext = "@" + args[2] + " ";
-	}
-
-	if (args[1] && args[1] != "" && args[1] != "welcome" && args[1] != "mention") {
+	if (args[1] && args[1] != "" && args[1] != "welcome") {
 		subscribedStream = args[1];
 		isNetwork = true;
 		lastUpdateTime = 0;
@@ -131,10 +127,7 @@ function updatePages(loaded) {
 	}
 
 	if (s[0] == "") {
-		if (localStorage && (n = localStorage.getItem("lastnetwork")))
-			location.href = '/#/' + n;
-		else
-			location.href = '/#/everything';
+		changeLocation();
 		return;
 	}
 	//page not found, go home
@@ -142,5 +135,12 @@ function updatePages(loaded) {
 	_g("sidebar").innerHTML = "";
 	homepage();
 
+}
+
+function changeLocation(){
+		if (localStorage && (n = localStorage.getItem("lastnetwork")))
+			location.href = '/#/' + n;
+		else
+			location.href = '/#/everything';
 }
 

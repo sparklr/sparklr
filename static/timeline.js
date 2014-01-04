@@ -170,7 +170,7 @@ function publishRepost(e) {
 	}
 
 	ajaxGet("work/repost", vars);
-	closeWindow(null,'c'+id);
+	changeLocation();
 }
 
 function showImage(img) {
@@ -205,7 +205,7 @@ function deletePost(id) {
 	showConfirm("Delete post", "Are you sure you want to delete this post?", function () {
 		ajaxGet("work/delete/post/" + id, null, function() {
 			removeDomElement('event_'+id);
-			closeWindow(null,'c'+id);
+			changeLocation();
 		});
 		timelineEvents[0] = [];
 		lastUpdateTime = 0;
