@@ -131,6 +131,7 @@ exports.getStream = function(table, args, callback) {
 			query += "`modified` > "+parseInt(args.modified);
 		else
 			query += "`time` > "+parseInt(args.since);
+		conditionExists = true;
 
 	}
 	if (args.starttime)
