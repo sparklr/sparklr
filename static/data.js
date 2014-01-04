@@ -1,5 +1,16 @@
-var ajaxCooldown = [];
+/* Sparklr
+ * data.js: Code related to AJAX and socket connections
+ *
+ * Shared with mobile
+ */
+
+// list of requests by URL
+var ajaxCooldown = {};
+
+// streams... TODO
 var subscribedStreams = [];
+
+// websocket object
 var ws;
 
 function ajaxGet(url, data, callback) {
@@ -62,6 +73,7 @@ function uploadingProgress(evt) {
 		e.width = ((evt.loaded / evt.total) * 100) + "%";
 	}
 }
+
 function hideProgress() {
 	var e = _g("loading").style;
 	e.width = 0;
@@ -156,7 +168,6 @@ function socketMessage(e) {
 	if (!ws.p18Connected) {
 		if (e.data == "c:")
 			ws.p18Connected = true;
-		broadcastSubscriptions();
 		return;
 	}
 	var data = JSON.parse(e.data);
@@ -181,5 +192,20 @@ function socketMessage(e) {
 function broadcastSubscriptions() {
 	ws.send("s" + subscribedStreams.join(","));
 	console.log("broad");
+}
+
+function uploadImage(e, url, callback) {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+			callback(xhr);
+			hideProgress();
+		}
+	}
+	xhr.upload.onprogress = uploadingProgress;
+	xhr.open("POST", url);
+	xhr.setRequestHeader("X-X", AUTHKEY);
+	xhr.setRequestHeader("X-DATA", JSON.stringify({ img: 1 }));
+	xhr.send(e.target.result);
 }
 

@@ -474,7 +474,8 @@ function newPosts(num) {
 
 function postToTimeline() {
 	var vars = {
-		body: _g("composer_composer").value
+		body: _g("composer_composer").value,
+		network: subscribedStream
 	};
 
 	setTimeout('_g("composer_composer").value = "";expandTextarea({ target: _g("composer_composer") });',10);

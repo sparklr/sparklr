@@ -22,7 +22,7 @@ var loadTemplates = function() {
 		frontendTemplate = html + "<body>";
 	});
 
-	fs.readFile("../../p18mobile/templates/headers.html", function(err, data) {
+	fs.readFile("../mobile/templates/headers.html", function(err, data) {
 		eval(templates.parse(data.toString()));
 		mobileFrontendTemplate = html + "<body>";
 	});

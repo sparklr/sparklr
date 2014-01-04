@@ -227,7 +227,7 @@ div.contentwrapper {
 #sidebar {
     color: #fff;
     font-size: 15px;
-    margin-top: 4px;
+    margin-top: 14px;
 }
 #sidebar > a, #sidebar div > a, #networks a {
     color: #fff;
@@ -241,8 +241,7 @@ div.contentwrapper {
 #sidebar > a:hover, #sidebar div > a:hover, #networks a:hover {
 	background-color: #6a5f80;
 }
-#networks a.active {
-	margin-left: -5px;
+a.network.active {
     background: rgba(0,0,0,0.35);
 }
 #networks a.highlight {
@@ -470,7 +469,7 @@ span.header {
 div.grid {
 	-webkit-column-count: auto;
 	-webkit-column-width: 435px;
-	-webkit-column-gap: 0px;
+	-webkit-column-gap: 5px;
 	overflow:hidden;
 }
 
