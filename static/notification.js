@@ -11,6 +11,7 @@ function addNotification(notification) {
 	if (currentNotifications[notification.id]) {
 		return; //duplicate
 	}
+	addChatMessage(notification.from, curUser, notification.body, notification.time, false);
 	currentNotifications[notification.id] = notification;
 
 	handleNotifications();
@@ -89,7 +90,6 @@ function getNotificationBody(notification) {
 			action = "javascript:showEvent('" + notification.action + "')"; 
 		break;
 		case 3: //chat
-			setUserAttention(notification.from, true);
 			updatePageTitle();
 			body = "says: <br>" + notification.body;
 			action = "javascript:chatWith('" + notification.from + "')"; 
@@ -148,7 +148,6 @@ function handleNotifications() {
 				// TODO: abstract
 				var g = _g("window_"+activeWindows[i]);
 				if (g.scrollHeight - g.scrollTop < 500) {
-					setUserAttention(currentNotifications[id].from, false);
 					dismissNotification(id);				
 					setNewInbox(false);
 					continue notificationLoop;
@@ -157,7 +156,6 @@ function handleNotifications() {
 		}
 		if (currentNotifications[id].type == N_CHAT) {
 			if (s[1] == "chat" && s[2] == currentNotifications[id].from) {
-				setUserAttention(currentNotifications[id].from, false);
 				dismissNotification(id);				
 				setNewInbox(false);
 			}
