@@ -1202,8 +1202,8 @@ div.windowcontent {
 
 div.windowcontent .chatcomposer {
 	position: fixed;
-	padding: 5px 0px;
-	width: 340px;
+	padding: 5px 0 5px 5px;
+	width: 345px;
 	bottom: 1px;
 	background:#fff;
 }
@@ -1236,6 +1236,7 @@ div.window div.scrollUpContent {
 	padding-bottom: 50px;
 	overflow: none;
 	height: inherit;
+	padding-top: 10px;
 }
 
 div.popup_post {
