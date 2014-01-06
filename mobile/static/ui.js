@@ -18,3 +18,7 @@ function hideDropdown() {
 	_g('dropdowncover').style.display = 'none';
 }
 
+function showConfirm(caption, message, action) {
+	if (confirm(message))
+		action();
+}
