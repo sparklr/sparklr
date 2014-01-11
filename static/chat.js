@@ -173,9 +173,13 @@ function setNewInbox(value) {
 }
 
 function chatWith(id) {
-	var pid = addWindow("m" + id + "," + curUser, function() {
-		// closed
-		// we're always subscribed to notifications sent to the user
-	});
-	renderTemplate("chat/" + id, pid)
+	if (MOBILE) {
+		location.href = "#/chat/" + id;
+	} else {
+		var pid = addWindow("m" + id + "," + curUser, function() {
+			// closed
+			// we're always subscribed to notifications sent to the user
+		});
+		renderTemplate("chat/" + id, pid)
+	}
 }
