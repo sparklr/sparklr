@@ -1,5 +1,5 @@
 /* Sparklr
- * ui.js: Mobile UI functionality only
+ * Mobile UI functionality only
  *
  */
 

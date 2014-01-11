@@ -96,7 +96,6 @@ function addTimelineArray(arr, timeline, append) {
 function showEvent(id,args) {
 	if (typeof(args) === "undefined")
 		var args = "";
-
 	location.href = "#/post/" + id + "/" + args;
 }
 
@@ -175,7 +174,11 @@ function publishRepost(e) {
 
 function showImage(img) {
 	var imgpath = imgUrl(img,true);
-	showPopup("<img src='"+imgpath+"' onload='this.style.opacity=1'>", "lightbox");
+	if (MOBILE) {
+		window.open(imgpath);
+	} else {
+		showPopup("<img src='"+imgpath+"' onload='this.style.opacity=1'>", "lightbox");
+	}
 }
 
 function editPostStart(e) {

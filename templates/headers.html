@@ -2,16 +2,17 @@
 <html>
 <head>
 	<title>Sparklr</title>
-	<meta name="viewport" content="target-densitydpi=device-dpi, width=500, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 	<meta charset='utf-8'>
-	<script>
-		var STATICHOST = "{global.staticHost}";
-		var COMMONHOST = "{global.commonHost}";
-	</script>
 	<% if (global.liveSite) %>
 		<link rel='stylesheet' href='{global.commonHost}/app.css?{buildData.cssHash_frontend}'>
 		<script data-live src='{global.commonHost}/app.js?{buildData.jsHash_frontend}'></script>
 	<% else %>
+		<script>
+			var STATICHOST = "{global.staticHost}";
+			var COMMONHOST = "{global.commonHost}";
+			var POLL_INTERVAL = 1500;
+			var MOBILE = false;
+		</script>
 		<script src='{global.commonHost}/templates.js'></script>
 		<script src='{global.commonHost}/page.js'></script>
 		<script src='{global.commonHost}/data.js'></script>
@@ -28,12 +29,7 @@
 		<script src='http://127.0.0.1:9001/socket.js' async></script>
 		<link rel='stylesheet' href='{global.commonHost}/stylesheet.css'>
 	<% endelse %>
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 	<script>
-		var STATICHOST = "{global.staticHost}";
-		var COMMONHOST = "{global.commonHost}";
-		var WSHOST = "{global.wsHost}";
 		var AUTHKEY, curUser;
 		(function(i,s,o,g,r,a,m){
 		 i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

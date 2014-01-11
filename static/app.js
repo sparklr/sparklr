@@ -1,8 +1,10 @@
-// p18 main app 
-// Events, handlers, etc.
+/* Sparklr
+ * App entry point
+ * Set up events and launch the app from initial server payload
+ */
 
-// Poll server for new data 
-setInterval("pollData();", 1500);
+// Poll server for new data every X ms
+setInterval("pollData();", POLL_INTERVAL);
 
 // Event handlers 
 window.addEventListener("hashchange", function() { updatePages() });
@@ -64,15 +66,11 @@ var app = function(payload) {
 	subscribeToStream(curUser);
 
 	addTimelineArray(payload.timelineStream, 0);
-/*
-	for (var i = 0; i < joinedNetworks.length; i++) {
-		addNetwork(joinedNetworks[i]);
-	}
-	*/
+
 	for (var i = 0; i < payload.notifications.length; i++) {
 		addNotification(payload.notifications[i]);
 	}
-	//setTimeout(connectSocket,100);
+
 	setInterval(handleNotifications,1000);
 }
 
@@ -80,15 +78,17 @@ var s = document.cookie.match(/D\=([^\s|^\;]+)\;?/)[1].split(",");
 curUser = s[0];
 AUTHKEY = s[1];
 
-eval(getTemplate("frontend"));
+eval(getTemplate(((MOBILE) ? "mobilefrontend" : "frontend")));
 document.write(html);
 
-// Nasty UA matching 
-if (navigator.userAgent.match(/MSIE/i)) {
-	var ver = ua.match(/MSIE ([\d.]+)/)[1];
-	if (ver < 10) {
-		eval(getTemplate("browsercompat"));
-		showPopup(html);
+if (!(MOBILE)) {
+	// Nasty UA matching 
+	if (navigator.userAgent.match(/MSIE/i)) {
+		var ver = ua.match(/MSIE ([\d.]+)/)[1];
+		if (ver < 10) {
+			eval(getTemplate("browsercompat"));
+			showPopup(html);
+		}
 	}
 }
 

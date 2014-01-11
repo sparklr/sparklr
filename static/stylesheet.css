@@ -90,7 +90,7 @@ hr {
 	display: inline-block;
 	width: 130px;
 	height: 150px;
-	background-image: url(logo.png);
+	background-image: url(img/logo.png);
 	background-repeat:no-repeat;
 }
 
@@ -130,29 +130,29 @@ hr {
 	margin-right: 5px;
 }
 #links a.people {
-    background-image: url(icons/people.png);
+    background-image: url(img/people.png);
 }
 #links a.menu {
-    background-image: url(icons/menu.png);
+    background-image: url(img/menu.png);
 	display: none;
 }
 #links a.notifs {
-    background-image: url(icons/notifs.png);
+    background-image: url(img/notifs.png);
 }
 #links a.notifs.jiggle {
-    background-image: url(icons/notifs2.png);
+    background-image: url(img/notifs2.png);
 }
 #links a.inbox {
-    background-image: url(icons/chat.png);
+    background-image: url(img/chat.png);
 }
 #links a.inbox.jiggle {
-	background-image: url(icons/chat2.png);
+	background-image: url(img/chat2.png);
 }
 #header img {
     vertical-align: baseline;
 }
 #header #logo{
-	background-image: url(logo_sml.png);
+	background-image: url(img/logo_sml.png);
 	display: block;
 	width: 120px;
 	height: 44px;
@@ -539,15 +539,15 @@ a.tag {
 }
 
 div.delete {
-	background-image: url(icons/delete_white.png);
+	background-image: url(img/delete_white.png);
 }
 
 div.repost {
-	background-image: url(icons/repost.png);
+	background-image: url(img/repost.png);
 }
 
 div.like {
-	background-image: url(icons/like.png);
+	background-image: url(img/like.png);
 }
 
 div.like.liked {
@@ -603,7 +603,7 @@ div.rightcontrols a.delete {
     margin: 2px;
     color: #fff;
     cursor: pointer;
-	background-image: url(icons/delete.png);
+	background-image: url(img/delete.png);
 	width: 16px;
 	height: 16px;
     -webkit-transition: all 0.2s ease-in-out;
@@ -688,7 +688,7 @@ div.composercontrols {
 	bottom:10px;
 	opacity: 0;
 	-webkit-transition: all 0.5s ease;
-	background-image: url(icons/photos.png);
+	background-image: url(img/photos.png);
 	display: block;
 	width: 32px;
 	height: 32px;
@@ -1058,7 +1058,7 @@ div.popup textarea {
 }
 
 #scrolltotop{
-	background-image: url(arrow.png);
+	background-image: url(img/arrow.png);
 	width: 64px;
 	height: 64px;
 	position: fixed;
@@ -1089,10 +1089,10 @@ cite {
 }
 
 span.admin {
-	background-image: url(icons/adsta.png);
+	background-image: url(img/adsta.png);
 }
 span.mod{
-	background-image: url(icons/babysta.png);
+	background-image: url(img/babysta.png);
 }
 span.admin, span.mod{
 	width: 16px;
