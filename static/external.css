@@ -1,5 +1,5 @@
 body {
-	background: url(bg.jpg);
+	background: url(img/bg.jpg);
 	background-color: #251e25;
 	background-position: center 0;
 	font-family: 'Oxygen', sans-serif;
@@ -13,7 +13,7 @@ body {
 a { color: white; }
 
 #logo {
-	background-image: url(logo_big.png);
+	background-image: url(img/logo_big.png);
 	width: 580px;
 	height: 215px;
 	display: inline-block;
@@ -42,7 +42,7 @@ a { color: white; }
 
 @media all and (max-width: 699px) {
 	#logo {
-		background-image: url(logo_med.png);
+		background-image: url(img/logo_med.png);
 		width: 400px;
 		height: 148px;
 		display: inline-block;

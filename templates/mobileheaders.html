@@ -4,33 +4,34 @@
 	<title>Sparklr</title>
 	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 	<meta charset='utf-8'>
-	<script>
-		var STATICHOST = "{global.staticHost}";
-		var COMMONHOST = "{global.mobileHost}";
-	</script>
 	<% if (global.liveSite) %>
-		<link rel='stylesheet' href='{global.mobileHost}/mobile.css?{buildData.cssHash_mobile}'>
-		<script data-live src='{global.mobileHost}/mobile.js?{buildData.jsHash_mobile}'></script>
+		<link rel='stylesheet' href='{global.commonHost}/mobile.css?{buildData.cssHash_mobile}'>
+		<script data-live src='{global.commonHost}/mobile.js?{buildData.jsHash_mobile}'></script>
 	<% else %>
+		<script>
+			var STATICHOST = "{global.staticHost}";
+			var COMMONHOST = "{global.commonHost}";
+			var POLL_INTERVAL = 5000;
+			var MOBILE = true;
+		</script>
 		<script src='{global.commonHost}/templates.js'></script>
 		<script src='{global.commonHost}/page.js'></script>
 		<script src='{global.commonHost}/data.js'></script>
 		<script src='{global.commonHost}/timeline.js'></script>
-		<script src='{global.mobileHost}/user.js'></script>
-		<script src='{global.mobileHost}/chat.js'></script>
+		<script src='{global.commonHost}/user.js'></script>
+		<script src='{global.commonHost}/chat.js'></script>
 		<script src='{global.commonHost}/ui.js'></script>
-		<script src='{global.mobileHost}/ui.js'></script>
-		<script src='{global.mobileHost}/notification.js'></script>
-		<script src='{global.mobileHost}/profile.js'></script>
-		<script src='{global.mobileHost}/app.js'></script>
-		<script src='{global.mobileHost}/bugs.js'></script>
-		<link rel='stylesheet' href='{global.mobileHost}/stylesheet.css'>
+		<script src='{global.commonHost}/mobile/ui.js'></script>
+		<script src='{global.commonHost}/notification.js'></script>
+		<script src='{global.commonHost}/profile.js'></script>
+		<script src='{global.commonHost}/app.js'></script>
+		<script src='{global.commonHost}/bugs.js'></script>
+		<link rel='stylesheet' href='{global.commonHost}/mobile/stylesheet.css'>
 		<script src='http://192.168.1.125:9001/socket.js' async></script>
 	<% endelse %>
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 	<script>
-		var WSHOST = "{global.wsHost}";
 		var AUTHKEY, curUser;
 		(function(i,s,o,g,r,a,m){
 		 i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

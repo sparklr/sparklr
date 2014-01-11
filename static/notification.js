@@ -30,12 +30,14 @@ function addNotification(notification) {
 	n.innerHTML = "<span class='exit' onClick='dismissNotification(\"" + notification.id + "\");stopBubbling();'>x</span><img class='littleavatar' src='" + getAvatar(notification.from) + "'><b>" + getDisplayName(notification.from) + "</b> " + notification.body;
 	n.className = "fadein";
 	n.onclick = function () { location.href = notification.click; };
-
-	var parent = _g("notificationlist");
-	if (parent.children.length < 1)
-		parent.appendChild(n);
-	else
-		parent.insertBefore(n, parent.children[0]);
+	
+	if (!(MOBILE)) {
+		var parent = _g("notificationlist");
+		if (parent.children.length < 1)
+			parent.appendChild(n);
+		else
+			parent.insertBefore(n, parent.children[0]);
+	}
 
 	notificationCount++;
 
@@ -136,26 +138,28 @@ function handleNotifications() {
 			dismissNotification(id);
 			continue;
 		}
-		for (i in activeWindows) {
-			if (activeWindows[i] == "c" + currentNotifications[id].action) {
-				var g = _g("window_"+activeWindows[i]);
-				if (g.scrollHeight - g.scrollTop < 500) {
-					dismissNotification(id);
-					continue notificationLoop;
+		if (!(MOBILE)) {
+			for (i in activeWindows) {
+				if (activeWindows[i] == "c" + currentNotifications[id].action) {
+					var g = _g("window_"+activeWindows[i]);
+					if (g.scrollHeight - g.scrollTop < 500) {
+						dismissNotification(id);
+						continue notificationLoop;
+					}
 				}
-			}
-			if (currentNotifications[id].type == N_CHAT && activeWindows[i] == "m" + currentNotifications[id].from + "," + curUser) {
-				// TODO: abstract
-				var g = _g("window_"+activeWindows[i]);
-				if (g.scrollHeight - g.scrollTop < 500) {
-					dismissNotification(id);				
-					setNewInbox(false);
-					continue notificationLoop;
+				if (currentNotifications[id].type == N_CHAT && activeWindows[i] == "m" + currentNotifications[id].from + "," + curUser) {
+					// TODO: abstract
+					var g = _g("window_"+activeWindows[i]);
+					if (g.scrollHeight - g.scrollTop < 500) {
+						dismissNotification(id);				
+						setNewInbox(false);
+						continue notificationLoop;
+					}
 				}
 			}
 		}
 		if (currentNotifications[id].type == N_CHAT) {
-			if (s[1] == "chat" && s[2] == currentNotifications[id].from) {
+			if (s[1] == "chat" && +s[2] == currentNotifications[id].from) {
 				dismissNotification(id);				
 				setNewInbox(false);
 			}
