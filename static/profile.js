@@ -1,30 +1,18 @@
-//profile pages and such
-var curRenderedBg = 0;
+/* Sparklr
+ * Profile pages, editing profiles, etc.
+ */
+
 function updateHeader(user, id) {
 	var h = _g("profileheader");
 	h.style.backgroundImage = 'url(' + imgUrl('b' + user + '.jpg?' + id,true) + ')';
 }
 
-function updateBackground(user, id) {
-	if (curRenderedBg == user + "_" + id) return;
-
-	document.body.style.backgroundImage = id ? 'url(' + imgUrl('b' + user + '.jpg?' + id,true) + ')' : "";
-	if(id < 0){
-		document.body.style.backgroundRepeat = 'repeat';
-		document.body.style.backgroundSize = '';
-	}
-	else
-		document.body.style.backgroundSize = 'cover';
-
-	if (user == curUser)
-		curBackground = id;
-	curRenderedBg = user + "_" + id;
-}
-
 function editProfile() {
+	var bio = _g("userBio");
+
 	if (_g("editBtn").innerHTML == "Edit") {
 		_g("userDisplayName").setAttribute("contenteditable", true);
-		var bio = _g("userBio");
+
 		if (bio.textContent.length < 2)
 			bio.innerHTML = "About me:&nbsp;";
 		bio.setAttribute("contenteditable", true);
@@ -33,11 +21,11 @@ function editProfile() {
 		_g("editBtn").innerHTML = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
-		var bio = _g("userBio");
-		if (bio.textContent.substring(0,9) == "About me:") {
+
+		if (bio.textContent.substring(0,9) == "About me:")
 			bio.textContent = bio.textContent.substring(9);
-		}
 		bio.setAttribute("contenteditable", false);
+
 		_g("editContainer").style.display = "none";
 	
 		var data = { 
@@ -45,8 +33,7 @@ function editProfile() {
 			"bio": _g("userBio").textContent
 		};
 
-		ajaxGet("work/settings", data, function() {
-		});
+		ajax("work/settings", data);
 	
 		_g("editBtn").innerHTML = "Edit";
 	}
@@ -56,7 +43,7 @@ function avatarUploadCallback(e) {
 	_g("useravatar").className += " pulse";
 	uploadImage(e, "work/avatar", function(xhr) {
 		var avatarid = xhr.responseText;
-		updateAvatar(curUser, avatarid);
+		updateAvatar(CURUSER, avatarid);
 		_g("useravatar").className = "avatar";
 	});
 }
@@ -65,30 +52,8 @@ function headerUploadCallback(e) {
 	_g("profileheader").className += " pulse";
 	uploadImage(e, "work/header", function(xhr) {
 		var id = xhr.responseText;
-		updateHeader(curUser, id, true);
+		updateHeader(CURUSER, id, true);
 		_g("profileheader").className = "profileheader";
-	});
-}
-
-function backgroundUploadCallback(e) {
-	uploadImage(e, "work/background", function(xhr) {
-		updateBackground(curUser, xhr.responseText);
-		_g("removeBackground").style.display = "inline-block";
-	});
-}
-
-function removeBackground() {
-	ajaxGet("work/background", { remove: true }, function() {
-		_g("removeBackground").style.display = "none";
-		updateBackground(curUser,0);
-		curBackground = 0;
-	});
-}
-
-function backgroundStyle(value){
-	ajaxGet("work/background", { style: value }, function(data) {
-		updateBackground(curUser,data);
-		console.log(data);
 	});
 }
 
@@ -109,12 +74,13 @@ function addUserToList_Keydown(e, list) {
 	}
 }
 
+// TODO
 function addUserToList(list,user) {
 	_g("blacklist").innerHTML += "<div style='min-height:50px;margin: 5px;'><img src='" + getAvatar(user) + "' class='avatar'> <b>" + getDisplayName(user) + "</b><div style='float:right;'><a href='javascript:addUserToServerList(" + list + ", " + user + ", 0);'>Remove</a></div></div>";
 }
 
 function addUserToServerList(type, id, action) {
-	ajaxGet("work/list", { type: type, action: action, user: id }, function() {
+	ajax("work/list", { type: type, action: action, user: id }, function() {
 		  if (!action) {
 				HIDDEN_USERS.splice(HIDDEN_USERS.indexOf(id),1);
 				location.href = location.href + "/#";
@@ -124,3 +90,92 @@ function addUserToServerList(type, id, action) {
 	});
 }
 
+function checkPasswords(password1,password2) {
+	var result = _g("settings_result");
+	var button = _g("savesettings");
+
+	if (password1 != password2) {
+		result.innerHTML = "The passwords do not match";
+		result.className = "error";		
+		button.disabled = true;
+	} else {
+		result.innerHTML = "";
+		button.disabled = false;
+	}
+}
+
+function checkUsername(username) {
+	var alphanumeric = /^[A-Za-z0-9]+$/g;
+
+	if (!alphanumeric.test(username))
+		return checkUsernameCallback(2);
+	if (username == USERHANDLES[CURUSER])
+		return checkUsernameCallback(1);
+
+	ajax("work/checkusername/" + username,null,checkUsernameCallback);
+}
+
+function checkUsernameCallback(result) {
+	var message = "";
+	switch(result) {
+		case true:
+			message = "Awh, somebody already took that :c";
+		break;
+		case 2:
+			message = "Usernames must be letters and numbers only";
+		break;
+	}
+	_g("username_callback").innerHTML = message;
+}
+
+function updateAccountSettings() {
+	var s = location.hash.split("/");
+	var form = _g("form_settings");
+
+	var obj;
+	var type;
+
+	switch (s[2]) {
+		case "password":
+			obj = { password: form.currentpassword.value, newpassword: form.password1.value }		
+			type = "password";
+			break;
+		case "blacklist":
+			type = "blacklist";
+			obj = { };
+			break;
+		case "account":
+			obj = { password: form.delete.value }
+			type = "delete";
+			break;
+		default:
+			obj = { username: form.username.value, email: form.email.value, displayname: form.displayname.value }
+			type = "settings";
+			break;
+	}
+	ajax("work/" + type, obj, function(result) {
+			if (result.authkey) {
+				AUTHKEY = result.authkey;
+				document.cookie = "D=" + CURUSER + "," + AUTHKEY;
+			}
+			if (result.deleted) {
+				location.href="./";
+			}
+			updateSettingsCallback(result.result, result.message);
+		});
+
+	_g("savesettings").value = "Saving...";
+}
+
+function updateSettingsCallback(result, message) {
+	var r_ele = _g("settings_result");
+	r_ele.innerHTML = message;
+	r_ele.className = result == true ? "ok" : "error";
+
+	if (result) {
+		_g("savesettings").value = "Saved";
+		setTimeout(function() {
+			_g("savesettings").value = "Save Settings";
+		}, 4000);
+	}
+}

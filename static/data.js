@@ -1,29 +1,27 @@
 /* Sparklr
  * data.js: Code related to AJAX and socket connections
- *
- * Shared with mobile
  */
 
 // list of requests by URL
 var ajaxCooldown = {};
 
-// streams... TODO
-var subscribedStreams = [];
+// The current stream (timeline, comment, etc) we are polling
+var subscribedStream;
 
-// websocket object
-var ws;
 
-function ajaxGet(url, data, callback) {
+function ajax(url, data, callback) {
 	if (ajaxCooldown[url]) {
 		return; //already a pending request for that url
 	}
 
+	var isPosting = (typeof(data) != "undefined" && data);
+
 	var xhr = new XMLHttpRequest();
-	xhr.upload.onprogress = uploadingProgress;
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
-			hideProgress();
+			if (isPosting)
+				hideProgress();
 			ajaxCooldown[url] = 0;
 
 			var data = xhr.responseText;
@@ -44,14 +42,13 @@ function ajaxGet(url, data, callback) {
 		}
 	}
 
-	var isPosting = (typeof(data) != "undefined" && data);
-
 	xhr.open((isPosting ? "POST" : "GET"), url);
 	xhr.setRequestHeader("X-X", AUTHKEY);
 
 	var postData;
 
 	if (isPosting) {
+		xhr.upload.onprogress = uploadingProgress;
 		xhr.setRequestHeader("Content-type", "application/json");
 
 		if (data.postData) {
@@ -80,10 +77,27 @@ function hideProgress() {
 	e.opacity = 0;
 }
 
-function pollData() {
-	if (ws != null && ws.p18Connected)
-		return;
+function streamUrl(since,start) {
+	var query = "/";
+	var part = "stream/";
 
+	if (currentPageType == "TAG")
+		part = "tag/";
+	if (currentPageType == "MENTIONS")
+		part = "mentions/";
+
+	query += part + subscribedStream + "?since=" + since;
+
+	if (start)
+		query += "&starttime=" + start;
+
+	if (currentPageType == "PHOTO")
+		query += "&photo=1";
+
+	return query;
+}
+
+function pollData() {
 	var query;
 	var callback;
 
@@ -95,34 +109,27 @@ function pollData() {
 			query = streamUrl(getLastStreamTime(subscribedStream));
 			callback = function(data,xhr) {
 				if (query != streamUrl(getLastStreamTime(subscribedStream))) {
+					// TODO
 					console.log("query does not match");
-//return;
 				}
-
 				var items = data.data || data;
 
 				addTimelineArray(items,subscribedStream);
 				for (var i = items.length - 1; i >= 0; i--) {
 					addTimelineEvent(items[i], 0);
 				}
-				var t = Date.parse(xhr.getResponseHeader("date")) / 1000;
-				lastUpdateTime = t;
 			}
 		break;
 		case "POST":
 			query = "/comments/" + subscribedStream + "?since=" + getLastCommentTime();
 			callback = addComments;
 		break;
-		case "CHAT":
-			query = "/chat/" + location.hash.split("/")[2] + "?since=" + getLastChatTime();
-			callback = addChatMessages;
-			break;
 		default:
 			query = "/?";
 			break;
 	}
 
-	ajaxGet("beacon" + query + "&n=" + lastNotificationTime,null, function(data,xhr) {
+	ajax("beacon" + query + "&n=" + lastNotificationTime, null, function(data,xhr) {
 		if (data.notifications) {
 		 	for (var i=0;i<data.notifications.length;i++) {
 				addNotification(data.notifications[i]);
@@ -130,68 +137,6 @@ function pollData() {
 		}
 		callback(data,xhr);
 	});
-}
-
-function subscribeToStream(stream) {
-	if (subscribedStreams.indexOf(stream) == -1)
-		subscribedStreams.push(stream);
-	try {
-		ws.send("S" + stream);
-	} catch(e) {
-	}
-}
-
-function unsubscribeFromStream(stream) {
-	if (joinedNetworks.indexOf(stream) !== -1) return;
-
-	if ((i = subscribedStreams.indexOf(stream)) !== -1)
-		subscribedStreams.splice(i,1);
-	try {
-		ws.send("U" + stream);
-	} catch(e) {
-	}
-}
-
-function connectSocket() {
-	ws = new WebSocket(WSHOST)
-	ws.onopen = function(e) {
-		ws.send(curUser + "," + AUTHKEY);	
-	};
-	ws.onmessage = socketMessage;
-	ws.onclose = ws.onerror = function() {
-		setTimeout(connectSocket, 1000);
-	}
-	ws.p18Connected = false;
-}
-
-function socketMessage(e) {
-	if (!ws.p18Connected) {
-		if (e.data == "c:")
-			ws.p18Connected = true;
-		return;
-	}
-	var data = JSON.parse(e.data);
-	console.log(data);
-	switch (data.t) {
-		case 0: // add comment
-			renderComment(data,true);
-		break;
-		case 1: // chat
-			addChatMessage(data.from, data.to, data.message, data.time, false);
-		break;
-		case 2:
-			if (subscribedStream == data.network || subscribedStream == data.from)
-				addTimelineEvent(data,0);
-		break;
-		case 3: // notification
-			addNotification(data);
-		break;
-	}
-}
-
-function broadcastSubscriptions() {
-	ws.send("s" + subscribedStreams.join(","));
-	console.log("broad");
 }
 
 function uploadImage(e, url, callback) {

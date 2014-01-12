@@ -1,9 +1,15 @@
+/* Sparklr
+ * Handles user objects, names, avatars, handles
+ */
+
 var DISPLAYNAMES = [];
 var USERHANDLES = [];
 var AVATAR_IDS = [];
 var HIDDEN_USERS = [];
 var handlesToFetch = [];
+
 var fetchTaskAsync;
+
 var CHARMOD = '\u273B';
 var CHARADMIN = '\u273C';
 
@@ -21,7 +27,7 @@ function getDisplayName(id) {
 function processDisplayName(name){
 	name = name.replace(CHARMOD,"<span class='mod' title='Community Moderator'></span>");
 	name = name.replace(CHARADMIN,"<span class='admin' title='Admin'></span>");
-	return(name);
+	return name;
 }
 
 function getUserHandle(id) {
@@ -42,7 +48,7 @@ function fetchUserHandle(id) {
 }
 
 function pullHandlesFromServer() {
-	ajaxGet("work/username/" + handlesToFetch.join(","), null, pullHandlesFromServerCallback);
+	ajax("work/username/" + handlesToFetch.join(","), null, pullHandlesFromServerCallback);
 	handlesToFetch = [];
 }
 
@@ -68,34 +74,31 @@ function pullHandlesFromServerCallback(handles) {
 	}
 }
 
-function chatWith(id) {
-	location.href = "#/chat/" + id;
-}
-
 function follow(id,redir) {
-	ajaxGet("work/follow/"+id, null, function() { if (!redir) location.href += "/#"; });	
-	lastUpdateTime = 0;
+	ajax("work/follow/"+id, null, function() { if (!redir) location.href += "/#"; });	
 }
 
 function unfollow(id) {
-	ajaxGet("work/unfollow/"+id, null, function() { location.href += "/#"; });
+	ajax("work/unfollow/"+id, null, function() { location.href += "/#"; });
 }
-
-//Current user actions
 
 function updateAvatar(user, avatarid) {
 	var elements = document.getElementsByTagName("img");
 	for (var i = 0; i < elements.length; i++) {
-		if (elements[i].src.indexOf(getAvatar(user,true)) != -1) {
-			elements[i].src = getAvatar(user,true) + "?" + avatarid;
-		}
+		var small = getAvatar(user, true);
+		var big = imgUrl(user + ".jpg", true);
+
+		if (elements[i].src.indexOf(small) != -1)
+			elements[i].src = small + "?" + avatarid;
+		if (elements[i].src.indexOf(big) != -1)
+			elements[i].src = big + "?" + avatarid;
 	}
 	AVATAR_IDS[user] = avatarid;
 }
 
 function signOff() {
 	showConfirm("Sign off", "Are you sure you want to sign off?", function() {
-		ajaxGet("work/signoff", null, function() { location.href='/'; });
+		ajax("work/signoff", null, function() { location.href='/'; });
 	});
 }
 
@@ -104,7 +107,7 @@ function inviteFriend() {
 }
 
 function inviteUser(to,cb) {
-	ajaxGet("work/sendinvite/" + to, null, function(result) {
+	ajax("work/sendinvite/" + to, null, function(result) {
 		if (result === true) {
 			_g("inviteField").style.boxShadow = "none";
 			_g("inviteField").value = "";
@@ -113,95 +116,6 @@ function inviteUser(to,cb) {
 		} else
 			_g("inviteField").style.boxShadow = "0px 0px 15px #ff0000";
 	});
-}
-
-function checkPasswords(password1,password2) {
-	var result = _g("settings_result");
-	var button = _g("savesettings");
-
-	if (password1 != password2) {
-		result.innerHTML = "The passwords do not match";
-		result.className = "error";		
-		button.disabled = true;
-	} else {
-		result.innerHTML = "";
-		button.disabled = false;
-	}
-}
-
-function checkUsername(username) {
-	var alphanumeric = /^[A-Za-z0-9]+$/g;
-
-	if (!alphanumeric.test(username))
-		return checkUsernameCallback(2);
-	if (username == USERHANDLES[curUser])
-		return checkUsernameCallback(1);
-
-	ajaxGet("work/checkusername/" + username,null,checkUsernameCallback);
-}
-
-function checkUsernameCallback(result) {
-	var message = "";
-	switch(result) {
-		case true:
-			message = "Awh, somebody already took that :c";
-		break;
-		case 2:
-			message = "Usernames must be letters and numbers only";
-		break;
-	}
-	_g("username_callback").innerHTML = message;
-}
-
-function updateAccountSettings() {
-	var s = location.hash.split("/");
-	var form = _g("form_settings");
-
-	var obj;
-	var type;
-
-	switch (s[2]) {
-		case "password":
-			obj = { password: form.currentpassword.value, newpassword: form.password1.value }		
-			type = "password";
-			break;
-		case "blacklist":
-			type = "blacklist";
-			obj = { };
-			break;
-		case "account":
-			obj = { password: form.delete.value }
-			type = "delete";
-			break;
-		default:
-			obj = { username: form.username.value, email: form.email.value, displayname: form.displayname.value }
-			type = "settings";
-			break;
-	}
-	ajaxGet("work/" + type, obj, function(result) {
-			if (result.authkey) {
-				AUTHKEY = result.authkey;
-				document.cookie = "D=" + curUser + "," + AUTHKEY;
-			}
-			if (result.deleted) {
-				location.href="./";
-			}
-			updateSettingsCallback(result.result, result.message);
-		});
-
-	_g("savesettings").value = "Saving...";
-}
-function updateSettingsCallback(result, message) {
-	var r_ele = _g("settings_result");
-	r_ele.innerHTML = message;
-	r_ele.className = result == true ? "ok" : "error";
-
-	if (result) {
-		_g("savesettings").value = "Saved";
-		setTimeout(function() {
-			_g("savesettings").value = "Save Settings";
-		}, 4000);
-	}
 }
 
 function getUserSuggestions(input) {
@@ -215,7 +129,8 @@ function getUserSuggestions(input) {
 }
 
 function meetSomeoneRandom() {
-	ajaxGet("work/random", null, function(data) {
+	ajax("work/random", null, function(data) {
 		location.href='#/user/' + data;
 	});
 }
+

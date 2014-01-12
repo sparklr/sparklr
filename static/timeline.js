@@ -1,13 +1,13 @@
+/* Sparklr
+ * Timeline
+ */
+
+// Store the events on the stream. TODO: how much is this really used?
 var timelineEvents = [[]];
-var timelineTop = 0;
-var subscribedStream;
-var currentComments = [];
+
 var imgAttachments = null;
-var lastUpdateTime = Math.floor((new Date).getTime() / 1000);
-var LIKE_CHAR = "\u261D";
 
 var hiddenPostList = [];
-var joinedNetworks = [];
 
 var missingPosts = 0;
 
@@ -18,7 +18,7 @@ var oldestPost = Number.MAX_VALUE;
 function addTimelineEvent(item,append) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
-	if (_g("event_" + item.id)) {
+	if (_g("post_" + item.id)) {
 		if (item.commentcount) {
 			if (item.delta)
 				updateCommentCount(item.id, commentCounts[item.id] + item.commentcount);
@@ -42,11 +42,11 @@ function addTimelineEvent(item,append) {
 	var ev = document.createElement("div");
 
 	ev.className = "timelineitem fadein";
-	ev.id = "event_" + item.id;
+	ev.id = "post_" + item.id;
 	ev.onclick = function(e) { 
 		if (!e) e = window.event;
 		if (!e.target.onclick || e.target == ev)
-			showEvent(item.id);
+			showPost(item.id);
 	}
 
 	item = processPostMeta(item);
@@ -72,8 +72,6 @@ function addTimelineEvent(item,append) {
 		item.commentcount = 0;
 	}
 
-	if (item.time > lastUpdateTime)
-		lastUpdateTime = item.time;
 	if (item.time < oldestPost)
 		oldestPost = item.time;
 }
@@ -93,45 +91,6 @@ function addTimelineArray(arr, timeline, append) {
 	}
 }
 
-function showEvent(id,args) {
-	if (typeof(args) === "undefined")
-		var args = "";
-	location.href = "#/post/" + id + "/" + args;
-}
-
-function processPostMeta(data) {
-	if (data.type == 1) {
-		data.img = data.meta.split(",")[0];
-		if (data.meta.indexOf(",") != -1) {
-			try {
-				data.tags = JSON.parse(data.meta.substring(data.meta.indexOf(",") + 1));
-			} catch (er) { }
-		}
-	}
-
-	var message = processMedia(escapeHTML(data.message));
-	var original = "";
-
-	console.log(message);
-
-	if (data.via) {
-		var last = "";
-		var laststr = "";
-		var lineexp = /\[([\d]+)\]([^$\[]*)/g; //line starts with [ID]
-		message = message.replace(lineexp, function(match, num, text) {
-			original = "<blockquote>" + original + "</blockquote>" + last;
-			last = "<img src='" + getAvatar(num) + "' class='littleavatar'><a href='#/user/" + num + "'>" + getDisplayName(num) + "</a>: " + text + "";
-			laststr = text;
-			return "";
-		});
-		message += laststr;
-	}
-
-	data.formattedMessage = message;
-	data.originalMessage = "<blockquote>" + original + "</blockquote>";
-
-	return data;
-}
 function renderTags(item) {
 	if (!item.tags) return;
 
@@ -149,234 +108,12 @@ function renderTags(item) {
 	post.innerHTML += html;
 }
 
-function repost(id) {
-	_g("responseholder_"+id).style.display = "none";
-	_g("reblogholder_"+id).style.display = "block";
-	_g("composer_r"+id).focus();
-}
-
-function publishRepost(e) {
-	var id = e.target.getAttribute('data-id').substring(1);
-	var vars = {
-		id: id,
-		reply: _g("composer_r"+id).value
-	}
-
-	if (imgAttachments) {
-		vars.postData = imgAttachments.target.result;
-		vars.img = 2;
-		_g("attachmentr"+id).style.display = "none";
-	}
-
-	ajaxGet("work/repost", vars);
-	changeLocation();
-}
-
-function showImage(img) {
-	var imgpath = imgUrl(img,true);
-	if (MOBILE) {
-		window.open(imgpath);
-	} else {
-		showPopup("<img src='"+imgpath+"' onload='this.style.opacity=1'>", "lightbox");
-	}
-}
-
-function editPostStart(e) {
-	e = e || window.event;
-	if (e.target.getAttribute('contenteditable') == 'true') return;
-
-	e.target.setAttribute('contenteditable', true);
-}
-
-function editPost(e) {
-	console.log('saving');
-	e = e || window.event;
-	ajaxGet("work/editpost", { id: e.target.getAttribute('data-id'), body: htmlToPost(e.target.innerHTML) }, function() {
-		e.target.innerHTML = processPostMeta({ message: htmlToPost(e.target.innerHTML), from: curUser }).formattedMessage;
-	});
-	e.target.setAttribute('data-message', e.target.textContent);
-	e.target.setAttribute('contenteditable', false);
-}
-function editComment(e) {
-	e = e || window.event;
-
-	ajaxGet("work/editcomment", { id: e.target.getAttribute("data-id"), body: e.target.textContent }, function() {
-	});
-}
-
-function deletePost(id) {
-	showConfirm("Delete post", "Are you sure you want to delete this post?", function () {
-		ajaxGet("work/delete/post/" + id, null, function() {
-			removeDomElement('event_'+id);
-			changeLocation();
-		});
-		timelineEvents[0] = [];
-		lastUpdateTime = 0;
-	});
-}
-
-function deleteComment(id,postid) {
-	showConfirm("Delete comment", "Are you sure you want to delete this comment?", function () {
-		ajaxGet("work/delete/comment/"+ id, null, function() {
-			location.href = window.location + "#";
-		});
-	});
-}
-
-function hidePost(id,from) {
-	showConfirm("Hide post", "Are you sure you want to hide this post?", function () {
-		location.href = "#";
-		showBanner("Post hidden. If you continue to have issues with this user, you may <a href='javascript:addUserToServerList(0," + from + ",1);'>blacklist him/her</a>.", "bannerhidden", 5000);
-
-		hiddenPostList.push(id);
-		var g = _g("event_" + id);
-		if (g)
-			g.style.display = "none";
-		timelineEvents[0] = [];
-		lastUpdateTime = 0;
-	});
-}
-
-function renderComment(comment,scroll) {
-	if (comment.deleted) {
-		removeDomElement('comment_' + comment.id);
-		return;
-	}
-
-	var commentlist = _g("comments_" + comment.postid);
-
-	var e = document.createElement("div");
-	e.id = 'comment_' + comment.id;
-	e.className = "comment";
-
-	comment.like = comment.message == LIKE_CHAR;	
-
-	if (comment.like) {
-		var likeid = "like_" + comment.postid + "_" + comment.from;
-
-		if (_g(likeid))	return;
-
-		e.id = likeid;
-
-		if (comment.from == curUser) 
-			_g("likebtn_"+comment.postid).className += " liked";
-	}
-	
-	eval(getTemplate("comment"));
-	
-	e.innerHTML += html;
-	commentlist.appendChild(e);
-
-	if (scroll) {
-		var g = _g("window_c"+comment.postid);
-		if (g.scrollHeight - g.scrollTop < 600)
-			g.scrollTop = 0xFFFFFF;
-	}
-}
-
-function getLastCommentTime() {
-	if (currentComments.length == 0)
-		return 0;
-	return currentComments[currentComments.length - 1].time;
-}
-
-function getLastStreamTime(stream) {
-	if (!timelineEvents[stream] || timelineEvents[stream].length == 0)
-		return 0;
-	return timelineEvents[stream][timelineEvents[stream].length - 1].modified;
-}
-
-function addComments(comments) {
-	comments = comments.data || comments;
-	if (!comments.length) return;
-
-	if (scrollDistanceFromBottom() < 70)
-		setTimeout('window.scrollBy(0,0xFFFFFF);',0);
-
-	for (var i = 0; i < comments.length; i++) {
-		if (currentComments.indexOf(comments) != -1) continue; //this comment is already in the array
-		currentComments.push(comments[i]);
-		renderComment(comments[i]);
-	}
-}
-
-function updateCommentCount(id, count) {
-	var ele = _g("commentcount_" + id);
-	if (ele == null) return; 
-
-	ele.style.opacity = (count != 0) ? 1 : 0;
-	ele.innerHTML = count || "+";
-
-	commentCounts[id] = count;
-}
-
-function postComment(e) {
-	var id = e.target.getAttribute("data-id");
-	var vars = {
-		id: id,
-		comment: _g('composer_'+id).value
-	}
-
-	if (imgAttachments) {
-		vars.postData = imgAttachments.target.result;
-		vars.img = 2;
-		_g("attachment"+id).style.display = "none";
-	}
-
-	setTimeout(function() {
-		_g('composer_'+id).value="";
-		expandTextarea(e);
-	},10);
-
-	if (!vars.comment && !vars.postData) return;
-
-	ajaxGet("work/comment", vars, function() {
-		imgAttachments = null;
-		pollData();
-	});
-
-}
-
-function likeEvent(id, to, callback) {
-	ajaxGet("work/like", { id: id, to: to }, function(result) {
-		if (result.deleted) {
-			removeDomElement('like_' + id + '_' + curUser);
-			callback.className = callback.className.replace('liked','');
-			return;
-		}
-		callback.className += " jiggle";
-
-		setTimeout(function() { callback.className = callback.className.replace(" jiggle", ""); }, 1000);
-		pollData();
-	});
-}
-
-function streamUrl(since,start) {
-	var query = "/";
-	var part = "stream/";
-
-	if (currentPageType == "TAG")
-		part = "tag/";
-	if (currentPageType == "MENTIONS")
-		part = "mentions/";
-
-	query += part + subscribedStream + "?since=" + since;
-
-	if (start)
-		query += "&starttime=" + start;
-
-	if (currentPageType == "PHOTO")
-		query += "&photo=1";
-
-	return query;
-}
-
 function fetchOlderPosts() {
 	console.log('getting some old posts');
 	if (subscribedStream == null) return;
 	var query = "work" + streamUrl(0,oldestPost);
 
-	ajaxGet(query,null,function(data) {
+	ajax(query,null,function(data) {
 		var items = data.timeline || data;
 		addTimelineArray(items,subscribedStream,true);
 		for (var i = items.length - 1; i > 0 ; i--) {
@@ -544,48 +281,3 @@ function uploadStreamImageCallback(e,id) {
 	imgAttachments = e;
 }
 
-function addNetwork(network) {
-	if (network == "" || network == "0") return;
-	_g("networks").innerHTML += "<a id='network_" + network + "' href='#/" + network + "'>/" + network + "</a>";
-	_g("dropdown_networklist").innerHTML += "<a id='d_network_" + network + "' href='#/" + network + "'>" + network + "</a>";
-}
-
-function removeNetwork(network) {
-	_g("networks").removeChild(_g("network_" + network));
-	_g("dropdown_networklist").removeChild(_g("d_network_" + network));
-}
-
-function trackNetwork() {
-	ajaxGet("work/track/" + subscribedStream, null, function() {
-		joinedNetworks.push(subscribedStream);
-		addNetwork(subscribedStream);
-		updateTrackNetwork();
-	});
-}
-
-function untrackNetwork() {
-	ajaxGet("work/untrack/" + subscribedStream, null, function() {
-		joinedNetworks.splice(joinedNetworks.indexOf(subscribedStream),1);
-		removeNetwork(subscribedStream);
-		updateTrackNetwork();
-	});
-}
-
-function updateTrackNetwork() {
-	var e = _g("trackbtn");
-	if (joinedNetworks.indexOf(subscribedStream) != -1) {
-		e.value = "Untrack";
-		e.onclick = function() { untrackNetwork(); };
-	} else {
-		e.value = "Track";
-		e.onclick = function() { trackNetwork(); };
-	}
-}
-
-function highlightNetwork(network) {
-	_g("network_" + network).className += " highlight";
-}
-
-function addBrick(html) {
-
-}

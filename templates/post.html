@@ -9,20 +9,20 @@
 	<% endif %>
 
 	<div id='post_{data.id}' class='fadein' style='padding: 7px; margin: -5px; word-wrap: break-word;'>
-		<% if (data.from == curUser || isMod) %>
+		<% if (data.from == CURUSER || ISMOD) %>
 		<div class='commentcount delete icon' onClick='deletePost("{data.id}");stopBubbling();'></div>
 		<% else %>
 		<div class='commentcount delete icon' onClick='hidePost({data.id},{data.from});stopBubbling();'></div>
 		<% endelse %>
 		<div class='commentcount repost icon' onClick='repost("{data.id}");stopBubbling();'></div>
-		<div class='commentcount like icon' id='likebtn_{data.id}' onClick='likeEvent("{data.id}","{data.from}", this);stopBubbling();'></div>
+		<div class='commentcount like icon' id='likebtn_{data.id}' onClick='likePost("{data.id}","{data.from}", this);stopBubbling();'></div>
 		<div style='display:inline-block;float:left;height:100%'>
 			<img class='avatar' src='{getAvatar(data.from)}'>
 		</div>
 		<a href='#/user/{data.from}' class='person'>{getDisplayName(data.from)}</a><br>
 		<div style='font-size: 13px;color:#999' class='time_raw' data-time='{data.time}'></div><br>
 		{data.originalMessage}
-		<span style='outline:none' data-id='{data.id}' <% if (data.from == curUser) %> onclick='editPostStart(event)' onblur='editPost(event);'<% endif %>>
+		<span style='outline:none' data-id='{data.id}' <% if (data.from == CURUSER) %> onclick='editPostStart(event)' onblur='editPost(event);'<% endif %>>
 			{data.formattedMessage}
 		</span>
 		<br>
