@@ -57,7 +57,7 @@
 	</form>
 </div>
 <script>
-	USERHANDLES[curUser] = data.username;
+	USERHANDLES[CURUSER] = data.username;
 	setTimeout(function() {
 			var blacklist = (data.blacklist || "").split(",");
 			for (i in blacklist) {

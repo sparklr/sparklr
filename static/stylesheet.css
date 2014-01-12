@@ -167,8 +167,6 @@ hr {
 	height: 120px;
 	margin: auto;
 	margin-bottom: 15px;
-	background-size: cover;
-	background-position: center;
 	cursor: pointer;
 }
 #links a img {
@@ -449,6 +447,12 @@ div.confirm {
 }
 #notificationlist div a {
 	color: #fff;
+}
+
+#notifications < div {
+	position: relative;
+	cursor: pointer;
+	min-height: 60px;
 }
 
 img { border: none }
@@ -1188,20 +1192,11 @@ div.window div.title a {
 
 div.windowcontent {
 	display: inline-block;
-	overflow: auto;
-	overflow-x: hidden;
+	overflow: hidden;
 	width: 360px;
 	height: 400px;
 	margin: 0px;
 	padding: 0px;
-}
-
-div.windowcontent .chatcomposer {
-	position: fixed;
-	padding: 5px 0px;
-	width: 340px;
-	bottom: 1px;
-	background:#fff;
 }
 
 div.window div.contentwrapper {
@@ -1221,17 +1216,17 @@ div.scrollUpContent {
 	overflow-y: auto;
 	overflow-x: hidden;
 	word-wrap: break-word;
-	height: 350px;
-	width: 100%;
+	height: 320px;
+	width: 340px;
 	margin: 0px;
 	padding: 0px;
 }
 
-div.window div.scrollUpContent {
-    display: inline-block;
-	padding-bottom: 50px;
-	overflow: none;
-	height: inherit;
+div.chatcomposer {
+	padding: 0px;
+	display: inline-block;
+	width: 340px;
+	margin-top: 5px;
 }
 
 div.popup_post {
