@@ -1,7 +1,5 @@
 /* Sparklr
  * templates.js: Very small, simple template engine
- *
- * Shared with mobile
  */
 
 // define templates, or, if compiled, it already exists
@@ -10,10 +8,10 @@ var TEMPLATES = TEMPLATES || [];
 function renderPageFromTemplate() {
 	var fragments = location.hash.split("/");
 	var renderPage = function(data) {
+		// TODO
 		if (data && data.error === true) return;
 
 		var templateData = getTemplate(fragments[1]);
-		console.log(templateData);
 		eval(templateData);
 
 		_g("content").innerHTML = html;
@@ -28,12 +26,12 @@ function renderPageFromTemplate() {
 	if (staticPages[fragments[1]])
 		renderPage();
 	else
-		ajaxGet("work/" + location.hash.substring(2), null, renderPage);
+		ajax("work/" + location.hash.substring(2), null, renderPage);
 }
 
 function renderTemplate(page,destination) {
 	var fragments = page.split("/");
-	ajaxGet("work/" + page, null, function(data) {
+	ajax("work/" + page, null, function(data) {
 		console.log(data);
 		var templateData = getTemplate(fragments[0]);
 		console.log(templateData);
@@ -42,6 +40,7 @@ function renderTemplate(page,destination) {
 	});
 }
 
+// TODO
 function getTemplate(id) {
 	if (!TEMPLATES[id]) {
 		var templatedata = "";
@@ -64,9 +63,8 @@ function getTemplate(id) {
 
 /*
  * string -> html = "string"
- * {{ expression }} to " + expression + "
- *
- *
+ * {{ expression }} -> " + expression + "
+ * <script>expression</script> -> "; (expression) html += "
  */
 function t(data) {
 	var obj = "" + data;
@@ -110,3 +108,4 @@ function t(data) {
 }
 if (typeof(exports) !== "undefined")
 	exports.t = t;
+

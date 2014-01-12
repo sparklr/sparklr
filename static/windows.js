@@ -1,3 +1,7 @@
+/* Sparklr
+ * Handle windows (little popups within the page)
+ */
+
 var activeWindows = [];
 var closeActions = {};
 
@@ -14,13 +18,6 @@ function addWindow(id,closeAction) {
 	closeActions[id] = closeAction;
 
 	_g('windowclose_'+id).onclick = closeWindow;
-	var sc = _g('window_'+id)
-	sc.onmousewheel = function(e) { 
-		if (e.wheelDelta < 0 && sc.scrollTop >= sc.scrollHeight - sc.clientHeight) 
-			e.preventDefault(); 
-		if (e.wheelDelta > 0 && sc.scrollTop == 0)
-			e.preventDefault();
-	};
 
 	positionWindows();
 
@@ -58,6 +55,6 @@ function positionWindows() {
 	for (i in activeWindows) {
 		_g("windowc_"+activeWindows[i]).style.left = x + "px";
 		x += 380;
-		console.log(i);
 	}
 }
+

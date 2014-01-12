@@ -1,16 +1,17 @@
 /* Sparklr
  * ui.js: Code related to common ui functions, such as formatting text
  * and handling the DOM
- *
- * Shared with mobile
  */
 
 var pageActive = true;
 
+var newPageToFetch = false;
+
+var doctop = 0;
+
 // Time saver
 function _g(id) { return document.getElementById(id); }
 
-// Popups
 function showPopup(content,classname) {
 	fadeOutPage();
 
@@ -67,7 +68,6 @@ function fadeOutPage() {
 	document.body.appendChild(f);
 }
 
-// TODO: desktop only
 function showConfirm(caption, message, action) {
 	var popup = document.createElement("div");
 	popup.className = "confirm fadein";
@@ -124,7 +124,7 @@ function processPost(post) {
 function processMedia(text,noImages) {
 	//TODO: matches too many URLs
 	var urlexp = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:([^\s()<>.]+[.]?)+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’]))/gi; 
-	text = text.replace(urlexp, function (match, p1, p2, p3, p4, p5) {
+	text = text.replace(urlexp, function (match) {
 		var url = match;
 
 		if (match.indexOf("http") == -1)
@@ -146,21 +146,28 @@ function processMedia(text,noImages) {
 		return html;
 	});
 
-	var mentionregex = /\B@([\w-]+)/gi;
-	text = text.replace(mentionregex, function(match, user) {
+	// mentions
+	text = text.replace(/\B@([\w-]+)/gi, function(match, user) {
 		return "<a href='#/user/" + user + "'>" + match + "</a>";
 	});
 
-	var tagregex =  /(^|\s)#([\w-]{1,40})/gi;
-	text = text.replace(tagregex, function(match, foo, tag) {
+	// tags
+	text = text.replace(/(^|\s)#([\w-]{1,40})/gi, function(match, foo, tag) {
 		return " <a href='#/tag/" + tag + "' class='tag'>" + match + "</a>";
 	});
 
-	var imgregex = /\[IMG([A-Za-z0-9\._-]+)\]/g;
-	text = text.replace(imgregex, function(match, img) {
+	// img
+	text = text.replace(/\[IMG([A-Za-z0-9\._-]+)\]/g, function(match, img) {
 		return "<img src='" + imgUrl(img) + "' style='cursor:pointer' class='inlineimage' onload='window.onload();' onClick='showImage(\"" + img + "\");'><br>";
 	});
+	
+	// emoji
+	text = text.replace(/([\ud800-\udbff])([\udc00-\udfff])/g, function(match, b1, b2) {
+		var cp = (b1.charCodeAt(0) - 0xD800) * 0x400 + (b2.charCodeAt(0) - 0xDC00) + 0x10000;
+		return "<img src='" + STATICHOST + "/../eji/" + cp.toString(16) + ".png' style='vertical-align:bottom'>";
+	});
 
+	// limit the number of newlines allowed in a post
 	var countnewlines = 0;
 	text = text.replace(/\n/g, function() {
 		countnewlines++;
@@ -170,11 +177,6 @@ function processMedia(text,noImages) {
 			return "\n";
 	});
 	
-	text = text.replace(/([\ud800-\udbff])([\udc00-\udfff])/g, function(match, b1, b2) {
-		var cp = (b1.charCodeAt(0) - 0xD800) * 0x400 + (b2.charCodeAt(0) - 0xDC00) + 0x10000;
-		return "<img src='" + STATICHOST + "/../eji/" + cp.toString(16) + ".png' style='vertical-align:bottom'>";
-	});
-
 	return text;
 }
 
@@ -220,7 +222,7 @@ function updateUI() {
 		}
 	}
 }
-setInterval("updateUI();", 10000);
+setInterval("updateUI();", 1000);
 
 // calculate how far we are from the bottom
 function scrollDistanceFromBottom() {
@@ -229,14 +231,13 @@ function scrollDistanceFromBottom() {
 }
 
 function scrollToTop() {
-	animScrollTo(document.body.scrollTop ? document.body : document.documentElement, 0, 500);
-}
- 
-function animScrollTo(element, to, duration) {
+	var element = document.body.scrollTop ? document.body : document.documentElement;
     var initial = element.scrollTop,
-        delta = to - initial,
+        delta = -initial,
         curtime = 0,
         step = 20,
+		duration = 500
+
 	animate = function() {
 		curtime += step;
 	   
@@ -307,6 +308,7 @@ function dropImage(e, callback) {
 
 	return false;
 }
+
 function loadImage(f, callback, additionalargs) {
 	var reader = new FileReader();
 	reader.onload = function(e) { 
@@ -380,7 +382,7 @@ function showSuggestionBoxBelowElement(e) {
 
 	var node = e.target;
 	var x = 0;
-	var y = 35;//(document.body.scrollTop || document.documentElement.scrollTop);
+	var y = 35;
 
 	while (node) {
 		x += node.offsetLeft;
@@ -450,3 +452,25 @@ function removeDomElement(id) {
 	}
 }
 
+function scrollHandler() {
+	doctop = document.body.scrollTop || document.documentElement.scrollTop;
+	if (scrollDistanceFromBottom() < 600) {
+		if (newPageToFetch) {
+			fetchOlderPosts();
+			newPageToFetch = false;
+		}
+	} else {
+		newPageToFetch = true;
+	}
+
+	var a = _g("scrolltotop");
+	if (!a) return; // sometimes this is null?? TODO, look into that
+	if (doctop > 1000) {
+		a.style.visibility = "visible";
+        a.style.opacity = 1;
+    }
+    else {
+        a.style.visibility = "hidden";
+        a.style.opacity = 0;
+    }
+}

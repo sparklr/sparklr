@@ -1,7 +1,17 @@
+/* Sparklr
+ * Notifications, handling of such.
+ */
+
+// Keeps track of the latest beacon time
 var lastNotificationTime = 0;
+
+// Store notifications and remove when dismissed
 var currentNotifications = [];
+
+// Keep an accurate count of the notifications, for title purposes
 var notificationCount = 0;
 
+// Notification types
 var N_REPOST = 6;
 var N_CHAT = 3;
 var N_MENTION = 2;
@@ -11,27 +21,29 @@ function addNotification(notification) {
 	if (currentNotifications[notification.id]) {
 		return; //duplicate
 	}
-	addChatMessage(notification.from, curUser, notification.body, notification.time, false);
+
 	currentNotifications[notification.id] = notification;
 
 	handleNotifications();
 
 	if (parseInt(notification.time) > lastNotificationTime)
 		lastNotificationTime = parseInt(notification.time);
-
+	
+	// if handleNotifications removed it, stop adding it
 	if (currentNotifications[notification.id] == null)
 		return;
 
-	notification = getNotificationBody(notification);
+	notification = processNotification(notification);
 
-	var n = document.createElement("div");
-
-	n.id = "notification_" + notification.id;
-	n.innerHTML = "<span class='exit' onClick='dismissNotification(\"" + notification.id + "\");stopBubbling();'>x</span><img class='littleavatar' src='" + getAvatar(notification.from) + "'><b>" + getDisplayName(notification.from) + "</b> " + notification.body;
-	n.className = "fadein";
-	n.onclick = function () { location.href = notification.click; };
-	
 	if (!(MOBILE)) {
+		eval(getTemplate("notification"));
+
+		var n = document.createElement("div");
+		n.id = "notification_" + notification.id;
+		n.innerHTML = html;
+		n.className = "fadein";
+		n.onclick = notification.click;
+	
 		var parent = _g("notificationlist");
 		if (parent.children.length < 1)
 			parent.appendChild(n);
@@ -45,23 +57,20 @@ function addNotification(notification) {
 		_g("notifs").className = "notifs jiggle";
 
 	updatePageTitle();
-	if(_g("notifications")){
+
+	if (_g("notifications"))
 		addNotificationToPage(notification);
-	}
 }
 
 function addNotificationToPage(notification){
 	if(!notification.click){
 		notification = getNotificationBody(notification);
 	}
-	var n = document.createElement("div");
-	
-	n.style.position = "relative";
-	n.style.cursor = "pointer";
-	n.style.minHeight = "60px";
-	n.onclick = function () { location.href = notification.click };
-	n.innerHTML = "<div class='rightcontrols'><div class='time' data-time='" + notification.time + "'></div></div><img src='" + getAvatar(notification.from) +"' class='avatar'><b>"+ getDisplayName(notification.from) + "</b> " + notification.body + "<br><br>";
 
+	var n = document.createElement("div");
+	n.onclick = function () { location.href = notification.click };
+	n.innerHTML = html;
+	
 	var parent = _g("notifications");
 	if (parent.children.length < 1)
 		parent.appendChild(n);
@@ -70,34 +79,36 @@ function addNotificationToPage(notification){
 	_g("hailjeiluh").style.display = "none";
 }
 
-function getNotificationBody(notification) {
+function processNotification(notification) {
 	var body = "";
+	var action = "";
 	notification.body = escapeHTML(notification.body);
 	switch (parseInt(notification.type)) {
-		case 1: //commented on post 
+		case N_EVENT: //commented on post 
 			if (notification.body == LIKE_CHAR) 
 				body = "likes your post.";
 			else
 				body = "commented:<br>" + notification.body;
-
-			action = "javascript:showEvent('" + notification.action + "')"; 
 		break;
-		case 2: //mentioned
+		case N_MENTION: //mentioned
 			body = "mentioned you.";
-			action = "javascript:showEvent('" + notification.action + "')"; 
 		break;
-		break;
-		case 6: // repost
+		case N_REPOST: // repost
 			body = "reposted your post.";
-			action = "javascript:showEvent('" + notification.action + "')"; 
 		break;
-		case 3: //chat
+		case N_CHAT: //chat
+			addChatMessage(notification.from, CURUSER, notification.body, notification.time, false);
 			updatePageTitle();
 			body = "says: <br>" + notification.body;
-			action = "javascript:chatWith('" + notification.from + "')"; 
 			setNewInbox(true);
 		break;
 	}
+
+	if (N_CHAT)
+		action = function() { chatWith(notification.from); }
+	else
+		action = function() { showPost(notification.action); }
+
 
 	body = processMedia(body);
 	notification.body = body;
@@ -140,15 +151,7 @@ function handleNotifications() {
 		}
 		if (!(MOBILE)) {
 			for (i in activeWindows) {
-				if (activeWindows[i] == "c" + currentNotifications[id].action) {
-					var g = _g("window_"+activeWindows[i]);
-					if (g.scrollHeight - g.scrollTop < 500) {
-						dismissNotification(id);
-						continue notificationLoop;
-					}
-				}
-				if (currentNotifications[id].type == N_CHAT && activeWindows[i] == "m" + currentNotifications[id].from + "," + curUser) {
-					// TODO: abstract
+				if (activeWindows[i] == "m" + currentNotifications[id].from + "," + CURUSER) {
 					var g = _g("window_"+activeWindows[i]);
 					if (g.scrollHeight - g.scrollTop < 500) {
 						dismissNotification(id);				
@@ -168,7 +171,7 @@ function handleNotifications() {
 }
 
 function dismissNotification(id) {
-	ajaxGet("work/delete/notification/" + id);
+	ajax("work/delete/notification/" + id);
 	removeNotification(id);
 }
 

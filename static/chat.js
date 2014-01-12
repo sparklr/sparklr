@@ -1,89 +1,66 @@
-var FRIENDS = {};
-var newMessageUsers = [];
+/* Sparklr
+ * Handle chat system, new message events, etc
+ */
 
+// Keep track of last message sender, dont repeat names in chat
 var lastMessageFrom = {};
 
-//If true, the scroll handler will ignore upscrolling events
-var chat_downloadingOlder;
-
-var chatMessages = [];
+// Keep track of message times for fetching older messages
+var chatTimes = {};
 
 function scrollUpHandler(e) {
-	if (!_g("scrollUpContent"))
-		return;
-
 	if (!e) e = window.event;
 
-	var d;
+	var delta;
 
 	if (e.detail)
-		d = e.detail * -1;
+		delta = e.detail * -1;
 	else
-		d = e.wheelDelta;
+		delta = e.wheelDelta;
 
-	var ele = _g("scrollUpContent");
+	var ele = e.currentTarget;
 
-	if (d > 0) {
+	if (delta > 0) { // scrolling up
 		if (ele.scrollTop < 5) {
-			if (!chat_downloadingOlder)
-				getNewChatMessages();
+			getOldChatMessages(ele.getAttribute('data-with'));
 		}
 	}
+
+	if (e.wheelDelta < 0 && ele.scrollTop >= ele.scrollHeight - ele.clientHeight) 
+		e.preventDefault(); 
+	if (e.wheelDelta > 0 && ele.scrollTop == 0)
+		e.preventDefault();
 }
 
-function setupScrollHandler() {
-	var e = _g("scrollUpContent");
-	//e.addEventListener("DOMMouseScroll", scrollUpHandler);
-	//e.addEventListener("mousewheel", scrollUpHandler);
-}
-
-// TODO
-function getNewChatMessages() {
-	chat_downloadingOlder = true;
-	console.log("getting older");
-	console.log(chatMessages[0][2]);
-	ajaxGet("work/chat/" + curChatUser + "?starttime=" + chatMessages[0][2], null, function(data) {
+function getOldChatMessages(user) {
+	ajax("work/chat/" + user + "?starttime=" + chatTimes[user + "," + CURUSER][0], null, function(data) {
 		for (var i = 0; i < data.length; i++) {
-			addChatMessage(data[i].from, data[i].message, data[i].time, true);
+			addChatMessage(data[i].from, data[i].to, data[i].message, data[i].time, true);
 		}
-		chat_downloadingOlder = false;
 	});
 }
 
 function getLastChatTime() {
-	if (chatMessages.length > 0) {
-		return chatMessages[chatMessages.length - 1][2];
+	if (chatTimes.length > 0) {
+		return chatTimes[convoid][chatTimes.length - 1];
 	} else {
 		return 0;
 	}
 }
 
-function addChatMessages(data) {
-	data = data.data || data;
-	for (var i = data.length - 1; i >= 0; i--) {
-		addChatMessage(data[i].from, data[i].to, data[i].message, data[i].time, false);
-	}
-	if (data.length > 0)
-		hideUnconfirmedMessages();
-}
-
-function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
+function addChatMessage(from, to, msg, time, prepend) {
 	var convoid;
-	if (from == curUser)
+	if (from == CURUSER)
 		convoid = to + "," + from;
 	else 
 		convoid = from + "," + to;
 
-	console.log(convoid);
 	var sc = _g("scrollUpContent_"+convoid);
 	if (!sc)
 		return;
 
 	var ele = document.createElement("div");
 	ele.className = "chatmsg";
-
-	if (typeof(unconfirmed) != "undefined" && unconfirmed)
-		ele.className += " unconfirmedchat";
 
 	ele.id = "msg_" + time;
 	var html = "";
@@ -93,26 +70,17 @@ function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
 	html += "<div style='display:block;margin-left: 25px'>" + processMedia(escapeHTML(msg)) + "</div>";
 
 	ele.innerHTML = html;
-	
+
 	if (typeof(prepend) != "undefined" && prepend) {
 		sc.insertBefore(ele, sc.children[0]);
-		chatMessages.unshift([from,msg,time]);
+		chatTimes[convoid].unshift(time);
 	} else {
 		sc.appendChild(ele);
-		setTimeout(function() { (_g('window_m'+convoid) || _g('scrollUpContent_'+convoid)).scrollTop = 0xFFFFFF; },5);
-		chatMessages.push([from,msg,time]);
+		setTimeout(function() { _g('scrollUpContent_'+convoid).scrollTop = 0xFFFFFF; },5);
+		chatTimes[convoid].push(time);
 	}
 
 	lastMessageFrom[convoid] = from;
-}
-
-function hideUnconfirmedMessages() {
-	var dom = document.getElementsByTagName("div");
-	for (i = 0; i < dom.length; i++) {
-		if (dom[i].className.indexOf("unconfirmedchat") != -1) {
-			_g("scrollUpContent").removeChild(dom[i]);
-		}
-	}
 }
 
 function sendChatMessage(e) {
@@ -134,37 +102,16 @@ function sendChatMessage(e) {
 	},10);
 
 	if (!vars.message && !vars.postData) return;
-	addChatMessage(curUser, vars.to, vars.message, getLastChatTime(), false, true);
 
-	ajaxGet("work/chat", vars, function(data,xhr) {
+	addChatMessage(CURUSER, vars.to, vars.message, getLastChatTime(), false, true);
+
+	ajax("work/chat", vars, function(data,xhr) {
 		if (data.error && data.info == "Blocked") {
 			showBanner("Sorry, that user has blocked you.", "bannerblocked", 4000);
 		}
 		imgAttachments = null;
 		pollData();
 	});
-}
-
-function addFriendElement(id) {
-	var e = document.createElement("a");
-	e.id = "friendicon_" + id;
-	e.onclick = function() { chatWith(id); };
-	e.innerHTML = "<img src='" + getAvatar(id) + "'><div class='names'>" + getDisplayName(id) + "</div></a>";
-	
-	_g("friendslist").appendChild(e);
-	return e;
-}
-
-function setUserAttention(user, on) {
-	newMessageUsers[user] = on;
-	setUserStatus(user);
-}
-
-function setUserStatus(user) {
-	var e = _g("friendicon_" + user);
-	if (!e) e = addFriendElement(user);
-	
-	e.className = (newMessageUsers[user] ? " attn" : "");
 }
 
 function setNewInbox(value) {
@@ -176,10 +123,11 @@ function chatWith(id) {
 	if (MOBILE) {
 		location.href = "#/chat/" + id;
 	} else {
-		var pid = addWindow("m" + id + "," + curUser, function() {
+		var pid = addWindow("m" + id + "," + CURUSER, function() {
 			// closed
 			// we're always subscribed to notifications sent to the user
 		});
 		renderTemplate("chat/" + id, pid)
 	}
 }
+
