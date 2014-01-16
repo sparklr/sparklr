@@ -3,7 +3,7 @@ function before(scope) {
 	USERHANDLES[scope.data.user] = scope.data.handle;
 	AVATAR_IDS[scope.data.user] = scope.data.avatarid;
 
-	scope.pageType = scope.fragments[3];
+	scope.pageType = scope.fragments[2];
 }
 
 function after(scope) {

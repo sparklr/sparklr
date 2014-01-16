@@ -1,5 +1,5 @@
 function after(scope) {
-	subscribedStream = scope.fragments[2];
+	subscribedStream = scope.fragments[1];
 	currentPageType = "TAG";
 	var arr = scope.data;
 

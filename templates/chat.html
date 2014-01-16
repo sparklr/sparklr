@@ -1,12 +1,11 @@
 <div class='contentwrapper'>
 	<div class='windowhidden'>
-		<h2>{getDisplayName(scope.user)}</h2>
+		<h2>{getDisplayName(user)}</h2>
 	</div>
-	<div class='scrollUpContent' data-with='{scope.user}' id='scrollUpContent_{scope.convoid}'>
+	<div class='scrollUpContent' data-with='{user}' id='scrollUpContent_{convoid}'>
 	</div>
 	<div class='chatcomposer'>
-		{renderComposer('Type a message...', 'sendChatMessage', true, 'chat_' + scope.user)}
+		{renderComposer('Type a message...', 'sendChatMessage', true, 'chat_' + user)}
 	</div>
 </div>
-<script>
-</script>
+
