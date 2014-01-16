@@ -7,46 +7,39 @@ var TEMPLATES = TEMPLATES || {};
 var CONTROLLERS = CONTROLLERS || {};
 
 function renderPageFromTemplate() {
-	var fragments = location.hash.split("/");
-	var renderPage = function(data) {
-		// TODO
-		if (data && data.error === true) return;
-
-		var scope = { data: data, fragments: fragments };
-
-		controller = getController(fragments[1]);
-
-		if (controller && controller.before)
-			controller.before(scope);
-
-		var templateData = getTemplate(fragments[1]);
-		eval("with(scope){"+templateData+"}");
-
-		_g("content").innerHTML = html;
+	renderTemplate(location.hash.substring(2),'content',function() {
 		if (_g("sidebar_links")) {
 			_g("sidebar").innerHTML = _g("sidebar_links").innerHTML;
 			_g("sidebar_links").innerHTML = "";
 		} else {
 			defaultSidebar();
 		}
+	});
+}
+
+function renderTemplate(page,destination,callback) {
+	var fragments = page.split("/");
+	ajax("work/" + page, null, function(data) {
+		console.log(data);
+		if (data && data.error === true) return;
+
+		var scope = { data: data, fragments: fragments };
+
+		controller = getController(fragments[0]);
+
+		if (controller && controller.before)
+			controller.before(scope);
+
+		var templateData = getTemplate(fragments[0]);
+		eval("with(scope){"+templateData+"}");
+
+		_g(destination).innerHTML = html;
 
 		if (controller && controller.after)
 			controller.after(scope);
 
 		updateUI();
-	}
-	if (staticPages[fragments[1]])
-		renderPage();
-	else
-		ajax("work/" + location.hash.substring(2), null, renderPage);
-}
-
-function renderTemplate(page,destination) {
-	var fragments = page.split("/");
-	ajax("work/" + page, null, function(data) {
-		var templateData = getTemplate(fragments[0]);
-		eval(templateData);
-		_g(destination).innerHTML = html;
+		callback();
 	});
 }
 
