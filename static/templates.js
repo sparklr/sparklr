@@ -3,7 +3,8 @@
  */
 
 // define templates, or, if compiled, it already exists
-var TEMPLATES = TEMPLATES || [];
+var TEMPLATES = TEMPLATES || {};
+var CONTROLLERS = CONTROLLERS || {};
 
 function renderPageFromTemplate() {
 	var fragments = location.hash.split("/");
@@ -11,8 +12,15 @@ function renderPageFromTemplate() {
 		// TODO
 		if (data && data.error === true) return;
 
+		var scope = { data: data, fragments: fragments };
+
+		controller = getController(fragments[1]);
+
+		if (controller && controller.before)
+			controller.before(scope);
+
 		var templateData = getTemplate(fragments[1]);
-		eval(templateData);
+		eval("with(scope){"+templateData+"}");
 
 		_g("content").innerHTML = html;
 		if (_g("sidebar_links")) {
@@ -21,6 +29,10 @@ function renderPageFromTemplate() {
 		} else {
 			defaultSidebar();
 		}
+
+		if (controller && controller.after)
+			controller.after(scope);
+
 		updateUI();
 	}
 	if (staticPages[fragments[1]])
@@ -32,33 +44,42 @@ function renderPageFromTemplate() {
 function renderTemplate(page,destination) {
 	var fragments = page.split("/");
 	ajax("work/" + page, null, function(data) {
-		console.log(data);
 		var templateData = getTemplate(fragments[0]);
-		console.log(templateData);
 		eval(templateData);
 		_g(destination).innerHTML = html;
 	});
 }
 
-// TODO
 function getTemplate(id) {
 	if (!TEMPLATES[id]) {
-		var templatedata = "";
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState == 4) {
-				templatedata = xhr.responseText;
-			}
+		templatedata = getStaticFile(COMMONHOST + "../templates/" + id + ".html");
+		TEMPLATES[id] = t(templatedata);
+	}
+	return TEMPLATES[id];
+}
+
+function getController(id) {
+	if (!CONTROLLERS[id]) {
+		controller = getStaticFile(COMMONHOST + "../controllers/" + id + ".js");
+		eval(controller);
+		if (typeof(before) === "undefined") return false;
+		CONTROLLERS[id] = { before: before, after: after };
+	}
+	return CONTROLLERS[id];
+}
+
+function getStaticFile(url) {
+	var data = "";
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+			data = xhr.responseText;
 		}
-		xhr.open("GET", COMMONHOST + "../templates/" + id + ".html", false);
-		xhr.send(null);
-		templatedata = t(templatedata);
-		TEMPLATES[id] = templatedata;
-		return templatedata;
 	}
-	else {
-		return TEMPLATES[id];
-	}
+	xhr.open("GET", url, false);
+	xhr.send(null);
+
+	return data;
 }
 
 /*

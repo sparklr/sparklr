@@ -1,7 +1,4 @@
 <div class='contentwrapper'>
-	<script>
-	data = processPostMeta(data);
-	</script>
 	<% if (data.type == 1) %>
 	<div class='picturepost full' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
 		<img src='{imgUrl(data.img)}'>
@@ -43,23 +40,4 @@
 		</div>
 	</div>
 </div>
-
-<script>
-	setTimeout(function() { 
-	for (var i = 0; i < data.comments.length; i++) {
-		renderComment(data.comments[i]);
-	}
-	
-	currentComments = data.comments;
-	currentPageType = "POST";
-
-	if (location.hash.indexOf("new") != -1) 
-		_g('composer_'+data.id).focus();
-	
-	if (location.hash.indexOf("repost") != -1) 
-		repost(data.id);
-
-	renderTags(data);
-	}, 0);
-</script>
 
