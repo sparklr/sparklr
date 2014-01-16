@@ -56,14 +56,3 @@
 		<span id='settings_result'></span>
 	</form>
 </div>
-<script>
-	USERHANDLES[CURUSER] = data.username;
-	setTimeout(function() {
-			var blacklist = (data.blacklist || "").split(",");
-			for (i in blacklist) {
-			if (!blacklist[i]) continue;
-			addUserToList(0, blacklist[i]);
-			}
-			},1);
-
-</script>
