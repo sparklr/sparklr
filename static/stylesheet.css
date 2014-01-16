@@ -221,6 +221,7 @@ div.contentwrapper {
 	position: relative;
 	top: 10px;
 	margin: auto;
+	margin-bottom: 30px;
 }
 #sidebar {
     color: #fff;
