@@ -49,7 +49,23 @@ exports.handleUpload = function(data, userobj, args, callback) {
 }
 
 function resizeImage(input, output, args, callback) {
-	var process = spawn("convert", [input, "-resize", ">" + (args.fullWidth || 1920) + "x" + (args.fullHeight || 1080), "-auto-orient", "-strip", output]);
+	var parameters = [input, 
+		(args.fill ? "-gravity" : ""),
+		(args.fill ? "center" : ""),
+		"-resize",
+		">" + (args.fill ? "^" : "") + (args.fullWidth || 1920) + "x" + (args.fullHeight || 1080),
+		(args.fill ? "-extent" : ""),
+		(args.fill ? args.fullWidth || 1920 + "x" + args.fullHeight || 1080 : ""),
+		"-auto-orient",
+		"-strip",
+		output];
+
+
+	var process = spawn("convert", parameters);
+	
+	process.stderr.on("data", function(data) {
+		console.log("UploadErr: " + data);
+	});
 	process.on("close", function(code) {
 		callback(code);
 	});
