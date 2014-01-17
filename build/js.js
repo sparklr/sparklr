@@ -2,7 +2,7 @@ var fs = require("fs");
 var os = require("os");
 var toolbox = require("./toolbox");
 
-exports.build = function(templateData, templateDataMobile, callback) {
+exports.build = function(templateData, callback) {
 	console.log("Building JS...");
 
 	buildJSFromHeaderFile("../templates/headers.html", "app", templateData, function(jsHash) {
@@ -10,7 +10,7 @@ exports.build = function(templateData, templateDataMobile, callback) {
 		buildJSFromHeaderFile("../templates/external.html", "external", "", function(jsHash) {
 			global.buildData.jsHash_external = jsHash;
 		});
-		buildJSFromHeaderFile("../mobile/templates/headers.html", "mobile", templateDataMobile, function(jsHash) {
+		buildJSFromHeaderFile("../templates/mobileheaders.html", "mobile", templateData, function(jsHash) {
 			global.buildData.jsHash_mobile = jsHash;
 		});
 
