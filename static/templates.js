@@ -20,23 +20,24 @@ function renderPageFromTemplate() {
 function renderTemplate(page,destination,callback) {
 	var fragments = page.split("/");
 	ajax("work/" + page, null, function(data) {
-		console.log(data);
 		if (data && data.error === true) return;
 
 		var scope = { data: data, fragments: fragments };
 
 		controller = getController(fragments[0]);
+		eval(controller);
 
-		if (controller && controller.before)
-			controller.before(scope);
+		if (controller && before) {
+			before(scope);
+		}
 
 		var templateData = getTemplate(fragments[0]);
 		eval("with(scope){"+templateData+"}");
 
 		_g(destination).innerHTML = html;
 
-		if (controller && controller.after)
-			controller.after(scope);
+		if (controller && after)
+			after(scope);
 
 		updateUI();
 		callback();
@@ -53,10 +54,7 @@ function getTemplate(id) {
 
 function getController(id) {
 	if (!CONTROLLERS[id]) {
-		controller = getStaticFile(COMMONHOST + "../controllers/" + id + ".js");
-		eval(controller);
-		if (typeof(before) === "undefined") return false;
-		CONTROLLERS[id] = { before: before, after: after };
+		CONTROLLERS[id] = getStaticFile(COMMONHOST + "../controllers/" + id + ".js");
 	}
 	return CONTROLLERS[id];
 }
