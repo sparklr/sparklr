@@ -86,15 +86,15 @@ function processNotification(notification) {
 	switch (parseInt(notification.type)) {
 		case N_EVENT: //commented on post 
 			if (notification.body == LIKE_CHAR) 
-				body = "likes your post.";
+				body = " likes your post.";
 			else
-				body = "commented:<br>" + notification.body;
+				body = " commented:<br>" + notification.body;
 		break;
 		case N_MENTION: //mentioned
-			body = "mentioned you.";
+			body = " mentioned you.";
 		break;
 		case N_REPOST: // repost
-			body = "reposted your post.";
+			body = " reposted your post.";
 		break;
 		case N_CHAT: //chat
 			addChatMessage(notification.from, CURUSER, notification.body, notification.time, false);
