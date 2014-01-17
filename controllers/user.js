@@ -21,11 +21,11 @@ function after(scope) {
 
 	currentPageType = "STREAM";
 
-	if (pageType == "photos")
+	if (scope.pageType == "photos")
 		currentPageType = "PHOTO";
-	if (pageType == "mentions")
+	if (scope.pageType == "mentions")
 		currentPageType = "MENTIONS";
-	if (pageType == "step2")
+	if (scope.pageType == "step2")
 		editProfile(); 
 }
 
