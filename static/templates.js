@@ -61,8 +61,8 @@ function getController(id) {
 }
 
 function getStaticFile(url) {
-	if (COMMONHOST.indexOf("sparklr.me") !== -1)
-		return null;
+	if (LIVE) return null;
+
 	var data = "";
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
