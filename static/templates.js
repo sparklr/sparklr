@@ -25,9 +25,10 @@ function renderTemplate(page,destination,callback) {
 		var scope = { data: data, fragments: fragments };
 
 		controller = getController(fragments[0]);
-		eval(controller);
+		if (controller)
+			eval(controller);
 
-		if (controller && before) {
+		if (controller && typeof(before) !== 'undefined') {
 			before(scope);
 		}
 
@@ -36,7 +37,7 @@ function renderTemplate(page,destination,callback) {
 
 		_g(destination).innerHTML = html;
 
-		if (controller && after)
+		if (controller && typeof(after) !== 'undefined')
 			after(scope);
 
 		updateUI();
