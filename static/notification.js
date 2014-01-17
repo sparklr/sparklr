@@ -104,7 +104,7 @@ function processNotification(notification) {
 		break;
 	}
 
-	if (N_CHAT)
+	if (notification.type == N_CHAT)
 		action = function() { chatWith(notification.from); }
 	else
 		action = function() { showPost(notification.action); }
