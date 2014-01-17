@@ -3,16 +3,16 @@
 <head>
 	<title>Sparklr</title>
 	<meta charset='utf-8'>
+	<script>
+		var STATICHOST = "{global.staticHost}";
+		var COMMONHOST = "{global.commonHost}";
+		var POLL_INTERVAL = 1500;
+		var MOBILE = false;
+	</script>
 	<% if (global.liveSite) %>
 		<link rel='stylesheet' href='{global.commonHost}/app.css?{buildData.cssHash_frontend}'>
 		<script data-live src='{global.commonHost}/app.js?{buildData.jsHash_frontend}'></script>
 	<% else %>
-		<script>
-			var STATICHOST = "{global.staticHost}";
-			var COMMONHOST = "{global.commonHost}";
-			var POLL_INTERVAL = 1500;
-			var MOBILE = false;
-		</script>
 		<script src='{global.commonHost}/templates.js'></script>
 		<script src='{global.commonHost}/page.js'></script>
 		<script src='{global.commonHost}/data.js'></script>
