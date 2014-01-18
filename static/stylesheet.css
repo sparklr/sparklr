@@ -530,6 +530,7 @@ div.commentcount.icon {
 	background-repeat: no-repeat;
 	width: 28px;
 	height: 30px;
+	opacity: 0;
 }
 
 a.tag {

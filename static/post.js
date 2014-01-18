@@ -110,7 +110,7 @@ function updateCommentCount(id, count) {
 	var ele = _g("commentcount_" + id);
 	if (ele == null) return; 
 
-	ele.style.opacity = (count != 0) ? 1 : 0;
+	ele.style.display = (count != 0) ? "" : "none";
 	ele.innerHTML = count || "+";
 
 	commentCounts[id] = count;
