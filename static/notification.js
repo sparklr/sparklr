@@ -63,12 +63,14 @@ function addNotification(notification) {
 }
 
 function addNotificationToPage(notification){
+	console.log(notification);
 	if(!notification.click){
-		notification = getNotificationBody(notification);
+		notification = processNotification(notification);
 	}
 
 	var n = document.createElement("div");
-	n.onclick = function () { location.href = notification.click };
+	n.onclick = notification.click;
+	eval(getTemplate("notificationbody"));
 	n.innerHTML = html;
 	
 	var parent = _g("notifications");

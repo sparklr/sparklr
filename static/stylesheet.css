@@ -450,7 +450,7 @@ div.confirm {
 	color: #fff;
 }
 
-#notifications < div {
+#notifications > div {
 	position: relative;
 	cursor: pointer;
 	min-height: 60px;
