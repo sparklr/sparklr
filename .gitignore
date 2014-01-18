@@ -15,3 +15,6 @@ build/out
 .tingle.vim
 backend/.tingle.vim
 
+controllers/inbox.js
+controllers/friends.js
+
