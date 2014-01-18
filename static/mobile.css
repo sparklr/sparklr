@@ -120,7 +120,7 @@ hr {
 
 #content {
 	margin: 4px;
-	margin-top: 55px;
+	margin-top: 87px;
 	padding: 0px;
 }
 
@@ -266,53 +266,6 @@ div.confirm {
 	margin-right: 5px;
 }
 
-#notificationlist {
-    position: fixed;
-    right: 10px;
-    width: 220px;
-    bottom: 5px;
-}
-
-#notificationlist div {
-    border: solid 1px #222;
-	border-radius: 5px;
-	background: rgba(0,0,0,0.3);
-    color: #fff;
-    padding: 4px;
-	padding-top: 7px;
-    margin: 20px 10px;
-    cursor: pointer;
-    font-size: 13px;
-	word-wrap: break-word;
-}
-
-#notificationlist div:hover {
-	opacity: 0.8;
-}
-
-#notificationlist div .exit {
-    opacity: 0;
-    padding: 2px;
-    float: right;
-}
-
-#notificationlist div:hover .exit {
-    opacity: 1;
-}
-#notificationlist div:hover .exit:hover {
-    background: #d2b8d4;
-}
-#notificationlist div img {
-	max-width: 185px;
-	max-height: 200px;
-}
-#notificationlist div .littleavatar {
-	margin-left: 0px;
-}
-#notificationlist div a {
-	color: #fff;
-}
-
 img { border: none }
 
 p { outline: none; }
@@ -329,7 +282,6 @@ span.header {
 
 div.timelineitem {
     min-height: 50px;
-	margin-bottom: 10px;
 	word-wrap: break-word;
 	border: solid 1px #ccc;
 	background: #fff;
@@ -364,14 +316,9 @@ div.commentcount {
     padding: 5px;
     color: white;
     cursor: pointer;
-    -webkit-transition: all 0.2s ease-in-out;
     border: solid 1px rgba(255,255,255,0.3);
 	font-size: 16px;
 	display: inline-block;
-}
-
-div.timelineitem:hover div.commentcount {
-    opacity: 1 !important;
 }
 
 div.commentcount.icon {
@@ -408,6 +355,10 @@ div.like.liked {
 	background-color: #7e5a82;
 }
 
+div.content{
+	margin-bottom: 15px;
+}
+
 div.picturepost {
     background-repeat: no-repeat;
 	background-position: center center;
@@ -437,9 +388,6 @@ div.picturepost div.content {
     opacity: 1;
     -webkit-transition: all 0.3s ease;
 }
-div.picturepost:hover div.content {
-    opacity: 0.05;
-}
 div.picturepost div.commentcount {
     background-color: rgba(54, 43, 61, 0.8);
 }
@@ -450,7 +398,6 @@ div.rightcontrols {
 div.rightcontrols div.time {
     position: relative;
     top: 0px;
-    opacity: 0.8;
 }
 div.rightcontrols a.delete {
     float: right;
@@ -460,12 +407,8 @@ div.rightcontrols a.delete {
 	background-image: url(img/delete.png);
 	width: 16px;
 	height: 16px;
-    -webkit-transition: all 0.2s ease-in-out;
-    opacity: 0.3;
     font-size: 14px;
-}
-div.rightcontrols:hover a.delete {
-    opacity: 0.6 !important;
+	opacity: 0.3;
 }
 div.comment {
 	margin-bottom: 12px;
@@ -502,10 +445,6 @@ div.attachment div:focus {
 	opacity: 1;
 }
 
-div.attachment:hover div, div.picturepost:hover div {
-	opacity: 1;
-}
-
 #suggestionbox {
 	position: absolute;
 	display: none;
@@ -520,10 +459,6 @@ div.attachment:hover div, div.picturepost:hover div {
 	cursor: pointer;
 }
 
-#suggestionbox div:hover, #suggestionbox div.hover {
-	background: #594e64;
-	color: #fff;
-}
 
 #composerframe {
 	border: solid 1px #bbb;
@@ -541,21 +476,17 @@ div.composercontrols {
 	position:absolute;
 	right: 15px;
 	bottom:10px;
-	opacity: 0;
-	-webkit-transition: all 0.5s ease;
+	opacity: 0.3;
 	background-image: url(img/photos.png);
 	display: block;
-	width: 32px;
-	height: 32px;
+	width: 31px;
+	height: 31px;
 	overflow: hidden;
 }
 div.composercontrols input {
 	width: 32px;
 	height: 32px;
 	opacity: 0;
-}
-div.composer:hover div.composercontrols {
-	opacity: 0.3;
 }
 
 div.remaining {
@@ -614,6 +545,7 @@ div.profileheader img.avatar {
 	top: 10px;
 	position: relative;
 	border-radius: 30px;
+	margin-right: 0;
 }
 
 div.profileheader #userDisplayName {
@@ -650,8 +582,8 @@ div.profileheader input {
 	margin-right: 5px;
 }
 div.friend {
-	width: 200px;
-	height: 200px;
+	width: 150px;
+	height: 150px;
 	display: inline-block;
 	background-size: cover;
 	border: solid 1px #aaa;
@@ -662,20 +594,17 @@ div.friend {
 div.friend b {
 	background: rgba(0,0,0,0.5);
 	color: #fff;
-	display: block;
 	padding: 3px;
 	font-weight: normal;
+	width: 144px;
+	position: absolute;
 }
 
 div.friend input {
 	position: absolute;
 	bottom: 5px;
 	right: 5px;
-	opacity: 0;
-}
-
-div.friend:hover input {
-	opacity: 1;
+	opacity: 0.5;
 }
 
 input[type=button], input[type=submit] {
@@ -683,17 +612,12 @@ input[type=button], input[type=submit] {
     background: rgba(255,255,255,1);
     padding: 5px 5px;
     font-size: 15px;
-    opacity: 0.9;
+    opacity: 1;
 	font-family: 'PT Sans', sans-serif;
     color: #444;
     cursor: pointer;
     -webkit-transition: all 0.2s ease-in-out;
 	margin: 0px 1px;
-}
-
-input[type=button]:hover, input[type=submit]:hover {
-    box-shadow: 0px 0px 10px rgba(200,200,250,0.7);
-    opacity: 1;
 }
 
 input.s1 {
@@ -726,16 +650,12 @@ div.time {
     right: 0px;
     margin-right: 5px;
     font-size: 11px;
-    -webkit-transition: all 0.1s ease-in-out;
-}
-
-div.chatmsg:hover div.time {
-    opacity: 0.5;
 }
 
 div.chatmsg .time {
     position: relative;
-    opacity: 0;
+    opacity: 0.5;
+	text-align: right;
 }
 
 div.chatmsg {
