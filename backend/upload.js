@@ -58,8 +58,8 @@ function resizeImage(input, output, args, callback) {
 	parameters.push((args.fullWidth || 1920) + "x" + (args.fullHeight || 1080) + ">" + (args.fill ? "^" : ""));
 
 	if (args.fill) {
-		parameters.push("-extent");
-		parameters.push(args.fullWidth || 1920 + "x" + args.fullHeight || 1080);
+		parameters.push("-crop");
+		parameters.push((args.fullWidth || 1920) + "x" + (args.fullHeight || 1080) + "+0+0");
 	}
 	parameters.push("-auto-orient");
 	parameters.push("-strip");
