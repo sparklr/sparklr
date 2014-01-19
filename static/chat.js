@@ -40,14 +40,6 @@ function getOldChatMessages(user) {
 	});
 }
 
-function getLastChatTime() {
-	if (chatTimes.length > 0) {
-		return chatTimes[convoid][chatTimes.length - 1];
-	} else {
-		return 0;
-	}
-}
-
 function addChatMessage(from, to, msg, time, prepend) {
 	var convoid;
 	if (from == CURUSER)
@@ -103,7 +95,7 @@ function sendChatMessage(e) {
 
 	if (!vars.message && !vars.postData) return;
 
-	addChatMessage(CURUSER, vars.to, vars.message, getLastChatTime(), false, true);
+	addChatMessage(CURUSER, vars.to, vars.message, (new Date).getTime(), false, true);
 
 	ajax("work/chat", vars, function(data,xhr) {
 		if (data.error && data.info == "Blocked") {

@@ -887,6 +887,7 @@ div.chatmsg:hover div.time {
 div.chatmsg .time {
     position: relative;
     opacity: 0;
+	text-align: right;
 }
 
 div.chatmsg {
