@@ -5,7 +5,7 @@
 	</div>
 	<% endif %>
 
-	<div id='post_{data.id}' class='fadein' style='padding: 7px; margin: -5px; word-wrap: break-word;'>
+	<div id='post_{data.id}' class='fadein post' style='padding: 7px; margin: -5px; word-wrap: break-word;'>
 		<% if (data.from == CURUSER || ISMOD) %>
 		<div class='commentcount delete icon' onClick='deletePost("{data.id}");stopBubbling();'></div>
 		<% else %>
