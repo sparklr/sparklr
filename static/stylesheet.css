@@ -525,6 +525,9 @@ div.timelineitem:hover div.commentcount {
     opacity: 1 !important;
 }
 
+div.post div.commentcount.icon{
+	opacity: 1;
+}
 div.commentcount.icon {
 	padding:0px;
 	background-repeat: no-repeat;
