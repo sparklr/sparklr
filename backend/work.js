@@ -1,4 +1,11 @@
-// Main ranch
+/* Sparklr
+ * API
+ */
+
+var util = require("util");
+var events = require("events");
+var bcrypt = require("bcrypt");
+
 var User = require("./user");
 var Post = require("./post");
 var Notification = require("./notification");
@@ -7,91 +14,43 @@ var Database = require("./database");
 var Toolbox = require("./toolbox");
 var Upload = require("./upload");
 
-var util = require("util");
-var events = require("events");
-var bcrypt = require("bcrypt");
+var public_endpoints = {};
+var endpoints = {};
+
+public_endpoints["areyouawake"] = function(args, callback) {
+	callback(args.response, true);
+}
+public_endpoints["signoff"] = function(args, callback) {
+	callback(args.response, true, {
+		"Set-Cookie": "D=; Path=/",
+		"Cache-Control": "no-cache"
+	});
+}
+public_endpoints["signin"] = User.trySignin;
+public_endpoints["forgot"] = User.forgotPass;
+public_endpoints["reset"] = User.resetPass;
+public_endpoints["requestinvite"] = function(args, callback) {
+	if (!args.fragments[3]) return callback(args.response, false, 400);
+	Database.postObject("newsletter", {
+		email: args.fragments[3]
+	}, function(err) {
+		callback(args.response, err == null);
+	});
+}
+public_endpoints["checkusername"] = function(args, callback) {
+	if (!args.fragments[3]) return callback(args.response, false, 400);
+	User.getUserProfileByUsername(args.fragments[3], function(err, rows) {
+		if (err) return callback(args.response, err, 500);
+		callback(args.response, rows && rows.length > 0);
+	});
+}
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
-	switch (fragments[2]) {
-		case "areyouawake":
-			sendObject(response, "success");
-			return;
-		case "signoff":
-			response.writeHead(200, {
-				"Set-Cookie": "D=; Path=/",
-				"Cache-Control": "no-cache"
-			});
-			response.end("true");
-			return;
-		case "signin":
-			if (!fragments[3] || !fragments[4]) return do400(response, 403);
-			User.trySignin(fragments[3], fragments[4], response);
-			return;
-		case "forgot":
-			if (!fragments[3]) return do400(response, 400);
-			User.forgotPass(fragments[3], sendObject, response);
-			return;
-		case "reset":
-			if (!fragments[3]) return do400(response, 400);
+	var args = { request: request, response: response, uri: uri, sessionid: sessionid, fragments: fragments }
 
-			User.getUserProfile(fragments[3], function(err, rows) {
-				if (err) return do500(response, err);
-				if (!rows || rows.length < 1) return sendObject(response,-2);
-
-				if (rows[0].password != "RESET:" + fragments[4]) 
-					return sendObject(response, -2);
-
-				if (fragments[5].length < 3)
-					return sendObject(response, 0);
-
-				User.generatePass(fragments[5], function(err, hash) {
-					if (err) return do500(response, err);
-
-					rows[0].authkey = User.generateAuthkey(rows[0].id);
-					rows[0].password = hash;
-
-					Database.updateObject("users", rows[0], function(err, data) {
-						if (err) {
-							sendObject(response, -1);
-						} else {
-							response.writeHead(200, {
-								"Set-Cookie": "D=" + rows[0].id + "," + rows[0].authkey + "; Path=/"
-							});
-							response.end("1");
-						}
-					});
-				});
-			});
-			return;
-		case "requestinvite":
-			if (!fragments[3]) return do400(response, 400);
-			Database.postObject("newsletter", {
-				email: fragments[3]
-			}, function(err) {
-				//fragments[3] = fragments[3].replace(/^(A-Za-z0-9\-_.\+\@)/, "");
-				//Mail.sendMessageToEmail(fragments[3], "requestedinvite");
-				sendObject(response, err == null);
-			});
-			return;
-		case "signup":
-			if (['207.81.39.235','66.183.50.85'].indexOf(request.headers['x-real-ip']) !== -1) return sendObject(response, 3);
-			if (!fragments[6]) return do400(response, 400);
-			User.signupUser(fragments[3], fragments[4], fragments[5], decodeURIComponent(fragments[6]), function(err, rows) {
-				if (rows === 2)
-					sendObject(response, 2);
-				else
-					sendObject(response, err || 1);
-			});
-			return;
-		case "checkusername":
-			if (!fragments[3]) return do400(response, 400);
-			User.getUserProfileByUsername(fragments[3], function(err, rows) {
-				if (err) return do500(response, err);
-				sendObject(response, rows && rows.length > 0);
-			});
-			return;
-	}
+	if (f = public_endpoints[fragments[2]])
+		return f(args, apiResponse);
 
 	var postBody = "";
 	var dataComplete = false;
@@ -112,78 +71,62 @@ exports.run = function(request, response, uri, sessionid) {
 		});
 	}
 
-	if (sessionid != null) {
-		var s = sessionid.split(",");
-		if (s.length < 2) return do400(response, 400);
-		var authkey_header = request.headers['x-x'];
-		User.verifyAuth(s[0], authkey_header, function(success, userobj) {
-			if (!success) {
-				response.writeHead(403);
-				response.end();
-				return;
+	if (sessionid == null)
+		return apiResponse(response, false, 403);
+
+	var authkey_header = request.headers['x-x'];
+	User.verifyAuth(sessionid.split(',')[0], authkey_header, function(success, userobj) {
+		if (!success) {
+			return apiResponse(response, false, 403);
+		}
+
+		userobj.following = userobj.following.split(",").filter(Toolbox.filter);
+		if (request.method == "POST") {
+			var postObject;
+			try {
+				postObject = request.headers['x-data'] ? JSON.parse(request.headers['x-data']) : {};
+			} catch (e) {
+				log("Bad post data: " + request.headers['x-data']);
+				log(e);
+				return apiResponse(response, false, 500);
 			}
+			
+			if (postObject.img) {
+				var f = function() {
+					var args = { allowGif: true, width: 400, height: 620 };
+					var s = uri.pathname.split("/");
+					if (s[2] == "post")
+						args.width = 700;
+					if (s[2] == "avatar") 
+						args = { fullWidth: 200, fullHeight: 200, width: 50, height: 50, fill: true, id: userobj.id };
+					if (s[2] == "header") 
+						args = { noThumb: true, fill: true, id: userobj.id, category: "b" };
+					
+					Upload.handleUpload(postBody, userobj, args, function(err, id) {
+						postBody = null;
 
-			userobj.following = userobj.following.split(",").filter(Toolbox.filter);
-			userobj.networks = (userobj.networks || "0").split(",").filter(Toolbox.filter);
-			if (request.method == "POST") {
-				var postObject;
-				try {
-					postObject = request.headers['x-data'] ? JSON.parse(request.headers['x-data']) : {};
-				} catch (e) {
-					console.log("Bad post data: " + request.headers['x-data']);
-					return do500(response, e);
-				}
-				
-				if (postObject.img) {
-					var f = function() {
-						var args = { allowGif: true, width: 400, height: 620 };
-						var s = uri.pathname.split("/");
-						if (s[2] == "post")
-							args.width = 700;
-						if (s[2] == "avatar") 
-							args = { fullWidth: 200, fullHeight: 200, width: 50, height: 50, fill: true, id: userobj.id };
-						if (s[2] == "header") 
-							args = { noThumb: true, fill: true, id: userobj.id, category: "b" };
-						
-						Upload.handleUpload(postBody, userobj, args, function(err, id) {
-							postBody = null;
+						if (err) return do500(response, err);
+						postObject.img = id;
 
-							if (err) return do500(response, err);
-							postObject.img = id;
-
-							processPostRequest(request, response, postObject, uri, sessionid, userobj);
-							f = null;
-						});
-					};
-					dataComplete ? f() : request.on("end", f);
-					return;
-				} else {
-					processPostRequest(request, response, postObject, uri, sessionid, userobj);
-				}
-			} else {
-				if (uri.pathname.indexOf("/beacon") !== -1) {
-					var args = { response: response, request: request, uri: uri, sessionid: sessionid, userobj: userobj };
-					Notification.getUserNotifications(userobj.id, uri.query.n, beaconNotifCallback, args);
-					return;
-				} else {
-					processGetRequest(request, response, uri, sessionid, userobj, function(err,rows) {
-						if (err) {
-							if (err === 404) {
-								do400(response,404);
-							} else
-								do500(response,err);
-						} else
-							sendObject(response,rows);
-						err = rows = request = uri = sessionid = userobj = null;	
-						return;
+						processPostRequest(request, response, postObject, uri, sessionid, userobj);
+						f = null;
 					});
-					return;
-				}
+				};
+				dataComplete ? f() : request.on("end", f);
+				return;
+			} else {
+				if (f = endpoints[fragments[2]])
+					return f(args, apiResponse);
 			}
-		});
-	} else {
-		do400(response, 403);
-	}
+		} else {
+			if (uri.pathname.indexOf("/beacon") !== -1) {
+				Notification.getUserNotifications(userobj.id, uri.query.n, beaconNotifCallback, args);
+			} else {
+				if (f = endpoints[fragments[2]])
+					return f(args, apiResponse);
+			}
+		}
+	});
 }
 
 function processPostRequest(request, response, postObject, uri, sessionid, userobj) {
@@ -714,32 +657,28 @@ function processGetRequest(request, response, uri, sessionid, userobj, callback)
 }
 
 function beaconNotifCallback(err, rows, args) {
-	if (err) return do500(args.response, err);
+	if (err) return apiResponse(args.response, err, 500);
 
 	var obj = {};
 
 	if (rows.length > 0)
 		obj.notifications = rows;
 
-	if (args.uri.pathname.split("/")[2]) {
-		processGetRequest(args.request, args.response, args.uri, args.sessionid, args.userobj, function(err,rows) {
-			if (err) {
-				do500(args.response, err);
-			} else {
-				obj.data = rows;
-				sendObject(args.response,obj);
-			}
-			err = rows = obj = args = null;
+	if ((endpoint = args.uri.pathname.split("/")[2]) && f = endpoints[endpoint]) {
+		f(args, function(response, data, status) {
+			obj.data = data;
+			apiResponse(args.response, obj, status);
 		});
 	} else {
-		sendObject(args.response,obj);
-		args = null;
+		apiResponse(args.response,obj);
+		args = obj = null;
 	}
 }
 
-function sendObject(response, obj) {
+function apiResponse(response, obj, status, headers) {
+	var status = status || 200;	
 	try {
-		response.writeHead(200, {
+		response.writeHead(status, headers || {
 			"Cache-Control": "no-cache"
 		});
 		response.write(JSON.stringify(obj));

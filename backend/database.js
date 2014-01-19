@@ -1,16 +1,27 @@
+/* Sparklr
+ * Database queries, connections, etc.
+ */
+
+var log = require("./log");
+
 var mysql = require("mysql-libmysqlclient");
 
 var connection = null;
 var isConnecting = false;
 
-exports.init = function(args) {
+exports.init = function() {
 	if (isConnecting) return;
+
 	isConnecting = true;
+
 	connection = mysql.createConnectionSync();
-	connection.connectSync(args.host, args.user, args.password, args.database);
-	console.log("DEBUG: connecting to database...");
+	connection.connectSync(global.database.host, global.database.user, global.database.password, global.database.database);
+
+	log("DEBUG: connecting to database...");
+
 	if (!connection.connectedSync()) {
-		throw new Exception();
+		log("Failed to connect to database. Trying again in 1s.");
+		setTimeout(exports.init, 1000);
 	}
 	isConnecting = false;
 }
@@ -32,42 +43,31 @@ exports.query = function(query, callback, args) {
 					exports.query(query, callback);
 					return;
 				}
-				console.log("Failed query: " + query);
-				console.log(err);
+				log("Failed query: " + query);
+				log(err);
 				callback(err);
-				query = null;
-				callback = null;
-				err = null;
-				res = null;
-
 				return;
 			}
 			if (res.fetchAll) {
 				res.fetchAll(function(err,res) {
 					if (err) { 
-						console.log((new Date) + ": err: " + query);
-						console.log(res);
+						log("err: " + query);
+						log(res);
 					}
 					callback(err,res,args);
-					query = null;
-					callback = null;
-					err = null;
-					res = null;
 				});
 			}
 			else {
 				if (callback) callback(err,res, args);
-				query = null;
-				callback = null;
-				err = null;
-				res = null;
 			}
 		});
 	} catch (e) {
-		console.log((new Date).toString() + ": MysqlError: " + JSON.stringify(e, null, 3));
+		log("MysqlError: " + JSON.stringify(e, null, 3));
 		if (e.message.indexOf("Not connected") !== -1) {
 			exports.init(global.database);
-			exports.query(query, callback);
+			setTimout(function() {
+				exports.query(query, callback);
+			},100);
 		}
 	}
 }
