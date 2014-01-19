@@ -40,58 +40,58 @@ exports.getMassUserDisplayName = function(users,callback) {
 	Database.query("SELECT `displayname`, `username`, `id`, `avatarid` FROM `users` WHERE `id` IN (" + users.join(",")+")", callback);
 }
 
-exports.trySignin = function(user,pass,response) {
+exports.trySignin = function(args,callback) {
+	if (args.fragments.length < 5) return callback(args.response, false, 400);
+
+	var user = args.fragments[3];
+	var pass = args.fragments[4];
+
 	Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(user) + " OR `email` = " + Database.escape(user), function(err,rows) 
 	{
-		if (rows.length < 1 || err) {
-			response.writeHead(403);
-			response.write("false");
-			response.end();
-			return;
-		}
+		if (rows.length < 1 || err) return callback(args.response, false, 403);
+
 		bcrypt.compare(pass, rows[0].password, function(err,match) {
 			if (err || !match) {
-				response.writeHead(403);
-				response.end();
+				callback(args.response, false, 403);
 			} else {
 				var sessionid = rows[0].id + "," + rows[0].authkey;
-				response.writeHead(200, {
+				return callback(args.response, true, 200, {
 					"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT",
 					"Cache-Control": "no-cache"
 				});
-				response.end();
 			}
-			user = pass = err = rows = null;
 		});
 	});
 }
 
-exports.resetPassword = function(userobj) {
-	var token = crypto.randomBytes(30).toString("hex");
-	userobj.password = "RESET:" + token;
-	Database.updateObject("users", userobj);
-	return token;
-}
+exports.signupUser = function(args, callback) {
+	if (!args.fragments[6]) return callback(response, false, 400);
 
-exports.signupUser = function(inviteid, username, email, password, callback) {
+	var inviteid = fragments[3],
+		username = fragments[4],
+		email = fragments[5],
+		password = fragments[6];
+
 	Database.query("SELECT * FROM `invites` WHERE `id` = " + Database.escape(inviteid), function(err, inviterows) {
-		if (err) return callback(err);
-		if (!inviterows[0]) return callback(-1);
+		if (err) return callback(args.response, false, 500);
+		if (!inviterows[0]) return callback(args.response, -1);
 
-		if (username.length > 20) return callback(1);
+		if (username.length > 20) return callback(args.response, 1);
 
 		username = username.replace(/[^A-Za-z0-9]/g, "");
 		exports.generatePass(password, function(err,pass) {
 
 			var following = [68,4,6,24,36,25];
+
 			if (inviterows[0].from && following.indexOf(inviterows[0].from) == -1)
 				following.push(inviterows[0].from);
+
 			following = following.join(",");
 
 			exports.getUserProfileByAnything(email, function(err, rows) {
-				if (err) return callback(err);
+				if (err) return callback(args.response, err);
 				if (rows.length > 0) {
-					return callback(2);
+					return callback(args.response, 2);
 				}
 
 				Database.postObject("users", {
@@ -105,8 +105,8 @@ exports.signupUser = function(inviteid, username, email, password, callback) {
 					authkey: exports.generateAuthkey(username),
 					bio: ""
 				}, function(err, rows) {
-					if (err) return callback(err);
-					callback(err, rows);
+					if (err) return callback(args.response, false, 500);
+					callback(args.response, 1);
 
 					if (inviterows[0].from) {
 						exports.getUserProfile(inviterows[0].from, function(err, data) {
@@ -163,20 +163,56 @@ exports.unfollow = function(userobj, tofollow, callback) {
 	}
 }
 
-exports.forgotPass = function(user, callback, response) {
+exports.forgotPass = function(args, callback) {
+	var user = args.fragments[3];
+	if (!user) return callback(args.response, false, 400);
+
 	exports.getUserProfileByAnything(user, function(err, rows) {
 		if (rows && rows.length > 0) {
-			var token = exports.resetPassword(rows[0]);
+			var token = crypto.randomBytes(30).toString("hex");
+			rows[0].password = "RESET:" + token;
+			Database.updateObject("users", rows[0]);
 
 			Mail.sendMessage(rows[0].id, "forgot", {
 				token: token
 			});
 
-			callback(response, 1);
+			callback(args.response, 1);
 		} else {
-			callback(response, 0);
+			callback(args.response, 0);
 		}
-		request = userobj = uri = sessionid = null;
+	});
+}
+
+exports.resetPass = function(args, callback) {
+	if (args.fragments.length < 6) return callback(args.response, false, 400);
+	User.getUserProfile(args.fragments[3], function(err, rows) {
+		if (err) return callback(args.response, false, 500);
+
+		if (!rows || rows.length < 1) return callback(args.response,-2,403);
+
+		if (rows[0].password != "RESET:" + args.fragments[4]) 
+			return callback(args.response, -2, 403);
+
+		if (args.fragments[5].length < 3)
+			return callback(args.response, 0, 400);
+
+		User.generatePass(args.fragments[5], function(err, hash) {
+			if (err) return callback(args.response, false, 500);
+
+			rows[0].authkey = User.generateAuthkey(rows[0].id);
+			rows[0].password = hash;
+
+			Database.updateObject("users", rows[0], function(err, data) {
+				if (err) {
+					callback(args.response, -1);
+				} else {
+					callback(args.response, true, 200, {
+						"Set-Cookie": "D=" + rows[0].id + "," + rows[0].authkey + "; Path=/"
+					});
+				}
+			});
+		});
 	});
 }
 
