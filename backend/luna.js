@@ -1,11 +1,20 @@
+/* Sparklr
+ * Main backend entry
+ * Loads the workers
+ */
+
 var cluster = require("cluster");
+var log = require("./log");
 
 if (cluster.isMaster) {
-	console.log("As for our destination, the wind will guide us!");
-	console.log("PID: " + process.pid);
-	var rbkey = process.pid + Math.floor(Math.random() * 100000);
-	console.log("RBKEY: " + rbkey);
+	log("As for our destination, the wind will guide us!");
+	log("PID: " + process.pid);
 
+	// calculate a random reboot key for internal server maintenance
+	var rbkey = process.pid + Math.floor(Math.random() * 100000);
+	log("RBKEY: " + rbkey);
+
+	// store the rbkey for sending the reload call
 	require("fs").writeFile("../../luna.pid", rbkey);
 
 	var numCPUs = require('os').cpus().length;
@@ -16,7 +25,7 @@ if (cluster.isMaster) {
 	}
 
 	cluster.on("exit", function(worker, code) {
-		console.log("Debug: Worker exitted with code: " + code);
+		log("Debug: Worker exitted with code: " + code);
 		if (code != 0) {
 			var w = cluster.fork();
 			w.on("message", handleMsg);
@@ -30,7 +39,7 @@ if (cluster.isMaster) {
 			}
 			return;
 		}
-		console.log((new Date).toString() + ": Reloading app...");
+		log("Reloading app...");
 
 		delete require.cache;
 
@@ -39,17 +48,17 @@ if (cluster.isMaster) {
 
 		var shutdownWorker = function() {
 			if (workersKilled == workerIds.length) {
-				console.log("Reloading complete.");
+				log("Reloading complete.");
 				shutdownWorker = null;
 				return;
 			}
 
-			console.log("Debug: Disconnecting " + workerIds[workersKilled]);
+			log("Debug: Disconnecting " + workerIds[workersKilled]);
 
 			cluster.workers[workerIds[workersKilled]].disconnect();
 			var newWorker = cluster.fork();
 			newWorker.once("listening", function() {
-				console.log("Debug: Replacement online.");
+				log("Debug: Replacement online.");
 				workersKilled++;
 				shutdownWorker();
 			});

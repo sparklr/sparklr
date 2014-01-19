@@ -1,29 +1,29 @@
-require("./config");
+/* Sparklr
+ * A worker in the cluster
+ */
 
 var cluster = require("cluster");
-
 var url = require("url");
 var http = require("http");
 
-var wsServer = require("ws").Server;
+var log = require("./log");
+
+// Pull in global config options
+require("./config");
 
 var Frontend = require("./frontend");
 var User = require("./user");
 var Work = require("./work");
 var Database = require("./database");
 
-//var agent = require('webkit-devtools-agent');
-Database.init(global.database);
+Database.init();
 
-//var memwatch = require("memwatch");
-//var hd = new memwatch.HeapDiff();
-
-var server = http.createServer(handleRequests);
-server.listen(8080);
+http.createServer(handleRequests).listen(8080);
 
 function handleRequests(request,response) {
 	var requesturi = url.parse(request.url, true);
 	var sessionid;
+
 	if (request.headers["cookie"]) {
 		var d = request.headers["cookie"].match(/D\=([^\s|^\;]+)\;?/);
 		sessionid = d ? d[1] : "";
@@ -33,15 +33,6 @@ function handleRequests(request,response) {
 		relayReload(requesturi.pathname);
 		response.end();
 	}
-	/*if (requesturi.pathname.indexOf("/heap") !== -1) {
-		var diff = hd.end();
-		response.writeHead(200);
-		response.write(JSON.stringify(diff, null, 3));
-		response.end();
-		hd = new memwatch.HeapDiff();
-		return;
-	}
-	*/
 
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		Work.run(request,response,requesturi,sessionid);
@@ -61,103 +52,14 @@ function handleRequests(request,response) {
 	}
 }
 
-process.on('uncaughtException', function(err) {
-	console.log((new Date).toString() + ": Error: " + JSON.stringify(err, null, 3));
-	console.log(err.stack);
-	process.exit(1);
-});
-
-var wss = new wsServer({ port: 8081 });
-var clients = {};
-var p18Index = 0;
-
-wss.on("connection", function(ws) {
-	ws.p18Authenticated = false;
-	ws.on("close", function() {
-		//p18Index wont work because the index changes as the array shifts
-	   clients[ws.p18Index] = null;
-	});
-	ws.on("message", function(message,e2,e3) {
-		if (!ws.p18Authenticated) {
-			var s = message.split(",");
-			User.verifyAuth(s[0],s[1], function(success,userobj) {
-				if (!success)
-					return ws.close();
-				
-				ws.p18Authenticated = true;
-				ws.p18SubscribedTo = [];
-				ws.p18User = userobj.id;
-
-				ws.send("c:");
-
-				ws.p18Index = p18Index;
-				clients[p18Index] = ws;
-				p18Index++;
-			});
-			return;
-		}
-		var c = message.substring(0,1);
-		var body = message.substring(1);
-		switch (c) {
-			case "s":
-				// these are the predetermined subscriptions
-				ws.p18SubscribedTo = body.split(",");
-				break;
-			case "S":
-				// subscribe
-				ws.p18SubscribedTo.push(body);
-				break;
-			case "U":
-				// subscribe
-				if ((i = ws.p18SubscribedTo.indexOf(body)) !== -1)
-					ws.p18SubscribedTo.splice(i,1);
-				break;
-		}
-	});
-});
-
-process.on("message", function(e) {
-	var str;
-
-	if (e.t === 0) {
-		for (i in clients) {
-			if (!clients[i]) continue;
-			if (clients[i].p18SubscribedTo.indexOf("c" + e.postid) !== -1) {
-				clients[i].send(str || (str = JSON.stringify(e)));
-			}
-		}
-	}
-	if (e.t === 1 || e.t === 3) {
-		for (i in clients) {
-			if (!clients[i]) continue;
-			if (clients[i].p18User == e.to || (clients[i].p18User == e.from && e.t === 1)) {
-				clients[i].send(str || (str = JSON.stringify(e)));
-			}
-		}
-	}
-	if (e.t === 2) {
-		if (e.message !== false)
-			var tags = e.message.match(/\B#([\w-]{1,40})/gi);
-		else
-			var tags = [];
-
-		for (i in clients) {
-			if (!clients[i]) continue;
-			subTag = false;
-			for (tag in tags) {
-				if (clients[i].p18SubscribedTo.indexOf(tags[tag]) !== -1) {
-					subTag = true;
-					break;
-				}
-			}
-			if (subTag || clients[i].p18SubscribedTo.indexOf(e.from.toString()) !== -1 || clients[i].p18SubscribedTo.indexOf(e.network.toString()) !== -1) {
-				clients[i].send(str || (str = JSON.stringify(e)));
-			}
-		}
-	}
-});
-
 function relayReload(uri) {
 	var s = uri.split("/");
 	process.send("R:" + s[2]);
 }
+
+process.on('uncaughtException', function(err) {
+	log("process error: uncaughtException: " + JSON.stringify(err, null, 3));
+	console.log(err.stack);
+	process.exit(1);
+});
+
