@@ -1253,11 +1253,12 @@ div.popup_post {
 	text-align: center;
 	display: none;
 	position: relative;
-	margin: 8px 3px;
+	margin: 8px 5px;
 	padding: 8px;
 	background: #6C6274;
 	border: solid 1px #887C91;
 	cursor: pointer;
+	width: 420px;
 }
 
 input.t1 {
