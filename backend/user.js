@@ -216,3 +216,43 @@ exports.resetPass = function(args, callback) {
 	});
 }
 
+exports.friends = function(args, callback) {
+	callback(200, args.userobj.following);
+}
+exports.settings = function(args, callback) {
+	args.userobj.password = null;
+	callback(200, args.userobj);
+}
+exports.invite = function(args, callback) {
+	Database.query("SELECT * FROM `invites` WHERE `from` = " + (+args.userobj.id),
+		function(err,rows) {
+			if (err) return callback(500, false);
+			if (rows.length > 0) {
+				callback(200,rows[0].id);
+			} else {
+				var id = Toolbox.hash(args.userobj.id + args.userobj.email + args.userobj.authkey);
+				Database.query("INSERT INTO `invites` (`id`,`from`) VALUES ('" + id + "','" + (+args.userobj.id) + "')");
+				callback(200,id);
+			}
+		}
+	);
+}
+
+exports.random = function(args, callback) {
+	Database.query("SELECT `id` FROM `users` AS users1\
+		JOIN \
+		(SELECT (RAND() * (SELECT MAX(id) FROM `users`)) as nid) AS users2 \
+		WHERE users1.id >= users2.nid AND users1.id != " + (+args.userobj.id) + "\
+		ORDER BY users1.lastseen DESC LIMIT 5", 
+	function(err,rows) {
+		var id = rows[Math.round(Math.random() * (rows.length - 1))].id;
+		callback(200,id);
+	});
+}
+
+exports.search = function(args, callback) {
+	// not implemented
+	callback(200, args.userobj);
+}
+
+
