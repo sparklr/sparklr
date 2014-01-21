@@ -14,14 +14,22 @@ var Database = require("./database");
 var Toolbox = require("./toolbox");
 var Upload = require("./upload");
 
+var api = {
+	chat: require('./api/chat'),
+	notifications: require('./api/notifications'),
+	post: require('./api/post'),
+	user: require('./api/user')	
+}
+
 var public_endpoints = {};
-var endpoints = {};
+var get_endpoints = {};
+var post_endpoints = {};
 
 public_endpoints["areyouawake"] = function(args, callback) {
-	callback(args.response, true);
+	callback(200, true);
 }
 public_endpoints["signoff"] = function(args, callback) {
-	callback(args.response, true, {
+	callback(200, true, {
 		"Set-Cookie": "D=; Path=/",
 		"Cache-Control": "no-cache"
 	});
@@ -30,27 +38,338 @@ public_endpoints["signin"] = User.trySignin;
 public_endpoints["forgot"] = User.forgotPass;
 public_endpoints["reset"] = User.resetPass;
 public_endpoints["requestinvite"] = function(args, callback) {
-	if (!args.fragments[3]) return callback(args.response, false, 400);
+	if (!args.fragments[3]) return callback(400, false);
+
 	Database.postObject("newsletter", {
 		email: args.fragments[3]
-	}, function(err) {
-		callback(args.response, err == null);
+	}, callback);
+}
+public_endpoints["checkusername"] = User.checkusername;
+
+get_endpoints["invite"] = User.invite;
+get_endpoints["friends"] = User.friends;
+get_endpoints["settings"] = User.settings;
+get_endpoints["random"] = User.random;
+get_endpoints["search"] = User.search;
+get_endpoints["inbox"] = api.chat.inbox;
+get_endpoints["notifications"] = api.notifications.notifications;
+get_endpoints["staff"] = function(args, callback) {
+	Database.query("SELECT * FROM `users` WHERE `rank` = 100 OR `rank` = 50 ORDER BY `rank` DESC", callback);
+}
+get_endpoints["post"] = api.post.getPost;
+get_endpoints["comments"] = api.post.getComments;
+get_endpoints["stream"] = api.post.getStream;
+get_endpoints["mentions"] = api.post.getMentions;
+get_endpoints["user"] = api.user.getUser;
+get_endpoints["chat"] = api.chat.getChat;
+get_endpoints["username"] = function(args, callback) {
+	var users = args.fragments[3].split(",");
+	User.getMassUserDisplayName(users,callback);
+}
+get_endpoints["follow"] = function(args, callback) {
+	var tofollow = args.fragments[3];
+	User.follow(args.userobj, tofollow, callback);
+}
+get_endpoints["unfollow"] = function(args, callback) {
+	var tofollow = args.fragments[3];
+	User.unfollow(args.userobj, tofollow, callback);
+}
+/* ??? twice?
+get_endpoints["checkusername"] = function(args, callback) {
+			User.getUserProfileByUsername(fragments[3], function(err, rows) {
+				if (err) return do500(response, err);
+				callback(rows && rows.length > 0 && rows[0].id != userobj.id);
+			});
+	callback(args.response, args.userobj);
+}
+*/
+get_endpoints["search"] = function(args, callback) {
+	var results = {};
+	var q = "%" + unescape(args.fragments[3]) + "%";
+	Database.query("SELECT `username`, `id` FROM `users` WHERE `displayname` LIKE " + Database.escape(q) + " OR `username` LIKE " + Database.escape(q) + " ORDER BY `lastseen` DESC LIMIT 30", function(err, rows) {
+		if (rows && rows.length > 0) {
+			results.users = rows;
+		}
+		var query = "SELECT * FROM `timeline` WHERE `message` LIKE " + Database.escape(q) + " ORDER BY `time` DESC LIMIT 30";
+		Database.query(query, function(err, rows) {
+			if (rows && rows.length > 0) {
+				results.posts = rows;
+			}
+			callback(err, results);
+			results = q = null;
+		});
 	});
 }
-public_endpoints["checkusername"] = function(args, callback) {
-	if (!args.fragments[3]) return callback(args.response, false, 400);
-	User.getUserProfileByUsername(args.fragments[3], function(err, rows) {
-		if (err) return callback(args.response, err, 500);
-		callback(args.response, rows && rows.length > 0);
+get_endpoints["sendinvite"] = function(args, callback) {
+	var inviteid = Toolbox.hash((Math.random() * 1e5) + args.userobj.id + args.fragments[3]);
+	Database.postObject("invites", {
+		id: inviteid,
+		from: args.userobj.id
+	}, function(err, rows) {
+		if (err) return callback(err);
+		Mail.sendMessageToEmail(args.fragments[3], "invite", {
+			invite: inviteid,
+			from: args.userobj.displayname
+		});
+		callback(err, true);
 	});
 }
+get_endpoints["tag"] = function(args, callback) {	
+	var tag = args.fragments[3];
+	var since = args.uri.query.since;
+	var starttime = args.uri.query.starttime;
+
+	Post.getPostRowsFromKeyQuery("tags", "tag", tag, since, starttime, callback);
+}
+get_endpoints["delete"] = function(args, callback) {
+	if (args.fragments.length < 5 || !args.fragments[4])
+		return callback(400, false);
+
+	switch (args.fragments[3]) {
+		case "notification":
+			Database.deleteObject("notifications", {
+				to: args.userobj.id,
+				id: args.fragments[4]
+			}, callback);
+			break;
+		case "post":
+			//TODO: better sanitization
+			Post.deletePost(args.userobj, +(args.fragments[4]) || 0, callback);
+			break;
+		case "comment":
+			Post.deleteComment(args.userobj, +(args.fragments[4]) || 0, callback);
+			break;
+	}
+}
+
+post_endpoints["post"] = function(args, callback) {
+	if (postObject.body.length > 500)
+		return do400(response, 400, "Post too long");
+	Post.post(userobj.id, postObject, callback);
+}
+post_endpoints["repost"] = function(args, callback) {
+	if (postObject.img)
+		postObject.reply = "[IMG" + postObject.img + "]" + postObject.reply;
+	if (postObject.reply.length > 520) 
+		return do400(response, 400, "Too long");
+
+	Post.repost(userobj.id, postObject.id, postObject.reply, function(err) {
+		if (err) return do500(response, err);
+		sendObject(response, {});
+	});
+}
+post_endpoints["comment"] = function(args, callback) {
+	if (args.postObject.img)
+		postObject.comment = "[IMG" + postObject.img + "]" + postObject.comment;
+	if (postObject.comment.length > 520)
+		return do400(response, 400, "Too long");
+	Post.postComment(userobj.id, postObject, function(err) {
+		sendObject(response, {});
+	});
+}
+post_endpoints["editpost"] = function(args, callback) {
+	Post.edit(userobj.id, postObject.id, postObject.body, userobj.rank, callback);
+}
+post_endpoints["editcomment"] = function(args, callback) {
+	Post.editcomment(userobj.id, postObject.id, postObject.body, userobj.rank, callback);
+}
+post_endpoints["chat"] = function(args, callback) {
+	postObject.to = parseInt(postObject.to);
+	if (postObject.to == userobj.id) return do400(response, "stop that");
+
+	if (postObject.img)
+		postObject.message = "[IMG" + postObject.img + "]" + postObject.message;
+	if (postObject.message.length > 520)
+		return do400(response, 400, "Too long");
+	
+	User.getUserProfile(postObject.to, function(err,rows) {
+		if (err || !rows || !rows[0]) return do500(response, err);
+
+		rows[0].blacklist = (rows[0].blacklist || "").split(",");
+		if (rows[0].blacklist.indexOf(userobj.id.toString()) !== -1)
+			return do400(response, 403, "Blocked");
+
+		Database.postObject("messages", {
+			from: userobj.id,
+			to: postObject.to,
+			time: Toolbox.time(),
+			message: postObject.message
+		}, function(err, data) {
+			if (err) return do500(response, err);
+			Notification.addUserNotification(parseInt(postObject.to), postObject.message, 0, userobj.id, Notification.N_CHAT);
+			sendObject(response, {});
+
+			process.send({ t: 1, to: postObject.to, from: userobj.id, message: postObject.message, time: Toolbox.time() });
+		});
+	});
+
+}
+post_endpoints["like"] = function(args, callback) {
+	Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(postObject.id) + " AND `from` = " + parseInt(userobj.id) + " AND message = 0xe2989d", function (err, rows) {
+	if (rows.affectedRows > 0) {
+		Post.updateCommentCount(postObject.id, -1);
+		sendObject(response, { deleted: true });
+		process.send({ t: 2, message: false, delta: true, id: parseInt(postObject.id), commentcount: -1, network: '0', from: 0 });
+		return;
+	}
+	Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D", like: true}, function(){});
+	sendObject(response, {});
+});
+
+}
+post_endpoints["settings"] = function(args, callback) {
+	var result = true;
+	var message = "";
+	if (postObject.username) {
+		if (postObject.username.match(/^\d+$/)) {
+			message = "That username is a number. (fact of the day)";
+			result = false;
+		} else if (postObject.username.length > 20) {
+			message = "That username is a little long...";
+			result = false;
+		} else {
+			userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
+		}
+	}
+
+	if (postObject.bio) {
+		if (postObject.bio.length < 400) {
+			userobj.bio = postObject.bio;
+		} else {
+			userobj.bio = postObject.bio.substring(0,397) + "...";
+		}
+	}
+	
+	if (postObject.email) {
+		if (postObject.email != userobj.email) {
+			userobj.emailverified = 0;
+		}
+		userobj.email = postObject.email;
+	}
+
+	if (postObject.displayname.length > 25) {
+		message = "That display name is a little long...";
+		result = false;
+	} else if (postObject.displayname.length < 1) {
+		message = "You actually need a display name. I know, tough.";
+		result = false;
+	} else {
+		userobj.displayname = postObject.displayname.replace(/(\<|\>|[\u273B]|[\u273C])/g, "");
+	}
+	if (userobj.rank == 50)
+		userobj.displayname += "\u273B";
+	if (userobj.rank == 100)
+		userobj.displayname += "\u273C";
+
+
+	User.getUserProfileByUsername(userobj.username, function(err, res) {
+		if (err) return do500(response, err);
+		if (res && res.length > 0 && res[0].id != userobj.id) {
+			result = false;
+			message = "That username is taken :c";
+		} else {
+			Database.updateObject("users", userobj);
+		}
+
+		sendObject(response, {
+			result: result,
+			message: message
+		});
+	});
+
+}
+post_endpoints["password"] = function(args, callback) {
+	
+	var result = {
+		result: false,
+		message: ""
+	};
+	bcrypt.compare(postObject.password, userobj.password, function(err, match) {
+		if (err) do500(response, err);
+		if (match) {
+			result.result = true;
+			User.generatePass(postObject.newpassword, function(err, newpass) {
+				userobj.password = newpass;
+				// should we reset the authkey here???
+				Database.updateObject("users", userobj);
+				result.authkey = userobj.authkey;
+				sendObject(response, result);
+			});
+		} else {
+			result.message = "Incorrect current password.";
+			sendObject(response, result);
+		}
+	});
+}
+post_endpoints["blacklist"] = function(args, callback) {
+	sendObject(response, { result: true, message: "" });
+}
+post_endpoints["list"] = function(args, callback) {
+	var list = (userobj.blacklist || "").split(",");
+
+	if (postObject.action) {
+		if (list.indexOf(postObject.user.toString()) === -1)
+			list.push(postObject.user);
+	} else {
+		list.splice(list.indexOf(postObject.user.toString()), 1);
+	}
+	userobj.blacklist = list.join(",");
+
+	Database.updateObject("users", userobj);
+	sendObject(response, { result: true, message: "" });
+}
+post_endpoints["delete"] = function(args, callback) {
+	var result = {};
+	User.deleteUser(userobj, postObject, function(err,res) {
+		if (err) {
+			result.result = false;
+			result.message = "An unknown error occurred";
+		} else {
+			if (res) {
+				result.deleted = true;
+				result.message = "Your account has been deleted.";
+				result.result = true;
+			} else {
+				result.result = false;
+				result.message = "Incorrect current password.";
+			}
+		}
+		sendObject(response, result);
+	});
+}
+post_endpoints["avatar"] = function(args, callback) {
+	userobj.avatarid = Toolbox.time();
+	Database.updateObject("users", userobj);
+	sendObject(response, userobj.avatarid);
+}
+post_endpoints["header"] = function(args, callback) {
+	userobj.avatarid = Toolbox.time();
+	Database.updateObject("users", userobj);
+	sendObject(response, Toolbox.time());
+}
+post_endpoints["feedback"] = function(args, callback) {
+	Mail.sendMessageToEmail("jaxbot@gmail.com", "feedback", postObject, userobj);
+	sendObject(response, true);
+}
+
+//hello world
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
-	var args = { request: request, response: response, uri: uri, sessionid: sessionid, fragments: fragments }
+
+	var args = { request: request,
+		response: response,
+		uri: uri,
+		sessionid: sessionid,
+		fragments: fragments
+	}
+
+	var callback = function(err,res,headers) {
+		apiResponse(response,err,res,headers);
+	}
 
 	if (f = public_endpoints[fragments[2]])
-		return f(args, apiResponse);
+		return f(args, callback);
 
 	var postBody = "";
 	var dataComplete = false;
@@ -77,11 +396,15 @@ exports.run = function(request, response, uri, sessionid) {
 	var authkey_header = request.headers['x-x'];
 	User.verifyAuth(sessionid.split(',')[0], authkey_header, function(success, userobj) {
 		if (!success) {
-			return apiResponse(response, false, 403);
+			//return apiResponse(response, false, 403);
 		}
+		args.userobj = userobj;
 
 		userobj.following = userobj.following.split(",").filter(Toolbox.filter);
 		if (request.method == "POST") {
+			if (!(endpoint = post_endpoints[fragments[2]]))
+				return apiResponse(response, false, 404);
+
 			var postObject;
 			try {
 				postObject = request.headers['x-data'] ? JSON.parse(request.headers['x-data']) : {};
@@ -90,7 +413,9 @@ exports.run = function(request, response, uri, sessionid) {
 				log(e);
 				return apiResponse(response, false, 500);
 			}
-			
+				
+			args.postObject = postObject;
+
 			if (postObject.img) {
 				var f = function() {
 					var args = { allowGif: true, width: 400, height: 620 };
@@ -108,552 +433,26 @@ exports.run = function(request, response, uri, sessionid) {
 						if (err) return do500(response, err);
 						postObject.img = id;
 
-						processPostRequest(request, response, postObject, uri, sessionid, userobj);
+						endpoint(args, apiResponse);
+						
 						f = null;
 					});
 				};
 				dataComplete ? f() : request.on("end", f);
 				return;
 			} else {
-				if (f = endpoints[fragments[2]])
-					return f(args, apiResponse);
+				endpoint(args, callback);
 			}
 		} else {
 			if (uri.pathname.indexOf("/beacon") !== -1) {
 				Notification.getUserNotifications(userobj.id, uri.query.n, beaconNotifCallback, args);
 			} else {
-				if (f = endpoints[fragments[2]])
-					return f(args, apiResponse);
+				if (!(endpoint = get_endpoints[fragments[2]]))
+					return apiResponse(response, 404, false);
+				endpoint(args, callback);
 			}
 		}
 	});
-}
-
-function processPostRequest(request, response, postObject, uri, sessionid, userobj) {
-	var fragments = uri.pathname.split("/");
-	switch (fragments[2]) {
-		case "post":
-			if (postObject.body.length > 500)
-				return do400(response, 400, "Post too long");
-			Post.post(userobj.id, postObject, function(err,res) {
-				sendObject(response, res);
-			});
-		return;
-		case "repost":
-			if (postObject.img)
-				postObject.reply = "[IMG" + postObject.img + "]" + postObject.reply;
-			if (postObject.reply.length > 520) 
-				return do400(response, 400, "Too long");
-
-			Post.repost(userobj.id, postObject.id, postObject.reply, function(err) {
-				if (err) return do500(response, err);
-				sendObject(response, {});
-			});
-		return;
-		case "comment":
-			if (postObject.img)
-				postObject.comment = "[IMG" + postObject.img + "]" + postObject.comment;
-			if (postObject.comment.length > 520)
-				return do400(response, 400, "Too long");
-			Post.postComment(userobj.id, postObject, function(err) {
-				sendObject(response, {});
-			});
-		return;
-		case "editpost":
-			Post.edit(userobj.id, postObject.id, postObject.body, userobj.rank, function(err) {
-				sendObject(response, {});
-			});
-			break;
-		case "editcomment":
-			Post.editcomment(userobj.id, postObject.id, postObject.body, userobj.rank, function(err) {
-				sendObject(response, {});
-			});
-			break;
-		case "chat":
-			postObject.to = parseInt(postObject.to);
-			if (postObject.to == userobj.id) return do400(response, "stop that");
-
-			if (postObject.img)
-				postObject.message = "[IMG" + postObject.img + "]" + postObject.message;
-			if (postObject.message.length > 520)
-				return do400(response, 400, "Too long");
-			
-			User.getUserProfile(postObject.to, function(err,rows) {
-				if (err || !rows || !rows[0]) return do500(response, err);
-
-				rows[0].blacklist = (rows[0].blacklist || "").split(",");
-				if (rows[0].blacklist.indexOf(userobj.id.toString()) !== -1)
-					return do400(response, 403, "Blocked");
-
-				Database.postObject("messages", {
-					from: userobj.id,
-					to: postObject.to,
-					time: Toolbox.time(),
-					message: postObject.message
-				}, function(err, data) {
-					if (err) return do500(response, err);
-					Notification.addUserNotification(parseInt(postObject.to), postObject.message, 0, userobj.id, Notification.N_CHAT);
-					sendObject(response, {});
-		
-					process.send({ t: 1, to: postObject.to, from: userobj.id, message: postObject.message, time: Toolbox.time() });
-				});
-			});
-		return;
-		case "like":
-			Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(postObject.id) + " AND `from` = " + parseInt(userobj.id) + " AND message = 0xe2989d", function (err, rows) {
-				if (rows.affectedRows > 0) {
-					Post.updateCommentCount(postObject.id, -1);
-					sendObject(response, { deleted: true });
-					process.send({ t: 2, message: false, delta: true, id: parseInt(postObject.id), commentcount: -1, network: '0', from: 0 });
-					return;
-				}
-				Post.postComment(userobj.id, { to: postObject.to, id: postObject.id, comment: "\u261D", like: true}, function(){});
-				sendObject(response, {});
-			});
-		return;
-		case "settings":
-			var result = true;
-			var message = "";
-			if (postObject.username) {
-				if (postObject.username.match(/^\d+$/)) {
-					message = "That username is a number. (fact of the day)";
-					result = false;
-				} else if (postObject.username.length > 20) {
-					message = "That username is a little long...";
-					result = false;
-				} else {
-					userobj.username = postObject.username.replace(/[^A-Za-z0-9]/g, "");
-				}
-			}
-
-			if (postObject.bio) {
-				if (postObject.bio.length < 400) {
-					userobj.bio = postObject.bio;
-				} else {
-					userobj.bio = postObject.bio.substring(0,397) + "...";
-				}
-			}
-			
-			if (postObject.email) {
-				if (postObject.email != userobj.email) {
-					userobj.emailverified = 0;
-				}
-				userobj.email = postObject.email;
-			}
-
-			if (postObject.displayname.length > 25) {
-				message = "That display name is a little long...";
-				result = false;
-			} else if (postObject.displayname.length < 1) {
-				message = "You actually need a display name. I know, tough.";
-				result = false;
-			} else {
-				userobj.displayname = postObject.displayname.replace(/(\<|\>|[\u273B]|[\u273C])/g, "");
-			}
-			if (userobj.rank == 50)
-				userobj.displayname += "\u273B";
-			if (userobj.rank == 100)
-				userobj.displayname += "\u273C";
-
-
-			User.getUserProfileByUsername(userobj.username, function(err, res) {
-				if (err) return do500(response, err);
-				if (res && res.length > 0 && res[0].id != userobj.id) {
-					result = false;
-					message = "That username is taken :c";
-				} else {
-					Database.updateObject("users", userobj);
-				}
-
-				sendObject(response, {
-					result: result,
-					message: message
-				});
-			});
-		break;
-		case "password":
-			var result = {
-				result: false,
-				message: ""
-			};
-			bcrypt.compare(postObject.password, userobj.password, function(err, match) {
-				if (err) do500(response, err);
-				if (match) {
-					result.result = true;
-					User.generatePass(postObject.newpassword, function(err, newpass) {
-						userobj.password = newpass;
-						// should we reset the authkey here???
-						Database.updateObject("users", userobj);
-						result.authkey = userobj.authkey;
-						sendObject(response, result);
-					});
-				} else {
-					result.message = "Incorrect current password.";
-					sendObject(response, result);
-				}
-			});
-		break;
-		case "blacklist":
-			sendObject(response, { result: true, message: "" });
-		break;
-		case "list":
-			var list = (userobj.blacklist || "").split(",");
-
-			if (postObject.action) {
-				if (list.indexOf(postObject.user.toString()) === -1)
-					list.push(postObject.user);
-			} else {
-				list.splice(list.indexOf(postObject.user.toString()), 1);
-			}
-			userobj.blacklist = list.join(",");
-
-			Database.updateObject("users", userobj);
-			sendObject(response, { result: true, message: "" });
-		break;
-		case "delete": 
-			var result = {};
-			User.deleteUser(userobj, postObject, function(err,res) {
-				if (err) {
-					result.result = false;
-					result.message = "An unknown error occurred";
-				} else {
-					if (res) {
-						result.deleted = true;
-						result.message = "Your account has been deleted.";
-						result.result = true;
-					} else {
-						result.result = false;
-						result.message = "Incorrect current password.";
-					}
-				}
-				sendObject(response, result);
-			});
-		break;
-		case "avatar":
-			userobj.avatarid = Toolbox.time();
-			Database.updateObject("users", userobj);
-			sendObject(response, userobj.avatarid);
-		break;
-		case "header":
-			userobj.avatarid = Toolbox.time();
-			Database.updateObject("users", userobj);
-			sendObject(response, Toolbox.time());
-		break;
-		case "background":
-			if (postObject.remove) {
-				userobj.background = 0;
-				Database.updateObject("users", userobj);
-				sendObject(response, true);
-				return;
-			}
-			if(typeof(postObject.style) !== 'undefined'){
-				if (postObject.style) {
-					userobj.background = Math.abs(userobj.background);
-				}
-				else{
-					userobj.background = -Math.abs(userobj.background);
-				}
-				Database.updateObject("users", userobj);
-				sendObject(response, userobj.background);
-				return;
-			}
-			userobj.background = Toolbox.time();
-			Database.updateObject("users", userobj, function() {
-				sendObject(response, userobj.background);
-			});
-		break;
-		case "feedback":
-			Mail.sendMessageToEmail("jaxbot@gmail.com", "feedback", postObject, userobj);
-			sendObject(response, true);
-		break;
-	}
-}
-
-function processGetRequest(request, response, uri, sessionid, userobj, callback) {
-	var fragments = uri.pathname.split("/");
-	switch (fragments[2]) {
-		case "invite":
-			Database.query("SELECT * FROM `invites` WHERE `from` = " + parseInt(userobj.id),
-			function(err,rows) {
-				if (err) return do500(response,err);
-				if (rows.length > 0) {
-					callback(null,rows[0].id);
-				} else {
-					var id = Toolbox.hash(userobj.id + userobj.email + userobj.authkey);
-					Database.query("INSERT INTO `invites` (`id`,`from`) VALUES ('" + id + "','" + parseInt(userobj.id) + "')", function(){});
-					callback(null,id);
-				}
-			});
-				return;
-		case "friends":
-			callback(null, userobj.following);
-			return;
-		case "settings":
-			userobj.password = null;
-			callback(null,userobj);
-			return;
-		case "random":
-			Database.query("SELECT `id` FROM `users` AS users1\
-				JOIN \
-				(SELECT (RAND() * (SELECT MAX(id) FROM `users`)) as nid) AS users2 \
-				WHERE users1.id >= users2.nid AND users1.id != " + parseInt(userobj.id) + "\
-				ORDER BY users1.lastseen DESC LIMIT 5", 
-			function(err,rows) {
-				var id = rows[Math.round(Math.random() * (rows.length - 1))].id;
-				callback(null,id);
-			});
-			return; 
-		case "search":
-			if (!fragments[3]) return callback(null,false);
-			break;
-		case "inbox":
-			Database.query("SELECT msgs.time,msgs.from,`message` FROM `messages` msgs\
-				INNER JOIN (SELECT `from`, MAX(`time`) AS time\
-				FROM `messages`\
-				WHERE `to` = " + parseInt(userobj.id) + "\
-				GROUP BY `from`\
-				) msgmax ON msgmax.from = msgs.from\
-				AND msgmax.time = msgs.time\
-				ORDER BY msgs.time DESC", callback);
-			return;
-		case "notifications":
-			Database.getStream("notifications", {
-				to: [userobj.id],
-			}, callback);
-			return;
-		case "staff":
-			Database.query("SELECT * FROM `users` WHERE `rank` = 100 OR `rank` = 50 ORDER BY `rank` DESC", callback);
-			return;
-		case "explore":
-			Database.query("SELECT * FROM networks", callback);
-			return;
-		default:
-			if (fragments.length < 4 || fragments[3] == "") {
-				callback("Missing arguments: " + uri.pathname);
-				return;
-			}
-	}
-
-	switch (fragments[2]) {
-		case "post":
-			var users;
-			var posts;
-			var comments;
-			Database.getObject("timeline", fragments[3], function(err, res) {
-				posts = res;
-				if (!err && res.length > 0) {
-					Post.getComments(fragments[3], 0, function(err, res) {
-						if (err) {
-							return callback(err);
-						}
-						comments = res;
-						var obj = posts[0];
-
-						obj.comments = comments;
-						callback(err,obj);
-					});
-				} else {
-					callback(404);
-				}
-			});
-			break;
-		case "comments":
-			var since = uri.query.since || 0;
-			Post.getComments(fragments[3], since, callback);
-			break;
-		case "stream":
-			var stream = fragments[3];
-			if (!stream.match(/^\d+$/)) {
-				uri.query.network = 1;
-			} else {
-				stream = parseInt(stream);
-			}
-			var args = {};
-			if (stream === "following") {
-				args.from = userobj.following.slice(0); // get a copy, not a reference
-				args.from.push(userobj.id);
-			} else if (stream === "everything") {
-				args.since = 1;
-			} else if (uri.query.network) {
-				args.networks = [stream.toString()];
-			} else {
-				args.from = [stream];
-			}
-			if (uri.query.since) {
-				args.since = uri.query.since;
-				args.modified = uri.query.since;
-			}
-			if (uri.query.starttime) {
-				args.starttime = uri.query.starttime;
-			}
-			if (uri.query.photo)
-				args.type = 1;
-
-			Database.getStream("timeline", args, callback);
-			break;
-		case "mentions":
-			var user = fragments[3];
-
-			var since = uri.query.since;
-			var starttime = uri.query.starttime;
-
-			Post.getPostRowsFromKeyQuery("mentions", "user", user, since, starttime, callback);
-			break;
-		case "user":
-			var userid = fragments[3];
-			if (userid.match(/^\d+$/)) {
-				User.getUserProfile(userid, cb);
-			} else {
-				User.getUserProfileByUsername(userid, cb);
-			}
-			function cb(err, users) {
-				if (err) return do500(response, err);
-				if (users.length < 1) {
-					return do400(response, 404, "no such user");
-				}
-
-				var profile = users[0];
-
-				var obj = {
-					user: profile.id,
-					handle: profile.username,
-					avatarid: profile.avatarid,
-					background: profile.background,
-					following: (userobj.following.indexOf(profile.id.toString()) != -1),
-					name: profile.displayname,
-					bio: profile.bio
-				};
-
-				var table = "timeline";
-				var args = {
-					from: [profile.id]
-				};
-
-				if (fragments[4] == "photos") {
-					args.type = 1;
-				}
-
-				var done = function(err, rows) {
-					obj.timeline = rows;
-					callback(err,obj);
-				}
-
-				if (fragments[4] == "mentions") {
-					Post.getPostRowsFromKeyQuery("mentions", "user", profile.id.toString(), 0, 0, done);
-				} else {
-					Database.getStream(table, args, done);
-				}
-
-			}
-			break;
-		case "chat":
-			var from = parseInt(fragments[3]);
-			var since = uri.query.since || 0;
-			var starttime = uri.query.starttime || 0;
-
-			Database.getStream("messages", {
-				from: [from, userobj.id],
-				to: [userobj.id, from],
-				since: since,
-				starttime: starttime
-			}, callback);
-			break;
-		case "username":
-			var users = fragments[3].split(",");
-			User.getMassUserDisplayName(users,callback);
-			break;
-		case "networkinfo":
-			Database.getObject("networks", fragments[3], callback);
-			break;
-		case "track":
-			var totrack = fragments[3];
-			if (userobj.networks.indexOf(totrack) === -1)
-				userobj.networks.push(totrack);
-			Database.updateObject("users", userobj, callback);
-			break;
-		case "untrack":
-			var totrack = fragments[3];
-			var index = userobj.networks.indexOf(totrack);
-			if (index !== -1)
-				userobj.networks.splice(index, 1);
-			Database.updateObject("users", userobj, callback);
-			break;
-		case "follow":
-			var tofollow = fragments[3];
-			User.follow(userobj, tofollow, callback);
-			break;
-		case "unfollow":
-			var tofollow = fragments[3];
-			User.unfollow(userobj, tofollow, callback);
-			break;
-		case "checkusername":
-			User.getUserProfileByUsername(fragments[3], function(err, rows) {
-				if (err) return do500(response, err);
-				callback(rows && rows.length > 0 && rows[0].id != userobj.id);
-			});
-			break;
-		case "search":
-			var results = {};
-			var q = "%" + unescape(fragments[3]) + "%";
-			Database.query("SELECT `username`, `id` FROM `users` WHERE `displayname` LIKE " + Database.escape(q) + " OR `username` LIKE " + Database.escape(q) + " ORDER BY `lastseen` DESC LIMIT 30", function(err, rows) {
-				if (rows && rows.length > 0) {
-					results.users = rows;
-				}
-				var query = "SELECT * FROM `timeline` WHERE `message` LIKE " + Database.escape(q) + " ORDER BY `time` DESC LIMIT 30";
-				Database.query(query, function(err, rows) {
-					if (rows && rows.length > 0) {
-						results.posts = rows;
-					}
-					callback(err, results);
-					results = q = null;
-				});
-			});
-			break;
-		case "sendinvite":
-			var inviteid = Toolbox.hash((Math.random() * 1e5) + userobj.id + fragments[3]);
-			Database.postObject("invites", {
-				id: inviteid,
-				from: userobj.id
-			}, function(err, rows) {
-				if (err) return callback(err);
-				Mail.sendMessageToEmail(fragments[3], "invite", {
-					invite: inviteid,
-					from: userobj.displayname
-				});
-				callback(err, true);
-			});
-			break;
-		case "tag":
-			var tag = fragments[3];
-			var since = uri.query.since;
-			var starttime = uri.query.starttime;
-
-			Post.getPostRowsFromKeyQuery("tags", "tag", tag, since, starttime, callback);
-			break;
-		case "delete":
-			if (fragments.length < 5 || !fragments[4])
-				return callback("Missing arguments");
-
-			switch (fragments[3]) {
-				case "notification":
-					Database.deleteObject("notifications", {
-						to: userobj.id,
-						id: fragments[4]
-					}, callback);
-					break;
-				case "post":
-					//TODO: better sanitization
-					Post.deletePost(userobj, parseInt(fragments[4]) || 0, callback);
-					break;
-				case "comment":
-					Post.deleteComment(userobj, parseInt(fragments[4]) || 0, callback);
-					break;
-			}
-			break;
-		default:
-			callback(400, "No such API endpoint");
-			break;
-	}
 }
 
 function beaconNotifCallback(err, rows, args) {
@@ -664,19 +463,24 @@ function beaconNotifCallback(err, rows, args) {
 	if (rows.length > 0)
 		obj.notifications = rows;
 
-	if ((endpoint = args.uri.pathname.split("/")[2]) && f = endpoints[endpoint]) {
-		f(args, function(response, data, status) {
+	if ((endpoint = args.uri.pathname.split("/")[2]) && (f = get_endpoints[endpoint])) {
+		f(args, function(status, data, headers) {
 			obj.data = data;
-			apiResponse(args.response, obj, status);
+			apiResponse(args.response, status, data, headers);
 		});
 	} else {
-		apiResponse(args.response,obj);
+		apiResponse(args.response,404,obj);
 		args = obj = null;
 	}
 }
 
-function apiResponse(response, obj, status, headers) {
-	var status = status || 200;	
+function apiResponse(response, err, obj, headers) {
+	var status = err || 200;	
+	if (typeof(status) !== 'number') {
+		status = 500;
+		obj = false;
+	}
+
 	try {
 		response.writeHead(status, headers || {
 			"Cache-Control": "no-cache"
@@ -690,22 +494,3 @@ function apiResponse(response, obj, status, headers) {
 	obj = null;
 }
 
-function do400(response, code, info) {
-	response.writeHead(code);
-	response.write(JSON.stringify({
-		error: true,
-		info: info
-	}));
-	response.end();
-}
-
-function do500(response, err) {
-	response.writeHead(500);
-	response.write(JSON.stringify({
-		error: true
-	}));
-	response.end();
-
-	console.log((new Date).toString() + ": 500Error: " + JSON.stringify(err, null, 3));
-	console.log(Error().stack);
-}
