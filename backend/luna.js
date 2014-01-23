@@ -27,7 +27,7 @@ if (cluster.isMaster) {
 	cluster.on("exit", function(worker, code) {
 		log("Debug: Worker exitted with code: " + code);
 		if (code != 0) {
-			var w = cluster.fork();
+			//var w = cluster.fork();
 			w.on("message", handleMsg);
 		}
 	});

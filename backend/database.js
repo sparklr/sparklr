@@ -45,6 +45,7 @@ exports.query = function(query, callback, args) {
 				}
 				log("Failed query: " + query);
 				log(err);
+				console.trace();
 				callback(err);
 				return;
 			}
