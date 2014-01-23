@@ -13,7 +13,7 @@ require("./config");
 
 var Frontend = require("./frontend");
 var User = require("./user");
-var Work = require("./work");
+var Api = require("./api");
 var Database = require("./database");
 
 Database.init();
@@ -35,7 +35,7 @@ function handleRequests(request,response) {
 	}
 
 	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
-		Work.run(request,response,requesturi,sessionid);
+		Api.run(request,response,requesturi,sessionid);
 	} else {
 		if (sessionid != null && sessionid != "") {
 			var s = sessionid.split(",");
