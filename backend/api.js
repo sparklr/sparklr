@@ -16,7 +16,6 @@ require('fs').readdirSync('api/').forEach(function(file) {
 		api[endpoint] = endpoints[endpoint];
 	}
 });
-console.log(api);
 
 exports.run = function(request, response, uri, sessionid) {
 	var fragments = uri.pathname.split("/");
@@ -134,7 +133,8 @@ function beaconNotifCallback(err, rows, args) {
 	if (rows.length > 0)
 		obj.notifications = rows;
 
-	if ((endpoint = api["get_"+args.fragments[2]])) {
+	if ((endpoint = api["get_"+args.fragments[3]])) {
+		args.fragments.shift();
 		endpoint(args, function(status, data, headers) {
 			obj.data = data;
 			apiResponse(args.response, status, obj, headers);

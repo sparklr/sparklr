@@ -6,21 +6,21 @@ var Toolbox = require("../toolbox");
 var bcrypt = require("bcrypt");
 
 exports.public_signin = function(args,callback) {
-	if (args.fragments.length < 5) return callback(args.response, false, 400);
+	if (args.fragments.length < 5) return callback(400, false);
 
 	var user = args.fragments[3];
 	var pass = args.fragments[4];
 
 	Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(user) + " OR `email` = " + Database.escape(user), function(err,rows) 
 	{
-		if (rows.length < 1 || err) return callback(args.response, false, 403);
+		if (rows.length < 1 || err) return callback(403, false);
 
 		bcrypt.compare(pass, rows[0].password, function(err,match) {
 			if (err || !match) {
-				callback(args.response, false, 403);
+				callback(403, false);
 			} else {
 				var sessionid = rows[0].id + "," + rows[0].authkey;
-				return callback(args.response, true, 200, {
+				return callback(200, true, {
 					"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT",
 					"Cache-Control": "no-cache"
 				});
@@ -30,7 +30,7 @@ exports.public_signin = function(args,callback) {
 }
 
 exports.public_signup = function(args, callback) {
-	if (!args.fragments[6]) return callback(response, false, 400);
+	if (!args.fragments[6]) return callback(400,false);
 
 	var inviteid = fragments[3],
 		username = fragments[4],
@@ -38,10 +38,10 @@ exports.public_signup = function(args, callback) {
 		password = fragments[6];
 
 	Database.query("SELECT * FROM `invites` WHERE `id` = " + Database.escape(inviteid), function(err, inviterows) {
-		if (err) return callback(args.response, false, 500);
-		if (!inviterows[0]) return callback(args.response, -1);
+		if (err) return callback(500, false);
+		if (!inviterows[0]) return callback(200, -1);
 
-		if (username.length > 20) return callback(args.response, 1);
+		if (username.length > 20) return callback(200, 1);
 
 		username = username.replace(/[^A-Za-z0-9]/g, "");
 		exports.generatePass(password, function(err,pass) {
@@ -54,9 +54,9 @@ exports.public_signup = function(args, callback) {
 			following = following.join(",");
 
 			exports.getUserProfileByAnything(email, function(err, rows) {
-				if (err) return callback(args.response, err);
+				if (err) return callback(500, err);
 				if (rows.length > 0) {
-					return callback(args.response, 2);
+					return callback(200, 2);
 				}
 
 				Database.postObject("users", {
@@ -70,8 +70,8 @@ exports.public_signup = function(args, callback) {
 					authkey: exports.generateAuthkey(username),
 					bio: ""
 				}, function(err, rows) {
-					if (err) return callback(args.response, false, 500);
-					callback(args.response, 1);
+					if (err) return callback(500, false);
+					callback(200, 1);
 
 					if (inviterows[0].from) {
 						exports.getUserProfile(inviterows[0].from, function(err, data) {
@@ -95,7 +95,7 @@ exports.public_signoff = function(args, callback) {
 
 exports.public_forgot = function(args, callback) {
 	var user = args.fragments[3];
-	if (!user) return callback(args.response, false, 400);
+	if (!user) return callback(400, false);
 
 	exports.getUserProfileByAnything(user, function(err, rows) {
 		if (rows && rows.length > 0) {
@@ -107,37 +107,37 @@ exports.public_forgot = function(args, callback) {
 				token: token
 			});
 
-			callback(args.response, 1);
+			callback(200, 1);
 		} else {
-			callback(args.response, 0);
+			callback(200, 0);
 		}
 	});
 }
 
 exports.public_reset = function(args, callback) {
-	if (args.fragments.length < 6) return callback(args.response, false, 400);
+	if (args.fragments.length < 6) return callback(400, false);
 	User.getUserProfile(args.fragments[3], function(err, rows) {
-		if (err) return callback(args.response, false, 500);
+		if (err) return callback(500, false);
 
-		if (!rows || rows.length < 1) return callback(args.response,-2,403);
+		if (!rows || rows.length < 1) return callback(403,-2);
 
 		if (rows[0].password != "RESET:" + args.fragments[4]) 
-			return callback(args.response, -2, 403);
+			return callback(403, -2);
 
 		if (args.fragments[5].length < 3)
-			return callback(args.response, 0, 400);
+			return callback(400, 0);
 
 		User.generatePass(args.fragments[5], function(err, hash) {
-			if (err) return callback(args.response, false, 500);
+			if (err) return callback(500, false);
 
 			rows[0].authkey = User.generateAuthkey(rows[0].id);
 			rows[0].password = hash;
 
 			Database.updateObject("users", rows[0], function(err, data) {
 				if (err) {
-					callback(args.response, -1);
+					callback(500, -1);
 				} else {
-					callback(args.response, true, 200, {
+					callback(200, true, {
 						"Set-Cookie": "D=" + rows[0].id + "," + rows[0].authkey + "; Path=/"
 					});
 				}

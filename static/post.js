@@ -177,7 +177,7 @@ function editComment(e) {
 
 function deletePost(id) {
 	showConfirm("Delete post", "Are you sure you want to delete this post?", function () {
-		ajax("delete/post/" + id, null, function() {
+		ajax("deletepost/" + id, null, function() {
 			removeDomElement('post_'+id);
 			changeLocation();
 		});
@@ -187,7 +187,7 @@ function deletePost(id) {
 
 function deleteComment(id,postid) {
 	showConfirm("Delete comment", "Are you sure you want to delete this comment?", function () {
-		ajax("delete/comment/"+ id, null, function() {
+		ajax("deletecomment/"+ id, null, function() {
 			location.href = window.location + "#";
 		});
 	});
