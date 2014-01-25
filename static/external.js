@@ -85,7 +85,7 @@ function setContent(html) {
 
 function requestInvite(email) {
 	if (email.value != "email address" && email.value != "") {
-		ajax("work/requestinvite/" + email.value, null, function() {
+		ajax("requestinvite/" + email.value, null, function() {
 			location.href = "#/thankyou";
 		});
 	} else {
@@ -121,14 +121,14 @@ function trySignin(username, password, redir) {
 		}
 	}
 	
-	xhr.open("POST", "work/signin/" + username.value + "/" + password.value);
+	xhr.open("POST", "api/signin/" + username.value + "/" + password.value);
 	xhr.send(null);
 }
 
 function resetPassword(password) {
 	var args = location.hash.split("/");
 	
-	ajax("work/reset/" + args[2] + "/" + args[3] + "/" + password.value, null, function(data) {
+	ajax("reset/" + args[2] + "/" + args[3] + "/" + password.value, null, function(data) {
 		switch (data) {
 			case 0:
 				callback("Please use a password with 3 or more characters.");
@@ -148,7 +148,7 @@ function resetPassword(password) {
 
 function forgotPassword() {
 	if (_g("username").value != "") {
-		ajax("work/forgot/" + _g("username").value, null, function(result) {
+		ajax("forgot/" + _g("username").value, null, function(result) {
 			if (result) {
 				callback("Your password has successfully been reset.<br>Please check your email for further instructions.");
 			} else {
@@ -163,7 +163,7 @@ function signUp(username,email,password,errors) {
 
 	if (errors.value != "") return;
 
-	ajax("work/signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + encodeURIComponent(password.value), null, function(data) {
+	ajax("signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + encodeURIComponent(password.value), null, function(data) {
 		console.log(data);
 		if (data === 1) {
 			trySignin(username,password,"http://sparklr.me/welcome");
@@ -191,7 +191,7 @@ function checkSignupForm(username,password,errors) {
 		errors.value = 1;
 		return;
 	}
-	ajax("work/checkusername/" + username.value, null, function(data) {
+	ajax("checkusername/" + username.value, null, function(data) {
 		if (data) {
 			callback("Sorry, that username has already been taken.");
 			errors.value = 1;

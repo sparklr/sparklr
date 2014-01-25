@@ -44,7 +44,7 @@ function showStreamPage(posts) {
 	}
 
 	renderTimeline(prehtml);
-	ajax("work/stream/" + subscribedStream, null, function(data) {
+	ajax("stream/" + subscribedStream, null, function(data) {
 		timelineEvents[subscribedStream] = [];
 		for (var i = 0; i < data.length; i++) {
 			addTimelineEvent(data[i],true);

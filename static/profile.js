@@ -33,7 +33,7 @@ function editProfile() {
 			"bio": _g("userBio").textContent
 		};
 
-		ajax("work/settings", data);
+		ajax("settings", data);
 	
 		_g("editBtn").innerHTML = "Edit";
 	}
@@ -41,7 +41,7 @@ function editProfile() {
 
 function avatarUploadCallback(e) {
 	_g("useravatar").className += " pulse";
-	uploadImage(e, "work/avatar", function(xhr) {
+	uploadImage(e, "avatar", function(xhr) {
 		var avatarid = xhr.responseText;
 		updateAvatar(CURUSER, avatarid);
 		_g("useravatar").className = "avatar";
@@ -50,7 +50,7 @@ function avatarUploadCallback(e) {
 
 function headerUploadCallback(e) {
 	_g("profileheader").className += " pulse";
-	uploadImage(e, "work/header", function(xhr) {
+	uploadImage(e, "header", function(xhr) {
 		var id = xhr.responseText;
 		updateHeader(CURUSER, id, true);
 		_g("profileheader").className = "profileheader";
@@ -80,7 +80,7 @@ function addUserToList(list,user) {
 }
 
 function addUserToServerList(type, id, action) {
-	ajax("work/list", { type: type, action: action, user: id }, function() {
+	ajax("list", { type: type, action: action, user: id }, function() {
 		  if (!action) {
 				HIDDEN_USERS.splice(HIDDEN_USERS.indexOf(id),1);
 				location.href = location.href + "/#";
@@ -112,7 +112,7 @@ function checkUsername(username) {
 	if (username == USERHANDLES[CURUSER])
 		return checkUsernameCallback(1);
 
-	ajax("work/checkusername/" + username,null,checkUsernameCallback);
+	ajax("checkusername/" + username,null,checkUsernameCallback);
 }
 
 function checkUsernameCallback(result) {
@@ -161,7 +161,7 @@ function updateAccountSettings() {
 			type = "settings";
 			break;
 	}
-	ajax("work/" + type, obj, function(result) {
+	ajax(type, obj, function(result) {
 			var message = "";
 			if (result.authkey) {
 				AUTHKEY = result.authkey;

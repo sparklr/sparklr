@@ -136,7 +136,7 @@ function postComment(e) {
 
 	if (!vars.comment && !vars.postData) return;
 
-	ajax("work/comment", vars, function() {
+	ajax("comment", vars, function() {
 		imgAttachments = null;
 		pollData();
 	});
@@ -162,7 +162,7 @@ function editPostStart(e) {
 function editPost(e) {
 	console.log('saving');
 	e = e || window.event;
-	ajax("work/editpost", { id: e.target.getAttribute('data-id'), body: htmlToPost(e.target.innerHTML) }, function() {
+	ajax("editpost", { id: e.target.getAttribute('data-id'), body: htmlToPost(e.target.innerHTML) }, function() {
 		e.target.innerHTML = processPostMeta({ message: htmlToPost(e.target.innerHTML), from: CURUSER }).formattedMessage;
 	});
 	e.target.setAttribute('data-message', e.target.textContent);
@@ -171,13 +171,13 @@ function editPost(e) {
 function editComment(e) {
 	e = e || window.event;
 
-	ajax("work/editcomment", { id: e.target.getAttribute("data-id"), body: e.target.textContent }, function() {
+	ajax("editcomment", { id: e.target.getAttribute("data-id"), body: e.target.textContent }, function() {
 	});
 }
 
 function deletePost(id) {
 	showConfirm("Delete post", "Are you sure you want to delete this post?", function () {
-		ajax("work/delete/post/" + id, null, function() {
+		ajax("delete/post/" + id, null, function() {
 			removeDomElement('post_'+id);
 			changeLocation();
 		});
@@ -187,7 +187,7 @@ function deletePost(id) {
 
 function deleteComment(id,postid) {
 	showConfirm("Delete comment", "Are you sure you want to delete this comment?", function () {
-		ajax("work/delete/comment/"+ id, null, function() {
+		ajax("delete/comment/"+ id, null, function() {
 			location.href = window.location + "#";
 		});
 	});
@@ -212,7 +212,7 @@ function publishRepost(e) {
 		_g("attachmentr"+id).style.display = "none";
 	}
 
-	ajax("work/repost", vars);
+	ajax("repost", vars);
 	changeLocation();
 }
 
@@ -231,7 +231,7 @@ function hidePost(id,from) {
 
 
 function likePost(id, to, callback) {
-	ajax("work/like", { id: id, to: to }, function(result) {
+	ajax("like", { id: id, to: to }, function(result) {
 		if (result.deleted) {
 			removeDomElement('like_' + id + '_' + CURUSER);
 			callback.className = callback.className.replace('liked','');

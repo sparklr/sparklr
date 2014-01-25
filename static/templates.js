@@ -19,7 +19,7 @@ function renderPageFromTemplate() {
 
 function renderTemplate(page,destination,callback) {
 	var fragments = page.split("/");
-	ajax("work/" + page, null, function(data) {
+	ajax(page, null, function(data) {
 		if (data && data.error === true) return;
 
 		var scope = { data: data, fragments: fragments };
