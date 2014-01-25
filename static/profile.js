@@ -137,12 +137,12 @@ function updateAccountSettings() {
 
 	switch (s[2]) {
 		case "password":
-			obj = { password: form.currentpassword.value, newpassword: form.password1.value }		
+			obj = { password: form.currentpassword.value, newpassword: form.password1.value }
 			type = "password";
 			break;
 		case "blacklist":
+			obj = {};
 			type = "blacklist";
-			obj = { };
 			break;
 		case "account":
 			obj = { password: form.delete.value }
@@ -150,10 +150,19 @@ function updateAccountSettings() {
 			break;
 		default:
 			obj = { username: form.username.value, email: form.email.value, displayname: form.displayname.value }
+
+			if (obj.username.match(/^\d+$/))
+				return updateSettingsCallback(false, "Sorry, your username cannot be all numbers.");
+			if (obj.username.length > 20)
+				return updateSettingsCallback(false, "Sorry, your username is too long.");
+			if (obj.displayname.length > 20)
+				return updateSettingsCallback(false, "Sorry, your display name is too long.");
+
 			type = "settings";
 			break;
 	}
 	ajax("work/" + type, obj, function(result) {
+			var message = "";
 			if (result.authkey) {
 				AUTHKEY = result.authkey;
 				document.cookie = "D=" + CURUSER + "," + AUTHKEY;
@@ -161,7 +170,10 @@ function updateAccountSettings() {
 			if (result.deleted) {
 				location.href="./";
 			}
-			updateSettingsCallback(result.result, result.message);
+			if (result.password === false) {
+				message = "Sorry, your current password does not match the one on file.";
+			}
+			updateSettingsCallback(result,message);
 		});
 
 	_g("savesettings").value = "Saving...";
@@ -172,10 +184,11 @@ function updateSettingsCallback(result, message) {
 	r_ele.innerHTML = message;
 	r_ele.className = result == true ? "ok" : "error";
 
-	if (result) {
+	if (result === true) {
 		_g("savesettings").value = "Saved";
 		setTimeout(function() {
 			_g("savesettings").value = "Save Settings";
 		}, 4000);
 	}
 }
+
