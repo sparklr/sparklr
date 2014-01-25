@@ -98,6 +98,16 @@ exports.get_search = function(args, callback) {
 	});
 }
 
+exports.get_deletepost = function(args, callback) {
+	//TODO sanitization
+	Post.deletePost(args.userobj, +(args.fragments[3]) || 0, callback);
+}
+
+exports.get_deletecomment = function(args, callback) {
+	//TODO sanitization
+	Post.deleteComment(args.userobj, +(args.fragments[3]) || 0, callback);
+}
+
 exports.post_post = function(args, callback) {
 	if (args.postObject.body.length > 500)
 		return callback(400, false);
@@ -145,15 +155,5 @@ exports.post_like = function(args, callback) {
 	Post.postComment(args.userobj.id, { to: args.postObject.to, id: args.postObject.id, comment: "\u261D", like: true}, function(){});
 	callback(200, true);
 });
-}
-
-exports.post_deletepost = function(args, callback) {
-	//TODO sanitization
-	Post.deletePost(args.userobj, +(args.fragments[4]) || 0, callback);
-}
-
-exports.post_deletecomment = function(args, callback) {
-	//TODO sanitization
-	Post.deleteComment(args.userobj, +(args.fragments[4]) || 0, callback);
 }
 
