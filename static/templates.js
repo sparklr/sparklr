@@ -8,12 +8,7 @@ var CONTROLLERS = CONTROLLERS || {};
 
 function renderPageFromTemplate() {
 	renderTemplate(location.hash.substring(2),'content',function() {
-		if (_g("sidebar_links")) {
-			_g("sidebar").innerHTML = _g("sidebar_links").innerHTML;
-			_g("sidebar_links").innerHTML = "";
-		} else {
-			defaultSidebar();
-		}
+		defaultSidebar();
 	});
 }
 

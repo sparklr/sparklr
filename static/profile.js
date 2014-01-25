@@ -10,7 +10,7 @@ function updateHeader(user, id) {
 function editProfile() {
 	var bio = _g("userBio");
 
-	if (_g("editBtn").innerHTML == "Edit") {
+	if (_g("editBtn").value == "Edit") {
 		_g("userDisplayName").setAttribute("contenteditable", true);
 
 		if (bio.textContent.length < 2)
@@ -18,7 +18,7 @@ function editProfile() {
 		bio.setAttribute("contenteditable", true);
 
 		_g("editContainer").style.display = "block";
-		_g("editBtn").innerHTML = "Save";
+		_g("editBtn").value = "Save";
 	} else {
 		_g("userDisplayName").setAttribute("contenteditable", false);
 
@@ -35,7 +35,7 @@ function editProfile() {
 
 		ajax("work/settings", data);
 	
-		_g("editBtn").innerHTML = "Edit";
+		_g("editBtn").value = "Edit";
 	}
 }
 
