@@ -1,3 +1,6 @@
+var Database = require('../database');
+var Mail = require('../mail');
+
 exports.public_areyouawake = function(args, callback) {
 	callback(200, true);
 }
@@ -7,7 +10,7 @@ exports.get_staff = function(args, callback) {
 }
 
 exports.post_feedback = function(args, callback) {
-	Mail.sendMessageToEmail("jaxbot@gmail.com", "feedback", postObject, userobj);
+	Mail.sendMessageToEmail("jaxbot@gmail.com", "feedback", args.postObject, args.userobj);
 	callback(200, true);
 }
 
