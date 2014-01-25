@@ -42,7 +42,7 @@ function ajax(url, data, callback) {
 		}
 	}
 
-	xhr.open((isPosting ? "POST" : "GET"), url);
+	xhr.open((isPosting ? "POST" : "GET"), 'api/' + url);
 	xhr.setRequestHeader("X-X", AUTHKEY);
 
 	var postData;
@@ -148,7 +148,7 @@ function uploadImage(e, url, callback) {
 		}
 	}
 	xhr.upload.onprogress = uploadingProgress;
-	xhr.open("POST", url);
+	xhr.open("POST", 'api/' + url);
 	xhr.setRequestHeader("X-X", AUTHKEY);
 	xhr.setRequestHeader("X-DATA", JSON.stringify({ img: 1 }));
 	xhr.send(e.target.result);

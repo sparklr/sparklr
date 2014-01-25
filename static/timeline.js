@@ -241,7 +241,7 @@ function postToTimeline() {
 	if (vars.img)
 		vars.postData = imgAttachments.target.result;
 
-	ajax('work/post', vars, function(data) {
+	ajax('post', vars, function(data) {
 		if (data == 2) {
 			showBanner("You've been posting a lot lately.. wait a few seconds. It'll keep people from being mad at you. ;)", "ratelimit", 5000);
 			return;

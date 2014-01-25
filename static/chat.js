@@ -33,7 +33,7 @@ function scrollUpHandler(e) {
 }
 
 function getOldChatMessages(user) {
-	ajax("work/chat/" + user + "?starttime=" + chatTimes[user + "," + CURUSER][0], null, function(data) {
+	ajax("chat/" + user + "?starttime=" + chatTimes[user + "," + CURUSER][0], null, function(data) {
 		for (var i = 0; i < data.length; i++) {
 			addChatMessage(data[i].from, data[i].to, data[i].message, data[i].time, true);
 		}
@@ -97,7 +97,7 @@ function sendChatMessage(e) {
 
 	addChatMessage(CURUSER, vars.to, vars.message, (new Date).getTime(), false, true);
 
-	ajax("work/chat", vars, function(data,xhr) {
+	ajax("chat", vars, function(data,xhr) {
 		if (data.error && data.info == "Blocked") {
 			showBanner("Sorry, that user has blocked you.", "bannerblocked", 4000);
 		}

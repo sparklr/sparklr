@@ -173,7 +173,7 @@ function handleNotifications() {
 }
 
 function dismissNotification(id) {
-	ajax("work/delete/notification/" + id);
+	ajax("delete/notification/" + id);
 	removeNotification(id);
 }
 

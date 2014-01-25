@@ -48,7 +48,7 @@ function fetchUserHandle(id) {
 }
 
 function pullHandlesFromServer() {
-	ajax("work/username/" + handlesToFetch.join(","), null, pullHandlesFromServerCallback);
+	ajax("username/" + handlesToFetch.join(","), null, pullHandlesFromServerCallback);
 	handlesToFetch = [];
 }
 
@@ -75,11 +75,11 @@ function pullHandlesFromServerCallback(handles) {
 }
 
 function follow(id,redir) {
-	ajax("work/follow/"+id, null, function() { if (!redir) location.href += "/#"; });	
+	ajax("follow/"+id, null, function() { if (!redir) location.href += "/#"; });	
 }
 
 function unfollow(id) {
-	ajax("work/unfollow/"+id, null, function() { location.href += "/#"; });
+	ajax("unfollow/"+id, null, function() { location.href += "/#"; });
 }
 
 function updateAvatar(user, avatarid) {
@@ -98,7 +98,7 @@ function updateAvatar(user, avatarid) {
 
 function signOff() {
 	showConfirm("Sign off", "Are you sure you want to sign off?", function() {
-		ajax("work/signoff", null, function() { location.href='/'; });
+		ajax("signoff", null, function() { location.href='/'; });
 	});
 }
 
@@ -107,7 +107,7 @@ function inviteFriend() {
 }
 
 function inviteUser(to,cb) {
-	ajax("work/sendinvite/" + to, null, function(result) {
+	ajax("sendinvite/" + to, null, function(result) {
 		if (result === true) {
 			_g("inviteField").style.boxShadow = "none";
 			_g("inviteField").value = "";
@@ -129,7 +129,7 @@ function getUserSuggestions(input) {
 }
 
 function meetSomeoneRandom() {
-	ajax("work/random", null, function(data) {
+	ajax("random", null, function(data) {
 		location.href='#/user/' + data;
 	});
 }
