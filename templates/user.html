@@ -1,10 +1,3 @@
-<% if (pageType == "step2") %>
-	<input type='button' value='Next' onClick='editProfile();location.href="/#/invite/step3";' style='margin:7px 4px;float:right'>
-	<h2 style='color:#fff'>Customize your profile</h2>
-	<div class='bubbleout'><div class='bubble leftb' style='margin-top: -60px;'>Here you can change your display name, description, icon, and background.</div></div>
-	<div class='bubbleout'><div class='bubble leftb' style='margin-top: 200px;'>When you change your background image, you change the background of the main site as well! This gives you some customization when it comes to how you want your dashboard to look.</div></div>
-<% endif %>
-
 <% if (data.user == CURUSER) %>
 <div id='profileheader' class='profileheader' onDrop='dropImage(event, headerUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'>
 <% else %>
@@ -17,23 +10,27 @@
 	<% if (HIDDEN_USERS.indexOf(data.user.toString()) != -1) %>
 	<p class='headersubtitle'><b>You have hidden this user. <a href='/#/settings/blacklist' style='text-decoration:underline'>Change Settings</a></b></p>
 	<% endif %>
-	<div id='sidebar_links'>
+	<div style='position: absolute; bottom: 10px; left: 9px;'>
 		<% if (data.user != CURUSER) %>
 			<% if (data.following) %>	
-				<a href='javascript:unfollow("{data.user}");'>Unfollow</a>
+				<input type='button' onclick='unfollow("{data.user}");' value='Unfollow'>
 			<% else %>
-				<a href='javascript:follow("{data.user}");'>Follow</a>
+				<input type='button' onclick='follow("{data.user}");' value='Follow'>
 			<% endelse %>
-			<a href='javascript:chatWith("{data.user}");'>Message</a>
+			<input type='button' onclick='chatWith("{data.user}");' value='Message'>
 		<% endif %>
-		<a href='/#/user/{data.user}/mentions'>Mentions</a>
-		<a href='/#/user/{data.user}/photos'>Photos</a>
-		<% if (data.user == CURUSER) %> 
-			<a id='editBtn' href='javascript:editProfile()'>Edit</a>
-			<a href='#/settings'>Settings</a>
-			<a href='javascript:signOff();'>Sign off</a>
-		<% endif %>
+		<input type='button' onclick='location.href="/#/user/{data.user}/mentions"' value='Mentions'>
+		<input type='button' onclick='location.href="/#/user/{data.user}/photos"' value='Photos'>
 	</div>
+	<% if (data.user == CURUSER) %> 
+		<% if (!MOBILE) %>
+			<div style='position: absolute; top: 10px; right: 5px;'>
+				<input type='button' onclick='location.href="#/settings"' value='Settings'>
+				<input type='button' onclick='signOff();' value='Sign off'>
+			</div>
+		<% endif %>
+		<input type='button' id='editBtn' onclick='editProfile()' value='Edit'>
+	<% endif %>
 </div>
 <div class='grid'>
 	<div id='editContainer' style='display:none' class='timelineitem'>

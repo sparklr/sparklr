@@ -526,7 +526,7 @@ div.profileheader {
 	width: 100%;
     margin-bottom: 15px;
 	margin-top: -30px;
-    padding: 10px 0 10px 10px;
+    padding: 10px 0 10px 9px;
     background-position: 0% 30%;
     background-size: cover;
     opacity: 1;
@@ -567,6 +567,12 @@ div.profileheader p {
 	font-size: 18px;
 }
 
+div.profileheader #editBtn{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
 div.profileheader div.controls {
 	position:absolute;
 	bottom:5px;
@@ -581,6 +587,19 @@ div.profileheader div.actions {
 div.profileheader input {
 	margin-right: 5px;
 }
+
+div.peoplebuttons{
+	margin-bottom: 10px;
+	margin-left: 5px;
+}
+div.peoplebuttons input[type=button]{
+	 background: #454050;
+	 padding: 8px;
+	 font-size: 18px;
+	 color: #fff;
+	 margin-right: 5px;
+}
+
 div.friend {
 	width: 150px;
 	height: 150px;
@@ -1003,7 +1022,7 @@ div.popup_post {
 	text-align: center;
 	display: none;
 	position: relative;
-	margin: 8px 3px;
+	margin: 8px 4px;
 	padding: 8px;
 	background: #6C6274;
 	border: solid 1px #887C91;
