@@ -40,19 +40,22 @@
 		<% if (!fragments[1]) %>
 		<fieldset>
 			<label>Username</label>
-			<input type='text' name='username' value='{data.username}' onKeyUp='checkUsername(this.value)'>
+			<input type='text' name='username' value='{data.username}' onKeyUp='checkUsername(this.value)' required size=20 maxlength=20>
 			<br><span id='username_callback' class='error'></span>
 		</fieldset>
 		<fieldset>
 			<label>Display name</label>
-			<input type='text' name='displayname' value='{data.displayname}' required>
+			<input type='text' name='displayname' value='{data.displayname}' required size=20 maxlength=20>
 		</fieldset>
 		<fieldset>
 			<label>Email</label>
-			<input type='text' name='email' value='{data.email}'>
+			<input type='email' name='email' value='{data.email}' required>
 		</fieldset>
 		<% endif %>
+		<% if (fragments[1] != 'blacklist') %>
 		<input type='submit' id='savesettings' value='Save Settings'>
+		<br>
 		<span id='settings_result'></span>
+		<% endif %>
 	</form>
 </div>

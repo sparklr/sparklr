@@ -155,9 +155,9 @@ exports.public_requestinvite = function(args, callback) {
 }
 
 exports.public_checkusername = function(args, callback) {
-	User.getUserProfileByUsername(fragments[3], function(err, rows) {
+	User.getUserProfileByUsername(args.fragments[3], function(err, rows) {
 		if (err) return callback(500, false);
-		callback(rows && rows.length > 0 && rows[0].id != userobj.id);
+		callback(rows && rows.length > 0 && rows[0].id != args.userobj.id);
 	});
 }
 
@@ -293,10 +293,8 @@ exports.post_settings = function(args, callback) {
 	if (args.postObject.username) {
 		if (args.postObject.username.match(/^\d+$/)) {
 			return callback(200, false);
-			//message = "That username is a number. (fact of the day)";
 		} else if (args.postObject.username.length > 20) {
 			return callback(200, false);
-			//message = "That username is a little long...";
 		} else {
 			args.userobj.username = args.postObject.username.replace(/[^A-Za-z0-9]/g, "");
 		}
@@ -358,7 +356,7 @@ exports.post_password = function(args, callback) {
 				callback(200, args.userobj.authkey);
 			});
 		} else {
-			callback(200, false);
+			callback(200, { result: false, password: false });
 		}
 	});
 }
@@ -375,7 +373,7 @@ exports.post_list = function(args, callback) {
 	args.userobj.blacklist = list.join(",");
 
 	Database.updateObject("users", args.userobj);
-	apiResponse(200, true);
+	callback(200, true);
 }
 
 exports.post_avatar = function(args, callback) {

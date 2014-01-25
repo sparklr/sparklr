@@ -238,11 +238,11 @@ function postToTimeline() {
 	} else {
 		if (!vars.body) return;
 	}
+	if (vars.img)
+		vars.postData = imgAttachments.target.result;
 
-	var xhr = new XMLHttpRequest();
-
-	xhr.addEventListener("load", function() {
-		if (xhr.responseText == "2") {
+	ajax('work/post', vars, function(data) {
+		if (data == 2) {
 			showBanner("You've been posting a lot lately.. wait a few seconds. It'll keep people from being mad at you. ;)", "ratelimit", 5000);
 			return;
 		}
@@ -255,18 +255,7 @@ function postToTimeline() {
 
 		hideProgress();
 		pollData();
-
-	}, false);
-	xhr.upload.onprogress = uploadingProgress;
-	xhr.open("POST", "work/post");
-	xhr.setRequestHeader("X-X", AUTHKEY);
-
-	xhr.setRequestHeader("Content-type", "application/json");
-	xhr.setRequestHeader("X-DATA", JSON.stringify(vars));
-	if (vars.img) 
-		xhr.send(imgAttachments.target.result);
-	else
-		xhr.send();
+	});
 }
 
 function uploadStreamImageCallback(e,id) {

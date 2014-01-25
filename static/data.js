@@ -56,7 +56,7 @@ function ajax(url, data, callback) {
 			data.postData = 1;
 		}
 
-		xhr.setRequestHeader("X-DATA", JSON.stringify(data));
+		xhr.setRequestHeader("X-DATA", encodeURIComponent(JSON.stringify(data)));
 	}
 	
 	xhr.send(postData || null);
