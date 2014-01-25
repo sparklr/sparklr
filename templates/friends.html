@@ -1,4 +1,9 @@
 <h2>following</h2>
+<div class='peoplebuttons'>
+	<input type='button' onclick='inviteFriend()' value='Invite friends'>
+	<input type='button' onclick='meetSomeoneRandom()' value='Meet someone random'>
+</div>
+
 <script>
 	for (var i = 0; i < data.length; i++) {
 </script>
@@ -12,7 +17,4 @@
 <% if (data.length < 1) %>
 You aren't following anyone right now! Try meeting someone random or inviting friends.
 <% endif %>
-<div id='sidebar_links'>
-	<a href='javascript:inviteFriend()'>Invite friends</a>
-	<a href='javascript:meetSomeoneRandom()'>Meet someone random</a>
-</div>
+

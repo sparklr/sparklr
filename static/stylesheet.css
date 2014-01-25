@@ -269,7 +269,6 @@ a.network.active {
 #sidebar span {
     font-size: 12px;
 }
-#sidebar_links { display: none; }
 #friendslist {
     -webkit-transition: all 1s ease;
     position: relative;
@@ -788,6 +787,12 @@ div.profileheader p {
 	font-size: 18px;
 }
 
+div.profileheader #editBtn{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
 div.profileheader div.controls {
 	position:absolute;
 	bottom:5px;
@@ -801,6 +806,19 @@ div.profileheader div.actions {
 
 div.profileheader input {
 	margin-right: 5px;
+}
+
+div.peoplebuttons{
+	top: 15px;
+	position: absolute;
+	right: 5px;
+}
+div.peoplebuttons input[type=button]{
+	 background: #454050;
+	 padding: 8px;
+	 font-size: 18px;
+	 color: #fff;
+	 margin: 0 5px;
 }
 div.friend {
 	width: 200px;
