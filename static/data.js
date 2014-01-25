@@ -78,7 +78,7 @@ function hideProgress() {
 }
 
 function streamUrl(since,start) {
-	var query = "/";
+	var query = "";
 	var part = "stream/";
 
 	if (currentPageType == "TAG")
@@ -121,15 +121,15 @@ function pollData() {
 			}
 		break;
 		case "POST":
-			query = "/comments/" + subscribedStream + "?since=" + getLastCommentTime();
+			query = "comments/" + subscribedStream + "?since=" + getLastCommentTime();
 			callback = addComments;
 		break;
 		default:
-			query = "/?";
+			query = "?";
 			break;
 	}
 
-	ajax("beacon" + query + "&n=" + lastNotificationTime, null, function(data,xhr) {
+	ajax("beacon/" + query + "&n=" + lastNotificationTime, null, function(data,xhr) {
 		if (data.notifications) {
 		 	for (var i=0;i<data.notifications.length;i++) {
 				addNotification(data.notifications[i]);

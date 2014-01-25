@@ -24,6 +24,8 @@ function addNotification(notification) {
 
 	currentNotifications[notification.id] = notification;
 
+	notification = processNotification(notification);
+
 	handleNotifications();
 
 	if (parseInt(notification.time) > lastNotificationTime)
@@ -32,8 +34,6 @@ function addNotification(notification) {
 	// if handleNotifications removed it, stop adding it
 	if (currentNotifications[notification.id] == null)
 		return;
-
-	notification = processNotification(notification);
 
 	if (!(MOBILE)) {
 		eval(getTemplate("notification"));
@@ -173,7 +173,7 @@ function handleNotifications() {
 }
 
 function dismissNotification(id) {
-	ajax("delete/notification/" + id);
+	ajax("dismiss/" + id);
 	removeNotification(id);
 }
 
