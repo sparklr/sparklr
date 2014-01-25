@@ -122,7 +122,6 @@ exports.post_comment = function(args, callback) {
 	if (args.postObject.comment.length > 520)
 		return callback(400, false);
 	Post.postComment(args.userobj.id, args.postObject, function(err) {
-		console.log('cb');
 		callback(200, true);
 	});
 }
