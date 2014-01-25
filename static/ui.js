@@ -158,7 +158,7 @@ function processMedia(text,noImages) {
 
 	// img
 	text = text.replace(/\[IMG([A-Za-z0-9\._-]+)\]/g, function(match, img) {
-		return "<img src='" + imgUrl(img) + "' style='cursor:pointer' class='inlineimage' onload='' onClick='showImage(\"" + img + "\");'><br>";
+		return "<img src='" + imgUrl(img) + "' style='cursor:pointer' class='inlineimage' onload='' onClick='showImage(\"" + img + "\");stopBubbling();'><br>";
 	});
 	
 	// emoji
