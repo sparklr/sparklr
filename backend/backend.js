@@ -34,7 +34,7 @@ function handleRequests(request,response) {
 		response.end();
 	}
 
-	if (requesturi.pathname.indexOf("/work") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
+	if (requesturi.pathname.indexOf("/api") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		Api.run(request,response,requesturi,sessionid);
 	} else {
 		if (sessionid != null && sessionid != "") {
