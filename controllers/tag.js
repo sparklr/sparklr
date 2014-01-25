@@ -8,5 +8,4 @@ function after(scope) {
 	}
 
 	addTimelineArray(arr,subscribedStream);
-	updateTrackTagBtns(subscribedStream);
 }
