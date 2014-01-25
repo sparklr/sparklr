@@ -74,7 +74,7 @@ exports.run = function(request, response, uri, sessionid) {
 
 			var postObject;
 			try {
-				postObject = request.headers['x-data'] ? JSON.parse(request.headers['x-data']) : {};
+				postObject = request.headers['x-data'] ? JSON.parse(decodeURIComponent(request.headers['x-data'])) : {};
 			} catch (e) {
 				log("Bad post data: " + request.headers['x-data']);
 				log(e);
@@ -115,14 +115,11 @@ exports.run = function(request, response, uri, sessionid) {
 				endpoint(args, callback);
 			}
 		} else {
-			if (!(endpoint = api["get_"+fragments[2]]))
-				return apiResponse(response, 404, false);
-
-			args.endpoint = endpoint;
-
 			if (uri.pathname.indexOf("/beacon") !== -1) {
 				Notification.getUserNotifications(userobj.id, uri.query.n, beaconNotifCallback, args);
 			} else {
+				if (!(endpoint = api["get_"+fragments[2]]))
+					return apiResponse(response, 404, false);
 				endpoint(args, callback);
 			}
 		}
@@ -132,15 +129,19 @@ exports.run = function(request, response, uri, sessionid) {
 function beaconNotifCallback(err, rows, args) {
 	if (err) return apiResponse(args.response, err, 500);
 
-	var obj = {};
+	var obj = {}, endpoint = null;
 
 	if (rows.length > 0)
 		obj.notifications = rows;
 
-	args.endpoint(args, function(status, data, headers) {
-		obj.data = data;
-		apiResponse(args.response, status, data, headers);
-	});
+	if ((endpoint = api["get_"+args.fragments[2]])) {
+		endpoint(args, function(status, data, headers) {
+			obj.data = data;
+			apiResponse(args.response, status, obj, headers);
+		});
+	} else {
+		apiResponse(args.response, 200, obj);
+	}
 }
 
 function apiResponse(response, err, obj, headers) {
