@@ -142,7 +142,7 @@ exports.getStream = function(table, args, callback) {
 		query += "`time` < "+parseInt(args.starttime);
 	}
 	
-	query += ") ORDER BY " + (args.sortby ? exports.escapeId(args.sortby) : "`time`") + " DESC LIMIT 20";
+	query += ") ORDER BY " + (args.sortby ? exports.escapeId(args.sortby) : "`time`") + " DESC LIMIT 30";
 	exports.query(query, callback);
 }
 

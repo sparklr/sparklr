@@ -193,7 +193,7 @@ hr {
     position: relative;
     padding: 5px;
     color: #333;
-	margin-left: 325px;
+	margin-left: 285px;
 }
 
 #content {
@@ -469,13 +469,6 @@ span.header {
     display: inline-block;
 }
 
-div.grid {
-	-webkit-column-count: auto;
-	-webkit-column-width: 435px;
-	-webkit-column-gap: 5px;
-	overflow:hidden;
-}
-
 div.timelineitem {
     min-height: 50px;
     padding: 6px;
@@ -737,7 +730,7 @@ div.photos {
 }
 
 div.profileheader {
-	margin-left: -70px;
+	margin-left: -30px;
 	margin-right: -25px;
     margin-top: -5px;
     height: 290px;
@@ -1291,5 +1284,9 @@ div.inlineimage {
 	display: block;
 	cursor: pointer;
 	border: none !important;
+}
+
+#timeline_container{
+	position: relative;
 }
 
