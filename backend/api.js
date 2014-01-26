@@ -60,7 +60,7 @@ exports.run = function(request, response, uri, sessionid) {
 	var authkey_header = request.headers['x-x'];
 	User.verifyAuth(sessionid.split(',')[0], authkey_header, function(success, userobj) {
 		if (!success) {
-			return apiResponse(response, false, 403);
+			//return apiResponse(response, false, 403);
 		}
 
 		args.userobj = userobj;

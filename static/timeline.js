@@ -263,7 +263,6 @@ function uploadStreamImageCallback(e,id) {
 		res = "data:image/jpeg;" + res.substring(5);
 	}
 	id = id || "attachment";
-	console.log(id);
 	_g(id).style.display = "block";
 	_g(id).style.backgroundImage = 'url(' + res + ')';
 	imgAttachments = e;

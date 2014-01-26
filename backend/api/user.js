@@ -97,7 +97,7 @@ exports.public_forgot = function(args, callback) {
 	var user = args.fragments[3];
 	if (!user) return callback(400, false);
 
-	exports.getUserProfileByAnything(user, function(err, rows) {
+	User.getUserProfileByAnything(user, function(err, rows) {
 		if (rows && rows.length > 0) {
 			var token = crypto.randomBytes(30).toString("hex");
 			rows[0].password = "RESET:" + token;

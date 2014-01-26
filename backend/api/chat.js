@@ -3,6 +3,10 @@ var Toolbox = require("../toolbox");
 var Notification = require("../notification");
 var User = require("../user");
 
+/* @url api/inbox
+ * @returns JSON array of message objects
+ * @structure { time, from, message }
+ */
 exports.get_inbox = function(args, callback) {
 	Database.query("SELECT msgs.time,msgs.from,`message` FROM `messages` msgs\
 		INNER JOIN (SELECT `from`, MAX(`time`) AS time\
@@ -14,6 +18,10 @@ exports.get_inbox = function(args, callback) {
 		ORDER BY msgs.time DESC", callback);
 }
 
+/* @url api/chat/:with[?since=:time][&starttime=:time]
+ * @returns JSON array of message objects
+ * @structure { time, from, message }
+ */
 exports.get_chat = function(args, callback) {
 	var from = +(args.fragments[3]);
 	var since = args.uri.query.since || 0;
@@ -27,6 +35,11 @@ exports.get_chat = function(args, callback) {
 	}, callback);
 }
 
+/* @url api/chat
+ * @args { to: userid, message: string <= 520, [img: 1] }
+ * @post [base64 encoded image]
+ * @returns 200, true if successful, 400 if message too long, 403 if blacklisted by :to
+ */
 exports.post_chat = function(args, callback) {
 	args.postObject.to = +(args.postObject.to);
 	if (args.postObject.to == args.userobj.id) return callback(400, false);

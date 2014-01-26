@@ -41,64 +41,6 @@ exports.editcomment = function(user, id, body, rank, callback) {
 	Database.query("UPDATE `comments` SET `message` = " + Database.escape(body) + " WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), callback);
 }
 
-exports.post = function(user, data, callback) {
-	data.time = Toolbox.time();
-	data.from = user;
-
-	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + parseInt(user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
-		if (err) return callback(err);
-		if (rows && rows.length > 101) {
-			return callback(null,2); // as in, 2 many posts
-		}
-
-		var querystr = "INSERT INTO `timeline` (`from`, `time`, `modified`, `message`, `meta`, `type`, `public`, `network`) VALUES ("
-		querystr += parseInt(user) + ",";
-		querystr += data.time + ",";
-		querystr += data.time + ",";
-		querystr += Database.escape(data.body) + ",";
-
-		var meta = "";
-		if (data.img)
-			meta = data.img;
-		if (data.tags) {
-			meta += "," + JSON.stringify(data.tags);
-		}
-
-		querystr += (meta ? Database.escape(meta) : "\"\"") + ",";
-		querystr += (data.img ? 1 : 0) + ",";
-		querystr += "1,";
-		querystr += (Database.escape(data.network || "0"));
-		querystr += ");";
-
-		Database.query(querystr,function(err,rows) {
-			if (err) return callback(err);
-
-			process.send({ t: 2, 
-				id: rows.insertId, 
-				from: parseInt(user), 
-				message: data.body, 
-				modified: Toolbox.time(), 
-				time: Toolbox.time(),
-				meta: meta,
-				type: data.img ? 1 : 0,
-				network: data.network || "0",
-				via: null
-			});
-
-			processPostTags(data.body, rows.insertId);		
-			processMentions(data.body, user, rows.insertId);
-			for (i in data.tags) {
-				if (data.tags[i].userid) {
-					mentionUser(data.tags[i].userid, data.from, rows.insertId);
-				}
-			}
-			data.message = data.body;
-			data.id = rows.insertId;
-
-			callback(err,"");
-		});
-	});
-}
 exports.postComment = function(user, data, callback) {
 	Database.getObject("timeline", data.id, function(err, rows) {
 		if (rows.length < 1) {
@@ -217,7 +159,7 @@ exports.repost = function(user, postid, reply, callback) {
 	});
 }
 
-function processPostTags(body, id) {
+exports.processPostTags = function(body, id) {
 	var tagregex =  /\B#([\w-]{1,40})/gi;
 	var tags = body.match(tagregex);
 	if (!tags) return;
@@ -231,7 +173,7 @@ function processPostTags(body, id) {
 	}
 }
 
-function processMentions(post, mentioner, postid) {
+exports.processMentions = function(post, mentioner, postid) {
 	var matches = post.toString().match(/@([\w-]+)/gi);
 	for (i in matches) {
 		var user = matches[i].substring(1);
@@ -243,7 +185,7 @@ function processMentions(post, mentioner, postid) {
 	}
 }
 
-function mentionUser(userid, mentioner, postid) {
+exports.mentionUser = function(userid, mentioner, postid) {
 	Notification.addUserNotification(userid, "", postid, mentioner, Notification.N_MENTION);
 
 	Database.postObject("mentions", { user: userid, postid: postid, time: Toolbox.time() }, function(err) {

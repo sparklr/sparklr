@@ -1,7 +1,13 @@
 var Database = require('../database');
 var Post = require('../post');
+var Toolbox = require("../toolbox");
 
+/* @url api/post/:id
+ * @returns JSON array of post objects
+ * TODO: structure
+ */
 exports.get_post = function(args, callback) {
+	if (!args.fragments[3] || !+args.fragments[3]) return callback(400, false);
 	var users;
 	var posts;
 	var comments;
@@ -24,11 +30,20 @@ exports.get_post = function(args, callback) {
 	});
 }
 
+/* @url api/comments/:postid[?since=:time]
+ * @returns JSON array of comment objects
+ * @structure { id, postid, from, message, time }
+ */
 exports.get_comments = function(args, callback) {
+	if (!args.fragments[3] || !+args.fragments[3]) return callback(400, false);
 	var since = args.uri.query.since || 0;
 	Post.getComments(args.fragments[3], since, callback);
 }
 
+/* @url api/stream/:network|:userid[?since=:time][&starttime=:time]
+ * @returns JSON array of posts objects
+ * TODO: structure
+ */
 exports.get_stream = function(args, callback) {
 	var stream = args.fragments[3];
 
@@ -63,6 +78,10 @@ exports.get_stream = function(args, callback) {
 	Database.getStream("timeline", query, callback);
 }
 
+/* @url api/mentions/:userid[?since=:time][&starttime=:time]
+ * @returns JSON array of posts objects
+ * TODO: structure
+ */
 exports.get_mentions = function(args, callback) {
 	var user = args.fragments[3];
 
@@ -72,6 +91,10 @@ exports.get_mentions = function(args, callback) {
 	Post.getPostRowsFromKeyQuery("mentions", "user", user, since, starttime, callback);
 }
 
+/* @url api/tag/:tag[?since=:time][&starttime=:time]
+ * @returns JSON array of posts objects
+ * TODO: structure
+ */
 exports.get_tag =  function(args, callback) {	
 	var tag = args.fragments[3];
 	var since = args.uri.query.since;
@@ -80,6 +103,9 @@ exports.get_tag =  function(args, callback) {
 	Post.getPostRowsFromKeyQuery("tags", "tag", tag, since, starttime, callback);
 }
 
+/* @url api/search/:query
+ * @returns { users: array of user objects, posts: array of post objects }
+ */
 exports.get_search = function(args, callback) {
 	var results = {};
 	var q = "%" + unescape(args.fragments[3]) + "%";
@@ -98,20 +124,93 @@ exports.get_search = function(args, callback) {
 	});
 }
 
+/* @url api/deletepost/:id
+ * @returns MySQL result
+ */
 exports.get_deletepost = function(args, callback) {
-	//TODO sanitization
-	Post.deletePost(args.userobj, +(args.fragments[3]) || 0, callback);
+	if (!args.fragments[3] || !(+args.fragments[3])) return callback(400, false);
+	Post.deletePost(args.userobj, +(args.fragments[3]), callback);
 }
 
+/* @url api/deletecomment/:id
+ * @returns MySQL result
+ */
 exports.get_deletecomment = function(args, callback) {
-	//TODO sanitization
+	if (!args.fragments[3] || !(+args.fragments[3])) return callback(400, false);
 	Post.deleteComment(args.userobj, +(args.fragments[3]) || 0, callback);
 }
 
+/* @url api/post
+ * @args { message: string <= 500, [network: networkstring], [img: 1] }
+ * @post [base64 encoded image]
+ * @returns 200, true if successful, 400 if message too long, 403 if blacklisted by :to,
+ * the int 2 if there are too many posts too frequently
+ */
 exports.post_post = function(args, callback) {
 	if (args.postObject.body.length > 500)
 		return callback(400, false);
-	Post.post(args.userobj.id, args.postObject, callback);
+
+	var data = args.postObject;
+	var user = args.userobj.id;
+
+	data.time = Toolbox.time();
+	data.from = +user;
+
+	if (!data.from || !data.body) return callback(400, false);
+
+	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + (+user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
+		if (err) return callback(500, false);
+		if (rows && rows.length > 101) {
+			return callback(200,2); // as in, 2 many posts
+		}
+
+		var querystr = "INSERT INTO `timeline` (`from`, `time`, `modified`, `message`, `meta`, `type`, `public`, `network`) VALUES ("
+		querystr += parseInt(user) + ",";
+		querystr += data.time + ",";
+		querystr += data.time + ",";
+		querystr += Database.escape(data.body) + ",";
+
+		var meta = "";
+		if (data.img)
+			meta = data.img;
+		if (data.tags) {
+			meta += "," + JSON.stringify(data.tags);
+		}
+
+		querystr += (meta ? Database.escape(meta) : "\"\"") + ",";
+		querystr += (data.img ? 1 : 0) + ",";
+		querystr += "1,";
+		querystr += (Database.escape(data.network || "0"));
+		querystr += ");";
+
+		Database.query(querystr,function(err,rows) {
+			if (err) return callback(err);
+
+			process.send({ t: 2, 
+				id: rows.insertId, 
+				from: parseInt(user), 
+				message: data.body, 
+				modified: Toolbox.time(), 
+				time: Toolbox.time(),
+				meta: meta,
+				type: data.img ? 1 : 0,
+				network: data.network || "0",
+				via: null
+			});
+
+			Post.processPostTags(data.body, rows.insertId);		
+			Post.processMentions(data.body, user, rows.insertId);
+			for (i in data.tags) {
+				if (data.tags[i].userid) {
+					Post.mentionUser(data.tags[i].userid, data.from, rows.insertId);
+				}
+			}
+			data.message = data.body;
+			data.id = rows.insertId;
+
+			callback(err,true);
+		});
+	});
 }
 
 exports.post_repost = function(args, callback) {
