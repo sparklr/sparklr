@@ -101,7 +101,7 @@ function processNotification(notification) {
 		case N_CHAT: //chat
 			addChatMessage(notification.from, CURUSER, notification.body, notification.time, false);
 			updatePageTitle();
-			body = "says: <br>" + notification.body;
+			body = " says: <br>" + notification.body;
 			setNewInbox(true);
 		break;
 	}
