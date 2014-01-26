@@ -33,13 +33,14 @@
 	<% endif %>
 </div>
 <div class='grid'>
-	<div id='editContainer' style='display:none' class='timelineitem'>
-		<b>Avatar</b><br>
-		<input type='file' onchange='loadImage(this.files[0], avatarUploadCallback)'><br>
-		<b>Header</b><br>
-			<input type='file' onchange='loadImage(this.files[0], headerUploadCallback)'><br>
-	</div>
 	<div id='newposts' onclick='updatePages()'></div>
-	<div id='timeline_container'></div>
+	<div id='timeline_container'>
+		<div id='editContainer' style='display:none' class='timelineitem'>
+			<b>Avatar</b><br>
+			<input type='file' onchange='loadImage(this.files[0], avatarUploadCallback)'><br>
+			<b>Header</b><br>
+				<input type='file' onchange='loadImage(this.files[0], headerUploadCallback)'><br>
+		</div>
+	</div>
 </div>
 

@@ -37,6 +37,7 @@ function editProfile() {
 	
 		_g("editBtn").value = "Edit";
 	}
+	arrangeTimeline();
 }
 
 function avatarUploadCallback(e) {
