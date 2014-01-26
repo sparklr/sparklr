@@ -2,6 +2,7 @@
  * Posts, comments
  */
 
+var commentCounts = {};
 var currentComments = [];
 var LIKE_CHAR = "\u261D";
 
@@ -234,7 +235,6 @@ function likePost(id, to, callback) {
 		if (result.deleted) {
 			removeDomElement('like_' + id + '_' + CURUSER);
 			callback.className = callback.className.replace('liked','');
-			return;
 		}
 		callback.className += " jiggle";
 
