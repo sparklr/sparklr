@@ -306,6 +306,7 @@ div.lightbox {
     position: fixed;
     top: 100px;
 	width: 100%;
+	left: 130px;
 	text-align: center;
 }
 
@@ -314,6 +315,7 @@ div.lightbox img {
 	-webkit-transition: all 1s ease;
     box-shadow: 0px 0px 10px #000;
 	max-height: 80%;
+	max-width: 80%;
 }
 
 div.confirm {

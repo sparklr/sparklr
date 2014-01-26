@@ -155,8 +155,7 @@ exports.post_post = function(args, callback) {
 
 	data.time = Toolbox.time();
 	data.from = +user;
-
-	if (!data.from || !data.body) return callback(400, false);
+	data.body = data.body || "";
 
 	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + (+user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
 		if (err) return callback(500, false);
