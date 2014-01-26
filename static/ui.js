@@ -264,6 +264,7 @@ function expandTextarea(e) {
 	r.style.display = toolong ? "inline-block" : "none";
 	if (toolong) r.innerHTML = (500 - l);
 	
+	arrangeTimeline();
 }
 
 function stopBubbling(e) {
@@ -447,6 +448,7 @@ function removeDomElement(id) {
 
 function scrollHandler() {
 	doctop = document.body.scrollTop || document.documentElement.scrollTop;
+	console.log(scrollDistanceFromBottom());
 	if (scrollDistanceFromBottom() < 600) {
 		if (newPageToFetch) {
 			fetchOlderPosts();
