@@ -179,7 +179,7 @@ exports.processMentions = function(post, mentioner, postid) {
 		var user = matches[i].substring(1);
 		User.getUserProfileByUsername(user, function(err,rows) {
 			if (rows.length > 0) {
-				mentionUser(rows[0].id, mentioner, postid);
+				exports.mentionUser(rows[0].id, mentioner, postid);
 			}
 		});
 	}
