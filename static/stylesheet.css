@@ -193,7 +193,7 @@ hr {
     position: relative;
     padding: 5px;
     color: #333;
-	margin-left: 325px;
+	margin-left: 285px;
 }
 
 #content {
@@ -467,13 +467,6 @@ span.header {
     color: #444;
     margin-top: 10px;
     display: inline-block;
-}
-
-div.grid {
-	-webkit-column-count: auto;
-	-webkit-column-width: 435px;
-	-webkit-column-gap: 5px;
-	overflow:hidden;
 }
 
 div.timelineitem {
