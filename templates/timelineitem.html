@@ -1,6 +1,6 @@
 <% if (item.type == 1) %>
 <div class='picturepost' id='picturepost_{item.id}'>
-	<img src='{imgUrl(item.img)}'>
+	<img src='{imgUrl(item.img)}' onload='arrangeTimeline()'>
 </div>
 <% endif %>
 
