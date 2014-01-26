@@ -74,6 +74,45 @@ function addTimelineEvent(item,append) {
 
 	if (item.time < oldestPost)
 		oldestPost = item.time;
+
+	arrangeTimeline();
+}
+
+function arrangeTimeline() {
+	var x = 0;
+	var y = [];
+	var width = 439;
+	var maxwidth = (window.innerWidth || document.documentElement.clientWidth) - 308;
+	console.log(maxwidth);
+ 
+	var n = Math.ceil((maxwidth / (width + 15)) - 1);
+	var totalWidth = (width + 15) * n;
+	var padding = (maxwidth - totalWidth) / (n - 1);
+	var verticalPadding = 17;
+	if (padding < 15) padding = 15;
+	if (padding > 150) padding = 150;
+	console.log(n);
+
+	var left = (maxwidth - (totalWidth + padding)) / 2;
+	if (left < 0 || totalWidth == 0) left = 0;
+	console.log("maxwidth: " + maxwidth + "\ntotalWidth: " + totalWidth);
+ 
+	var children = _g("timeline_container").childNodes;
+	for (var i = 0; i < children.length; i++) {
+		if (!children[i].style) continue;
+		children[i].style.display = "block";
+		children[i].style.position = "absolute";
+ 
+		if (!y[x]) y[x] = 80;
+ 
+		children[i].style.left = 5 + left + (x * (width + padding)) + "px";
+		children[i].style.top = y[x] + "px";
+		y[x] += children[i].clientHeight + verticalPadding; 
+		x++;
+		if (5 + width + left + (x * (width + padding)) >= maxwidth) {
+			x = 0;
+		}
+	}
 }
 
 function addTimelineArray(arr, timeline, append) {
