@@ -4,4 +4,5 @@ function after(scope) {
 			addTimelineEvent(scope.data.posts[i]);
 		}
 	}
+	addTimelineArray(scope.data.posts,subscribedStream);
 }

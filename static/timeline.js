@@ -72,9 +72,6 @@ function addTimelineEvent(item,append) {
 
 	if (item.time < oldestPost)
 		oldestPost = item.time;
-
-	if (!MOBILE)
-		arrangeTimeline();
 }
 
 function arrangeTimeline() {
@@ -97,20 +94,19 @@ function arrangeTimeline() {
 
 	var children = _g("timeline_container").childNodes;
 	for (var i = 0; i < children.length; i++) {
-		if (!children[i].style) continue;
-		children[i].style.display = "block";
-		children[i].style.position = "absolute";
- 
 		if (!y[x]) y[x] = 0;
  
 		children[i].style.left = left + (x * (width + padding)) + "px";
 		children[i].style.top = y[x] + "px";
 		y[x] += children[i].clientHeight + verticalPadding; 
-		x++;
+
+		if (i != 0)	x++;
+
 		if (width + left + (x * (width + padding)) >= maxwidth) {
 			x = 0;
 		}
 	}
+	console.log('ran');
 }
 
 function addTimelineArray(arr, timeline, append) {
@@ -126,6 +122,9 @@ function addTimelineArray(arr, timeline, append) {
 			timelineEvents[timeline].push(arr[i]);
 		}
 	}
+	
+	if (arr.length > 0)
+		arrangeTimeline();
 }
 
 function renderTags(item) {

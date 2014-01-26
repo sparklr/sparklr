@@ -448,7 +448,6 @@ function removeDomElement(id) {
 
 function scrollHandler() {
 	doctop = document.body.scrollTop || document.documentElement.scrollTop;
-	console.log(scrollDistanceFromBottom());
 	if (scrollDistanceFromBottom() < 600) {
 		if (newPageToFetch) {
 			fetchOlderPosts();

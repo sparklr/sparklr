@@ -114,10 +114,10 @@ function pollData() {
 				}
 				var items = data.data || data;
 
-				addTimelineArray(items,subscribedStream);
 				for (var i = items.length - 1; i >= 0; i--) {
 					addTimelineEvent(items[i], 0);
 				}
+				addTimelineArray(items,subscribedStream);
 			}
 		break;
 		case "POST":

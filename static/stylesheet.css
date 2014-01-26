@@ -479,7 +479,7 @@ div.timelineitem {
 	width: 425px;
 	border: solid 1px #ccc;
 	background: #fff;
-	position: relative;
+	position: absolute;
 }
 div.timelineitem .time {
     opacity: 0.65;

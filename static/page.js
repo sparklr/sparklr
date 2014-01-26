@@ -49,6 +49,7 @@ function showStreamPage(posts) {
 		for (var i = 0; i < data.length; i++) {
 			addTimelineEvent(data[i],true);
 		}
+		addTimelineArray(data,subscribedStream);
 	});
 
 	pollData();
