@@ -503,10 +503,15 @@ img.avatar {
     margin-right: 6px;
 }
 
-img.inlineimage {
+div.inlineimage {
 	margin: 5px;
-	max-width: 200px;
-	max-height: 200px;
+	width: 200px;
+	height: 200px;
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+	display: block;
+	cursor: pointer;
 }
 
 div.photos {

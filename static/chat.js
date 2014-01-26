@@ -40,7 +40,7 @@ function getOldChatMessages(user) {
 	});
 }
 
-function addChatMessage(from, to, msg, time, prepend) {
+function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
 	var convoid;
 	if (from == CURUSER)
 		convoid = to + "," + from;
@@ -59,7 +59,7 @@ function addChatMessage(from, to, msg, time, prepend) {
 	if (lastMessageFrom[convoid] != from || prepend && lastMessageFrom[convoid] == from) {
 		html += "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>";
 	}
-	html += "<div style='display:block;margin-left: 25px'>" + processMedia(escapeHTML(msg)) + "</div>";
+	html += "<div style='display:block;margin-left: 25px'>" + (unconfirmed ? msg : processMedia(escapeHTML(msg))) + "</div>";
 
 	ele.innerHTML = html;
 
@@ -95,14 +95,13 @@ function sendChatMessage(e) {
 
 	if (!vars.message && !vars.postData) return;
 
-	addChatMessage(CURUSER, vars.to, vars.message, (new Date).getTime(), false, true);
+	addChatMessage(CURUSER, vars.to, (vars.img ? makeInlineImage(vars.postData,vars.postData) : "") + vars.message, (new Date).getTime(), false, true);
 
 	ajax("chat", vars, function(data,xhr) {
 		if (data.error && data.info == "Blocked") {
 			showBanner("Sorry, that user has blocked you.", "bannerblocked", 4000);
 		}
 		imgAttachments = null;
-		pollData();
 	});
 }
 
