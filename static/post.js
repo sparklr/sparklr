@@ -144,11 +144,10 @@ function postComment(e) {
 }
 
 function showImage(img) {
-	var imgpath = imgUrl(img,true);
 	if (MOBILE) {
-		window.open(imgpath);
+		window.open(img);
 	} else {
-		showPopup("<img src='"+imgpath+"' onload='this.style.opacity=1'>", "lightbox");
+		showPopup("<img src='"+img+"' onload='this.style.opacity=1'>", "lightbox");
 	}
 }
 

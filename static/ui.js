@@ -134,14 +134,7 @@ function processMedia(text,noImages) {
 			match = match.substring(0, 40) + "...";
 		}
 
-		var html = "<a href='" + url + "' target='_blank'>";
-
-		if (!noImages) {
-			if (url.indexOf(".jpg") != -1 || url.indexOf(".png") != -1 || url.indexOf(".gif") != -1) {
-				html += "<br><img src='" + url + "' class='fadein inlineimage' style='display:none;' onLoad='this.style.display=\"inline-block\";'><br>";
-			}
-		}
-		html += match + "</a>";
+		var html = "<a href='" + url + "' target='_blank'>" + match + "</a>";
 
 		return html;
 	});
@@ -158,7 +151,7 @@ function processMedia(text,noImages) {
 
 	// img
 	text = text.replace(/\[IMG([A-Za-z0-9\._-]+)\]/g, function(match, img) {
-		return "<img src='" + imgUrl(img) + "' style='cursor:pointer' class='inlineimage' onload='' onClick='showImage(\"" + img + "\");stopBubbling();'><br>";
+		return makeInlineImage(imgUrl(img), imgUrl(img,true));
 	});
 	
 	// emoji
@@ -474,3 +467,8 @@ function scrollHandler() {
         a.style.opacity = 0;
     }
 }
+
+function makeInlineImage(thumb, img) {
+	return "<div style='background-image: url(" + thumb + ")' class='fadein inlineimage' onClick='showImage(\"" + img + "\");stopBubbling();'></div>";
+}
+

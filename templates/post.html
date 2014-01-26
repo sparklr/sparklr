@@ -1,6 +1,6 @@
 <div class='contentwrapper'>
 	<% if (data.type == 1) %>
-	<div class='picturepost full' id='picturepost_{data.id}' onClick='showImage("{ data.img }");'>
+	<div class='picturepost full' id='picturepost_{data.id}' onClick='showImage("{ imgUrl(data.img,true) }");'>
 		<img src='{imgUrl(data.img)}'>
 	</div>
 	<% endif %>
