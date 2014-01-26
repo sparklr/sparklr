@@ -11,8 +11,6 @@ var hiddenPostList = [];
 
 var missingPosts = 0;
 
-var commentCounts = {};
-
 var oldestPost = Number.MAX_VALUE;
 
 function addTimelineEvent(item,append) {
