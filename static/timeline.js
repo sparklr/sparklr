@@ -17,7 +17,7 @@ function addTimelineEvent(item,append) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (_g("post_" + item.id)) {
-		if (item.commentcount) {
+		if (item.commentcount != null) {
 			if (item.delta)
 				updateCommentCount(item.id, commentCounts[item.id] + item.commentcount);
 			else

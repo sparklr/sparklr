@@ -13,34 +13,6 @@ exports.getComments = function(postid, since, callback) {
 	Database.query(query, callback);
 }
 
-exports.edit = function(user, id, body, rank, callback) {
-	if (body.length > 500) return callback(false);
-	Database.query("SELECT * FROM `timeline` WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), function(err,rows) {
-		if (err || rows.length < 1)
-			return callback(err || true);
-		var message = "";
-		if (rows[0].via) {
-			var last = "";
-			var lineexp = /\[([\d]+)\]([^$\[]*)/g; //line starts with [ID]
-			rows[0].message = rows[0].message.replace(lineexp, function(match, num, text) {
-				message += last;
-				last = match;
-				return "";
-			});
-
-			message += "[" + user + "] " + body;
-		} else {
-			message = body;
-		}
-		Database.query("UPDATE `timeline` SET `message` = " + Database.escape(message) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), callback);
-	});
-}
-
-exports.editcomment = function(user, id, body, rank, callback) {
-	if (body.length > 500) return callback(false);
-	Database.query("UPDATE `comments` SET `message` = " + Database.escape(body) + " WHERE `id` = " + parseInt(id) + (rank >= 50 ? "" : " AND `from` = " + parseInt(user)), callback);
-}
-
 exports.postComment = function(user, data, callback) {
 	Database.getObject("timeline", data.id, function(err, rows) {
 		if (rows.length < 1) {
@@ -51,14 +23,9 @@ exports.postComment = function(user, data, callback) {
 		var query = "INSERT INTO `comments` (`postid`, `from`, `message`, `time`) ";
 		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+Database.escape(data.comment) + "," +  Toolbox.time() + ")";
 
-		Database.query(query, function(err,res) {
-			process.send({ t: 0, postid: data.id, from: user, message: data.comment, time: Toolbox.time(), id: res.insertId });
-			callback(err,res);
-		});
+		Database.query(query, callback);
 
 		var count = (rows[0].commentcount + 1 || 1);
-
-		process.send({ t: 2, message: false, id: data.id, commentcount: count, network: '0', from: 0 });
 
 		Database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(data.id));
 
@@ -83,6 +50,7 @@ exports.postComment = function(user, data, callback) {
 		exports.processMentions(data.comment, user, data.id);
 	});
 }
+
 exports.deletePost = function(userobj, id, callback) {
 	var args = { id: id };
 	if (userobj.rank < 50) {
@@ -96,6 +64,7 @@ exports.deletePost = function(userobj, id, callback) {
 		Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(id), callback);
 	});
 }
+
 exports.deleteComment = function(userobj, id, callback) {
 	Database.getObject("comments", id, function(err, rows) {
 		if (err || rows.length < 1) {
@@ -113,8 +82,6 @@ exports.deleteComment = function(userobj, id, callback) {
 
 		Database.query(query, function(){});
 		exports.updateCommentCount(rows[0].postid, -1);
-		process.send({ t: 2, message: false, delta: true, id: rows[0].postid, commentcount: -1, network: '0', from: 0 });
-		process.send({ t: 0, postid: rows[0].postid, id: id, deleted: true });
 
 		callback(null,true);
 	});
@@ -122,41 +89,6 @@ exports.deleteComment = function(userobj, id, callback) {
 
 exports.updateCommentCount = function(postid, x) {
 	Database.query("UPDATE `timeline` SET commentcount = commentcount + " + parseInt(x) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(postid), function(){});
-}
-
-exports.repost = function(user, postid, reply, callback) {
-	Database.getObject('timeline', postid, function(err,rows) {
-		if (rows.length < 1) return;
-
-		var post = rows[0];
-		var origfrom = rows[0].from;
-		var msg;
-
-		if (post.origid != null) {
-			msg = post.message;
-		} else {
-			msg = "[" + post.from + "] " + post.message;
-			post.origid = post.id;
-		}
-		if (reply != "") {
-			msg += "\n[" + user + "] " + reply;
-		}
-		post.id = null;
-		post.message = msg;
-		post.via = post.from;
-		post.from = user;
-		post.time = post.modified = Toolbox.time();
-		post.commentcount = 0;
-
-		Database.postObject('timeline', post, function(err,rows) {
-			callback(err,rows);
-			if (!err)
-				Notification.addUserNotification(origfrom, "", rows.insertId, user, Notification.N_REPOST);
-			post.t = 2;
-			post.id = rows.insertId;
-			process.send(post);
-		});
-	});
 }
 
 exports.processPostTags = function(body, id) {
