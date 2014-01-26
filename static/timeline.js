@@ -266,8 +266,8 @@ function uploadStreamImageCallback(e,id) {
 	}
 	id = id || "attachment";
 	console.log(id);
-	_g(id).innerHTML = "<img src='" + res + "'>";
 	_g(id).style.display = "block";
+	_g(id).style.backgroundImage = 'url(' + res + ')';
 	imgAttachments = e;
 }
 

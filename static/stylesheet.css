@@ -438,9 +438,9 @@ div.confirm {
 #notificationlist div:hover .exit:hover {
     background: #d2b8d4;
 }
-#notificationlist div img {
-	max-width: 185px;
-	max-height: 200px;
+#notificationlist div.inlineimage {
+	width: 155px;
+	height: 100px;
 }
 #notificationlist div .littleavatar {
 	margin-left: 0px;
@@ -629,11 +629,10 @@ div.comment {
 div.minipreview {
 	display: none;
 	margin: 2px;
-}
-
-div.minipreview img {
-	max-width: 150px;
-	max-height: 80px;
+	width: 50px;
+	height: 40px;
+	float: right;
+	background-size: cover;
 }
 
 div.attachment {
@@ -722,12 +721,6 @@ img.avatar {
     box-shadow: 0px 0px 1px #000;
     float: left;
     margin-right: 6px;
-}
-
-img.inlineimage {
-	margin: 5px;
-	max-width: 200px;
-	max-height: 200px;
 }
 
 div.photos {
@@ -1285,3 +1278,16 @@ input.t1 {
 	width:275px;
 	margin:7px;
 }
+
+div.inlineimage {
+	margin: 5px;
+	width: 200px;
+	height: 200px;
+	background-size: contain !important;
+	background-position: center center !important;
+	background-repeat: no-repeat !important;
+	display: block;
+	cursor: pointer;
+	border: none !important;
+}
+
