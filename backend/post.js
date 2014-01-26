@@ -80,7 +80,7 @@ exports.postComment = function(user, data, callback) {
 			}
 		});
 
-		processMentions(data.comment, user, data.id);
+		exports.processMentions(data.comment, user, data.id);
 	});
 }
 exports.deletePost = function(userobj, id, callback) {

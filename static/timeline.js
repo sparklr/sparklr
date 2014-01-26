@@ -106,7 +106,6 @@ function arrangeTimeline() {
 			x = 0;
 		}
 	}
-	console.log('ran');
 }
 
 function addTimelineArray(arr, timeline, append) {
