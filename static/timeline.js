@@ -57,7 +57,7 @@ function addTimelineEvent(item,append) {
 	if (append || parent.children.length < 1) {
 		parent.appendChild(ev);
 	} else {
-		parent.insertBefore(ev, parent.children[0]);
+		parent.insertBefore(ev, parent.children[1]);
 	}
 
 	if (item.tags) {
@@ -72,6 +72,45 @@ function addTimelineEvent(item,append) {
 
 	if (item.time < oldestPost)
 		oldestPost = item.time;
+
+	if (!MOBILE)
+		arrangeTimeline();
+}
+
+function arrangeTimeline() {
+	if (MOBILE || !_g("timeline_container")) return;
+
+	var x = 0;
+	var y = [];
+	var width = 439;
+	var maxwidth = (window.innerWidth || document.documentElement.clientWidth) - 308;
+ 
+	var n = Math.ceil((maxwidth / (width + 15)) - 1);
+	var totalWidth = (width + 15) * n;
+	var padding = (maxwidth - totalWidth) / (n - 1);
+	var verticalPadding = 17;
+	if (padding < 15) padding = 15;
+	if (padding > 150) padding = 150;
+
+	var left = (maxwidth - ((width + padding) * n)) / 2;
+	if (left < 0 || totalWidth == 0) left = 0;
+
+	var children = _g("timeline_container").childNodes;
+	for (var i = 0; i < children.length; i++) {
+		if (!children[i].style) continue;
+		children[i].style.display = "block";
+		children[i].style.position = "absolute";
+ 
+		if (!y[x]) y[x] = 0;
+ 
+		children[i].style.left = left + (x * (width + padding)) + "px";
+		children[i].style.top = y[x] + "px";
+		y[x] += children[i].clientHeight + verticalPadding; 
+		x++;
+		if (width + left + (x * (width + padding)) >= maxwidth) {
+			x = 0;
+		}
+	}
 }
 
 function addTimelineArray(arr, timeline, append) {
@@ -266,5 +305,7 @@ function uploadStreamImageCallback(e,id) {
 	_g(id).style.display = "block";
 	_g(id).style.backgroundImage = 'url(' + res + ')';
 	imgAttachments = e;
+
+	setTimeout(arrangeTimeline, 0);
 }
 
