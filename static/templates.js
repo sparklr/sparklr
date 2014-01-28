@@ -42,7 +42,7 @@ function renderTemplate(page,destination,callback) {
 
 function getTemplate(id) {
 	if (!TEMPLATES[id]) {
-		templatedata = getStaticFile(COMMONHOST + "../templates/" + id + ".html");
+		templatedata = getStaticFile(STATICHOST + "../templates/" + id + ".html");
 		TEMPLATES[id] = t(templatedata);
 	}
 	return TEMPLATES[id];
@@ -50,7 +50,7 @@ function getTemplate(id) {
 
 function getController(id) {
 	if (!CONTROLLERS[id]) {
-		CONTROLLERS[id] = getStaticFile(COMMONHOST + "../controllers/" + id + ".js");
+		CONTROLLERS[id] = getStaticFile(STATICHOST + "../controllers/" + id + ".js");
 	}
 	return CONTROLLERS[id];
 }

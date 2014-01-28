@@ -5,30 +5,30 @@
 	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 	<meta charset='utf-8'>
 	<script>
+		var IMGHOST = "{global.imgHost}";
 		var STATICHOST = "{global.staticHost}";
-		var COMMONHOST = "{global.commonHost}";
 		var POLL_INTERVAL = 5000;
 		var MOBILE = true;
 		var LIVE = {global.liveSite};
 	</script>
 	<% if (global.liveSite) %>
-		<link rel='stylesheet' href='{global.commonHost}/mobile.css?{buildData.cssHash_mobile}'>
-		<script data-live src='{global.commonHost}/mobile.js?{buildData.jsHash_mobile}'></script>
+		<link rel='stylesheet' href='{global.staticHost}/mobile.css?{buildData.cssHash_mobile}'>
+		<script data-live src='{global.staticHost}/mobile.js?{buildData.jsHash_mobile}'></script>
 	<% else %>
-		<script src='{global.commonHost}/templates.js'></script>
-		<script src='{global.commonHost}/page.js'></script>
-		<script src='{global.commonHost}/data.js'></script>
-		<script src='{global.commonHost}/timeline.js'></script>
-		<script src='{global.commonHost}/post.js'></script>
-		<script src='{global.commonHost}/user.js'></script>
-		<script src='{global.commonHost}/chat.js'></script>
-		<script src='{global.commonHost}/ui.js'></script>
-		<script src='{global.commonHost}/mobile/ui.js'></script>
-		<script src='{global.commonHost}/notification.js'></script>
-		<script src='{global.commonHost}/profile.js'></script>
-		<script src='{global.commonHost}/app.js'></script>
-		<script src='{global.commonHost}/bugs.js'></script>
-		<link rel='stylesheet' href='{global.commonHost}/mobile.css'>
+		<script src='{global.staticHost}/templates.js'></script>
+		<script src='{global.staticHost}/page.js'></script>
+		<script src='{global.staticHost}/data.js'></script>
+		<script src='{global.staticHost}/timeline.js'></script>
+		<script src='{global.staticHost}/post.js'></script>
+		<script src='{global.staticHost}/user.js'></script>
+		<script src='{global.staticHost}/chat.js'></script>
+		<script src='{global.staticHost}/ui.js'></script>
+		<script src='{global.staticHost}/mobile/ui.js'></script>
+		<script src='{global.staticHost}/notification.js'></script>
+		<script src='{global.staticHost}/profile.js'></script>
+		<script src='{global.staticHost}/app.js'></script>
+		<script src='{global.staticHost}/bugs.js'></script>
+		<link rel='stylesheet' href='{global.staticHost}/mobile.css'>
 		<script src='http://127.0.0.1:9001/socket.js' async></script>
 	<% endelse %>
 	<meta name="apple-mobile-web-app-capable" content="yes" />

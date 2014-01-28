@@ -157,7 +157,7 @@ function processMedia(text,noImages) {
 	// emoji
 	text = text.replace(/([\ud800-\udbff])([\udc00-\udfff])/g, function(match, b1, b2) {
 		var cp = (b1.charCodeAt(0) - 0xD800) * 0x400 + (b2.charCodeAt(0) - 0xDC00) + 0x10000;
-		return "<img src='" + STATICHOST + "/../eji/" + cp.toString(16) + ".png' style='vertical-align:bottom'>";
+		return "<img src='" + IMGHOST + "/../eji/" + cp.toString(16) + ".png' style='vertical-align:bottom'>";
 	});
 
 	// limit the number of newlines allowed in a post
@@ -435,7 +435,7 @@ function search_Keydown(e) {
 function imgUrl(img,fullsize) {
 	img = "" + img;
 	if (img.indexOf(".") == -1) img += ".jpg";
-	return STATICHOST + "/" + (!fullsize ? "t" : "") + img;
+	return IMGHOST + "/" + (!fullsize ? "t" : "") + img;
 }
 
 // Strips a DOM element from its parent

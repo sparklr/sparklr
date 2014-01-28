@@ -5,31 +5,31 @@
 	<meta charset='utf-8'>
 	<script>
 		var STATICHOST = "{global.staticHost}";
-		var COMMONHOST = "{global.commonHost}";
+		var IMGHOST = "{global.imgHost}";
 		var POLL_INTERVAL = 1500;
 		var MOBILE = false;
 		var LIVE = {global.liveSite};
 	</script>
 	<% if (global.liveSite) %>
-		<link rel='stylesheet' href='{global.commonHost}/app.css?{buildData.cssHash_frontend}'>
-		<script data-live src='{global.commonHost}/app.js?{buildData.jsHash_frontend}'></script>
+		<link rel='stylesheet' href='{global.staticHost}/app.css?{buildData.cssHash_frontend}'>
+		<script data-live src='{global.staticHost}/app.js?{buildData.jsHash_frontend}'></script>
 	<% else %>
-		<script src='{global.commonHost}/templates.js'></script>
-		<script src='{global.commonHost}/page.js'></script>
-		<script src='{global.commonHost}/data.js'></script>
-		<script src='{global.commonHost}/timeline.js'></script>
-		<script src='{global.commonHost}/post.js'></script>
-		<script src='{global.commonHost}/user.js'></script>
-		<script src='{global.commonHost}/chat.js'></script>
-		<script src='{global.commonHost}/ui.js'></script>
-		<script src='{global.commonHost}/notification.js'></script>
-		<script src='{global.commonHost}/profile.js'></script>
-		<script src='{global.commonHost}/app.js'></script>
-		<script src='{global.commonHost}/bugs.js'></script>
-		<script src='{global.commonHost}/windows.js'></script>
+		<script src='{global.staticHost}/templates.js'></script>
+		<script src='{global.staticHost}/page.js'></script>
+		<script src='{global.staticHost}/data.js'></script>
+		<script src='{global.staticHost}/timeline.js'></script>
+		<script src='{global.staticHost}/post.js'></script>
+		<script src='{global.staticHost}/user.js'></script>
+		<script src='{global.staticHost}/chat.js'></script>
+		<script src='{global.staticHost}/ui.js'></script>
+		<script src='{global.staticHost}/notification.js'></script>
+		<script src='{global.staticHost}/profile.js'></script>
+		<script src='{global.staticHost}/app.js'></script>
+		<script src='{global.staticHost}/bugs.js'></script>
+		<script src='{global.staticHost}/windows.js'></script>
 		<!-- <script src='http://192.168.1.125:9001/socket.js' async></script> -->
 		<script src='http://127.0.0.1:9001/socket.js' async></script>
-		<link rel='stylesheet' href='{global.commonHost}/stylesheet.css'>
+		<link rel='stylesheet' href='{global.staticHost}/stylesheet.css'>
 	<% endelse %>
 	<script>
 		(function(i,s,o,g,r,a,m){

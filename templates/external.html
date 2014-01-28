@@ -2,21 +2,21 @@
 <html>
 <head>
 <title>Sparklr</title>
-<link rel='stylesheet' href='{global.secureCommonHost}/external.css?{buildData.cssHash_external}'>
+<link rel='stylesheet' href='{global.secureStaticHost}/external.css?{buildData.cssHash_external}'>
 <link rel='canonical' href='http://sparklr.me/'>
 <meta name="viewport" content="target-densitydpi=device-dpi, width=440, initial-scale=0.7, maximum-scale=0.7, user-scalable=0" />
 <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
 <meta name='description' content='Sparklr is the new place to connect. Be among the first in our exclusive beta.'>
 <% if (!global.liveSite) %>
-<script src='{global.commonHost}/external.js'></script>
-<script src='{global.commonHost}/ui.js'></script>
-<script src='{global.commonHost}/data.js'></script>
+<script src='{global.staticHost}/external.js'></script>
+<script src='{global.staticHost}/ui.js'></script>
+<script src='{global.staticHost}/data.js'></script>
 <% else %>
-<script data-live src='{global.secureCommonHost}/external.js?{buildData.jsHash_external}'></script>
+<script data-live src='{global.secureStaticHost}/external.js?{buildData.jsHash_external}'></script>
 <% endelse %>
 <script>
 	var STATICHOST = "{global.staticHost}";
-	var COMMONHOST = "{global.commonHost}";
+	var IMGHOST = "{global.imgHost}";
 	var AUTHKEY, CURUSER;
 	(function(i,s,o,g,r,a,m){
 	 i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
