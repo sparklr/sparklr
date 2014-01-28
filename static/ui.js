@@ -123,8 +123,11 @@ function processPost(post) {
 // Parse links, hashtags, @, imgs, etc
 function processMedia(text,noImages) {
 	//TODO: matches too many URLs
+	var linkcount = 0;
 	var urlexp = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:([^\s()<>.]+[.]?)+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\".,<>?«»“”‘’]))/gi; 
 	text = text.replace(urlexp, function (match) {
+		if (linkcount > 5) return;
+
 		var url = match;
 
 		if (match.indexOf("http") == -1)
@@ -135,6 +138,8 @@ function processMedia(text,noImages) {
 		}
 
 		var html = "<a href='" + url + "' target='_blank'>" + match + "</a>";
+
+		linkcount++;
 
 		return html;
 	});
