@@ -1,3 +1,7 @@
+/* Sparklr
+ * User action related API endpoints
+ */
+
 var Database = require("../database");
 var User = require("../user");
 var Post = require("../post");
@@ -5,6 +9,10 @@ var Toolbox = require("../toolbox");
 
 var bcrypt = require("bcrypt");
 
+/* @url api/signin/:user/:pass
+ * @returns 200 and a cookie if session, 403 if invalid credentials
+ * Use of this API will be discouraged once OAuth is implemented
+ */
 exports.public_signin = function(args,callback) {
 	if (args.fragments.length < 5) return callback(400, false);
 
@@ -29,6 +37,11 @@ exports.public_signin = function(args,callback) {
 	});
 }
 
+/* @url api/signup/:inviteid/:username/:email/:password
+ * @returns 200 and a cookie if session, 200, -1 if the invite does not exist
+ * This API is intended only for use by the Sparklr website and is not supported
+ * for third-party applications.
+ */
 exports.public_signup = function(args, callback) {
 	if (!args.fragments[6]) return callback(400,false);
 
@@ -86,6 +99,10 @@ exports.public_signup = function(args, callback) {
 	});
 }
  
+/* @url api/signoff
+ * @returns true
+ * Signs the user off and returns an empty cookie
+ */
 exports.public_signoff = function(args, callback) {
 	callback(200, true, {
 		"Set-Cookie": "D=; Path=/",
@@ -93,6 +110,10 @@ exports.public_signoff = function(args, callback) {
 	});
 }
 
+/* @url api/forgot
+ * @returns 200, 1 if successful, 200, 0 if user not found
+ * Resets the user's password and emails a reset token to the user
+ */
 exports.public_forgot = function(args, callback) {
 	var user = args.fragments[3];
 	if (!user) return callback(400, false);
@@ -114,6 +135,10 @@ exports.public_forgot = function(args, callback) {
 	});
 }
 
+/* @url api/reset/:token/:newpassword
+ * @returns 200, true if successful, 403, -2 reset token is wrong
+ * Resets the user's password to :newpassword
+ */
 exports.public_reset = function(args, callback) {
 	if (args.fragments.length < 6) return callback(400, false);
 	User.getUserProfile(args.fragments[3], function(err, rows) {
@@ -146,6 +171,10 @@ exports.public_reset = function(args, callback) {
 	});
 }
 
+/* @url api/requestinvite/:email
+ * @returns 200, true
+ * Requests an invitation to the Sparklr beta
+ */
 exports.public_requestinvite = function(args, callback) {
 	if (!args.fragments[3]) return callback(400, false);
 
@@ -154,13 +183,21 @@ exports.public_requestinvite = function(args, callback) {
 	}, callback);
 }
 
+/* @url api/checkusername/:user
+ * @returns 200, true or false
+ * Returns whether or not the username is in use
+ */
 exports.public_checkusername = function(args, callback) {
 	User.getUserProfileByUsername(args.fragments[3], function(err, rows) {
 		if (err) return callback(500, false);
-		callback(rows && rows.length > 0 && rows[0].id != args.userobj.id);
+		callback(200, rows && rows.length > 0 && rows[0].id != args.userobj.id);
 	});
 }
 
+/* @url api/user/:userid[/mentions|/photos]
+ * @returns JSON object of user and stream
+ * @structure { user, handle, avatarid, background, following, name, bio }
+ */
 exports.get_user = function(args, callback) {
 	
 	var userid = args.fragments[3];
@@ -204,6 +241,9 @@ exports.get_user = function(args, callback) {
 	});
 }
 
+/* @url api/invite
+ * @returns String of invite ID
+ */
 exports.get_invite = function(args, callback) {
 	Database.query("SELECT * FROM `invites` WHERE `from` = " + (+args.userobj.id),
 		function(err,rows) {
@@ -219,6 +259,9 @@ exports.get_invite = function(args, callback) {
 	);
 }
 
+/* @url api/random
+ * @returns Returns a random userid
+ */
 exports.get_random = function(args, callback) {
 	Database.query("SELECT `id` FROM `users` AS users1\
 		JOIN \
@@ -231,20 +274,32 @@ exports.get_random = function(args, callback) {
 	});
 }
 
+/* @url api/friends
+ * @returns Friends array
+ */
 exports.get_friends = function(args, callback) {
 	callback(200, args.userobj.following);
 }
 
+/* @url api/settings
+ * @returns User object
+ */
 exports.get_settings = function(args, callback) {
 	args.userobj.password = null;
 	callback(200, args.userobj);
 }
 
+/* @url api/username/:userids(csv)
+ * @returns id, handle array
+ */
 exports.get_username = function(args, callback) {
 	var users = args.fragments[3].split(",");
 	User.getMassUserDisplayName(users,callback);
 }
 
+/* @url api/follow/:userid
+ * @returns MySQL result or 0 if already following
+ */
 exports.post_follow = function(args, callback) {
 	var tofollow = args.fragments[3];
 	if (tofollow == args.userobj.id) 
@@ -261,6 +316,9 @@ exports.post_follow = function(args, callback) {
 	}
 }
 
+/* @url api/unfollow/:userid
+ * @returns MySQL result or 0 if not following
+ */
 exports.post_unfollow = function(args, callback) {
 	var tofollow = args.fragments[3];
 	if (args.userobj.following.indexOf(tofollow) !== -1) {
@@ -274,6 +332,9 @@ exports.post_unfollow = function(args, callback) {
 	}
 }
 
+/* @url api/sendinvite/:email
+ * @returns true
+ */
 exports.post_sendinvite = function(args, callback) {
 	var inviteid = Toolbox.hash((Math.random() * 1e5) + args.userobj.id + args.fragments[3]);
 	Database.postObject("invites", {
@@ -289,6 +350,10 @@ exports.post_sendinvite = function(args, callback) {
 	});
 }
 
+/* @url api/settings
+ * @args { [username], [bio], [email], displayname }
+ * @returns true if successful, false if validation fails
+ */
 exports.post_settings = function(args, callback) {
 	if (args.postObject.username) {
 		if (args.postObject.username.match(/^\d+$/)) {
@@ -344,6 +409,10 @@ exports.post_settings = function(args, callback) {
 
 }
 
+/* @url api/password
+ * @args { password, newpassword }
+ * @returns authkey string if true, false if validation fails
+ */
 exports.post_password = function(args, callback) {
 	bcrypt.compare(args.postObject.password, args.userobj.password, function(err, match) {
 		if (err) callback(500, false);
@@ -361,6 +430,10 @@ exports.post_password = function(args, callback) {
 	});
 }
 
+/* @url api/list
+ * @args { action: true to add, false to remove, userid }
+ * @returns true
+ */
 exports.post_list = function(args, callback) {
 	var list = (args.userobj.blacklist || "").split(",");
 
@@ -376,18 +449,30 @@ exports.post_list = function(args, callback) {
 	callback(200, true);
 }
 
+/* @url api/avatar
+ * @post base64 encoded image
+ * @returns avatarid
+ */
 exports.post_avatar = function(args, callback) {
 	args.userobj.avatarid = Toolbox.time();
 	Database.updateObject("users", args.userobj);
 	callback(200, args.userobj.avatarid);
 }
 
+/* @url api/header
+ * @post base64 encoded image
+ * @returns avatarid
+ */
 exports.post_header = function(args, callback) {
 	args.userobj.avatarid = Toolbox.time();
 	Database.updateObject("users", args.userobj);
 	callback(200, args.userobj.avatarid);
 }
 
+/* @url api/deleteuser
+ * @args { password }
+ * @returns true or false
+ */
 exports.post_delete_user = function(args, callback) {
 	bcrypt.compare(args.postObject.password, args.userobj.password, function(err, match) { 
 		if (err) return callback(err);
@@ -426,5 +511,4 @@ exports.post_delete_user = function(args, callback) {
 	});
 	*/
 }
-
 
