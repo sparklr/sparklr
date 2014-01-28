@@ -1,3 +1,7 @@
+/* Sparklr
+ * Misc. API endpoints
+ */
+
 var Database = require('../database');
 var Mail = require('../mail');
 

@@ -1,3 +1,7 @@
+/* Sparklr
+ * Post related API endpoints
+ */
+
 var Database = require('../database');
 var Post = require('../post');
 var Toolbox = require("../toolbox");

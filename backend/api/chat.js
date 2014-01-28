@@ -1,3 +1,7 @@
+/* Sparklr
+ * Chat related API endpoints
+ */
+
 var Database = require("../database");
 var Toolbox = require("../toolbox");
 var Notification = require("../notification");

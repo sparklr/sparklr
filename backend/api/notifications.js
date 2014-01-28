@@ -1,3 +1,7 @@
+/* Sparklr
+ * Notifications related API endpoints
+ */
+
 var Database = require('../database');
 
 /* @url api/notifications
