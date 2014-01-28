@@ -27,3 +27,11 @@ global.database = {
 	database: "p18"
 };
 
+// SMTP server
+global.smtp = {
+	user: "app@sparklr.me",
+	password: "",
+	host: "smtp.gmail.com",
+	ssl: true
+};
+
