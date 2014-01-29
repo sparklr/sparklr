@@ -6,8 +6,10 @@ var Database = require("../database");
 var User = require("../user");
 var Post = require("../post");
 var Toolbox = require("../toolbox");
+var Mail = require("../mail");
 
 var bcrypt = require("bcrypt");
+var crypto = require("crypto");
 
 /* @url api/signin/:user/:pass
  * @returns 200 and a cookie if session, 403 if invalid credentials
