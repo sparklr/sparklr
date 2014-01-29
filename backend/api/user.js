@@ -164,7 +164,7 @@ exports.public_reset = function(args, callback) {
 				if (err) {
 					callback(500, -1);
 				} else {
-					callback(200, true, {
+					callback(200, 1, {
 						"Set-Cookie": "D=" + rows[0].id + "," + rows[0].authkey + "; Path=/"
 					});
 				}
