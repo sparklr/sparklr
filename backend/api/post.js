@@ -251,7 +251,7 @@ exports.post_repost = function(args, callback) {
 			msg = "[" + post.from + "] " + post.message;
 			post.origid = post.id;
 		}
-		if (reply != "") {
+		if (args.postObject.reply != "") {
 			msg += "\n[" + args.userobj.id + "] " + args.postObject.reply;
 		}
 		post.id = null;
