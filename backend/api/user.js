@@ -198,7 +198,7 @@ exports.public_checkusername = function(args, callback) {
 
 /* @url api/user/:userid[/mentions|/photos]
  * @returns JSON object of user and stream
- * @structure { user, handle, avatarid, background, following, name, bio }
+ * @structure { user, handle, avatarid, following, name, bio }
  */
 exports.get_user = function(args, callback) {
 	
@@ -215,7 +215,6 @@ exports.get_user = function(args, callback) {
 			user: profile.id,
 			handle: profile.username,
 			avatarid: profile.avatarid,
-			background: profile.background,
 			following: (args.userobj.following.indexOf(profile.id.toString()) != -1),
 			name: profile.displayname,
 			bio: profile.bio
