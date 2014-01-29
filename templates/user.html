@@ -3,7 +3,7 @@
 <% else %>
 <div class='profileheader' id='profileheader'>
 <% endelse %>
-	<img class='avatar' id='useravatar' src='{ getAvatar(data.user) }' onDrop='dropImage(event, avatarUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'><br>
+	<img class='useravatar' id='useravatar' src='{ imgUrl(data.user,true) }' onDrop='dropImage(event, avatarUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'><br>
 	<p id='userDisplayName'>{ getDisplayName(data.user) }</p>
 	<p>@{getUserHandle(data.user)}</p>
 	<p id='userBio'>{processMedia(data.bio.replace(/\n/g,'<br>'),true)}</p>

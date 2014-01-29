@@ -160,14 +160,18 @@ hr {
 	margin-bottom: 15px;
 	margin-top: 5px;
 }
-#header .me{
+#header .useravatar {
 	display: block;
-	border-radius: 60px;
-	width: 120px;
-	height: 120px;
-	margin: auto;
 	margin-bottom: 15px;
 	cursor: pointer;
+	width: 120px;
+	height: 120px;
+}
+.useravatar{
+	border-radius: 60px;
+	width: 100px;
+	height: 100px;
+	margin: auto;
 }
 #links a img {
     box-shadow: 0px 0px 7px rgba(0,0,0,0.3),
