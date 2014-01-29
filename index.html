@@ -8,13 +8,280 @@
 <body>
 
 	<div id='header'>
-		<div id='logo'></div>
+		<div id='logo' onclick='location.href="http://sparklr.me/"'></div>
 	</div>
 
 	<div id='content'>
-		
-	</div>
 
+		<h1>GET api/inbox</h1>
+		@url api/inbox<br>
+		* @returns JSON array of message objects<br>
+		* @structure { time, from, message }<br>
+		<br><br>
+		<code>get_inbox in chat.js</code><br><br>
+		<h1>GET api/chat/:with[?since=:time][&starttime=:time]</h1><br>
+		@url api/chat/:with[?since=:time][&starttime=:time]<br>
+		* @returns JSON array of message objects<br>
+		* @structure { time, from, message }<br>
+		<br><br>
+		<code>get_chat in chat.js</code><br><br>
+		<h1>POST api/chat</h1><br>
+		@url api/chat<br>
+		* @args { to: userid, message: string <= 520, [img: 1] }<br>
+		* @post [base64 encoded image]<br>
+		* @returns 200, true if successful, 400 if message too long, 403 if blacklisted by :to<br>
+		<br><br>
+		<code>post_chat in chat.js</code><br><br>
+		<h1>GET api/areyouawake</h1><br>
+		@url api/areyouawake<br>
+		* Stupid simple check if the server is replying<br>
+		* @returns true<br>
+		<br><br>
+		<b>public API</b>, no authkey needed.<br><br>
+		<code>public_areyouawake in misc.js</code><br><br>
+		<h1>GET api/staff</h1><br>
+		@url api/staff<br>
+		* @returns JSON array of usernames and ids<br>
+		* @structure { id, username }<br>
+		<br><br>
+		<code>get_staff in misc.js</code><br><br>
+		<h1>POST api/feedback</h1><br>
+		@url api/feedback<br>
+		* @args { msg }<br>
+		* @post null<br>
+		* @returns true<br>
+		<br><br>
+		<code>post_feedback in misc.js</code><br><br>
+		<h1>GET api/notifications</h1><br>
+		@url api/notifications<br>
+		* @returns JSON array of notification objects<br>
+		* @structure { id, from, to, type, time, body, action }<br>
+		<br><br>
+		<code>get_notifications in notifications.js</code><br><br>
+		<h1>GET api/dismiss/:id</h1><br>
+		@url api/dismiss/:id<br>
+		* Dismisses a notification<br>
+		* @returns MySQL result<br>
+		* @structure { affectedRows, insertId }<br>
+		<br><br>
+		<code>get_dismiss in notifications.js</code><br><br>
+		<h1>GET api/post/:id</h1><br>
+		@url api/post/:id<br>
+		* @returns JSON array of post objects<br>
+		* @structure { from, id, type, meta, time, message, via, origid, commentcount, modified, network }<br>
+		<br><br>
+		<code>get_post in post.js</code><br><br>
+		<h1>GET api/comments/:postid[?since=:time]</h1><br>
+		@url api/comments/:postid[?since=:time]<br>
+		* @returns JSON array of comment objects<br>
+		* @structure { id, postid, from, message, time }<br>
+		<br><br>
+		<code>get_comments in post.js</code><br><br>
+		<h1>GET api/stream/:network|:userid[?since=:time][&starttime=:time]</h1><br>
+		@url api/stream/:network|:userid[?since=:time][&starttime=:time]<br>
+		* @returns JSON array of posts objects<br>
+		* @structure { from, id, type, meta, time, message, via, origid, commentcount, modified, network }<br>
+		<br><br>
+		<code>get_stream in post.js</code><br><br>
+		<h1>GET api/mentions/:userid[?since=:time][&starttime=:time]</h1><br>
+		@url api/mentions/:userid[?since=:time][&starttime=:time]<br>
+		* @returns JSON array of posts objects<br>
+		* @structure { from, id, type, meta, time, message, via, origid, commentcount, modified, network }<br>
+		<br><br>
+		<code>get_mentions in post.js</code><br><br>
+		<h1>GET api/tag/:tag[?since=:time][&starttime=:time]</h1><br>
+		@url api/tag/:tag[?since=:time][&starttime=:time]<br>
+		* @returns JSON array of posts objects<br>
+		* @structure { from, id, type, meta, time, message, via, origid, commentcount, modified, network }<br>
+		<br><br>
+		<code>get_tag in post.js</code><br><br>
+		<h1>GET api/search/:query</h1><br>
+		@url api/search/:query<br>
+		* @returns { users: array of user objects, posts: array of post objects }<br>
+		<br><br>
+		<code>get_search in post.js</code><br><br>
+		<h1>GET api/deletepost/:id</h1><br>
+		@url api/deletepost/:id<br>
+		* @returns MySQL result<br>
+		<br><br>
+		<code>get_deletepost in post.js</code><br><br>
+		<h1>GET api/deletecomment/:id</h1><br>
+		@url api/deletecomment/:id<br>
+		* @returns MySQL result or 403,false if not authorized to delete it<br>
+		<br><br>
+		<code>get_deletecomment in post.js</code><br><br>
+		<h1>POST api/post</h1><br>
+		@url api/post<br>
+		* @args { message: string <= 500, [network: networkstring], [img: 1] }<br>
+		* @post [base64 encoded image]<br>
+		* @returns 200, true if successful, 400 if message too long, the int 2<br>
+		* if there are too many posts too frequently<br>
+		<br><br>
+		<code>post_post in post.js</code><br><br>
+		<h1>POST api/repost</h1><br>
+		@url api/repost<br>
+		* @args { id: postid, reply: string <= 520, [img: 1] }<br>
+		* @post [base64 encoded image]<br>
+		* @returns 200, true if successful, 400 if message too long<br>
+		<br><br>
+		<code>post_repost in post.js</code><br><br>
+		<h1>POST api/comment</h1><br>
+		@url api/comment<br>
+		* @args { id: postid, reply: string <= 520, [img: 1] }<br>
+		* @post [base64 encoded image]<br>
+		* @returns 200, MySQL result <br><br>
+		<code>post_comment in post.js</code><br><br>
+		<h1>POST api/editpost</h1><br>
+		@url api/editpost<br>
+		* @args { id: postid, body: string <= 500 }<br>
+		* @returns 200, true if successful, 400 if message too long<br>
+		<br><br>
+		<code>post_editpost in post.js</code><br><br>
+		<h1>POST api/editcomment</h1><br>
+		@url api/editcomment<br>
+		* @args { id: commentid, body: string <= 500 }<br>
+		* @returns 200, true if successful, 400 if message too long<br>
+		<br><br>
+		<code>post_editcomment in post.js</code><br><br>
+		<h1>POST api/like</h1><br>
+		@url api/like<br>
+		* @args { id: postid, body: string <= 500 }<br>
+		* @returns 200, true if successful, { deleted: true } if the like is toggled off<br>
+		<br><br>
+		<code>post_like in post.js</code><br><br>
+		<h1>GET api/signin/:user/:pass</h1><br>
+		@url api/signin/:user/:pass<br>
+		* @returns 200 and a cookie if session, 403 if invalid credentials<br>
+		* Use of this API will be discouraged once OAuth is implemented<br>
+		<br><br>
+		<b>public API</b>, no authkey needed.<br><br>
+		<code>public_signin in user.js</code><br><br>
+		<h1>GET api/signup/:inviteid/:username/:email/:password</h1><br>
+		@url api/signup/:inviteid/:username/:email/:password<br>
+		* @returns 200 and a cookie if session, 200, -1 if the invite does not exist<br>
+		* This API is intended only for use by the Sparklr website and is not supported<br>
+		* for third-party applications.<br>
+		<br><br>
+		<b>public API</b>, no authkey needed.<br><br>
+		<code>public_signup in user.js</code><br><br>
+		<h1>GET api/signoff</h1><br>
+		@url api/signoff<br>
+		* @returns true<br>
+		* Signs the user off and returns an empty cookie<br>
+		<br><br>
+		<b>public API</b>, no authkey needed.<br><br>
+		<code>public_signoff in user.js</code><br><br>
+		<h1>GET api/forgot</h1><br>
+		@url api/forgot<br>
+		* @returns 200, 1 if successful, 200, 0 if user not found<br>
+		* Resets the user's password and emails a reset token to the user<br>
+		<br><br>
+		<b>public API</b>, no authkey needed.<br><br>
+		<code>public_forgot in user.js</code><br><br>
+		<h1>GET api/reset/:token/:newpassword</h1><br>
+		@url api/reset/:token/:newpassword<br>
+		* @returns 200, true if successful, 403, -2 reset token is wrong<br>
+		* Resets the user's password to :newpassword<br>
+		<br><br>
+		<b>public API</b>, no authkey needed.<br><br>
+		<code>public_reset in user.js</code><br><br>
+		<h1>GET api/requestinvite/:email</h1><br>
+		@url api/requestinvite/:email<br>
+		* @returns 200, true<br>
+		* Requests an invitation to the Sparklr beta<br>
+		<br><br>
+		<b>public API</b>, no authkey needed.<br><br>
+		<code>public_requestinvite in user.js</code><br><br>
+		<h1>GET api/checkusername/:user</h1><br>
+		@url api/checkusername/:user<br>
+		* @returns 200, true or false<br>
+		* Returns whether or not the username is in use<br>
+		<br><br>
+		<b>public API</b>, no authkey needed.<br><br>
+		<code>public_checkusername in user.js</code><br><br>
+		<h1>GET api/user/:userid[/mentions|/photos]</h1><br>
+		@url api/user/:userid[/mentions|/photos]<br>
+		* @returns JSON object of user and stream<br>
+		* @structure { user, handle, avatarid, following, name, bio }<br>
+		<br><br>
+		<code>get_user in user.js</code><br><br>
+		<h1>GET api/invite</h1><br>
+		@url api/invite<br>
+		* @returns String of invite ID<br>
+		<br><br>
+		<code>get_invite in user.js</code><br><br>
+		<h1>GET api/random</h1><br>
+		@url api/random<br>
+		* @returns Returns a random userid<br>
+		<br><br>
+		<code>get_random in user.js</code><br><br>
+		<h1>GET api/friends</h1><br>
+		@url api/friends<br>
+		* @returns Friends array<br>
+		<br><br>
+		<code>get_friends in user.js</code><br><br>
+		<h1>GET api/settings</h1><br>
+		@url api/settings<br>
+		* @returns User object<br>
+		<br><br>
+		<code>get_settings in user.js</code><br><br>
+		<h1>GET api/username/:userids(csv)</h1><br>
+		@url api/username/:userids(csv)<br>
+		* @returns id, handle array<br>
+		<br><br>
+		<code>get_username in user.js</code><br><br>
+		<h1>POST api/follow/:userid</h1><br>
+		@url api/follow/:userid<br>
+		* @returns MySQL result or 0 if already following<br>
+		<br><br>
+		<code>post_follow in user.js</code><br><br>
+		<h1>POST api/unfollow/:userid</h1><br>
+		@url api/unfollow/:userid<br>
+		* @returns MySQL result or 0 if not following<br>
+		<br><br>
+		<code>post_unfollow in user.js</code><br><br>
+		<h1>POST api/sendinvite/:email</h1><br>
+		@url api/sendinvite/:email<br>
+		* @returns true<br>
+		<br><br>
+		<code>post_sendinvite in user.js</code><br><br>
+		<h1>POST api/settings</h1><br>
+		@url api/settings<br>
+		* @args { [username], [bio], [email], displayname }<br>
+		* @returns true if successful, false if validation fails<br>
+		<br><br>
+		<code>post_settings in user.js</code><br><br>
+		<h1>POST api/password</h1><br>
+		@url api/password<br>
+		* @args { password, newpassword }<br>
+		* @returns authkey string if true, false if validation fails<br>
+		<br><br>
+		<code>post_password in user.js</code><br><br>
+		<h1>POST api/list</h1><br>
+		@url api/list<br>
+		* @args { action: true to add, false to remove, userid }<br>
+		* @returns true<br>
+		<br><br>
+		<code>post_list in user.js</code><br><br>
+		<h1>POST api/avatar</h1><br>
+		@url api/avatar<br>
+		* @post base64 encoded image<br>
+		* @returns avatarid<br>
+		<br><br>
+		<code>post_avatar in user.js</code><br><br>
+		<h1>POST api/header</h1><br>
+		@url api/header<br>
+		* @post base64 encoded image<br>
+		* @returns avatarid<br>
+		<br><br>
+		<code>post_header in user.js</code><br><br>
+		<h1>POST api/deleteuser</h1><br>
+		@url api/deleteuser<br>
+		* @args { password }<br>
+		* @returns true or false<br>
+		<br><br>
+		<code>post_delete_user in user.js</code><br><br>
+		<br>
+	</div>
 </body>
 </html>
-
