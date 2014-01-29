@@ -301,7 +301,7 @@ exports.get_username = function(args, callback) {
 /* @url api/follow/:userid
  * @returns MySQL result or 0 if already following
  */
-exports.post_follow = function(args, callback) {
+exports.get_follow = function(args, callback) {
 	var tofollow = args.fragments[3];
 	if (tofollow == args.userobj.id) 
 		return callback("You can't follow yourself ugh.");
@@ -320,7 +320,7 @@ exports.post_follow = function(args, callback) {
 /* @url api/unfollow/:userid
  * @returns MySQL result or 0 if not following
  */
-exports.post_unfollow = function(args, callback) {
+exports.get_unfollow = function(args, callback) {
 	var tofollow = args.fragments[3];
 	if (args.userobj.following.indexOf(tofollow) !== -1) {
 		tofollow = +tofollow;
