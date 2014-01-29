@@ -25,11 +25,11 @@ var buildJSFromHeaderFile = function(headerFile, name, prepend, callback) {
 	// Store the concatenated JS
 	var jsData = prepend;
 	
-	var scriptRegex = new RegExp("\\<script src=('|\")\{global.(common|mobile)Host\}/(.*)('|\")", "g");
+	var scriptRegex = new RegExp("\\<script src=('|\")\{global.staticHost\}/(.*)('|\")", "g");
 
 	while (match = scriptRegex.exec(header)) {
-		var jsFile = match[3];
-		jsData += fs.readFileSync("../" + ((match[2] == "common") ? "" : "mobile/") + "static/" + jsFile).toString();
+		var jsFile = match[2];
+		jsData += fs.readFileSync("../static/" + jsFile).toString();
 	}
 
 	// Uglify it (compress it)
