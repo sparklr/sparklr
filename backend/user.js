@@ -32,7 +32,7 @@ exports.getUserProfileByAnything = function(query,callback) {
 exports.getMassUserDisplayName = function(users,callback) {
 	// sanitize
 	for (var i = 0; i < users.length; i++) {
-		users[i] = parseInt(users[i]);
+		users[i] = +users[i];
 	}
 
 	Database.query("SELECT `displayname`, `username`, `id`, `avatarid` FROM `users` WHERE `id` IN (" + users.join(",")+")", callback);

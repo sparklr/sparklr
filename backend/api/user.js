@@ -204,7 +204,13 @@ exports.get_user = function(args, callback) {
 	
 	var userid = args.fragments[3];
 
-	User.getUserProfile(userid, function(err,users) {
+	var f;
+	if (+userid)
+		f = User.getUserProfile;
+	else
+		f = User.getUserProfileByUsername;
+
+	f(userid, function(err,users) {
 		if (err) return callback(500, false);
 		if (users.length < 1)
 			return callback(404, false);
