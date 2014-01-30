@@ -158,7 +158,7 @@ exports.get_deletecomment = function(args, callback) {
 		if (rows.length < 1) return callback(200, false);
 		if (rows[0].from != args.userobj.id && args.userobj.rank < 50) return callback(403, false);
 
-		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id);
+		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(args.postObject.id);
 		if (args.userobj.rank < 50) 
 			query += " AND `from` = " + parseInt(args.userobj.id);
 
@@ -303,9 +303,9 @@ exports.post_editpost = function(args, callback) {
 				return "";
 			});
 
-			message += "[" + user + "] " + body;
+			message += "[" + user + "] " + args.postObject.body;
 		} else {
-			message = body;
+			message = args.postObject.body;
 		}
 		Database.query("UPDATE `timeline` SET `message` = " + Database.escape(message) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(args.postObject.id) + (args.userobj.rank >= 50 ? "" : " AND `from` = " + parseInt(args.userobj.id)), callback);
 	});
