@@ -134,11 +134,11 @@ exports.get_search = function(args, callback) {
 exports.get_deletepost = function(args, callback) {
 	if (!args.fragments[3] || !(+args.fragments[3])) return callback(400, false);
 
-	var args = { id: +args.fragments[3] };
-	if (userobj.rank < 50) {
-		args.from = args.userobj.id;
+	var query = { id: +args.fragments[3] };
+	if (args.userobj.rank < 50) {
+		query.from = args.userobj.id;
 	}
-	Database.deleteObject("timeline", args, function(err,rows) {
+	Database.deleteObject("timeline", query, function(err,rows) {
 		if (err) return callback(500,false);
 		if (rows.affectedRows < 1) return callback(200,false);
 
