@@ -326,8 +326,7 @@ exports.post_editcomment = function(args, callback) {
  */
 exports.post_like = function(args, callback) {
 	Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(args.postObject.id) + " AND `from` = " + parseInt(args.userobj.id) + " AND message = 0xe2989d", function (err, rows) {
-		if (!rows || !rows.affectedRows) return callback(404, false);
-		if (rows.affectedRows > 0) {
+		if (rows && rows.affectedRows > 0) {
 			Post.updateCommentCount(args.postObject.id, -1);
 			return callback(200, { deleted: true });
 		}
