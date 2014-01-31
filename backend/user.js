@@ -18,7 +18,7 @@ exports.generateAuthkey = function(user) {
 }
 
 exports.getUserProfile = function(userid,callback) {
-	Database.query("SELECT * FROM `users` WHERE `id` = " + parseInt(userid), callback);
+	Database.query("SELECT * FROM `users` WHERE `id` = " + ~~(userid), callback);
 }
 
 exports.getUserProfileByUsername = function(username,callback) {

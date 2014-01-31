@@ -14,11 +14,11 @@ exports.addUserNotification = function (user, notification, action, from, type) 
 
 	var query = "INSERT INTO `notifications` (`from`, `to`, `body`, `action`, `type`, `time`) ";
 	query += "VALUES (";
-	query += parseInt(from) + ",";
-	query += parseInt(user) + ",";
+	query += ~~(from) + ",";
+	query += ~~(user) + ",";
 	query += Database.escape(notification) + ",";
 	query += Database.escape(action.toString()) + ",";
-	query += parseInt(type) + ",";
+	query += ~~(type) + ",";
 	query += Toolbox.time();
 	query += ")";
 
@@ -26,6 +26,6 @@ exports.addUserNotification = function (user, notification, action, from, type) 
 };
 
 exports.getUserNotifications = function (userid, since, callback, args) {
-	Database.query("SELECT * FROM `notifications` WHERE `to` = "+parseInt(userid)+" AND `time` > "+(+since || 0)+" ORDER BY TIME DESC", callback, args);
+	Database.query("SELECT * FROM `notifications` WHERE `to` = "+~~(userid)+" AND `time` > "+(+since || 0)+" ORDER BY TIME DESC", callback, args);
 }
 

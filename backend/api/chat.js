@@ -15,7 +15,7 @@ exports.get_inbox = function(args, callback) {
 	Database.query("SELECT msgs.time,msgs.from,`message` FROM `messages` msgs\
 		INNER JOIN (SELECT `from`, MAX(`time`) AS time\
 		FROM `messages`\
-		WHERE `to` = " + parseInt(args.userobj.id) + "\
+		WHERE `to` = " + args.userobj.id + "\
 		GROUP BY `from`\
 		) msgmax ON msgmax.from = msgs.from\
 		AND msgmax.time = msgs.time\
@@ -27,7 +27,7 @@ exports.get_inbox = function(args, callback) {
  * @structure { time, from, message }
  */
 exports.get_chat = function(args, callback) {
-	var from = +(args.fragments[3]);
+	var from = ~~(args.fragments[3]);
 	var since = args.uri.query.since || 0;
 	var starttime = args.uri.query.starttime || 0;
 
@@ -45,7 +45,7 @@ exports.get_chat = function(args, callback) {
  * @returns 200, true if successful, 400 if message too long, 403 if blacklisted by :to
  */
 exports.post_chat = function(args, callback) {
-	args.postObject.to = +(args.postObject.to);
+	args.postObject.to = ~~(args.postObject.to);
 	if (args.postObject.to == args.userobj.id) return callback(400, false);
 
 	if (args.postObject.img)
@@ -67,7 +67,7 @@ exports.post_chat = function(args, callback) {
 			message: args.postObject.message
 		}, function(err, data) {
 			if (err) return callback(500, false);
-			Notification.addUserNotification(parseInt(args.postObject.to), args.postObject.message, 0, args.userobj.id, Notification.N_CHAT);
+			Notification.addUserNotification(~~args.postObject.to, args.postObject.message, 0, args.userobj.id, Notification.N_CHAT);
 			callback(200, true);
 		});
 	});

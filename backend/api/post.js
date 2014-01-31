@@ -11,7 +11,7 @@ var Toolbox = require("../toolbox");
  * @structure { from, id, type, meta, time, message, via, origid, commentcount, modified, network }
  */
 exports.get_post = function(args, callback) {
-	if (!args.fragments[3] || !+args.fragments[3]) return callback(400, false);
+	if (!args.fragments[3] || !~~args.fragments[3]) return callback(400, false);
 	var users;
 	var posts;
 	var comments;
@@ -39,7 +39,7 @@ exports.get_post = function(args, callback) {
  * @structure { id, postid, from, message, time }
  */
 exports.get_comments = function(args, callback) {
-	if (!args.fragments[3] || !+args.fragments[3]) return callback(400, false);
+	if (!args.fragments[3] || !~~args.fragments[3]) return callback(400, false);
 	var since = args.uri.query.since || 0;
 	Post.getComments(args.fragments[3], since, callback);
 }
@@ -54,7 +54,7 @@ exports.get_stream = function(args, callback) {
 	if (!stream.match(/^\d+$/)) {
 		args.uri.query.network = 1;
 	} else {
-		stream = (+stream);
+		stream = (~~stream);
 	}
 
 	var query = {};
@@ -132,9 +132,9 @@ exports.get_search = function(args, callback) {
  * @returns MySQL result
  */
 exports.get_deletepost = function(args, callback) {
-	if (!args.fragments[3] || !(+args.fragments[3])) return callback(400, false);
+	if (!args.fragments[3] || !(~~args.fragments[3])) return callback(400, false);
 
-	var query = { id: +args.fragments[3] };
+	var query = { id: ~~args.fragments[3] };
 	if (args.userobj.rank < 50) {
 		query.from = args.userobj.id;
 	}
@@ -142,7 +142,7 @@ exports.get_deletepost = function(args, callback) {
 		if (err) return callback(500,false);
 		if (rows.affectedRows < 1) return callback(200,false);
 
-		Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(query.id), callback);
+		Database.query("DELETE FROM `comments` WHERE `postid` = " + ~~(query.id), callback);
 	});
 }
 
@@ -150,17 +150,17 @@ exports.get_deletepost = function(args, callback) {
  * @returns MySQL result or 403,false if not authorized to delete it
  */
 exports.get_deletecomment = function(args, callback) {
-	if (!args.fragments[3] || !(+args.fragments[3])) return callback(400, false);
-	Post.deleteComment(args.userobj, +(args.fragments[3]) || 0, callback);
+	if (!args.fragments[3] || !(~~args.fragments[3])) return callback(400, false);
+	Post.deleteComment(args.userobj, ~~(args.fragments[3]) || 0, callback);
 
-	Database.getObject("comments", +args.fragments[3], function(err, rows) {
+	Database.getObject("comments", ~~args.fragments[3], function(err, rows) {
 		if (err) return callback(500, false);
 		if (rows.length < 1) return callback(200, false);
 		if (rows[0].from != args.userobj.id && args.userobj.rank < 50) return callback(403, false);
 
-		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(args.postObject.id);
+		var query = "DELETE FROM `comments` WHERE `id` = " + ~~args.postObject.id;
 		if (args.userobj.rank < 50) 
-			query += " AND `from` = " + parseInt(args.userobj.id);
+			query += " AND `from` = " + ~~args.userobj.id;
 
 		Database.query(query, callback);
 		Post.updateCommentCount(rows[0].postid, -1);
@@ -181,17 +181,17 @@ exports.post_post = function(args, callback) {
 	var user = args.userobj.id;
 
 	data.time = Toolbox.time();
-	data.from = +user;
+	data.from = ~~user;
 	data.body = data.body || "";
 
-	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + (+user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
+	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + (~~user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
 		if (err) return callback(500, false);
 		if (rows && rows.length > 101) {
 			return callback(200,2); // as in, 2 many posts
 		}
 
 		var querystr = "INSERT INTO `timeline` (`from`, `time`, `modified`, `message`, `meta`, `type`, `public`, `network`) VALUES ("
-		querystr += parseInt(user) + ",";
+		querystr += ~~(user) + ",";
 		querystr += data.time + ",";
 		querystr += data.time + ",";
 		querystr += Database.escape(data.body) + ",";
@@ -290,7 +290,7 @@ exports.post_comment = function(args, callback) {
  */
 exports.post_editpost = function(args, callback) {
 	if (args.postObject.body.length > 500) return callback(400,false);
-	Database.query("SELECT * FROM `timeline` WHERE `id` = " + parseInt(args.postObject.id) + (args.userobj.rank >= 50 ? "" : " AND `from` = " + parseInt(args.userobj.id)), function(err,rows) {
+	Database.query("SELECT * FROM `timeline` WHERE `id` = " + ~~(args.postObject.id) + (args.userobj.rank >= 50 ? "" : " AND `from` = " + ~~(args.userobj.id)), function(err,rows) {
 		if (err) return callback(500,false);
 		if (rows.length < 1) return callback(200, false);
 		var message = "";
@@ -307,7 +307,7 @@ exports.post_editpost = function(args, callback) {
 		} else {
 			message = args.postObject.body;
 		}
-		Database.query("UPDATE `timeline` SET `message` = " + Database.escape(message) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + parseInt(args.postObject.id) + (args.userobj.rank >= 50 ? "" : " AND `from` = " + parseInt(args.userobj.id)), callback);
+		Database.query("UPDATE `timeline` SET `message` = " + Database.escape(message) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + ~~(args.postObject.id) + (args.userobj.rank >= 50 ? "" : " AND `from` = " + ~~(args.userobj.id)), callback);
 	});
 }
 
@@ -317,7 +317,7 @@ exports.post_editpost = function(args, callback) {
  */
 exports.post_editcomment = function(args, callback) {
 	if (args.postObject.body.length > 500) return callback(400,false);
-	Database.query("UPDATE `comments` SET `message` = " + Database.escape(args.postObject.body) + " WHERE `id` = " + parseInt(args.postObject.id) + (args.userobj.rank >= 50 ? "" : " AND `from` = " + parseInt(args.postObject.user)), callback);
+	Database.query("UPDATE `comments` SET `message` = " + Database.escape(args.postObject.body) + " WHERE `id` = " + ~~(args.postObject.id) + (args.userobj.rank >= 50 ? "" : " AND `from` = " + ~~(args.postObject.user)), callback);
 }
 
 /* @url api/like
@@ -325,7 +325,7 @@ exports.post_editcomment = function(args, callback) {
  * @returns 200, true if successful, { deleted: true } if the like is toggled off
  */
 exports.post_like = function(args, callback) {
-	Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(args.postObject.id) + " AND `from` = " + parseInt(args.userobj.id) + " AND message = 0xe2989d", function (err, rows) {
+	Database.query("DELETE FROM `comments` WHERE `postid` = " + ~~(args.postObject.id) + " AND `from` = " + ~~(args.userobj.id) + " AND message = 0xe2989d", function (err, rows) {
 		if (rows && rows.affectedRows > 0) {
 			Post.updateCommentCount(args.postObject.id, -1);
 			return callback(200, { deleted: true });

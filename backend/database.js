@@ -74,7 +74,7 @@ exports.query = function(query, callback, args) {
 }
 
 exports.getObject = function(table, id, callback) {
-	var query = "SELECT * FROM " + exports.escapeId(table) + " WHERE id=" + (parseInt(id) || exports.escape(id));
+	var query = "SELECT * FROM " + exports.escapeId(table) + " WHERE id=" + (~~(id) || exports.escape(id));
 	exports.query(query, callback);
 }
 
@@ -84,8 +84,8 @@ exports.getStream = function(table, args, callback) {
 	if (args.from) {
 		query += "`from` IN (";
 		for (var i = 0; i < args.from.length - 1; i++)
-			query += parseInt(args.from[i]) + ",";
-		query += parseInt(args.from[args.from.length - 1]);
+			query += ~~(args.from[i]) + ",";
+		query += ~~(args.from[args.from.length - 1]);
 		query += ") ";
 		if (args.to) {
 			query += "AND ";
@@ -98,8 +98,8 @@ exports.getStream = function(table, args, callback) {
 	if (args.to) {
 		query += "`to` IN (";
 		for (var i = 0; i < args.to.length - 1; i++)
-		query += parseInt(args.to[i]) + ",";
-		query += parseInt(args.to[args.to.length - 1]);
+		query += ~~(args.to[i]) + ",";
+		query += ~~(args.to[args.to.length - 1]);
 		query += ") ";
 		conditionExists = true;
 
@@ -116,22 +116,22 @@ exports.getStream = function(table, args, callback) {
 	if (args.id) {
 		query += "`id` IN (";
 		for (var i = 0; i < args.id.length -1; i++) 
-			query += parseInt(args.id[i]) + ",";
-		query += parseInt(args.id[args.id.length - 1]) + ") ";
+			query += ~~(args.id[i]) + ",";
+		query += ~~(args.id[args.id.length - 1]) + ") ";
 		conditionExists = true;
 	}
 	if (args.type)
 	{
-		query += ") AND (`type` = " + parseInt(args.type) + " ";
+		query += ") AND (`type` = " + ~~(args.type) + " ";
 	}
 	if (args.since)
 	{
 		if (conditionExists)
 			query += ") AND (";
 		if (args.modified)
-			query += "`modified` > "+parseInt(args.modified);
+			query += "`modified` > "+~~(args.modified);
 		else
-			query += "`time` > "+parseInt(args.since);
+			query += "`time` > "+~~(args.since);
 		conditionExists = true;
 
 	}
@@ -139,7 +139,7 @@ exports.getStream = function(table, args, callback) {
 	{
 		if (conditionExists)
 			query += ") AND (";
-		query += "`time` < "+parseInt(args.starttime);
+		query += "`time` < "+~~(args.starttime);
 	}
 	
 	query += ") ORDER BY " + (args.sortby ? exports.escapeId(args.sortby) : "`time`") + " DESC LIMIT 30";
@@ -167,14 +167,14 @@ exports.postObject = function(table, obj, callback) {
 exports.deleteObject = function(table, obj, callback) {
 	var querystr = "DELETE FROM " + exports.escapeId(table) + " WHERE ";
 	if (obj.to) {
-		querystr += " `to` = " + parseInt(obj.to);
+		querystr += " `to` = " + ~~(obj.to);
 	}
 	if (obj.from) {
-		querystr += " `from` = " + parseInt(obj.from);
+		querystr += " `from` = " + ~~(obj.from);
 	}
 
 	if (obj.id) {
-		var id = (typeof(obj.id) == "number" ? parseInt(obj.id) : exports.escape(obj.id));
+		var id = (typeof(obj.id) == "number" ? ~~(obj.id) : exports.escape(obj.id));
 
 		querystr += (obj.from || obj.to) ? " AND " : "";
 		querystr += "`id` = " + id;
@@ -194,7 +194,7 @@ exports.updateObject = function(table, obj, callback) {
 		}
 	}
 	query = query.substring(0,query.length-1);
-	query += " WHERE `id` = " + parseInt(obj.id);
+	query += " WHERE `id` = " + ~~(obj.id);
 	exports.query(query,callback);
 }
 

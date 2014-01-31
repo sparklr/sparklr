@@ -205,7 +205,7 @@ exports.get_user = function(args, callback) {
 	var userid = args.fragments[3];
 
 	var f;
-	if (+userid)
+	if (~~userid)
 		f = User.getUserProfile;
 	else
 		f = User.getUserProfileByUsername;
@@ -252,14 +252,14 @@ exports.get_user = function(args, callback) {
  * @returns String of invite ID
  */
 exports.get_invite = function(args, callback) {
-	Database.query("SELECT * FROM `invites` WHERE `from` = " + (+args.userobj.id),
+	Database.query("SELECT * FROM `invites` WHERE `from` = " + (~~args.userobj.id),
 		function(err,rows) {
 			if (err) return callback(500, false);
 			if (rows.length > 0) {
 				callback(200,rows[0].id);
 			} else {
 				var id = Toolbox.hash(args.userobj.id + args.userobj.email + args.userobj.authkey);
-				Database.query("INSERT INTO `invites` (`id`,`from`) VALUES ('" + id + "','" + (+args.userobj.id) + "')");
+				Database.query("INSERT INTO `invites` (`id`,`from`) VALUES ('" + id + "','" + (~~args.userobj.id) + "')");
 				callback(200,id);
 			}
 		}
@@ -313,7 +313,7 @@ exports.get_follow = function(args, callback) {
 		return callback("You can't follow yourself ugh.");
 
 	if (args.userobj.following.indexOf(tofollow) === -1) {
-		tofollow = +tofollow;
+		tofollow = ~~tofollow;
 
 		args.userobj.following.push(tofollow);
 
@@ -329,7 +329,7 @@ exports.get_follow = function(args, callback) {
 exports.get_unfollow = function(args, callback) {
 	var tofollow = args.fragments[3];
 	if (args.userobj.following.indexOf(tofollow) !== -1) {
-		tofollow = +tofollow;
+		tofollow = ~~tofollow;
 
 		args.userobj.following.splice(args.userobj.following.indexOf(tofollow), 1);
 

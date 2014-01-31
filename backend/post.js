@@ -4,9 +4,9 @@ var User = require("./user");
 var Toolbox = require("./toolbox");
 
 exports.getComments = function(postid, since, callback) {
-	var query = "SELECT * FROM comments WHERE postid=" + parseInt(postid);
+	var query = "SELECT * FROM comments WHERE postid=" + ~~(postid);
 	if (since != 0) {
-		query += " AND time > " + parseInt(since);
+		query += " AND time > " + ~~(since);
 	}
 	// For some odd reason, this actually decreases execution time.
 	query += " ORDER BY `time` ASC";
@@ -21,18 +21,18 @@ exports.postComment = function(user, data, callback) {
 		}
 
 		var query = "INSERT INTO `comments` (`postid`, `from`, `message`, `time`) ";
-		query += "VALUES (" + parseInt(data.id) + ", " + parseInt(user) + ", "+Database.escape(data.comment) + "," +  Toolbox.time() + ")";
+		query += "VALUES (" + ~~(data.id) + ", " + ~~(user) + ", "+Database.escape(data.comment) + "," +  Toolbox.time() + ")";
 
 		Database.query(query, callback);
 
 		var count = (rows[0].commentcount + 1 || 1);
 
-		Database.query("UPDATE `timeline` SET commentcount = " + parseInt(count) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(data.id));
+		Database.query("UPDATE `timeline` SET commentcount = " + ~~(count) + ", modified = " + Toolbox.time() + " WHERE id=" + ~~(data.id));
 
 		if (data.like) //only notify one person
 			return Notification.addUserNotification(rows[0].from, data.comment, data.id, user, 1);
 
-		query = "SELECT `from` FROM `comments` WHERE postid = " + parseInt(data.id) + " ORDER BY `time` DESC LIMIT 7";
+		query = "SELECT `from` FROM `comments` WHERE postid = " + ~~(data.id) + " ORDER BY `time` DESC LIMIT 7";
 		var postfrom = rows[0].from;
 		Database.query(query, function(err,rows) {
 			var notified = {};
@@ -61,7 +61,7 @@ exports.deletePost = function(userobj, id, callback) {
 			callback(false);
 			return false;
 		}
-		Database.query("DELETE FROM `comments` WHERE `postid` = " + parseInt(id), callback);
+		Database.query("DELETE FROM `comments` WHERE `postid` = " + ~~(id), callback);
 	});
 }
 
@@ -76,9 +76,9 @@ exports.deleteComment = function(userobj, id, callback) {
 			return false;
 		}
 
-		var query = "DELETE FROM `comments` WHERE `id` = " + parseInt(id);
+		var query = "DELETE FROM `comments` WHERE `id` = " + ~~(id);
 		if (userobj.rank < 50) 
-			query += " AND `from` = " + parseInt(userobj.id);
+			query += " AND `from` = " + ~~(userobj.id);
 
 		Database.query(query, function(){});
 		exports.updateCommentCount(rows[0].postid, -1);
@@ -88,7 +88,7 @@ exports.deleteComment = function(userobj, id, callback) {
 }
 
 exports.updateCommentCount = function(postid, x) {
-	Database.query("UPDATE `timeline` SET commentcount = commentcount + " + parseInt(x) + ", modified = " + Toolbox.time() + " WHERE id=" + parseInt(postid), function(){});
+	Database.query("UPDATE `timeline` SET commentcount = commentcount + " + ~~(x) + ", modified = " + Toolbox.time() + " WHERE id=" + ~~(postid), function(){});
 }
 
 exports.processPostTags = function(body, id) {
@@ -128,9 +128,9 @@ exports.mentionUser = function(userid, mentioner, postid) {
 exports.getPostRowsFromKeyQuery = function(table, key, value, since, starttime, callback) {
 	var query = "SELECT `postid` FROM " + Database.escapeId(table) + " WHERE " + Database.escapeId(key) + " = " + Database.escape(value);
 	if (since)
-		query += " AND `time` > " + parseInt(since);
+		query += " AND `time` > " + ~~(since);
 	if (starttime)
-		query += " AND `time` < " + parseInt(starttime);
+		query += " AND `time` < " + ~~(starttime);
 
 
 	Database.query(query, function(err,rows) {
