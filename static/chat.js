@@ -69,6 +69,9 @@ function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
 	} else {
 		sc.appendChild(ele);
 		setTimeout(function() { _g('scrollUpContent_'+convoid).scrollTop = 0xFFFFFF; },5);
+
+		updateUI();
+
 		chatTimes[convoid].push(time);
 	}
 
