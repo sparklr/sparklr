@@ -4,6 +4,7 @@
 
 var Database = require('../database');
 var Post = require('../post');
+var Notification = require('../notification');
 var Toolbox = require("../toolbox");
 
 /* @url api/post/:id
@@ -264,7 +265,7 @@ exports.post_repost = function(args, callback) {
 		Database.postObject('timeline', post, function(err,rows) {
 			callback(err,rows);
 			if (!err)
-				Notification.addUserNotification(origfrom, "", rows.insertId, args.postObject.user, Notification.N_REPOST);
+				Notification.addUserNotification(origfrom, "", rows.insertId, args.userobj.id, Notification.N_REPOST);
 		});
 	});
 }
