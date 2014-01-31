@@ -49,6 +49,7 @@ function renderComment(comment,scroll) {
 		removeDomElement('comment_' + comment.id);
 		return;
 	}
+	if (_g('comment_' + comment.id)) return;
 
 	var commentlist = _g("comments_" + comment.postid);
 
