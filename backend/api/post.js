@@ -51,6 +51,7 @@ exports.get_comments = function(args, callback) {
  */
 exports.get_stream = function(args, callback) {
 	var stream = args.fragments[3];
+	if (!stream) return callback(400,false);
 
 	if (!stream.match(/^\d+$/)) {
 		args.uri.query.network = 1;
