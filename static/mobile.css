@@ -525,6 +525,13 @@ div.photos {
 	cursor: pointer;
 }
 
+.useravatar{
+	border-radius: 50px;
+	width: 100px;
+	height: 100px;
+	margin: auto;
+}
+
 div.profileheader {
 	margin: -5px;
     height: 290px;
