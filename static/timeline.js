@@ -161,6 +161,17 @@ function fetchOlderPosts() {
 function renderComposer(caption, keydown, minipreview, id) {
 	imgAttachments = null;
 	eval(getTemplate('composer'));
+	setTimeout(function() {
+		_g("composer_"+(id||'composer')).onpaste = function(e) {
+			var data = e.clipboardData || e.originalEvent.clipboardData;
+			var items = data.items;
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].type.indexOf("image") === 0) {
+					loadImage(items[i].getAsFile(), uploadStreamImageCallback,"attachment"+(id||''));
+				}
+			}
+		}
+	},100);
 	return html;
 }
 
