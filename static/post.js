@@ -9,8 +9,10 @@ var LIKE_CHAR = "\u261D";
 function showPost(id,args) {
 	if (typeof(args) === "undefined")
 		var args = "";
+
+	var maxwidth = (window.innerWidth || document.documentElement.clientWidth);
 	
-	if (!MOBILE) {
+	if (!MOBILE && maxwidth >= 1280) {
 		renderTemplate("post/" + id + "/" + args, "sidepost_container", function(){});
 		subSubscribedStream = id;
 		subPageType = "POST";

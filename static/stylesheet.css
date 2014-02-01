@@ -221,7 +221,7 @@ div.contentwrapper {
 	border: solid 1px #ccc;
 	background: #fff;
 	padding: 10px;
-	width: 500px;
+	width: 39%;
 	position: relative;
 	top: 10px;
 	margin: auto;
@@ -482,7 +482,7 @@ div.timelineitem {
 	margin-bottom: 10px;
 	word-wrap: break-word;
 	display: block;
-	width: 425px;
+	width: 40%;
 	border: solid 1px #ccc;
 	background: #fff;
 	position: relative;
@@ -571,12 +571,12 @@ div.picturepost {
 	text-align: center;
 }
 div.picturepost img {
-	max-width: 435px;
+	max-width: 100%;
 	max-height: 540px;
 	margin-bottom: -4px;
 }
 div.picturepost.full img {
-	max-width: 500px;
+	max-width: 100%;
 	max-height: 520px;
 }
 div.contentwrapper div.picturepost {
@@ -1294,17 +1294,35 @@ div.inlineimage {
 
 #timeline_container{
 	position: relative;
+	left: 1%;
+	overflow: hidden;
 }
 
 #sidepost_container {
 	position: fixed;
 	top: 0px;
-	left: 775px;
+	left: 58%;
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
+	width: 100%;
+}
+
+@media (max-width: 1279px) {
+	#sidepost_container {
+		display: none;
+	}
+	div.timelineitem {
+		width: 95%;
+	}
+}
+
+#sidepost_container .contentwrapper {
+	margin-left: 0;
+	margin-right: 0;
 }
 
 #sidepost_container.user {
 	top: 315px;
 }
+
