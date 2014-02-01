@@ -79,6 +79,9 @@ function updatePages(loaded) {
 	missingPosts = 0;
 	oldestPost = Number.MAX_VALUE;
 
+	subSubscribedStream = 0;
+	subPageType = "";
+
 	isNetwork = false;
 
 	//Dismiss notifications
@@ -97,6 +100,7 @@ function updatePages(loaded) {
 	previousPage = s;	
 	if (s[1] === "post") {
 		subscribedStream = s[2];
+		currentPageType = "POST";
 	}
 
 	for (i = 0; i < definedPages.length; i++) {

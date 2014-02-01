@@ -75,6 +75,7 @@ function addTimelineEvent(item,append) {
 }
 
 function arrangeTimeline() {
+	return;
 	if (MOBILE || !_g("timeline_container")) return;
 
 	var x = 0;

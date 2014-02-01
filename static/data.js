@@ -7,6 +7,8 @@ var ajaxCooldown = {};
 
 // The current stream (timeline, comment, etc) we are polling
 var subscribedStream;
+var subSubscribedStream;
+var subPageType;
 
 
 function ajax(url, data, callback) {
@@ -137,6 +139,10 @@ function pollData() {
 		}
 		callback(data,xhr);
 	});
+
+	if (subPageType == "POST") {
+		ajax("comments/" + subSubscribedStream + "?since=" + getLastCommentTime(), null, addComments);
+	}
 }
 
 function uploadImage(e, url, callback) {

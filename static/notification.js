@@ -152,6 +152,10 @@ function handleNotifications() {
 			continue;
 		}
 		if (!(MOBILE)) {
+			if (subSubscribedStream == currentNotifications[id].action) {
+				dismissNotification(id);				
+				continue;
+			}
 			for (i in activeWindows) {
 				if (activeWindows[i] == "m" + currentNotifications[id].from + "," + CURUSER) {
 					var g = _g("window_"+activeWindows[i]);

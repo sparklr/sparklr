@@ -8,7 +8,6 @@ function after(scope) {
 	}
 
 	currentComments = scope.data.comments;
-	currentPageType = "POST";
 
 	if (location.hash.indexOf("new") != -1) 
 		_g('composer_'+scope.data.id).focus();

@@ -221,7 +221,7 @@ div.contentwrapper {
 	border: solid 1px #ccc;
 	background: #fff;
 	padding: 10px;
-	width: 700px;
+	width: 500px;
 	position: relative;
 	top: 10px;
 	margin: auto;
@@ -481,11 +481,11 @@ div.timelineitem {
 	margin: 4px;
 	margin-bottom: 10px;
 	word-wrap: break-word;
-	display: inline-block;
+	display: block;
 	width: 425px;
 	border: solid 1px #ccc;
 	background: #fff;
-	position: absolute;
+	position: relative;
 }
 div.timelineitem .time {
     opacity: 0.65;
@@ -576,8 +576,8 @@ div.picturepost img {
 	margin-bottom: -4px;
 }
 div.picturepost.full img {
-	max-width: 700px;
-	max-height: 620px;
+	max-width: 500px;
+	max-height: 520px;
 }
 div.contentwrapper div.picturepost {
 	margin: 0px;
@@ -1296,3 +1296,15 @@ div.inlineimage {
 	position: relative;
 }
 
+#sidepost_container {
+	position: fixed;
+	top: 0px;
+	left: 775px;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#sidepost_container.user {
+	top: 315px;
+}

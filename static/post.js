@@ -9,6 +9,13 @@ var LIKE_CHAR = "\u261D";
 function showPost(id,args) {
 	if (typeof(args) === "undefined")
 		var args = "";
+	
+	if (!MOBILE) {
+		renderTemplate("post/" + id + "/" + args, "sidepost_container", function(){});
+		subSubscribedStream = id;
+		subPageType = "POST";
+		return;
+	}
 	location.href = "#/post/" + id + "/" + args;
 }
 
