@@ -4,7 +4,7 @@
 </div>
 <% endif %>
 
-<div id='commentcount_{ item.id }' class='commentcount' style='display: none;'>+</div>
+<div id='commentcount_{ item.id }' class='commentcount'>{item.commentcount}</div>
 <div class='commentcount repost icon' style='display:none;opacity: 0;' onClick='showPost("{item.id}","repost");stopBubbling();'></div>
 <% if (item.from != CURUSER) %>
 <div class='commentcount delete icon' onClick='hidePost({item.id},{item.from});stopBubbling();'></div>

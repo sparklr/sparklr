@@ -490,6 +490,12 @@ div.timelineitem {
 div.timelineitem .time {
     opacity: 0.65;
 }
+div.timelineitem h1 {
+    font-size: 26px;
+	margin: 3px;
+    padding: 0px;
+    display: block;
+}
 div.timelineitem h2 {
     font-size: 13px;
     margin-bottom: 25px;
@@ -1311,6 +1317,9 @@ div.inlineimage {
 @media (max-width: 1279px) {
 	#sidepost_container {
 		display: none;
+	}
+	#timeline_container {
+		left: 0px;
 	}
 	div.timelineitem {
 		width: 95%;

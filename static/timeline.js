@@ -245,8 +245,13 @@ function renderTimeline(prehtml) {
 	currentComments = [];
 
 	document.body.ondrop = function (e) { dropImage(e, uploadStreamImageCallback); }
-
-	currentPageType = "STREAM";
+	
+	setTimeout(function() {
+	renderTemplate("trending", "sidepost_container", function() {
+	});
+	},10);
+	
+	currentPageType = "STREAM";	
 }
 
 function newPosts(num) {

@@ -50,6 +50,9 @@ function processPostMeta(data) {
 	data.formattedMessage = message;
 	data.originalMessage = "<blockquote>" + original + "</blockquote>";
 
+	if (!data.commentcount)
+		data.commentcount = '+';
+
 	return data;
 }
 
@@ -121,7 +124,7 @@ function updateCommentCount(id, count) {
 	var ele = _g("commentcount_" + id);
 	if (ele == null) return; 
 
-	ele.style.display = (count != 0) ? "" : "none";
+	ele.style.display = (count != 0 && count != '+') ? "" : "none";
 	ele.innerHTML = count || "+";
 
 	commentCounts[id] = count;

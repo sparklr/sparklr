@@ -337,3 +337,11 @@ exports.post_like = function(args, callback) {
 	});
 }
 
+/* @url api/trending
+ * @returns JSON array of post objects
+ * @structure { from, id, type, meta, time, message, via, origid, commentcount, modified, network }
+ */
+exports.get_trending = function(args, callback) {
+	Database.query("SELECT * FROM `timeline` WHERE `modified` > " + (Toolbox.time() - 86400) + " ORDER BY `commentcount` DESC LIMIT 4", callback);
+}
+

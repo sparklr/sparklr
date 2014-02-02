@@ -1,0 +1,22 @@
+<div style='margin: 12px 0px'>
+	<h2>Popular Today</h2>
+</div>
+
+<script>
+	for (var i = 0; i < data.length; i++) {
+		var item = data[i];
+		item = processPostMeta(item);
+</script>
+<div class='timelineitem' onclick='showPost("{item.id}")'>
+<script>
+		html += (function(){
+			var html;
+			eval(getTemplate("timelineitem"));
+			return html;
+		})();
+</script>
+</div>
+<script>
+	}
+</script>
+
