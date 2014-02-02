@@ -160,7 +160,7 @@ exports.get_deletecomment = function(args, callback) {
 		if (rows.length < 1) return callback(200, false);
 		if (rows[0].from != args.userobj.id && args.userobj.rank < 50) return callback(403, false);
 
-		var query = "DELETE FROM `comments` WHERE `id` = " + ~~args.postObject.id;
+		var query = "DELETE FROM `comments` WHERE `id` = " + ~~args.fragments[3];
 		if (args.userobj.rank < 50) 
 			query += " AND `from` = " + ~~args.userobj.id;
 
