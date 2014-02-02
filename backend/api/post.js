@@ -305,7 +305,7 @@ exports.post_editpost = function(args, callback) {
 				return "";
 			});
 
-			message += "[" + user + "] " + args.postObject.body;
+			message += "[" + args.userobj.id + "] " + args.postObject.body;
 		} else {
 			message = args.postObject.body;
 		}
