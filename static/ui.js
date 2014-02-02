@@ -125,7 +125,6 @@ function processMedia(text,noImages) {
 	var linkcount = 0;
 	// regex via: https://gist.github.com/dperini/729294
 	var urlexp = new RegExp(
-		"^" +
 		// protocol identifier
 		"(?:(?:https?|ftp)://)" +
 		// user:pass authentication
@@ -157,8 +156,7 @@ function processMedia(text,noImages) {
 		// port number
 		"(?::\\d{2,5})?" +
 		// resource path
-		"(?:/[^\\s]*)?" +
-		"$", "i"
+		"(?:/[^\\s]*)?", "gi"
 	);
 	text = text.replace(urlexp, function (match) {
 		if (linkcount > 5) return;
