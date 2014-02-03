@@ -1,5 +1,5 @@
-html {
-	overflow-x: none;
+html, body {
+	overflow-x: hidden;
 	overflow-y: scroll;
 }
 
@@ -216,16 +216,6 @@ hr {
 	font-size: 12px;
 	height: auto;
 	text-align: left;
-}
-div.contentwrapper {
-	border: solid 1px #ccc;
-	background: #fff;
-	padding: 10px;
-	width: 39%;
-	position: relative;
-	top: 10px;
-	margin: auto;
-	margin-bottom: 30px;
 }
 #sidebar {
     color: #fff;
@@ -1307,11 +1297,11 @@ div.inlineimage {
 #sidepost_container {
 	position: fixed;
 	top: 0px;
-	left: 58%;
+	right: 20px;
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
-	width: 100%;
+	width: 42%;
 }
 
 @media (max-width: 1279px) {
@@ -1332,6 +1322,17 @@ div.inlineimage {
 }
 
 #sidepost_container.user {
+	position: absolute;
 	top: 315px;
+}
+
+div.contentwrapper {
+	border: solid 1px #ccc;
+	background: #fff;
+	padding: 10px;
+	position: relative;
+	top: 10px;
+	margin: auto;
+	margin-bottom: 30px;
 }
 

@@ -503,6 +503,13 @@ function scrollHandler() {
         a.style.visibility = "hidden";
         a.style.opacity = 0;
     }
+	if (_g("sidepost_container")) { 
+		if (doctop > 300) {
+			_g("sidepost_container").className = '';
+		} else {
+			_g("sidepost_container").className = 'user';
+		}
+	}
 }
 
 function makeInlineImage(thumb, img) {
