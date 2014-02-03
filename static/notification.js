@@ -152,7 +152,7 @@ function handleNotifications() {
 			continue;
 		}
 		if (!(MOBILE)) {
-			if (subSubscribedStream == currentNotifications[id].action) {
+			if (subPageType == "POST" && subSubscribedStream && subSubscribedStream == currentNotifications[id].action) {
 				dismissNotification(id);				
 				continue;
 			}
@@ -168,7 +168,7 @@ function handleNotifications() {
 			}
 		}
 		if (currentNotifications[id].type == N_CHAT) {
-			if (s[1] == "chat" && +s[2] == currentNotifications[id].from) {
+			if (s[1] == "chat" && ~~s[2] == currentNotifications[id].from) {
 				dismissNotification(id);				
 				setNewInbox(false);
 			}
