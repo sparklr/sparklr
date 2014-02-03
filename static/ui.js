@@ -301,8 +301,6 @@ function expandTextarea(e) {
 	r.style.opacity = toolong ? 1 : 0;
 	r.style.display = toolong ? "inline-block" : "none";
 	if (toolong) r.innerHTML = (500 - l);
-	
-	arrangeTimeline();
 }
 
 function stopBubbling(e) {

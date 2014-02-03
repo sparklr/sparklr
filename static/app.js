@@ -15,7 +15,6 @@ window.addEventListener("load", function() { updatePages(true) });
 window.addEventListener("scroll", scrollHandler);
 window.addEventListener("blur", function() { pageActive = false; });
 window.addEventListener("focus", function() { pageActive = true; handleNotifications(); });
-window.addEventListener("resize", arrangeTimeline);
 
 // Called by script tags output by the server for initial payload
 function app(payload) { 
