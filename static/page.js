@@ -99,8 +99,14 @@ function updatePages(loaded) {
 
 	previousPage = s;	
 	if (s[1] === "post") {
-		subscribedStream = s[2];
-		currentPageType = "POST";
+		if (_g("sidepost_container") && showSidepost(s[2])) {
+			subSubscribedStream = s[2];
+			subPageType = "POST";
+			return;
+		} else {
+			subscribedStream = s[2];
+			currentPageType = "POST";
+		}
 	}
 
 	for (i = 0; i < definedPages.length; i++) {

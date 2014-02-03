@@ -9,16 +9,19 @@ var LIKE_CHAR = "\u261D";
 function showPost(id,args) {
 	if (typeof(args) === "undefined")
 		var args = "";
+	location.href = "#/post/" + id + "/" + args;
+}
 
+function showSidepost(id) {
 	var maxwidth = (window.innerWidth || document.documentElement.clientWidth);
 	
 	if (!MOBILE && maxwidth >= 1280) {
-		renderTemplate("post/" + id + "/" + args, "sidepost_container", function(){});
+		renderTemplate("post/" + id, "sidepost_container", function(){});
 		subSubscribedStream = id;
 		subPageType = "POST";
-		return;
+		return true;
 	}
-	location.href = "#/post/" + id + "/" + args;
+	return false;
 }
 
 function processPostMeta(data) {
