@@ -17,6 +17,8 @@ function renderTemplate(page,destination,callback) {
 	ajax(page, null, function(data) {
 		if (data && data.error === true) return;
 
+		_g("sidepost_container").innerHTML = "";
+
 		var scope = { data: data, fragments: fragments };
 
 		controller = getController(fragments[0]);
@@ -36,7 +38,9 @@ function renderTemplate(page,destination,callback) {
 		if (controller && typeof(after) !== 'undefined')
 			after(scope);
 
+		scrollHandler();
 		updateUI();
+
 		callback();
 	});
 }
