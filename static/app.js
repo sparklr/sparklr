@@ -39,9 +39,11 @@ function app(payload) {
 	}
 
 	setInterval(handleNotifications,1000);
-
-	_g("sidepost_container").addEventListener("DOMMouseScroll", preventDefaultScroll);
-	_g("sidepost_container").addEventListener("mousewheel", preventDefaultScroll);
+	
+	if (spc = _g("sidepost_container")) {
+		spc.addEventListener("DOMMouseScroll", preventDefaultScroll);
+		spc.addEventListener("mousewheel", preventDefaultScroll);
+	}
 
 	// Warn if using an old version of IE
 	if (!(MOBILE)) {
