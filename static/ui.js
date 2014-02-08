@@ -503,11 +503,11 @@ function scrollHandler() {
         a.style.visibility = "hidden";
         a.style.opacity = 0;
     }
-	if (location.hash.indexOf("/user/") !== -1 && _g("sidepost_container")) { 
-		if (doctop > 300) {
-			_g("sidepost_container").className = '';
-		} else {
+	if (_g("sidepost_container")) { 
+		if (~~subscribedStream === subscribedStream && doctop < 300) {
 			_g("sidepost_container").className = 'user';
+		} else {
+			_g("sidepost_container").className = '';
 		}
 	}
 }

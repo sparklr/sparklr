@@ -91,6 +91,7 @@ function updatePages(loaded) {
 
 	//Page reload, thus scroll height has changed
 	scrollHandler();
+	_g("sidepost_container").innerHTML = "";
 
 	if (typeof(hideDropdown) !== 'undefined')
 		hideDropdown();
