@@ -512,6 +512,18 @@ function scrollHandler() {
 	}
 }
 
+function preventDefaultScroll(e) {
+	if (!e) e = window.event;
+
+console.log(e);
+	var ele = e.currentTarget;
+
+	if (e.wheelDelta < 0 && ele.scrollTop >= ele.scrollHeight - ele.clientHeight) 
+		e.preventDefault(); 
+	if (e.wheelDelta > 0 && ele.scrollTop == 0)
+		e.preventDefault();
+}
+
 function makeInlineImage(thumb, img) {
 	return "<div style='background-image: url(" + thumb + ")' class='fadein inlineimage' onClick='showImage(\"" + img + "\");stopBubbling();'></div>";
 }

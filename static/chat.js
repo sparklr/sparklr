@@ -26,10 +26,7 @@ function scrollUpHandler(e) {
 		}
 	}
 
-	if (e.wheelDelta < 0 && ele.scrollTop >= ele.scrollHeight - ele.clientHeight) 
-		e.preventDefault(); 
-	if (e.wheelDelta > 0 && ele.scrollTop == 0)
-		e.preventDefault();
+	preventDefaultScroll(e);
 }
 
 function getOldChatMessages(user) {
