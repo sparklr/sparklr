@@ -404,6 +404,7 @@ div.confirm {
     right: 10px;
     width: 220px;
     bottom: 5px;
+	z-index: 10000;
 }
 
 #notificationlist div {
