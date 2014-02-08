@@ -300,6 +300,7 @@ exports.get_settings = function(args, callback) {
  * @returns id, handle array
  */
 exports.get_username = function(args, callback) {
+	if (!args.fragments[3]) return callback(400,false);
 	var users = args.fragments[3].split(",");
 	User.getMassUserDisplayName(users,callback);
 }
