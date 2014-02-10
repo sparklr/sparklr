@@ -9,11 +9,11 @@ var imgAttachments = null;
 
 var hiddenPostList = [];
 
-var missingPosts = 0;
+var missingPostsList = [];
 
 var oldestPost = Number.MAX_VALUE;
 
-function addTimelineEvent(item,append) {
+function addTimelineEvent(item,append,overrideMissing) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (_g("post_" + item.id)) {
@@ -29,10 +29,13 @@ function addTimelineEvent(item,append) {
 	}
 	if (!item.message && item.type !== 1) return;
 
-	if (!append && doctop > 10) {
-		missingPosts++;
-		newPosts(missingPosts);
+	if (!append && !overrideMissing && doctop > 10) {
+		missingPostsList.push(item);
+		newPosts(missingPostsList.length);
 		return;
+	} else {
+		if (!overrideMissing && missingPostsList.length > 0)
+			showMissingPosts();
 	}
 	
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
@@ -224,6 +227,19 @@ function newPosts(num) {
 	e.style.display = 'block';
 	e.className = 'fadein';
 	e.innerHTML = num + ' new post' + ((num != 1) ? 's' : '');
+}
+
+function showMissingPosts() {
+	window.scrollTo(0,0);
+
+	for (i=0;i<missingPostsList.length;i++) {
+		addTimelineEvent(missingPostsList[i],false,true);
+	}
+	missingPostsList = [];
+
+	var e = _g("newposts");
+	if (!e) return;
+	e.style.display = 'none';
 }
 
 function postToTimeline() {

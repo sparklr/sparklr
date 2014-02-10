@@ -28,6 +28,8 @@ var previousPage = "";
 function showStreamPage(posts) {
 	defaultSidebar();
 
+	missingPostsList = [];
+
 	subscribedStream = "";
 
 	var args = location.hash.split("/");
@@ -76,7 +78,6 @@ function updatePages(loaded) {
 		e.className = "";
 	}
 
-	missingPosts = 0;
 	oldestPost = Number.MAX_VALUE;
 
 	subSubscribedStream = 0;

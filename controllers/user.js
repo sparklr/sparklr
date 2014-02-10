@@ -9,6 +9,8 @@ function before(scope) {
 function after(scope) {
 	var arr = scope.data.timeline;
 
+	missingPostsList = [];
+
 	for(var i = arr.length-1; i >= 0; i--) {
 		addTimelineEvent(arr[i]);
 	}
