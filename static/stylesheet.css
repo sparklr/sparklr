@@ -825,9 +825,11 @@ div.friend {
 div.friend b {
 	background: rgba(0,0,0,0.5);
 	color: #fff;
-	display: block;
-	padding: 3px;
+	display: inline-flex;
+	width: 100%;
+	padding: 5px;
 	font-weight: normal;
+	box-sizing: border-box;
 }
 
 div.friend input {
