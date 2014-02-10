@@ -98,9 +98,8 @@ function updatePages(loaded) {
 
 	var s = location.hash.split("/");
 
-	previousPage = s;	
 	if (s[1] === "post") {
-		if (subscribedStream && _g("sidepost_container") && showSidepost(s[2])) {
+		if (subscribedStream && (definedPages.indexOf(previousPage[1]) == -1 || previousPage[1] == 'user') && _g("sidepost_container") && showSidepost(s[2])) {
 			subSubscribedStream = s[2];
 			subPageType = "POST";
 			return;
@@ -109,6 +108,7 @@ function updatePages(loaded) {
 			currentPageType = "POST";
 		}
 	}
+	previousPage = s;	
 
 	for (i = 0; i < definedPages.length; i++) {
 		if (definedPages[i] == s[1]) {
