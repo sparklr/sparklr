@@ -1300,7 +1300,7 @@ div.inlineimage {
 	position: fixed;
 	top: 0px;
 	right: 20px;
-	height: 100%;
+	max-height: 100%;
 	overflow-x: hidden;
 	width: 42%;
 }
