@@ -596,11 +596,12 @@ div.picturepost div.commentcount {
 div.rightcontrols {
     float: right;
     text-align: right;
+	position: relative;
+	width: 100px;
 }
 div.rightcontrols div.time {
-    position: relative;
     top: 0px;
-    opacity: 0.8;
+	position: absolute;
 }
 div.rightcontrols a.delete {
     float: right;
