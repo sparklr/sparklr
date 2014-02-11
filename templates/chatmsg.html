@@ -1,0 +1,12 @@
+<script>
+if (lastMessageFrom[convoid] != from || prepend && lastMessageFrom[convoid] == from) {
+</script>
+	<img class='littleavatar' onClick='location.href="#/user/{from}";' src='{getAvatar(from)}'>
+<script>
+}
+</script>
+<div class='rightcontrols'>
+	<div class='time' data-time='{time}'></div>
+</div>
+<div style='display:block;margin-left: 25px'>{(unconfirmed ? msg : processMedia(escapeHTML(msg)))}</div>
+

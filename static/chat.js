@@ -52,11 +52,7 @@ function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
 	ele.className = "chatmsg";
 
 	ele.id = "msg_" + time;
-	var html = "";
-	if (lastMessageFrom[convoid] != from || prepend && lastMessageFrom[convoid] == from) {
-		html += "<img class='littleavatar' onClick='location.href=\"#/user/" + from + "\";' src='" + getAvatar(from) + "'><div class='time' data-time='" + time + "'></div>";
-	}
-	html += "<div style='display:block;margin-left: 25px'>" + (unconfirmed ? msg : processMedia(escapeHTML(msg))) + "</div>";
+	eval(getTemplate("chatmsg"));
 
 	ele.innerHTML = html;
 
