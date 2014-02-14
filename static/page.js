@@ -32,6 +32,8 @@ function showStreamPage(posts) {
 
 	subscribedStream = "";
 
+	oldestPost = Number.MAX_VALUE;
+
 	var args = location.hash.split("/");
 	var prehtml = "";
 
@@ -77,8 +79,6 @@ function updatePages(loaded) {
 	if (e) {
 		e.className = "";
 	}
-
-	oldestPost = Number.MAX_VALUE;
 
 	subSubscribedStream = 0;
 	subPageType = "";
