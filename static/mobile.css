@@ -896,6 +896,7 @@ span.admin, span.mod{
 	right: 0px;
 	bottom: 0px;
 	width: 200px;
+	overflow: auto;
 	padding: 5px;
 	background: #3a3643;
 	min-height: 50px;
