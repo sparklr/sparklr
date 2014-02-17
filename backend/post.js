@@ -65,28 +65,6 @@ exports.deletePost = function(userobj, id, callback) {
 	});
 }
 
-exports.deleteComment = function(userobj, id, callback) {
-	Database.getObject("comments", id, function(err, rows) {
-		if (err || rows.length < 1) {
-			callback(false);
-			return false;
-		}
-		if (rows[0].from != userobj.id && userobj.rank < 50) {
-			callback(false);
-			return false;
-		}
-
-		var query = "DELETE FROM `comments` WHERE `id` = " + ~~(id);
-		if (userobj.rank < 50) 
-			query += " AND `from` = " + ~~(userobj.id);
-
-		Database.query(query, function(){});
-		exports.updateCommentCount(rows[0].postid, -1);
-
-		callback(null,true);
-	});
-}
-
 exports.updateCommentCount = function(postid, x) {
 	Database.query("UPDATE `timeline` SET commentcount = commentcount + " + ~~(x) + ", modified = " + Toolbox.time() + " WHERE id=" + ~~(postid), function(){});
 }

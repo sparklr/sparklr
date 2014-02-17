@@ -153,7 +153,6 @@ exports.get_deletepost = function(args, callback) {
  */
 exports.get_deletecomment = function(args, callback) {
 	if (!args.fragments[3] || !(~~args.fragments[3])) return callback(400, false);
-	Post.deleteComment(args.userobj, ~~(args.fragments[3]) || 0, callback);
 
 	Database.getObject("comments", ~~args.fragments[3], function(err, rows) {
 		if (err) return callback(500, false);
