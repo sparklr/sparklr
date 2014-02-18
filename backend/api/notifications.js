@@ -11,7 +11,6 @@ var Database = require('../database');
 exports.get_notifications = function(args, callback) {
 	Database.getStream("notifications", {
 		to: [args.userobj.id],
-		read: 0
 	}, callback);
 }
 
@@ -20,12 +19,7 @@ exports.get_notifications = function(args, callback) {
  * @returns MySQL result
  * @structure { affectedRows, insertId }
  */
-//TODO: allows other people to dismiss other peoples' notifications
 exports.get_dismiss = function(args, callback) {
 	Database.query("UPDATE `notifications` SET `read` = 1 WHERE `id` = " + (~~args.fragments[3] || 0) + " AND `to` = " + (args.userobj.id),callback);
-	/*Database.deleteObject("notifications", {
-		to: args.userobj.id,
-		id: (~~args.fragments[4] || 0)
-	}, callback);*/
 }
 
