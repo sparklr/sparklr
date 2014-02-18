@@ -1,6 +1,6 @@
-function after() {
-	for(var i in currentNotifications){
-		if(!currentNotifications[i]) continue;
-		addNotificationToPage(currentNotifications[i]);
+function after(scope) {
+	for(var i in scope.data){
+		if(!scope.data[i]) continue;
+		addNotificationToPage(scope.data[i]);
 	}
 }

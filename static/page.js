@@ -8,9 +8,6 @@ var currentPageType;
 // Pages the server allows us to navigate to
 var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "inbox", "notifications", "explore", "staff"];
 
-// Do not load from server, just render template
-var staticPages = { "notifications":1 };
-
 // The sidebar networks we define
 var networks = {
 	"everything": "Everything",
