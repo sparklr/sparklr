@@ -146,7 +146,7 @@ function updateAccountSettings() {
 			break;
 		case "account":
 			obj = { password: form.delete.value }
-			type = "delete";
+			type = "delete_user";
 			break;
 		default:
 			obj = { username: form.username.value, email: form.email.value, displayname: form.displayname.value }

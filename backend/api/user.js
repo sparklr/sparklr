@@ -80,7 +80,6 @@ exports.public_signup = function(args, callback) {
 					email: email,
 					displayname: username,
 					following: following,
-					followers: "",
 					networks: "0",
 					authkey: User.generateAuthkey(username),
 					bio: ""
@@ -477,7 +476,7 @@ exports.post_header = function(args, callback) {
 	callback(200, args.userobj.avatarid);
 }
 
-/* @url api/deleteuser
+/* @url api/delete_user
  * @args { password }
  * @returns true or false
  */
@@ -485,7 +484,7 @@ exports.post_delete_user = function(args, callback) {
 	bcrypt.compare(args.postObject.password, args.userobj.password, function(err, match) { 
 		if (err) return callback(err);
 
-		if (!match) return callback(200, false);
+		if (!match) return callback(200, { password: false });
 
 		Database.deleteObject("users", { id: args.userobj.id }, function(err) {
 			if (err) return callback(err);
@@ -493,7 +492,7 @@ exports.post_delete_user = function(args, callback) {
 				Database.deleteObject("messages", { from: args.userobj.id }, function(err) {
 					Database.deleteObject("comments", { from: args.userobj.id }, function(err) {
 						if (err) return callback(err);
-						callback(200, true);
+						callback(200, { deleted: true });
 					});
 				});
 			});
