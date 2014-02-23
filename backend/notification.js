@@ -12,7 +12,7 @@ exports.N_WHITELIST = 7;
 exports.addUserNotification = function (user, notification, action, from, type) {
 	if (user == from) return false;
 
-	var query = "INSERT INTO `notifications` (`from`, `to`, `body`, `action`, `type`, `time`) ";
+	var query = "INSERT INTO `notifications` (`from`, `to`, `body`, `action`, `type`, `time`, `read`) ";
 	query += "VALUES (";
 	query += ~~(from) + ",";
 	query += ~~(user) + ",";
@@ -20,12 +20,12 @@ exports.addUserNotification = function (user, notification, action, from, type) 
 	query += Database.escape(action.toString()) + ",";
 	query += ~~(type) + ",";
 	query += Toolbox.time();
-	query += ")";
+	query += ",0)";
 
 	Database.query(query);
 };
 
 exports.getUserNotifications = function (userid, since, callback, args) {
-	Database.query("SELECT * FROM `notifications` WHERE `to` = "+~~(userid)+" AND `read` = 0 AND `time` > "+(~~since || 0)+" ORDER BY TIME DESC", callback, args);
+	Database.query("SELECT * FROM `notifications` WHERE `to` = "+(~~userid)+" AND `read` = 0 AND `time` > "+(~~since)+" ORDER BY `time` DESC", callback, args);
 }
 
