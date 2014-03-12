@@ -625,11 +625,11 @@ div.comment {
 
 div.minipreview {
 	display: none;
-	margin: 2px;
-	width: 50px;
-	height: 40px;
-	float: right;
-	background-size: cover;
+	margin-bottom: 5px;
+	height: 325px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
 }
 
 div.attachment {
