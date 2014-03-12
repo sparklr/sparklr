@@ -1,8 +1,10 @@
+<div style='<% if (notification.read) %>opacity:0.3<% endif %>'>
 <div class='rightcontrols'>
 	<div class='time' data-time='{notification.time}'></div>
 </div>
 <img src='{getAvatar(notification.from)}' class='avatar'>
 <b>{getDisplayName(notification.from)}</b>
 {notification.body}
-<br><br><br>
+</div>
+<br><br>
 
