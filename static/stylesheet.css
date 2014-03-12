@@ -452,6 +452,16 @@ div.confirm {
 	min-height: 60px;
 }
 
+.notification {
+	margin-bottom: 2px;
+	max-height: 70px;
+	overflow: hidden;
+}
+
+.notification.read {
+	opacity: 0.5;
+}
+
 img { border: none }
 
 p { outline: none; }
