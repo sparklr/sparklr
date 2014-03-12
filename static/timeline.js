@@ -145,67 +145,69 @@ function renderTimeline(prehtml) {
 	eval(getTemplate('timeline'));
 	html = (prehtml || "") + html;
 	_g("content").innerHTML = html;
-	_g("attachment").onmousedown = function (e) {
-		console.log(e);
+	if (_g("attachment")) {
+		_g("attachment").onmousedown = function (e) {
+			console.log(e);
 
-		var node = _g("attachment");
-		var x = 0;
-		var y = -(document.body.scrollTop || document.documentElement.scrollTop);
+			var node = _g("attachment");
+			var x = 0;
+			var y = -(document.body.scrollTop || document.documentElement.scrollTop);
 
-		while (node) {
-			x += node.offsetLeft;
-			y += node.offsetTop;
-			node = node.offsetParent;
-		}
+			while (node) {
+				x += node.offsetLeft;
+				y += node.offsetTop;
+				node = node.offsetParent;
+			}
 
-		var region = document.createElement("div");
-		region.setAttribute("contenteditable", true);
-		region.style.top = (e.clientY - y) + "px";
-		region.style.left = (e.clientX - x) + "px";
-		_g("attachment").appendChild(region);
+			var region = document.createElement("div");
+			region.setAttribute("contenteditable", true);
+			region.style.top = (e.clientY - y) + "px";
+			region.style.left = (e.clientX - x) + "px";
+			_g("attachment").appendChild(region);
 
-		setTimeout(function() { region.focus(); }, 100);
-		region.onkeydown = function(e) {
-			if (e.keyCode == 13) {
-				stopBubbling(e);
+			setTimeout(function() { region.focus(); }, 100);
+			region.onkeydown = function(e) {
+				if (e.keyCode == 13) {
+					stopBubbling(e);
 
-				var selected = selectedSuggestionBoxItem();
-				var userid = selected ? selected.getAttribute("data-id") : "";
-				var html = selected ? selected.innerHTML : region.textContent;
+					var selected = selectedSuggestionBoxItem();
+					var userid = selected ? selected.getAttribute("data-id") : "";
+					var html = selected ? selected.innerHTML : region.textContent;
 
-				region.setAttribute("data-tag", selected ? selected.textContent : region.textContent);
+					region.setAttribute("data-tag", selected ? selected.textContent : region.textContent);
 
-				region.innerHTML = html;
-				region.blur();
-				region.setAttribute("data-userid", userid);
+					region.innerHTML = html;
+					region.blur();
+					region.setAttribute("data-userid", userid);
+					showSuggestionBox(false);
+					return false;
+				}
+				if (e.keyCode == 40)  //down
+					suggestionBoxNextItem();
+			}
+			region.onkeyup = function(event) {
+				if (event.keyCode == 38 || event.keyCode == 40) return;
+				var items = getUserSuggestions(region.textContent);
+
+				showSuggestionBox(items.length,(e.clientX),(e.clientY + 30),items);
+				suggestionBoxCallback = function(id,title) { 
+					region.innerHTML = "<img class='littleavatar' src='" + getAvatar(id) + "'>" +title;
+					region.setAttribute("data-userid", id);
+					region.setAttribute("data-tag", title);
+				}
+			}
+			region.onblur = function () {
+				if (!region.textContent) {
+					_g("attachment").removeChild(region);
+					region = null;
+					stopBubbling(e);
+				} else {
+					region.setAttribute("data-tag", region.textContent);
+				}
 				showSuggestionBox(false);
-				return false;
 			}
-			if (e.keyCode == 40)  //down
-				suggestionBoxNextItem();
+			region.onmousedown = stopBubbling;
 		}
-		region.onkeyup = function(event) {
-			if (event.keyCode == 38 || event.keyCode == 40) return;
-			var items = getUserSuggestions(region.textContent);
-
-			showSuggestionBox(items.length,(e.clientX),(e.clientY + 30),items);
-			suggestionBoxCallback = function(id,title) { 
-				region.innerHTML = "<img class='littleavatar' src='" + getAvatar(id) + "'>" +title;
-				region.setAttribute("data-userid", id);
-				region.setAttribute("data-tag", title);
-			}
-		}
-		region.onblur = function () {
-			if (!region.textContent) {
-				_g("attachment").removeChild(region);
-				region = null;
-				stopBubbling(e);
-			} else {
-				region.setAttribute("data-tag", region.textContent);
-			}
-			showSuggestionBox(false);
-		}
-		region.onmousedown = stopBubbling;
 	}
 	currentComments = [];
 
