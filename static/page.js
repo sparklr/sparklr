@@ -127,8 +127,8 @@ function updatePages(loaded) {
 
 function changeLocation(){
 	if (window.localStorage && (n = window.localStorage.getItem("lastnetwork")))
-		location.href = '/#/' + n;
+		location.href = '/#/following';
 	else
-		location.href = '/#/everything';
+		location.href = '/#/following';
 }
 
