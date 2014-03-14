@@ -32,7 +32,6 @@ function renderTemplate(page,destination,callback) {
 
 		var templateData = getTemplate(fragments[0]);
 		eval("with(scope){"+templateData+"}");
-		console.log(html);
 
 		_g(destination).innerHTML = html;
 

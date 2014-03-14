@@ -63,7 +63,6 @@ function addNotification(notification) {
 }
 
 function addNotificationToPage(notification){
-	console.log(notification);
 	if(!notification.click){
 		notification = processNotification(notification);
 	}

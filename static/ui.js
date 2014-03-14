@@ -490,7 +490,6 @@ function scrollHandler() {
 function preventDefaultScroll(e) {
 	if (!e) e = window.event;
 
-console.log(e);
 	var ele = e.currentTarget;
 
 	if (e.wheelDelta < 0 && ele.scrollTop >= ele.scrollHeight - ele.clientHeight) 

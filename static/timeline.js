@@ -147,8 +147,6 @@ function renderTimeline(prehtml) {
 	_g("content").innerHTML = html;
 	if (_g("attachment")) {
 		_g("attachment").onmousedown = function (e) {
-			console.log(e);
-
 			var node = _g("attachment");
 			var x = 0;
 			var y = -(document.body.scrollTop || document.documentElement.scrollTop);

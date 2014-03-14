@@ -176,7 +176,6 @@ function editPostStart(e) {
 }
 
 function editPost(e) {
-	console.log('saving');
 	e = e || window.event;
 	ajax("editpost", { id: e.target.getAttribute('data-id'), body: htmlToPost(e.target.innerHTML) }, function() {
 		e.target.innerHTML = processPostMeta({ message: htmlToPost(e.target.innerHTML), from: CURUSER }).formattedMessage;

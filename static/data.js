@@ -112,7 +112,6 @@ function pollData() {
 			callback = function(data,xhr) {
 				if (query != streamUrl(getLastStreamTime(subscribedStream))) {
 					// TODO
-					console.log("query does not match");
 				}
 				var items = data.data || data;
 

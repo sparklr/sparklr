@@ -164,7 +164,6 @@ function signUp(username,email,password,errors) {
 	if (errors.value != "") return;
 
 	ajax("signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + encodeURIComponent(password.value), null, function(data) {
-		console.log(data);
 		if (data === 1) {
 			trySignin(username,password,"http://sparklr.me/welcome");
 		} else {
