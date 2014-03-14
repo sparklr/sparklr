@@ -53,8 +53,6 @@ function showStreamPage(posts) {
 		addTimelineArray(data,subscribedStream);
 	});
 
-	pollData();
-
 	if (window.localStorage)
 		window.localStorage.setItem("lastnetwork", subscribedStream);
 }
