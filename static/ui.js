@@ -9,6 +9,16 @@ var newPageToFetch = false;
 
 var doctop = 0;
 
+var REGEX_URL = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/g;
+
+var REGEX_MENTIONS = /\B@([\w-]+)/gi;
+
+var REGEX_TAGS = /(^|\s)#([\w-]{1,40})/gi;
+
+var REGEX_IMG = /\[IMG([A-Za-z0-9\._-]+)\]/g;
+
+var REGEX_EMOJI = /([\ud800-\udbff])([\udc00-\udfff])/g;
+
 // Time saver
 function _g(id) { return document.getElementById(id); }
 
@@ -123,8 +133,7 @@ function processPost(post) {
 // Parse links, hashtags, @, imgs, etc
 function processMedia(text,noImages) {
 	var linkcount = 0;
-	var urlexp = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/g;
-	text = text.replace(urlexp, function (match) {
+	text = text.replace(REGEX_URL, function (match) {
 		if (linkcount > 5) return;
 
 		var url = match;
@@ -144,22 +153,22 @@ function processMedia(text,noImages) {
 	});
 
 	// mentions
-	text = text.replace(/\B@([\w-]+)/gi, function(match, user) {
+	text = text.replace(REGEX_MENTIONS, function(match, user) {
 		return "<a href='#/user/" + user + "'>" + match + "</a>";
 	});
 
 	// tags
-	text = text.replace(/(^|\s)#([\w-]{1,40})/gi, function(match, foo, tag) {
+	text = text.replace(REGEX_TAGS, function(match, foo, tag) {
 		return " <a href='#/tag/" + tag + "' class='tag'>" + match + "</a>";
 	});
 
 	// img
-	text = text.replace(/\[IMG([A-Za-z0-9\._-]+)\]/g, function(match, img) {
+	text = text.replace(REGEX_IMG, function(match, img) {
 		return makeInlineImage(imgUrl(img), imgUrl(img,true));
 	});
 	
 	// emoji
-	text = text.replace(/([\ud800-\udbff])([\udc00-\udfff])/g, function(match, b1, b2) {
+	text = text.replace(REGEX_EMOJI, function(match, b1, b2) {
 		var cp = (b1.charCodeAt(0) - 0xD800) * 0x400 + (b2.charCodeAt(0) - 0xDC00) + 0x10000;
 		return "<img src='" + IMGHOST + "/../eji/" + cp.toString(16) + ".png' style='vertical-align:bottom'>";
 	});
