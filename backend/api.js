@@ -28,6 +28,8 @@ exports.run = function(request, response, uri, sessionid) {
 		fragments: fragments
 	}
 
+	var endpoint;
+
 	var callback = function(err,res,headers) {
 		apiResponse(response,err,res,headers);
 	}
