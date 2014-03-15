@@ -6,20 +6,20 @@
 	<% endif %>
 <% endif %>
 <div class='grid'>
-	<script>
+	<?
 		if ($users) {
 			for (var i = 0; i < $users.length; i++) {
 				USERHANDLES[$users[i].id] = $users[i].username;
-	</script>
+	?>
 	<a href='/#/user/{$users[i].id}' style='color:#000'>
 		<div style='background-image:url({imgUrl($users[i].id,true)})' class='friend'>
 			<b>{getDisplayName($users[i].id)}</b>
 		</div>
 	</a>
-	<script>
+	<?
 			}
 		}
-	</script>
+	?>
 
 	<% if ($posts) %>
 		<div id='timeline_container'></div>

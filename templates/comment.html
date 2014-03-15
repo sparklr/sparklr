@@ -3,16 +3,14 @@
 </div>
 <div class='rightcontrols'>
 	<div class='time' style='opacity:0.5' data-time='{$time}'></div>
-	<script>
+	<?
 	var canEdit = $from == CURUSER || ISMOD;
 
     if (canEdit) {
-	</script>
+	?>
 		<br>
 		<a class='delete' onClick='deleteComment("{$id}", "{$postid}");'></a>
-	<script>
-    }
-	</script>
+	<? } ?>
 </div>
 <a class='person' href='#/user/{$from}'>{getDisplayName($from)}</a>
 <% if ($like) %>

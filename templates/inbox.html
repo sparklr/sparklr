@@ -1,12 +1,12 @@
 <div class='contentwrapper'>
 	<h2>inbox</h2>
-	<script>
+	<?
 		var found = false;
 		for (var i = 0; i < it.length; i++) { 
 			found = true;
 			var msg = it[i];
 			msg.img = imgUrl(msg.from.toString());
-	</script>
+	?>
 	<div style='position:relative;cursor:pointer;' onClick='chatWith("{msg.from}");'>
 		<div class='rightcontrols'>
 			<div class='time' data-time='{msg.time}'></div>
@@ -14,12 +14,12 @@
 		<img src='{msg.img}' class='avatar'><b>{getDisplayName(msg.from)}</b><br>
 		{escapeHTML(msg.message)}<br><br>
 	</div>
-	<script>
+	<?
 		}
 		if (!found) {
-	</script>
+	?>
 	You don't have any messages from anyone!<br>To send a message, go to a user's profile page, and click Message.
-	<script>
+	<?
 		}
-	</script>
+	?>
 </div>

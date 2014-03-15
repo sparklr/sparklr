@@ -4,16 +4,12 @@
 	<input type='button' onclick='meetSomeoneRandom()' value='Meet someone random'>
 </div>
 
-<script>
-	for (var i = 0; i < it.length; i++) {
-</script>
+<? for (var i = 0; i < it.length; i++) { ?>
 	<div style='background-image:url({imgUrl(it[i],true)})' class='friend' onclick='location.href="#/user/{it[i]}";'>
 		<input type='button' value='Unfollow' onclick='unfollow({it[i]});stopBubbling();'>
 		<b>{getDisplayName(it[i])}</b>
 	</div>
-<script>
-	}
-</script>
+<? } ?>
 <% if (it.length < 1) %>
 You aren't following anyone right now! Try meeting someone random or inviting friends.
 <% endif %>

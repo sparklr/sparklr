@@ -82,26 +82,23 @@ function t(data) {
 	});
 
 	obj = obj.replace(/(\<\%\ endif\ \%\>)/g, function(match,m1, m2) {
-
 		return "\"):\"\")+\"";
 	});
 
 	obj = obj.replace(/(\<\%\ else\ \%\>)/g, function(match,m1, m2) {
-
 		return "\"):(\"";
 	});
 
 	obj = obj.replace(/(\<\%\ endelse\ \%\>)/g, function(match,m1, m2) {
-
 		return "\"))+\"";
 	});
 
-	obj = obj.replace(/<script\b[^>]*>((.|\n|\r)*?)<\/script>/g, function(match) {
+	obj = obj.replace(/<\?((.|\n|\r)*?)\?\>/g, function(match) {
 		return match.replace(/\\\"/g, "\"");
 	});
 
-	obj = obj.replace(/\<script\>/g, "\";");
-	obj = obj.replace(/\<\/script\>/g, "html+=\"");
+	obj = obj.replace(/\<\?/g, "\";");
+	obj = obj.replace(/\?\>/g, "html+=\"");
 
 	obj = obj.replace(/\n/gm, "");
 	obj = obj.replace(/\r/gm, "");

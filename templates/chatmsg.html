@@ -1,10 +1,6 @@
-<script>
-if (lastMessageFrom[$convoid] != $from || $prepend && lastMessageFrom[$convoid] == $from) {
-</script>
+<? if (lastMessageFrom[$convoid] != $from || $prepend && lastMessageFrom[$convoid] == $from) { ?>
 	<img class='littleavatar' onClick='location.href="#/user/{$from}";' src='{getAvatar($from)}'>
-<script>
-}
-</script>
+<? } ?>
 <div class='rightcontrols'>
 	<div class='time' data-time='{$time}'></div>
 </div>
