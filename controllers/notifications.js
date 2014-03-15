@@ -1,6 +1,9 @@
-function after(scope) {
-	for(var i = scope.data.length-1; i >= 0; i--){
-		if(!scope.data[i]) continue;
-		addNotificationToPage(scope.data[i]);
+CONTROLLERS['notifications'] = {};
+
+CONTROLLERS['notifications'].before = function(data, fragments) {
+	for(var i = data.length-1; i >= 0; i--){
+		if(!data[i]) continue;
+		addNotificationToPage(data[i]);
 	}
 }
+

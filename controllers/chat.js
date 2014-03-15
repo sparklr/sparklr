@@ -1,23 +1,24 @@
-function before(scope) {
-	scope.user = scope.fragments[1] || scope.fragments[0];
-	scope.convoid = scope.user + "," + CURUSER;
+CONTROLLERS['chat'] = {};
+CONTROLLERS['chat'].before = function(data, fragments) {
+	data.user = fragments[1] || fragments[0];
+	data.convoid = data.user + "," + CURUSER;
 }
 
-function after(scope) {
-	chatTimes[scope.convoid] = [];
+CONTROLLERS['chat'].after = function(data, fragments) {
+	chatTimes[data.convoid] = [];
 
-	for (var i = scope.data.length - 1; i >= 0; i--) {
-		addChatMessage(scope.data[i].from, scope.data[i].to, scope.data[i].message, scope.data[i].time, false);
+	for (var i = data.length - 1; i >= 0; i--) {
+		addChatMessage(data[i], false);
 	}
 
-	var e = _g('scrollUpContent_'+scope.convoid);
+	var e = _g('scrollUpContent_'+data.convoid);
 	e.addEventListener("DOMMouseScroll", scrollUpHandler);
 	e.addEventListener("mousewheel", scrollUpHandler);
-	_g("composer_chat_"+scope.user).focus();
+	_g("composer_chat_"+data.user).focus();
 	window.onload = function() {
-		_g("scrollUpContent_"+scope.convoid).scrollTop = 0xFFFFFF; 
+		_g("scrollUpContent_"+data.convoid).scrollTop = 0xFFFFFF; 
 	};
 
-	setWindowTitle('m'+scope.convoid, getDisplayName(scope.user));
+	setWindowTitle('m'+data.convoid, getDisplayName(data.user));
 }
 

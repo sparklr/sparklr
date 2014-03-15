@@ -1,9 +1,9 @@
-<div class='notification<% if (notification.read) %> read<% endif %>'>
+<div class='notification<% if ($read) %> read<% endif %>'>
 	<div class='rightcontrols'>
-		<div class='time' data-time='{notification.time}'></div>
+		<div class='time' data-time='{$time}'></div>
 	</div>
-	<img src='{getAvatar(notification.from)}' class='avatar'>
-	<b>{getDisplayName(notification.from)}</b>
-	{notification.body}
+	<img src='{getAvatar($from)}' class='avatar'>
+	<b>{getDisplayName($from)}</b>
+	{$body}
 </div>
 

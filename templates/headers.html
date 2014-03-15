@@ -6,7 +6,7 @@
 	<script>
 		var STATICHOST = "{global.staticHost}";
 		var IMGHOST = "{global.imgHost}";
-		var POLL_INTERVAL = 1500;
+		var POLL_INTERVAL = 15000;
 		var MOBILE = false;
 		var LIVE = {global.liveSite};
 	</script>
@@ -27,6 +27,14 @@
 		<script src='{global.staticHost}/app.js'></script>
 		<script src='{global.staticHost}/bugs.js'></script>
 		<script src='{global.staticHost}/windows.js'></script>
+		<!-- CONTROLLERS -->
+		<script src='{global.staticHost}/../../controllers/chat.js'></script>
+		<script src='{global.staticHost}/../../controllers/notifications.js'></script>
+		<script src='{global.staticHost}/../../controllers/post.js'></script>
+		<script src='{global.staticHost}/../../controllers/search.js'></script>
+		<script src='{global.staticHost}/../../controllers/settings.js'></script>
+		<script src='{global.staticHost}/../../controllers/tag.js'></script>
+		<script src='{global.staticHost}/../../controllers/user.js'></script>
 		<!-- <script src='http://192.168.1.125:9001/socket.js' async></script> -->
 		<script src='http://127.0.0.1:9001/socket.js' async></script>
 		<link rel='stylesheet' href='{global.staticHost}/stylesheet.css'>

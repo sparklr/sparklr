@@ -52,9 +52,7 @@ function addTimelineEvent(item,append,overrideMissing) {
 
 	item = processPostMeta(item);
 
-	eval(getTemplate("timelineitem"));
-
-	ev.innerHTML = html;
+	ev.innerHTML = getTemplate("timelineitem")(item);
 
 	var parent = _g("timeline_container");
 	if (append || parent.children.length < 1) {
@@ -126,7 +124,7 @@ function fetchOlderPosts() {
 
 function renderComposer(caption, keydown, minipreview, id) {
 	imgAttachments = null;
-	eval(getTemplate('composer'));
+	var html = getTemplate('composer')({id: id, minipreview: minipreview, keydown: keydown, caption: caption });
 	setTimeout(function() {
 		_g("composer_"+(id||'composer')).onpaste = function(e) {
 			var data = e.clipboardData || e.originalEvent.clipboardData;
@@ -142,7 +140,7 @@ function renderComposer(caption, keydown, minipreview, id) {
 }
 
 function renderTimeline(prehtml) {
-	eval(getTemplate('timeline'));
+	var html = getTemplate('timeline')();
 	html = (prehtml || "") + html;
 	_g("content").innerHTML = html;
 	if (_g("attachment")) {

@@ -1,4 +1,4 @@
-<span class='exit' onclick='dismissNotification("{notification.id}");stopBubbling();'>x</span>
-<img class='littleavatar' src='{getAvatar(notification.from)}'>
-<b>{getDisplayName(notification.from)}</b>
-{notification.body}
+<span class='exit' onclick='dismissNotification("{$id}");stopBubbling();'>x</span>
+<img class='littleavatar' src='{getAvatar($from)}'>
+<b>{getDisplayName($from)}</b>
+{$body}

@@ -5,16 +5,16 @@
 </div>
 
 <script>
-	for (var i = 0; i < data.length; i++) {
+	for (var i = 0; i < it.length; i++) {
 </script>
-	<div style='background-image:url({imgUrl(data[i],true)})' class='friend' onclick='location.href="#/user/{data[i]}";'>
-		<input type='button' value='Unfollow' onclick='unfollow({data[i]});stopBubbling();'>
-		<b>{getDisplayName(data[i])}</b>
+	<div style='background-image:url({imgUrl(it[i],true)})' class='friend' onclick='location.href="#/user/{it[i]}";'>
+		<input type='button' value='Unfollow' onclick='unfollow({it[i]});stopBubbling();'>
+		<b>{getDisplayName(it[i])}</b>
 	</div>
 <script>
 	}
 </script>
-<% if (data.length < 1) %>
+<% if (it.length < 1) %>
 You aren't following anyone right now! Try meeting someone random or inviting friends.
 <% endif %>
 

@@ -1,13 +1,14 @@
-function before(scope) {
-	DISPLAYNAMES[scope.data.user] = scope.data.name;
-	USERHANDLES[scope.data.user] = scope.data.handle;
-	AVATAR_IDS[scope.data.user] = scope.data.avatarid;
+CONTROLLERS['user'] = {};
+CONTROLLERS['user'].before = function(data, fragments) {
+	DISPLAYNAMES[data.user] = data.name;
+	USERHANDLES[data.user] = data.handle;
+	AVATAR_IDS[data.user] = data.avatarid;
 
-	scope.pageType = scope.fragments[2];
+	pageType = fragments[2];
 }
 
-function after(scope) {
-	var arr = scope.data.timeline;
+CONTROLLERS['user'].after = function(data, fragments) {
+	var arr = data.timeline;
 
 	missingPostsList = [];
 
@@ -16,18 +17,18 @@ function after(scope) {
 	}
 
 	addTimelineArray(arr,subscribedStream);
-	updateHeader(scope.data.user,scope.data.avatarid); 
+	updateHeader(data.user,data.avatarid); 
 
-	subscribedStream = scope.data.user;
+	subscribedStream = data.user;
 	_g("content").style.minHeight = 0;
 
 	currentPageType = "STREAM";
 
-	if (scope.pageType == "photos")
+	if (pageType == "photos")
 		currentPageType = "PHOTO";
-	if (scope.pageType == "mentions")
+	if (pageType == "mentions")
 		currentPageType = "MENTIONS";
-	if (scope.pageType == "step2")
+	if (pageType == "step2")
 		editProfile(); 
 }
 

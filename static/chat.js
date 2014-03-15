@@ -32,17 +32,17 @@ function scrollUpHandler(e) {
 function getOldChatMessages(user) {
 	ajax("chat/" + user + "?starttime=" + chatTimes[user + "," + CURUSER][0], null, function(data) {
 		for (var i = 0; i < data.length; i++) {
-			addChatMessage(data[i].from, data[i].to, data[i].message, data[i].time, true);
+			addChatMessage(data[i], true);
 		}
 	});
 }
 
-function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
+function addChatMessage(msg, prepend, unconfirmed) {
 	var convoid;
-	if (from == CURUSER)
-		convoid = to + "," + from;
+	if (msg.from == CURUSER)
+		convoid = msg.to + "," + msg.from;
 	else 
-		convoid = from + "," + to;
+		convoid = msg.from + "," + msg.to;
 
 	var sc = _g("scrollUpContent_"+convoid);
 	if (!sc)
@@ -51,14 +51,18 @@ function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
 	var ele = document.createElement("div");
 	ele.className = "chatmsg";
 
-	ele.id = "msg_" + time;
+	ele.id = "msg_" + msg.time;
+
+	msg.prepend = prepend;
+	msg.unconfirmed = unconfirmed;
+
 	eval(getTemplate("chatmsg"));
 
-	ele.innerHTML = html;
+	ele.innerHTML = getTemplate("chatmsg")(msg);
 
 	if (typeof(prepend) != "undefined" && prepend) {
 		sc.insertBefore(ele, sc.children[0]);
-		chatTimes[convoid].unshift(time);
+		chatTimes[convoid].unshift(msg.time);
 	} else {
 		sc.appendChild(ele);
 		if (sc.scrollHeight - (sc.scrollTop + 350) < 50) 
@@ -66,10 +70,10 @@ function addChatMessage(from, to, msg, time, prepend, unconfirmed) {
 
 		updateUI();
 
-		chatTimes[convoid].push(time);
+		chatTimes[convoid].push(msg.time);
 	}
 
-	lastMessageFrom[convoid] = from;
+	lastMessageFrom[convoid] = msg.from;
 }
 
 function sendChatMessage(e) {
@@ -92,7 +96,7 @@ function sendChatMessage(e) {
 
 	if (!vars.message && !vars.postData) return;
 
-	addChatMessage(CURUSER, vars.to, (vars.img ? makeInlineImage(vars.postData,vars.postData) : "") + vars.message, (new Date).getTime(), false, true);
+	addChatMessage({ from: CURUSER, to: vars.to, message: (vars.img ? makeInlineImage(vars.postData,vars.postData) : "") + vars.message, time: (new Date).getTime() }, false, true);
 
 	ajax("chat", vars, function(data,xhr) {
 		if (data.error && data.info == "Blocked") {

@@ -1,19 +1,19 @@
 <h2>searching for: "{ unescape(location.hash.substring(9)).replace(/</g, '&lt;').replace(/>/g, '&gt;') }"</h2>
-<% if (!data.error && data !== false) %>
-	<% if (!data.users && !data.posts) %>
+<% if (!$error && it !== false) %>
+	<% if (!$users && !$posts) %>
 		<b>No results</b><br>
 		Feel free to use your imagination, though.
 	<% endif %>
 <% endif %>
 <div class='grid'>
 	<script>
-		if (data.users) {
-			for (var i = 0; i < data.users.length; i++) {
-				USERHANDLES[data.users[i].id] = data.users[i].username;
+		if ($users) {
+			for (var i = 0; i < $users.length; i++) {
+				USERHANDLES[$users[i].id] = $users[i].username;
 	</script>
-	<a href='/#/user/{data.users[i].id}' style='color:#000'>
-		<div style='background-image:url({imgUrl(data.users[i].id,true)})' class='friend'>
-			<b>{getDisplayName(data.users[i].id)}</b>
+	<a href='/#/user/{$users[i].id}' style='color:#000'>
+		<div style='background-image:url({imgUrl($users[i].id,true)})' class='friend'>
+			<b>{getDisplayName($users[i].id)}</b>
 		</div>
 	</a>
 	<script>
@@ -21,7 +21,7 @@
 		}
 	</script>
 
-	<% if (data.posts) %>
+	<% if ($posts) %>
 		<div id='timeline_container'></div>
 	<% endif %>
 </div>

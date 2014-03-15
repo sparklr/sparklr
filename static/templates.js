@@ -20,23 +20,16 @@ function renderTemplate(page,destination,callback) {
 		if (spc = _g("sidepost_container"))
 			spc.innerHTML = "";
 
-		var scope = { data: data, fragments: fragments };
+		controller = CONTROLLERS[fragments[0]];
 
-		controller = getController(fragments[0]);
-		if (controller)
-			eval(controller);
+		if (controller && controller.before)
+			controller.before(data, fragments);
 
-		if (controller && typeof(before) !== 'undefined') {
-			before(scope);
-		}
-
-		var templateData = getTemplate(fragments[0]);
-		eval("with(scope){"+templateData+"}");
-
+		var html = getTemplate(fragments[0])(data);
 		_g(destination).innerHTML = html;
 
-		if (controller && typeof(after) !== 'undefined')
-			after(scope);
+		if (controller && controller.after)
+			controller.after(data, fragments);
 
 		scrollHandler();
 		updateUI();
@@ -48,16 +41,9 @@ function renderTemplate(page,destination,callback) {
 function getTemplate(id) {
 	if (!TEMPLATES[id]) {
 		templatedata = getStaticFile(STATICHOST + "../templates/" + id + ".html");
-		TEMPLATES[id] = t(templatedata);
+		TEMPLATES[id] = new Function("it", t(templatedata));
 	}
 	return TEMPLATES[id];
-}
-
-function getController(id) {
-	if (!CONTROLLERS[id]) {
-		CONTROLLERS[id] = getStaticFile(STATICHOST + "../controllers/" + id + ".js");
-	}
-	return CONTROLLERS[id];
 }
 
 function getStaticFile(url) {
@@ -84,6 +70,8 @@ function getStaticFile(url) {
 function t(data) {
 	var obj = "" + data;
 	obj = obj.replace(/\"/g, "\\\"");
+
+	obj = obj.replace(/\$/g, "it.");
 
 	obj = obj.replace(/\{([^\n}]*)\}/g, function(match,m1) {
 		return "\"+" + m1 + "+\"";
@@ -119,7 +107,7 @@ function t(data) {
 	obj = obj.replace(/\r/gm, "");
 	obj = obj.replace(/\t/gm, "");
 
-	return "var html = \"" + obj + "\";";
+	return "var html = \"" + obj + "\";return html;";
 }
 if (typeof(exports) !== "undefined")
 	exports.t = t;

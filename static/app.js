@@ -29,7 +29,7 @@ function app(payload) {
 
 	// Read the appropriate frontend template and evaluate it to populate
 	// the html variable, which is written to the page body
-	eval(getTemplate(((MOBILE) ? "mobilefrontend" : "frontend")));
+	var html = getTemplate(((MOBILE) ? "mobilefrontend" : "frontend"))();
 	document.write(html);
 
 	addTimelineArray(payload.timelineStream, 0);

@@ -1,20 +1,22 @@
-function before(scope) {
-	scope.data = processPostMeta(scope.data);
+CONTROLLERS['post'] = {};
+
+CONTROLLERS['post'].before = function(data, fragments) {
+	data = processPostMeta(data);
 }
 
-function after(scope) {
-	for (var i = 0; i < scope.data.comments.length; i++) {
-		renderComment(scope.data.comments[i]);
+CONTROLLERS['post'].after = function(data, fragments) {
+	for (var i = 0; i < data.comments.length; i++) {
+		renderComment(data.comments[i]);
 	}
 
-	currentComments = scope.data.comments;
+	currentComments = data.comments;
 
 	if (location.hash.indexOf("new") != -1) 
-		_g('composer_'+scope.data.id).focus();
+		_g('composer_'+data.id).focus();
 
 	if (location.hash.indexOf("repost") != -1) 
-		repost(scope.data.id);
+		repost(data.id);
 
-	renderTags(scope.data);
+	renderTags(data);
 }
 

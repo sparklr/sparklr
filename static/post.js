@@ -85,7 +85,7 @@ function renderComment(comment,scroll) {
 			_g("likebtn_"+comment.postid).className += " liked";
 	}
 	
-	eval(getTemplate("comment"));
+	var html = getTemplate("comment")(comment);
 	
 	e.innerHTML += html;
 	commentlist.appendChild(e);

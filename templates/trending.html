@@ -3,8 +3,8 @@
 </div>
 
 <script>
-	for (var i = 0; i < data.length; i++) {
-		var item = data[i];
+	for (var i = 0; i < $data.length; i++) {
+		var item = $data[i];
 		item = processPostMeta(item);
 		if (hiddenPostList.indexOf(item.id) !== -1) continue;
 		if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) continue;
