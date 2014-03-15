@@ -14,27 +14,10 @@ exports.build = function(callback) {
 			id = id[0];
 
 			data = templateFormatter.t(data.toString());
-			// escape 
-			data = data.replace(/\\/g, "\\\\");
-			data = data.replace(/\"/g, "\\\"");
 
-			templateData += "TEMPLATES['"+id+"'] = \"" + data + "\";\n";
+			templateData += "TEMPLATES['"+id+"'] = function(it){" + data + "};\n";
 		}
-		fs.readdir("../controllers", function(err, files) {
-			for (var i = 0; i < files.length; i++) {
-				var data = fs.readFileSync("../controllers/" + files[i]).toString();
-				var id = files[i].split(".");
-				id = id[0];
-
-				// escape 
-				data = data.replace(/\\/g, "\\\\");
-				data = data.replace(/\"/g, "\\\"");
-
-				templateData += "CONTROLLERS['"+id+"'] = \"" + data + "\";\n";
-			}
-			callback(templateData);
-		});
+		callback(templateData);
 	});
-
 }
 
