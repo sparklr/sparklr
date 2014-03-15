@@ -69,7 +69,7 @@ function addNotificationToPage(notification){
 
 	var n = document.createElement("div");
 	n.onclick = notification.click;
-	eval(getTemplate("notificationbody"));
+	var html = getTemplate("notificationbody")(notification);
 	n.innerHTML = html;
 	
 	var parent = _g("notifications");
@@ -98,7 +98,7 @@ function processNotification(notification) {
 			body = " reposted your post.";
 		break;
 		case N_CHAT: //chat
-			addChatMessage(notification.from, CURUSER, notification.body, notification.time, false);
+			addChatMessage({ from: notification.from, to: CURUSER, message: notification.body, time: notification.time }, false);
 			updatePageTitle();
 			body = " says: <br>" + notification.body;
 			setNewInbox(true);

@@ -11,7 +11,7 @@
 	<p class='headersubtitle'><b>You have hidden this user. <a href='/#/settings/blacklist' style='text-decoration:underline'>Change Settings</a></b></p>
 	<% endif %>
 	<div style='position: absolute; bottom: 10px; left: 9px;'>
-		<% if (user != CURUSER) %>
+		<% if ($user != CURUSER) %>
 			<% if (following) %>	
 				<input type='button' onclick='unfollow("{$user}");' value='Unfollow'>
 			<% else %>
