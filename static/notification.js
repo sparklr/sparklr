@@ -36,7 +36,7 @@ function addNotification(notification) {
 		return;
 
 	if (!(MOBILE)) {
-		eval(getTemplate("notification"));
+		var html = getTemplate("notification")(notification);
 
 		var n = document.createElement("div");
 		n.id = "notification_" + notification.id;
