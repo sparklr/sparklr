@@ -1,8 +1,8 @@
-<div style='position:relative' class='composer'>
+<div class='composer'>
 	<% if ($minipreview) %>
 		<div id='attachment{($id || '')}' class='minipreview'></div>
 	<% endif %>
-	<div style='float:left'>
+	<div class='controls'>
 		<a href='#/user/{CURUSER}'><img src='{getAvatar(CURUSER)}' class='avatar'></a>
 		<div class='remaining' id='remaining_composer_{($id || 'composer')}'></div>
 	</div>

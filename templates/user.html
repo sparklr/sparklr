@@ -1,36 +1,36 @@
 <% if ($user == CURUSER) %>
-<div id='profileheader' class='profileheader' onDrop='dropImage(event, headerUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'>
+<div id='profileheader' onDrop='dropImage(event, headerUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'>
 <% else %>
-<div class='profileheader' id='profileheader'>
+<div id='profileheader'>
 <% endelse %>
 	<img class='useravatar' id='useravatar' src='{ imgUrl($user,true) }' onDrop='dropImage(event, avatarUploadCallback);' onDragEnter='dropPrevent(event);' onDragOver='dropPrevent(event);'><br>
 	<p id='userDisplayName'>{ getDisplayName($user) }</p>
 	<p>@{getUserHandle($user)}</p>
 	<p id='userBio'>{processMedia($bio.replace(/\n/g,'<br>'),true)}</p>
-	<% if (HIDDEN_USERS.indexOf($user.toString()) != -1) %>
+<% if (HIDDEN_USERS.indexOf($user.toString()) != -1) %>
 	<p class='headersubtitle'><b>You have hidden this user. <a href='/#/settings/blacklist' style='text-decoration:underline'>Change Settings</a></b></p>
+<% endif %>
+	<div class='controls'>
+<% if ($user != CURUSER) %>
+	<% if ($following) %>	
+		<input type='button' onclick='unfollow("{$user}");' value='Unfollow'>
+	<% else %>
+		<input type='button' onclick='follow("{$user}");' value='Follow'>
+	<% endelse %>
+		<input type='button' onclick='chatWith("{$user}");' value='Message'>
 	<% endif %>
-	<div style='position: absolute; bottom: 10px; left: 9px;'>
-		<% if ($user != CURUSER) %>
-			<% if ($following) %>	
-				<input type='button' onclick='unfollow("{$user}");' value='Unfollow'>
-			<% else %>
-				<input type='button' onclick='follow("{$user}");' value='Follow'>
-			<% endelse %>
-			<input type='button' onclick='chatWith("{$user}");' value='Message'>
-		<% endif %>
 		<input type='button' onclick='location.href="/#/user/{$user}/mentions"' value='Mentions'>
 		<input type='button' onclick='location.href="/#/user/{$user}/photos"' value='Photos'>
 	</div>
-	<% if ($user == CURUSER) %> 
-		<% if (!MOBILE) %>
-			<div style='position: absolute; top: 10px; right: 5px;'>
-				<input type='button' onclick='location.href="#/settings"' value='Settings'>
-				<input type='button' onclick='signOff();' value='Sign off'>
-			</div>
-		<% endif %>
-		<input type='button' id='editBtn' onclick='editProfile()' value='Edit'>
+<% if ($user == CURUSER) %> 
+	<% if (!MOBILE) %>
+	<div class='settings'>
+		<input type='button' onclick='location.href="#/settings"' value='Settings'>
+		<input type='button' onclick='signOff();' value='Sign off'>
+	</div>
 	<% endif %>
+	<input type='button' id='editBtn' onclick='editProfile()' value='Edit'>
+<% endif %>
 </div>
 <div class='grid'>
 	<div id='newposts' onclick='showMissingPosts()'></div>
@@ -39,7 +39,7 @@
 			<b>Avatar</b><br>
 			<input type='file' onchange='loadImage(this.files[0], avatarUploadCallback)'><br>
 			<b>Header</b><br>
-				<input type='file' onchange='loadImage(this.files[0], headerUploadCallback)'><br>
+			<input type='file' onchange='loadImage(this.files[0], headerUploadCallback)'><br>
 		</div>
 	</div>
 </div>

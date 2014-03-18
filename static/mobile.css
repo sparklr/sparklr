@@ -534,7 +534,7 @@ div.photos {
 	margin: auto;
 }
 
-div.profileheader {
+#profileheader {
 	margin: -5px;
     height: 290px;
 	width: 100%;
@@ -550,11 +550,11 @@ div.profileheader {
 	color: #fff;
 }
 
-div.profileheader a {
+#profileheader a {
 	color: #fff;
 }
 
-div.profileheader img.avatar {
+#profileheader img.avatar {
 	float: none;
 	top: 10px;
 	position: relative;
@@ -562,7 +562,7 @@ div.profileheader img.avatar {
 	margin-right: 0;
 }
 
-div.profileheader #userDisplayName {
+#profileheader #userDisplayName {
     color: white;
     font-size: 28px;
     margin-top: 10px;
@@ -572,7 +572,7 @@ div.profileheader #userDisplayName {
 	display: block;
 }
 
-div.profileheader p {
+#profileheader p {
 	display: block;
     margin: 0px 10px 3px;
     color: white;
@@ -581,24 +581,24 @@ div.profileheader p {
 	font-size: 18px;
 }
 
-div.profileheader #editBtn{
+#profileheader #editBtn{
 	position: absolute;
 	top: 10px;
 	left: 10px;
 }
 
-div.profileheader div.controls {
+#profileheader div.controls {
 	position:absolute;
 	bottom:5px;
 	right:3px;
 }
 
-div.profileheader div.actions {
+#profileheader div.actions {
 	position:absolute;
 	bottom:5px;
 }
 
-div.profileheader input {
+#profileheader input {
 	margin-right: 5px;
 }
 
@@ -677,12 +677,16 @@ textarea {
 	overflow: hidden;
 }
 
-div.time {
+time {
+    font-size: 12px;
+	color: #777;
+}
+
+time.float {
 	position: absolute;
     bottom: 5px;
     right: 0px;
     margin-right: 5px;
-    font-size: 11px;
 }
 
 div.chatmsg .time {
@@ -1043,3 +1047,24 @@ div.popup_post {
 	border: solid 1px #887C91;
 	cursor: pointer;
 }
+
+div.composer div.controls {
+	float: left;
+}
+
+div.composer div.composercontrols {
+	top: 15px;
+}
+
+div.post {
+	padding: 7px;
+	margin: -5px;
+	word-wrap: break-word;
+}
+
+div.post div.user {
+	display:inline-block;
+	float:left; 
+	height:100%;
+}
+

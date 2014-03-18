@@ -11,10 +11,8 @@
 <% endif %>
 <div class='commentcount like icon' onClick='likePost("{$id}","{$from}", this);stopBubbling();'></div>
 
-<div style='display:inline-block;float:left;height:100%'>
-	<img class='avatar' src='{ getAvatar($from) }'>
-</div> 
-<div class='time' data-time='{$time}'></div>
+<img class='avatar left' src='{ getAvatar($from) }'>
+<time class='float' datetime='{$time}'></time>
 	
 <a href='#/user/{ $from }' class='person'>{ getDisplayName($from) }</a>
 

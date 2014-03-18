@@ -530,9 +530,22 @@ div.timelineitem:hover div.commentcount {
     opacity: 1 !important;
 }
 
+div.post {
+	padding: 7px;
+	margin: -5px;
+	word-wrap: break-word;
+}
+
+div.post div.user {
+	display:inline-block;
+	float:left; 
+	height:100%;
+}
+
 div.post div.commentcount.icon{
 	opacity: 1;
 }
+
 div.commentcount.icon {
 	padding:0px;
 	background-repeat: no-repeat;
@@ -698,10 +711,14 @@ div.attachment:hover div, div.picturepost:hover div {
 	-webkit-transition: all 0.3s ease;
 }
 
+div.composer div.controls {
+	float: left;
+}
+
 div.composercontrols {
 	position:absolute;
-	right: 15px;
-	bottom:10px;
+	right: 18px;
+	bottom:18px;
 	opacity: 0;
 	-webkit-transition: all 0.5s ease;
 	background-image: url(img/photos.png);
@@ -743,7 +760,7 @@ div.photos {
 	cursor: pointer;
 }
 
-div.profileheader {
+#profileheader {
 	margin-left: -30px;
 	margin-right: -25px;
     margin-top: -5px;
@@ -759,18 +776,18 @@ div.profileheader {
 	color: #fff;
 }
 
-div.profileheader a {
+#profileheader a {
 	color: #fff;
 }
 
-div.profileheader img.avatar {
+#profileheader img.avatar {
 	float: none;
 	top: 10px;
 	position: relative;
 	border-radius: 30px;
 }
 
-div.profileheader #userDisplayName {
+#profileheader #userDisplayName {
     color: white;
     font-size: 38px;
     margin-top: 10px;
@@ -780,7 +797,7 @@ div.profileheader #userDisplayName {
 	display: block;
 }
 
-div.profileheader p {
+#profileheader p {
 	display: block;
     margin: 0px 10px 3px;
     color: white;
@@ -789,24 +806,30 @@ div.profileheader p {
 	font-size: 18px;
 }
 
-div.profileheader #editBtn{
+#profileheader #editBtn{
 	position: absolute;
 	top: 10px;
 	left: 10px;
 }
 
-div.profileheader div.controls {
+#profileheader div.controls {
 	position:absolute;
-	bottom:5px;
-	right:3px;
+	bottom: 10px;
+	left: 9px;
 }
 
-div.profileheader div.actions {
+#profileheader div.settings {
+	position: absolute;
+	top: 10px;
+	right: 5px;
+}
+
+#profileheader div.actions {
 	position:absolute;
 	bottom:5px;
 }
 
-div.profileheader input {
+#profileheader input {
 	margin-right: 5px;
 }
 
@@ -864,7 +887,7 @@ input[type=button], input[type=submit] {
     color: #444;
     cursor: pointer;
     -webkit-transition: all 0.2s ease-in-out;
-	margin: 0px 1px;
+	margin: 5px 0px;
 }
 
 input[type=button]:hover, input[type=submit]:hover {
@@ -896,12 +919,16 @@ textarea {
 	overflow: hidden;
 }
 
-div.time {
+time {
+    font-size: 12px;
+	color: #777;
+}
+
+time.float {
 	position: absolute;
     bottom: 5px;
     right: 0px;
     margin-right: 5px;
-    font-size: 11px;
     -webkit-transition: all 0.1s ease-in-out;
 }
 
@@ -1354,5 +1381,15 @@ div.contentwrapper {
 
 #sidepost_container div.timelineitem {
 	width: 95%;
+}
+
+#blacklist {
+	 margin:15px;
+	 padding-right:115px;
+}
+
+#blacklist input {
+	margin:5px;
+	width:400px;
 }
 

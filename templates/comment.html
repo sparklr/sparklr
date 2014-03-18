@@ -2,15 +2,11 @@
 	<a href='#/user/{$from}'><img class='littleavatar' src='{getAvatar($from)}'></a>
 </div>
 <div class='rightcontrols'>
-	<div class='time' style='opacity:0.5' data-time='{$time}'></div>
-	<?
-	var canEdit = $from == CURUSER || ISMOD;
-
-    if (canEdit) {
-	?>
+	<time class='float' style='opacity:0.5' datetime='{$time}'></time>
+	<% if (canEdit) %>
 		<br>
 		<a class='delete' onClick='deleteComment("{$id}", "{$postid}");'></a>
-	<? } ?>
+	<% endif %>
 </div>
 <a class='person' href='#/user/{$from}'>{getDisplayName($from)}</a>
 <% if ($like) %>

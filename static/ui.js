@@ -221,11 +221,9 @@ function getRelativeTime(time) {
 
 // scans DOM, updates time elements
 function updateUI() { 
-	var arr = document.getElementsByTagName("div");
+	var arr = document.getElementsByTagName("time");
 	for (i=0;i<arr.length;i++) {
-		if (arr[i].className == "time" || arr[i].className.indexOf("time_raw") != -1) {
-			arr[i].innerHTML = getRelativeTime(parseInt(arr[i].getAttribute("data-time")));
-		}
+		arr[i].innerHTML = getRelativeTime(parseInt(arr[i].getAttribute("datetime")));
 	}
 }
 setInterval("updateUI();", 1000);
