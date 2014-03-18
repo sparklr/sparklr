@@ -344,6 +344,6 @@ exports.get_trending = function(args, callback) {
 	if (args.fragments[3] == "everything")
 		args.fragments[3] = 0;
 
-	Database.query("SELECT * FROM `timeline` " + (args.fragments[3] ? 'WHERE `network` = ' + Database.escape(args.fragments[3]) : '') + " ORDER BY `commentcount` DESC LIMIT 4", callback);
+	Database.query("SELECT * FROM `timeline` WHERE `modified` > " + (Toolbox.time() - 93200) + (args.fragments[3] ? ' AND `network` = ' + Database.escape(args.fragments[3]) : '') + " ORDER BY `commentcount` DESC LIMIT 4", callback);
 }
 
