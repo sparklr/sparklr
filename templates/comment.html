@@ -3,7 +3,7 @@
 </div>
 <div class='rightcontrols'>
 	<time class='float' style='opacity:0.5' datetime='{$time}'></time>
-	<% if (canEdit) %>
+	<% if ($canEdit) %>
 		<br>
 		<a class='delete' onClick='deleteComment("{$id}", "{$postid}");'></a>
 	<% endif %>
@@ -12,7 +12,7 @@
 <% if ($like) %>
 	 likes this<br><br>
 <% else %>
-<div style='margin-left: 50px;'<% if (canEdit) %> data-id='{$id}'<% endif %>>
+<div style='margin-left: 50px;'<% if ($canEdit) %> data-id='{$id}'<% endif %>>
 	{processMedia(escapeHTML($message))}
 </div>
 <% endelse %>
