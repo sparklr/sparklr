@@ -1,6 +1,6 @@
 <div class='notification<% if ($read) %> read<% endif %>'>
 	<div class='rightcontrols'>
-		<div class='time' data-time='{$time}'></div>
+		<time class='float' datetime='{$time}'></time>
 	</div>
 	<img src='{getAvatar($from)}' class='avatar'>
 	<b>{getDisplayName($from)}</b>

@@ -12,7 +12,7 @@
 <div class='commentcount like icon' onClick='likePost("{$id}","{$from}", this);stopBubbling();'></div>
 
 <img class='avatar left' src='{ getAvatar($from) }'>
-<div class='time' data-time='{$time}'></div>
+<time class='float' datetime='{$time}'></time>
 	
 <a href='#/user/{ $from }' class='person'>{ getDisplayName($from) }</a>
 

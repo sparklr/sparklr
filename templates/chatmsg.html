@@ -2,7 +2,7 @@
 	<img class='littleavatar' onClick='location.href="#/user/{$from}";' src='{getAvatar($from)}'>
 <? } ?>
 <div class='rightcontrols'>
-	<div class='time' data-time='{$time}'></div>
+	<time datetime='{$time}'></time>
 </div>
 <div style='display:block;margin-left: 25px'>{($unconfirmed ? $message : processMedia(escapeHTML($message)))}</div>
 

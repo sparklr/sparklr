@@ -15,7 +15,7 @@
 		<div class='commentcount like icon' id='likebtn_{$id}' onClick='likePost("{$id}","{$from}", this);stopBubbling();'></div>
 		<img class='avatar' src='{getAvatar($from)}'>
 		<a href='#/user/{$from}' class='person'>{getDisplayName($from)}</a><br>
-		<div class='time_raw' data-time='{$time}'></div><br>
+		<time datetime='{$time}'></time><br>
 		{$originalMessage}
 		<span data-id='{$id}' <% if ($from == CURUSER) %> onclick='editPostStart(event)' onblur='editPost(event);'<% endif %>>
 			{$formattedMessage}
@@ -29,11 +29,10 @@
 			{ renderComposer('Respond...', 'postComment', true, $id) }
 		</div>
 	</div>
-	<div id='reblogholder_{$id}' class='fadein'>
+	<div id='reblogholder_{$id}' class='fadein' style='display:none'>
 		<div class='fadein'>
 			{ renderComposer('Share something (optional)', 'publishRepost', true, 'r' + $id) }
 		</div>
-		<input type='button' value='Repost' data-id='r{$id}' onClick='publishRepost(event);'>
 	</div>
 </div>
 
