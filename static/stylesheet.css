@@ -488,7 +488,7 @@ div.timelineitem {
 	background: #fff;
 	position: relative;
 }
-div.timelineitem .time {
+div.timelineitem time {
     opacity: 0.65;
 }
 div.timelineitem h1 {
@@ -622,7 +622,7 @@ div.rightcontrols {
 	position: relative;
 	width: 100px;
 }
-div.rightcontrols div.time {
+div.rightcontrols time {
     top: 0px;
 	position: absolute;
 }
@@ -932,11 +932,11 @@ time.float {
     -webkit-transition: all 0.1s ease-in-out;
 }
 
-div.chatmsg:hover div.time {
+div.chatmsg:hover time {
     opacity: 0.5;
 }
 
-div.chatmsg .time {
+div.chatmsg time {
     position: relative;
     opacity: 0;
 	text-align: right;

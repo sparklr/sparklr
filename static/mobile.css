@@ -290,7 +290,7 @@ div.timelineitem {
 	padding: 6px;
 	overflow: hidden;
 }
-div.timelineitem .time {
+div.timelineitem time {
     opacity: 0.65;
 }
 div.timelineitem h2 {
@@ -395,7 +395,7 @@ div.rightcontrols {
     float: right;
     text-align: right;
 }
-div.rightcontrols div.time {
+div.rightcontrols time {
     position: relative;
     top: 0px;
 }
@@ -689,7 +689,7 @@ time.float {
     margin-right: 5px;
 }
 
-div.chatmsg .time {
+div.chatmsg time {
     position: relative;
     opacity: 0.5;
 	text-align: right;
