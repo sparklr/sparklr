@@ -210,7 +210,7 @@ function renderTimeline(prehtml) {
 	document.body.ondrop = function (e) { dropImage(e, uploadStreamImageCallback); }
 	
 	setTimeout(function() {
-	renderTemplate("trending", "sidepost_container", function() {
+	renderTemplate("trending/" + subscribedStream, "sidepost_container", function() {
 	});
 	},10);
 	
