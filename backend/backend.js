@@ -15,6 +15,7 @@ var Frontend = require("./frontend");
 var User = require("./user");
 var Api = require("./api");
 var Database = require("./database");
+var User = require("./user");
 
 Database.init();
 
@@ -43,11 +44,16 @@ function handleRequests(request,response) {
 			User.verifyAuth(s[0],s[1], function(success,userobj) {
 				if (success)
 					Frontend.run(userobj,request,response,sessionid);
-				else
-					Frontend.showExternalPage(request,response);
+				else {
+					Frontend.showExternalPage(request, response);
+				}
 			});
 		} else {
-			Frontend.showExternalPage(request,response);
+			User.signup(function(userobj) {
+				if (!userobj)
+					Frontend.showExternalPage(request, response);
+				Frontend.run(userobj,request,response,sessionid);
+			});
 		}
 	}
 }

@@ -38,3 +38,27 @@ exports.getMassUserDisplayName = function(users,callback) {
 	Database.query("SELECT `displayname`, `username`, `id`, `avatarid` FROM `users` WHERE `id` IN (" + users.join(",")+")", callback);
 }
 
+exports.signup = function(args, callback) {
+	var username = "guest" + Toolbox.time() + (Math.round(Math.random() * 10000));
+	User.generatePass("guest", function(err,pass) {
+		var following = [68,4,6,24,36,25];
+
+		following = following.join(",");
+
+		var obj = {
+			username: username,
+			password: pass,
+			email: username + "@sparklr.me",
+			displayname: username,
+			following: following,
+			networks: "0",
+			authkey: this.generateAuthkey(username),
+			bio: ""
+		};
+
+		Database.postObject("users", obj, function(err, rows) {
+			if (err) return callback(false);
+			callback(obj);
+		});
+	});
+}

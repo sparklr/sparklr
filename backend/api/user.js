@@ -38,67 +38,6 @@ exports.public_signin = function(args,callback) {
 		});
 	});
 }
-
-/* @url api/signup/:inviteid/:username/:email/:password
- * @returns 200 and a cookie if session, 200, -1 if the invite does not exist
- * This API is intended only for use by the Sparklr website and is not supported
- * for third-party applications.
- */
-exports.public_signup = function(args, callback) {
-	if (!args.fragments[6]) return callback(400,false);
-
-	var inviteid = args.fragments[3],
-		username = args.fragments[4],
-		email = args.fragments[5],
-		password = args.fragments[6];
-
-	Database.query("SELECT * FROM `invites` WHERE `id` = " + Database.escape(inviteid), function(err, inviterows) {
-		if (err) return callback(500, false);
-		if (!inviterows[0]) return callback(200, -1);
-
-		if (username.length > 20) return callback(200, 1);
-
-		username = username.replace(/[^A-Za-z0-9]/g, "");
-		User.generatePass(password, function(err,pass) {
-
-			var following = [68,4,6,24,36,25];
-
-			if (inviterows[0].from && following.indexOf(inviterows[0].from) == -1)
-				following.push(inviterows[0].from);
-
-			following = following.join(",");
-
-			User.getUserProfileByAnything(email, function(err, rows) {
-				if (err) return callback(500, err);
-				if (rows.length > 0) {
-					return callback(200, 2);
-				}
-
-				Database.postObject("users", {
-					username: username,
-					password: pass,
-					email: email,
-					displayname: username,
-					following: following,
-					networks: "0",
-					authkey: User.generateAuthkey(username),
-					bio: ""
-				}, function(err, rows) {
-					if (err) return callback(500, false);
-					callback(200, 1);
-
-					if (inviterows[0].from) {
-						User.getUserProfile(inviterows[0].from, function(err, data) {
-							if (err) return false;
-							data[0].following += "," + rows.insertId;
-							Database.updateObject("users", data[0]);
-						});
-					}
-				});
-			});
-		});
-	});
-}
  
 /* @url api/signoff
  * @returns true
