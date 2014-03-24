@@ -13,14 +13,9 @@ exports.build = function(callback) {
 			var id = files[i].split(".");
 			id = id[0];
 
-			console.log(files[i]);
-
 			data = templateFormatter.t(data.toString());
 
 			templateData += "TEMPLATES['"+id+"'] = function(it){" + data + "};\n";
-
-			eval(templateData);
-
 		}
 		callback(templateData);
 	});
