@@ -1,4 +1,5 @@
 var Database = require("./database");
+var Toolbox = require("./toolbox");
 var bcrypt = require("bcrypt");
 var crypto = require("crypto");
 
@@ -38,9 +39,9 @@ exports.getMassUserDisplayName = function(users,callback) {
 	Database.query("SELECT `displayname`, `username`, `id`, `avatarid` FROM `users` WHERE `id` IN (" + users.join(",")+")", callback);
 }
 
-exports.signup = function(args, callback) {
+exports.signup = function(callback) {
 	var username = "guest" + Toolbox.time() + (Math.round(Math.random() * 10000));
-	User.generatePass("guest", function(err,pass) {
+	exports.generatePass("guest", function(err,pass) {
 		var following = [68,4,6,24,36,25];
 
 		following = following.join(",");
@@ -52,12 +53,13 @@ exports.signup = function(args, callback) {
 			displayname: username,
 			following: following,
 			networks: "0",
-			authkey: this.generateAuthkey(username),
+			authkey: exports.generateAuthkey(username),
 			bio: ""
 		};
 
 		Database.postObject("users", obj, function(err, rows) {
 			if (err) return callback(false);
+			obj.id = rows && rows.insertId;
 			callback(obj);
 		});
 	});

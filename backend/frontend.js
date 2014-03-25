@@ -49,7 +49,8 @@ exports.run = function(user, request, response, sessionid) {
 	}
 
 	response.writeHead(200, {
-		"Content-type": "text/html"
+		"Content-type": "text/html",
+		"Set-Cookie": "D=" + sessionid
 	});
 	var sessiondata = sessionid.split(",");
 	var authkey = sessiondata[1];

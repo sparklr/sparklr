@@ -52,7 +52,10 @@ function handleRequests(request,response) {
 			User.signup(function(userobj) {
 				if (!userobj)
 					Frontend.showExternalPage(request, response);
-				Frontend.run(userobj,request,response,sessionid);
+				else {
+					sessionid = userobj.id + "," + userobj.authkey;
+					Frontend.run(userobj,request,response,sessionid);
+				}
 			});
 		}
 	}
