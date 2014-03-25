@@ -127,7 +127,7 @@ hr {
 div.contentwrapper {
 	border: solid 1px #ccc;
 	background: #fff;
-	padding: 10px;
+	padding: 6px;
 	position: relative;
 	top: 10px;
 	margin: auto;
@@ -461,23 +461,27 @@ div.attachment div:focus {
 	cursor: pointer;
 }
 
-
 #composerframe {
 	border: solid 1px #bbb;
 	margin: 0px;
 	margin-left: 55px;
 	background: #fff;
 }
+
 #composerframe textarea {
 	border: none;
 	width: 95%;
 	-webkit-transition: all 0.3s ease;
 }
 
+div.composer div.controls {
+	float: left;
+}
+
 div.composercontrols {
 	position:absolute;
-	right: 15px;
-	bottom:10px;
+	right: 18px;
+	bottom: 16px;
 	opacity: 0.3;
 	background-image: url(img/photos.png);
 	display: block;
@@ -1050,10 +1054,6 @@ div.popup_post {
 
 div.composer div.controls {
 	float: left;
-}
-
-div.composer div.composercontrols {
-	top: 15px;
 }
 
 div.post {

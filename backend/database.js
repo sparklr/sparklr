@@ -66,7 +66,7 @@ exports.query = function(query, callback, args) {
 		log("MysqlError: " + JSON.stringify(e, null, 3));
 		if (e.message.indexOf("Not connected") !== -1) {
 			exports.init(global.database);
-			setTimout(function() {
+			setTimeout(function() {
 				exports.query(query, callback);
 			},100);
 		}

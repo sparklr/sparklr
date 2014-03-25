@@ -85,6 +85,7 @@ function renderComment(comment,scroll) {
 			_g("likebtn_"+comment.postid).className += " liked";
 	}
 	
+	comment.canEdit = ISMOD || comment.from == CURUSER;
 	var html = getTemplate("comment")(comment);
 	
 	e.innerHTML += html;

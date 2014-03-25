@@ -268,8 +268,6 @@ exports.get_follow = function(args, callback) {
 exports.get_unfollow = function(args, callback) {
 	var tofollow = args.fragments[3];
 	if (args.userobj.following.indexOf(tofollow) !== -1) {
-		tofollow = ~~tofollow;
-
 		args.userobj.following.splice(args.userobj.following.indexOf(tofollow), 1);
 
 		Database.updateObject("users", args.userobj, callback);

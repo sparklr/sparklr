@@ -718,7 +718,7 @@ div.composer div.controls {
 div.composercontrols {
 	position:absolute;
 	right: 18px;
-	bottom:18px;
+	bottom:16px;
 	opacity: 0;
 	-webkit-transition: all 0.5s ease;
 	background-image: url(img/photos.png);
@@ -920,15 +920,19 @@ textarea {
 }
 
 time {
-    font-size: 12px;
+    font-size: 14px;
 	color: #777;
+	position: relative;
+	top: -4px;
 }
 
 time.float {
 	position: absolute;
     bottom: 5px;
     right: 0px;
+	top: inherit;
     margin-right: 5px;
+    font-size: 12px;
     -webkit-transition: all 0.1s ease-in-out;
 }
 
@@ -1371,7 +1375,7 @@ div.inlineimage {
 div.contentwrapper {
 	border: solid 1px #ccc;
 	background: #fff;
-	padding: 10px;
+	padding: 6px;
 	position: relative;
 	top: 10px;
 	margin: auto;
