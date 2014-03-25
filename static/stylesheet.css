@@ -930,6 +930,7 @@ time.float {
 	position: absolute;
     bottom: 5px;
     right: 0px;
+	top: inherit;
     margin-right: 5px;
     font-size: 12px;
     -webkit-transition: all 0.1s ease-in-out;
