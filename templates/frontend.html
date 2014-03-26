@@ -27,11 +27,7 @@
 </div>
 
 <% if (GUEST) %>
-<div id='signin'>
-	<input type='text' id='username' placeholder='email or username'>
-	<input type='password' id='password' placeholder='password'>
-	<input type='button' value='Sign in' onclick='signin()'>
-</div>
+<button id='signin_btn' onclick='showSignin()'>Sign in</button>
 <% endif %>
 
 <div id='frame'>
@@ -51,3 +47,4 @@
 <div id='sidepost_container'></div>
 <div id='windowcontainer'></div>
 
+<div id='fader'></div>

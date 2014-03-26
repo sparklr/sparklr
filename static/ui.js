@@ -60,22 +60,15 @@ function hideAllPopups() {
 		if (divs[i].id.substring(0,6) == "popup_") {
 			hidePopup(divs[i].id);
 		}
-		if (divs[i].className == "fader fadein") {
-			divs[i].style.opacity = 0;
-			var toremove = divs[i];
-			setTimeout(function() {
-				document.body.removeChild(toremove);
-			}, 1000);
-		}
 	}
+
+	_g('fader').className = '';
 }
 
 function fadeOutPage() {
-	var f = document.createElement("div");
-	f.id = "fader";
-	f.className = "fader fadein";
+	var f = _g('fader');
+	f.className = 'show';
 	f.onclick = function() { hideAllPopups(); }
-	document.body.appendChild(f);
 }
 
 function showConfirm(caption, message, action) {

@@ -23,11 +23,11 @@ exports.public_signin = function(args,callback) {
 
 	Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(user) + " OR `email` = " + Database.escape(user), function(err,rows) 
 	{
-		if (rows.length < 1 || err) return callback(403, false);
+		if (rows.length < 1 || err) return callback(200, false);
 
 		bcrypt.compare(pass, rows[0].password, function(err,match) {
 			if (err || !match) {
-				callback(403, false);
+				callback(200, false);
 			} else {
 				var sessionid = rows[0].id + "," + rows[0].authkey;
 				return callback(200, true, {
