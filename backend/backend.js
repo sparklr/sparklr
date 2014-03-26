@@ -38,7 +38,10 @@ function handleRequests(request,response) {
 	if (requesturi.pathname.indexOf("/api") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		Api.run(request,response,requesturi,sessionid);
 	} else {
-		if (sessionid != null && sessionid != "") {
+		if (sessionid != null) {
+			if (sessionid === "")
+				return Frontend.showExternalPage(request, response);
+
 			var s = sessionid.split(",");
 
 			User.verifyAuth(s[0],s[1], function(success,userobj) {
