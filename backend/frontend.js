@@ -50,7 +50,8 @@ exports.run = function(user, request, response, sessionid) {
 
 	response.writeHead(200, {
 		"Content-type": "text/html",
-		"Set-Cookie": "D=" + sessionid
+		"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT",
+		"Cache-Control": "no-cache"
 	});
 	var sessiondata = sessionid.split(",");
 	var authkey = sessiondata[1];
