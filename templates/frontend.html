@@ -14,8 +14,7 @@
 		<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
 		<div id='sidebarwrapper'>
 			<div id='sidebar'></div>
-			<div id='networks'>
-			</div>
+			<div id='networks'></div>
 			<div id='friendslist'></div>
 		</div>
 	</div>
@@ -26,6 +25,14 @@
 		<a href='javascript:showFeedbackForm();'>Feedback</a>
 	</div>
 </div>
+
+<% if (GUEST) %>
+<div id='signin'>
+	<input type='text' id='username' placeholder='email or username'>
+	<input type='password' id='password' placeholder='password'>
+	<input type='button' value='Sign in' onclick='signin()'>
+</div>
+<% endif %>
 
 <div id='frame'>
 	<div id='content'></div>

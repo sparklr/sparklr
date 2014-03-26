@@ -4,7 +4,7 @@
  */
 
 // Global app variables
-var CURUSER, AUTHKEY, ISMOD;
+var CURUSER, AUTHKEY, ISMOD, GUEST;
 
 // Poll server for new data every X ms
 setInterval("pollData();", POLL_INTERVAL);
@@ -26,6 +26,7 @@ function app(payload) {
 	USERHANDLES = payload.userHandles;
 	AVATAR_IDS[CURUSER] = payload.avatarid;
 	HIDDEN_USERS = payload.blacklist;
+	GUEST = payload.guest;
 
 	// Read the appropriate frontend template and evaluate it to populate
 	// the html variable, which is written to the page body

@@ -1397,3 +1397,29 @@ div.contentwrapper {
 	width:400px;
 }
 
+#signin {
+	position: fixed;
+	right: 10px;
+	top: 10px;
+	width: 200px;
+	border: none;
+	z-index: 10;
+	text-align: center;
+	padding: 2px;
+	background: #454050;
+}
+
+#signin input {
+	width: 180px;
+	padding: 5px;
+	margin: 5px;
+	border: none;
+	font-size: 16px;
+}
+
+#signin input[type=button] {
+	margin: 5px;
+	width: 184px;
+	background: #fff;
+}
+

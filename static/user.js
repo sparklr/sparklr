@@ -134,3 +134,8 @@ function meetSomeoneRandom() {
 	});
 }
 
+function signin() {
+	ajax("signin/" + _g('username').value + '/' + _g('password').value, function(data) {
+		console.log('forbidden');
+	});
+}

@@ -71,7 +71,8 @@ exports.run = function(user, request, response, sessionid) {
 		private: user.private, avatarid: user.avatarid, blacklist: user.blacklist,
 		following: user.following,
 		user: user.id,
-		authkey: user.authkey
+		authkey: user.authkey,
+		guest: user.email.indexOf("sparklr.me") !== -1,
 	};
 	database.getStream("timeline", {
 		networks: user.networks.slice(0),
