@@ -12,7 +12,7 @@ var bcrypt = require("bcrypt");
 var crypto = require("crypto");
 
 /* @url api/signin/:user/:pass
- * @returns 200 and a cookie if session, 403 if invalid credentials
+ * @returns 200 and a cookie if session, 200 and false if invalid credentials
  * Use of this API will be discouraged once OAuth is implemented
  */
 exports.public_signin = function(args,callback) {
