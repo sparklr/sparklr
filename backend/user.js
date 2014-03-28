@@ -40,7 +40,7 @@ exports.getMassUserDisplayName = function(users,callback) {
 }
 
 exports.signup = function(callback) {
-	var username = "guest" + Toolbox.time() + (Math.round(Math.random() * 10000));
+	var username = "newbie" + Toolbox.time() + (Math.round(Math.random() * 100));
 	exports.generatePass("guest", function(err,pass) {
 		var following = [68,4,6,24,36,25];
 
