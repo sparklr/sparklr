@@ -139,9 +139,21 @@ function signin() {
 		if (data) {
 			location.href = '.';
 		} else {
-			alert('bad pass');
+			_g('forgot_password').className = 'show';
 		}
 	});
+}
+
+function forgotPassword() {
+	if (_g("username").value != "") {
+		ajax("forgot/" + _g("username").value, null, function(result) {
+			if (result) {
+				_g('login_callback').innerHTML = "Your password has successfully been reset.<br>Please check your email for further instructions.";
+			} else {
+				_g('login_callback').innerHTML = "That email or username does not appear to be registered to anyone.";
+			}
+		});
+	}
 }
 
 function showSignin() {
