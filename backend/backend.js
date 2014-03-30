@@ -52,6 +52,8 @@ function handleRequests(request,response) {
 				}
 			});
 		} else {
+			Frontend.showExternalPage(request, response);
+			return;
 			User.signup(function(userobj) {
 				if (!userobj)
 					Frontend.showExternalPage(request, response);
