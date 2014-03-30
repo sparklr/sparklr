@@ -333,8 +333,8 @@ exports.post_settings = function(args, callback) {
 	} else {
 		args.userobj.displayname = args.postObject.displayname.replace(/(\<|\>|[\u273B]|[\u273C])/g, "");
 	}
-	if (args.userobj.rank == 50)
-		args.userobj.displayname += "\u273B";
+	//if (args.userobj.rank == 50)
+	//	args.userobj.displayname += "\u273B";
 	if (args.userobj.rank == 100)
 		args.userobj.displayname += "\u273C";
 
