@@ -459,16 +459,6 @@ function scrollHandler() {
 		newPageToFetch = true;
 	}
 
-	var a = _g("scrolltotop");
-	if (!a) return; // sometimes this is null?? TODO, look into that
-	if (doctop > 1000) {
-		a.style.visibility = "visible";
-        a.style.opacity = 1;
-    }
-    else {
-        a.style.visibility = "hidden";
-        a.style.opacity = 0;
-    }
 	if (_g("sidepost_container")) { 
 		if (~~subscribedStream === subscribedStream && doctop < 300) {
 			_g("sidepost_container").className = 'user';
