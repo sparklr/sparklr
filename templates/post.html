@@ -1,11 +1,11 @@
-<div class='contentwrapper'>
+<div class='contentwrapper popin'>
 	<% if ($type == 1) %>
 	<div class='picturepost full' id='picturepost_{$id}' onClick='showImage("{ imgUrl($img,true) }");'>
 		<img src='{imgUrl($img)}'>
 	</div>
 	<% endif %>
 
-	<div id='post_{$id}' class='fadein post'>
+	<div id='post_{$id}' class='post'>
 		<% if ($from == CURUSER || ISMOD) %>
 		<div class='commentcount delete icon' onClick='deletePost("{$id}");stopBubbling();'></div>
 		<% else %>

@@ -3,28 +3,33 @@ html, body {
 	overflow-y: auto;
 }
 
-blockquote{
+blockquote {
 	margin: 0 0 10px 25px;
 }
 
 ::-webkit-scrollbar {
     width: 9px;
 }
+
 ::-webkit-scrollbar-track {
     border-radius: 5px;
     background: #454050;
 }
+
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
     background: #2A242E;
 }
+
 div::-webkit-scrollbar {
     width: 5px;
 }
+
 div::-webkit-scrollbar-thumb {
     border-radius: 2px;
     background: #745B85;
 }
+
 div::-webkit-scrollbar-track {
     border-radius: 2px;
     background: #cecece;
@@ -37,6 +42,7 @@ div::-webkit-scrollbar-track {
   font-weight: 400;
   src: local('PT Sans'), local('PTSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v5/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
 }
+
 @font-face {
   font-family: 'PT Sans';
   font-style: normal;
@@ -47,7 +53,6 @@ div::-webkit-scrollbar-track {
 body { 
     color: #333;
 	background: #efefef;
-	background-attachment: fixed;
     margin: 0px;
     padding: 0px;
 	font-family: 'PT Sans', sans-serif;
@@ -61,6 +66,7 @@ a {
 	text-decoration: none;
 	outline: 0;
 }
+
 a.person { 
 	color: #3a3a3a;
 	font-weight: 700;
@@ -116,6 +122,7 @@ hr {
 	margin-bottom: 5px;
 	margin-left: -13px;
 }
+
 #links a {
     margin: 0 18px;
     display: inline-block;
@@ -129,28 +136,36 @@ hr {
     opacity: 1;
 	margin-right: 5px;
 }
+
 #links a.people {
     background-image: url(img/people.png);
 }
+
 #links a.menu {
     background-image: url(img/menu.png);
 	display: none;
 }
+
 #links a.notifs {
     background-image: url(img/notifs.png);
 }
+
 #links a.notifs.jiggle {
     background-image: url(img/notifs2.png);
 }
+
 #links a.inbox {
     background-image: url(img/chat.png);
 }
+
 #links a.inbox.jiggle {
 	background-image: url(img/chat2.png);
 }
+
 #header img {
     vertical-align: baseline;
 }
+
 #header #logo{
 	background-image: url(img/logo_sml.png);
 	display: block;
@@ -160,6 +175,7 @@ hr {
 	margin-bottom: 15px;
 	margin-top: 5px;
 }
+
 #header .useravatar {
 	display: block;
 	margin-bottom: 15px;
@@ -167,18 +183,21 @@ hr {
 	width: 120px;
 	height: 120px;
 }
+
 .useravatar{
 	border-radius: 60px;
 	width: 100px;
 	height: 100px;
 	margin: auto;
 }
+
 #links a img {
     box-shadow: 0px 0px 7px rgba(0,0,0,0.3),
     inset 0px 0px 15px rgba(0,0,0,0.3);
     width: 32px;
     height: 32px;
 }
+
 #navigation input {
     width: 124px;
     border: solid 1px rgba(0,0,0,0.4);
@@ -203,25 +222,30 @@ hr {
 #content {
     margin-right: 20px;
 }
+
 .content{
 	padding-bottom: 15px;
 }
+
 #sidebarwrapper {
 	display: block;
 	margin-left: -10px;
 	margin-right: -10px;
 }
+
 #sidebarwrapper a {
 	color: #fff;
 	font-size: 12px;
 	height: auto;
 	text-align: left;
 }
+
 #sidebar {
     color: #fff;
     font-size: 15px;
     margin-top: 14px;
 }
+
 #sidebar > a, #sidebar div > a, #networks a {
     color: #fff;
     display: block;
@@ -231,42 +255,19 @@ hr {
     -webkit-transition: all 0.2s ease;
 	margin-bottom: 5px;
 }
+
 #sidebar > a:hover, #sidebar div > a:hover, #networks a:hover {
 	background-color: #6a5f80;
 }
+
 a.network.active {
     background: rgba(0,0,0,0.35);
 }
-#networks a.highlight {
-	color: red;
-}
+
 #sidebar a:hover {
     color: #fff;
 }
-#sidebar a.star {
-	opacity: 1;
-	box-shadow: 0px 0px 10px rgba(255,255,255,0.3);
-}
-#sidebar .friends {
-    margin-top: 16px;
-}
-#sidebar .friends img {
-    width: 40px;
-    height: 40px;
-    margin-right: 7px; 
-}
-#sidebar .friends a {
-    display: block;
-    font-size: 14px;
-    height: 50px;
-}
-#sidebar span {
-    font-size: 12px;
-}
-#friendslist {
-    -webkit-transition: all 1s ease;
-    position: relative;
-}
+
 #fader {
     display: inline-block;
     position: fixed;
@@ -280,6 +281,7 @@ a.network.active {
 	z-index: -1;
 	opacity: 0;
 }
+
 #fader.show {
 	opacity: 1;
 	z-index: 100;
@@ -302,6 +304,7 @@ div.popup {
 	z-index: 100;
 	color: #555;
 }
+
 div.lightbox {
     position: fixed;
     top: 100px;
@@ -335,51 +338,13 @@ div.confirm {
 	color: #333;
 }
 
-#friendslist {
-    display: inline-block;
-}
-
-#friendslist .names {
-	height: 40px; 
-	vertical-align: middle;
-	display: table-cell;
-	padding-left: 3px;
-	font-size: 14px;
-	}
-
-#friendslist a {
-    display: block;
-    height: 40px;
-    margin-top: 10px;
-	cursor: pointer;
-	-webkit-transition: all 0.2s ease;
-	color: rgba(255,255,255,0.8);
-}
-#friendslist a img {
-	-webkit-transition: all 0.2s ease;
-}
-#friendslist a.attn img {
-    -webkit-animation-name: jiggle;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-duration: 1s;
-    -webkit-animation-timing-function: ease-out;
-    -webkit-animation-delay: 0s;
-	box-shadow: 0px 0px 10px #fff;
-	margin-left: 9px;
-}
-.slideinfromright {
-    -webkit-animation-name: slideinfromright;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-duration: 0.3s;
-    -webkit-animation-timing-function: cubic-bezier;
-    -webkit-animation-delay: 0s;
-}
 .jiggle {
     -webkit-animation-name: jiggle;
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-duration: 1s;
     -webkit-animation-timing-function: ease-out;
 }
+
 @-webkit-keyframes jiggle {
     0% {
         -webkit-transform: rotate(0deg);
@@ -396,13 +361,6 @@ div.confirm {
     63% {
         -webkit-transform: rotate(0deg);
     }
-}
-#friendslist img {
-    width: 40px;
-    height: 40px;
-    border-radius: 2px;
-	float: left;
-	margin-right: 5px;
 }
 
 #notificationlist {
@@ -438,16 +396,20 @@ div.confirm {
 #notificationlist div:hover .exit {
     opacity: 1;
 }
+
 #notificationlist div:hover .exit:hover {
     background: #d2b8d4;
 }
+
 #notificationlist div.inlineimage {
 	width: 155px;
 	height: 100px;
 }
+
 #notificationlist div .littleavatar {
 	margin-left: 0px;
 }
+
 #notificationlist div a {
 	color: #fff;
 }
@@ -494,21 +456,25 @@ div.timelineitem {
 	background: #fff;
 	position: relative;
 }
+
 div.timelineitem time {
     opacity: 0.65;
 }
+
 div.timelineitem h1 {
     font-size: 26px;
 	margin: 3px;
     padding: 0px;
     display: block;
 }
+
 div.timelineitem h2 {
     font-size: 13px;
     margin-bottom: 25px;
     padding: 0px;
     display: block;
 }
+
 img.littleavatar {
     width: 24px;
     height: 24px;
@@ -518,13 +484,14 @@ img.littleavatar {
     border-radius: 15px;
 	margin-right: 6px;
 }
+
 div.commentcount {
 	margin-left:6px;
 	margin-right:2px;
     float: right;
     background: #5d4c68;
     padding: 5px;
-    color: white;
+    color: #fff;
     cursor: pointer;
     -webkit-transition: all 0.2s ease-in-out;
     border: solid 1px rgba(255,255,255,0.3);
@@ -596,42 +563,52 @@ div.picturepost {
 	padding: 0px;
 	text-align: center;
 }
+
 div.picturepost img {
 	max-width: 100%;
 	max-height: 540px;
 	margin-bottom: -4px;
 }
+
 div.picturepost.full img {
 	max-width: 100%;
 	max-height: 520px;
 }
+
 div.contentwrapper div.picturepost {
 	margin: 0px;
 	margin-bottom: 10px;
 }
+
 div.picturepost h2 {
     opacity: 0.5;
 }
+
 div.picturepost div.content {
     opacity: 1;
     -webkit-transition: all 0.3s ease;
 }
+
 div.picturepost:hover div.content {
     opacity: 0.05;
 }
+
 div.picturepost div.commentcount {
     background-color: rgba(54, 43, 61, 0.8);
 }
+
 div.rightcontrols {
     float: right;
     text-align: right;
 	position: relative;
 	width: 100px;
 }
+
 div.rightcontrols time {
     top: 0px;
 	position: absolute;
 }
+
 div.rightcontrols a.delete {
     float: right;
     margin: 2px;
@@ -644,9 +621,11 @@ div.rightcontrols a.delete {
     opacity: 0.3;
     font-size: 14px;
 }
+
 div.rightcontrols:hover a.delete {
     opacity: 0.6 !important;
 }
+
 div.comment {
 	margin-bottom: 12px;
 	word-wrap: break-word;
@@ -711,6 +690,7 @@ div.attachment:hover div, div.picturepost:hover div {
 	margin-left: 55px;
 	background: #fff;
 }
+
 #composerframe textarea {
 	border: none;
 	width: calc(100% - 70px);
@@ -732,11 +712,13 @@ div.composercontrols {
 	width: 32px;
 	height: 32px;
 }
+
 div.composercontrols input {
 	width: 32px;
 	height: 32px;
 	opacity: 0;
 }
+
 div.composer:hover div.composercontrols {
 	opacity: 0.3;
 }
@@ -753,17 +735,6 @@ img.avatar {
     box-shadow: 0px 0px 1px #000;
     float: left;
     margin-right: 6px;
-}
-
-div.photos {
-	margin: 2px;
-	width: 285px;
-	height: 200px;
-    display: inline-block;
-	position: relative;
-	padding: 0px;
-	background-size: cover !important;
-	cursor: pointer;
 }
 
 #profileheader {
@@ -844,6 +815,7 @@ div.peoplebuttons{
 	position: absolute;
 	right: 5px;
 }
+
 div.peoplebuttons input[type=button]{
 	 background: #454050;
 	 padding: 8px;
@@ -851,6 +823,7 @@ div.peoplebuttons input[type=button]{
 	 color: #fff;
 	 margin: 0 5px;
 }
+
 div.friend {
 	width: 200px;
 	height: 200px;
@@ -899,18 +872,6 @@ input[type=button], input[type=submit] {
 input[type=button]:hover, input[type=submit]:hover {
     box-shadow: 0px 0px 10px rgba(200,200,250,0.7);
     opacity: 1;
-}
-
-input.s1 {
-    width: 50px;
-    height: 30px;
-	margin: 10px;
-    padding: 2px;
-    border-radius: 2px;
-    font-size: 22px;
-    background: rgba(255,255,255,1);
-    color: #444;
-    margin: 3px;
 }
 
 textarea {
@@ -1025,18 +986,22 @@ div.banner {
     -webkit-animation-delay: 0s;
     -webkit-transition: all 1s ease;
 }
+
 div.banner a {
     color: #aaa;
 }
+
 div.banner #dismiss {
     float: right;
     cursor: pointer;
 }
+
 div.popup textarea {
 	width: 290px;
 	height: 140px;
 	margin: 2px;
 }
+
 #footer {
 	position: absolute;
 	bottom: 5px;
@@ -1044,6 +1009,7 @@ div.popup textarea {
 	font-size: 11px;
 	color: #fff;
 }
+
 #footer a {
 	color: #fff;
 }
@@ -1073,9 +1039,17 @@ div.popup textarea {
     -webkit-animation-delay: 0s;
 }
 
+.popin {
+    -webkit-animation-name: popin;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-duration: 0.2s;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-delay: 0s;
+}
+
 @-webkit-keyframes popin {
 	0% {
-		-webkit-transform: scale(0.1);
+		-webkit-transform: scale(0.9);
 		opacity: 0;
 	}
 	100% {
@@ -1126,20 +1100,6 @@ div.popup textarea {
     100% { opacity: 0.5; }
 }
 
-#scrolltotop{
-	background-image: url(img/arrow.png);
-	width: 64px;
-	height: 64px;
-	position: fixed;
-	top: 5px;
-	right: 10px;
-	visibility: hidden;
-    opacity: 0;
-    -webkit-transition: all 0.5s ease;
-	cursor: pointer;
-	z-index: 9999;
-}
-
 /* Tag system */
 h2 a.tag {
 	background: #2b2533;
@@ -1160,9 +1120,11 @@ cite {
 span.admin {
 	background-image: url(img/adsta.png);
 }
+
 span.mod{
 	background-image: url(img/babysta.png);
 }
+
 span.admin, span.mod{
 	width: 16px;
 	height: 16px;
@@ -1173,6 +1135,7 @@ span.admin, span.mod{
 div.tabs{
 	text-align: center;
 }
+
 div.tabs a {
 	padding: 4px 20px;
 	margin-left: 2px;
@@ -1196,29 +1159,6 @@ div.tabs a.active {
 	background: #756c88;
 	-webkit-transition: all 0.2s ease;
 	z-index: 1000;
-}
-
-.bubbleout{
-	position: relative;
-	display: block;
-	
-}
-.bubble{
-	position: absolute;
-	display: block;
-	padding: 5px;
-	background: rgba(0,0,0,0.3);
-	color: #fff;
-	width: 200px;
-	border: 1px solid #111;
-}
-.leftb{
-	left: -220px;
-	border-radius: 10px 10px 0 10px;
-}
-.rightb{
-	right: -220px;
-	border-radius: 0 10px 10px 10px;
 }
 
 #windowcontainer {
@@ -1266,9 +1206,9 @@ div.windowcontent {
 
 div.window div.contentwrapper {
 	border: none;
-	box-shadow: none;
 	margin: 0px;
 }
+
 div.window div.windowhidden {
 	display:none;
 }
@@ -1383,9 +1323,9 @@ div.contentwrapper {
 	background: #fff;
 	padding: 6px;
 	position: relative;
-	top: 10px;
 	margin: auto;
 	margin-bottom: 30px;
+	margin-top: 10px;
 	max-width: 700px;
 }
 
@@ -1429,5 +1369,13 @@ div.contentwrapper {
 	margin: 5px;
 	width: 290px;
 	background: #fff;
+}
+
+#signin #forgot_password {
+	opacity: 0;
+}
+
+#signin #forgot_password.show {
+	opacity: 1;
 }
 
