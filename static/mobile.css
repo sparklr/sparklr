@@ -1068,3 +1068,8 @@ div.post div.user {
 	height:100%;
 }
 
+div.notification {
+	display: block;
+	min-height: 60px;
+}
+
