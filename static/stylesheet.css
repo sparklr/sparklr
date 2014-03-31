@@ -311,6 +311,7 @@ div.lightbox {
 	width: 100%;
 	left: 130px;
 	text-align: center;
+	z-index: 100;
 }
 
 div.lightbox img {
