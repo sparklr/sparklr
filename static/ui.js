@@ -459,12 +459,8 @@ function scrollHandler() {
 		newPageToFetch = true;
 	}
 
-	if (_g("sidepost_container")) { 
-		if (~~subscribedStream === subscribedStream && doctop < 300) {
-			_g("sidepost_container").className = 'user';
-		} else {
-			_g("sidepost_container").className = '';
-		}
+	if (s = _g("sidepost_container")) { 
+		s.className = ~~subscribedStream === subscribedStream && doctop < 300 ? 'user' : '';
 	}
 }
 
