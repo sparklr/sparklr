@@ -42,8 +42,12 @@ function app(payload) {
 	setInterval(handleNotifications,1000);
 	
 	if (spc = _g("sidepost_container")) {
-		spc.addEventListener("DOMMouseScroll", preventDefaultScroll);
-		spc.addEventListener("mousewheel", preventDefaultScroll);
+		var h = function(e) {
+			if (~~subscribedStream !== subscribedStream || doctop > 300)
+				preventDefaultScroll(e);
+		}
+		spc.addEventListener("DOMMouseScroll", h);
+		spc.addEventListener("mousewheel", h);
 	}
 
 	// Warn if using an old version of IE
