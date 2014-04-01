@@ -102,12 +102,12 @@ function trySignin(username, password, redir) {
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
-			switch (xhr.status)
+			switch (xhr.responseText)
 			{
-				case 200:
+				case "true":
 					location.href = redir || "./";
 				break;
-				case 403:
+				case "false":
 					password.value = "";
 					_g("content").className = "shake";
 					_g("forgot").style.display = "block";
