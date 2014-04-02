@@ -1390,7 +1390,13 @@ div.contentwrapper {
 }
 
 #welcomebar a {
+	color: #ede;
+	text-decoration: underline;
+}
+
+#welcomebar .right a {
 	color: #fff;
+	text-decoration: none;
 }
 
 #welcomebar .right {
