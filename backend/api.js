@@ -155,7 +155,7 @@ function apiResponse(response, err, obj, headers) {
 
 	try {
 		response.writeHead(status, headers || {
-			"Cache-Control": "no-cache"
+			"Cache-Control": "max-age=60"
 		});
 		response.write(JSON.stringify(obj));
 		response.end();
