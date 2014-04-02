@@ -27,7 +27,7 @@ exports.get_post = function(args, callback) {
 				var obj = posts[0];
 				obj.comments = comments;
 
-				callback(err,obj);
+				callback(err, obj, { "Cache-Control": "max-age: 60" });
 			});
 		} else {
 			callback(404);
