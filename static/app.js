@@ -50,6 +50,12 @@ function app(payload) {
 		spc.addEventListener("mousewheel", h);
 	}
 
+	if (GUEST) {
+		_g("frame").className = "guest";
+		_g("header").className = "guest";
+		_g("sidepost_container").style.marginTop = "24px";
+	}
+
 	// Warn if using an old version of IE
 	if (!(MOBILE)) {
 		// Nasty UA matching 

@@ -104,7 +104,7 @@ hr {
     font-size: 22px;
     margin: 0px;
     width: 240px;
-	padding: 35px 10px 8px 10px;
+	padding: 15px 10px 8px 10px;
 	top: 0px;
 	left: 0px;
 	bottom: 0px;
@@ -112,6 +112,10 @@ hr {
     background: #454050;
 	position: fixed;
 	z-index: 1000;
+}
+
+#header.guest {
+	padding-top: 35px;
 }
 
 #navigation {
@@ -215,9 +219,12 @@ hr {
     display: block;
     position: relative;
     padding: 5px;
-	padding-top: 30px;
     color: #333;
 	margin-left: 285px;
+}
+
+#frame.guest {
+	padding-top: 30px;
 }
 
 #content {
@@ -1291,7 +1298,7 @@ div.inlineimage {
 
 #sidepost_container {
 	position: fixed;
-	top: 20px;
+	top: 0px;
 	right: 20px;
 	max-height: 100%;
 	overflow-x: hidden;
