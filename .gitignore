@@ -18,3 +18,5 @@ backend/.tingle.vim
 controllers/inbox.js
 controllers/friends.js
 controllers/invite.js
+
+plus.txt
