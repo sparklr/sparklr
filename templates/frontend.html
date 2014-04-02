@@ -1,3 +1,10 @@
+<% if (GUEST) %>
+	<div id='welcomebar'>
+		Welcome to Sparklr!
+		<span class='right'><a href='javascript:showSignin();'>Already use Sparklr? Sign in</a>
+	</div>
+<% endif %>
+
 <div id='header'>
 	<a href='#' title='Home'>
 		<div id='logo'></div>
@@ -24,10 +31,6 @@
 		<a href='javascript:showFeedbackForm();'>Feedback</a>
 	</div>
 </div>
-
-<% if (GUEST) %>
-<button id='signin_btn' onclick='showSignin()'>Sign in</button>
-<% endif %>
 
 <div id='frame'>
 	<div id='content'></div>

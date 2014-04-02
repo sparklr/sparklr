@@ -104,7 +104,7 @@ hr {
     font-size: 22px;
     margin: 0px;
     width: 240px;
-	padding: 15px 10px 8px 10px;
+	padding: 35px 10px 8px 10px;
 	top: 0px;
 	left: 0px;
 	bottom: 0px;
@@ -215,6 +215,7 @@ hr {
     display: block;
     position: relative;
     padding: 5px;
+	padding-top: 30px;
     color: #333;
 	margin-left: 285px;
 }
@@ -1290,7 +1291,7 @@ div.inlineimage {
 
 #sidepost_container {
 	position: fixed;
-	top: 0px;
+	top: 20px;
 	right: 20px;
 	max-height: 100%;
 	overflow-x: hidden;
@@ -1344,18 +1345,8 @@ div.contentwrapper {
 	width:400px;
 }
 
-#signin_btn {
-	border: none;
-	position: fixed;
-	top: 5px;
-	right: 15px;
-	padding: 12px;
-	border: none;
-	background: #454050;
-	color: #fff;
-	font-size: 16px;
-	cursor: pointer;
-	z-index: 5;
+#signin {
+	text-align: center;
 }
 
 #signin input {
@@ -1373,10 +1364,30 @@ div.contentwrapper {
 }
 
 #signin #forgot_password {
-	opacity: 0;
+	display: none;
 }
 
 #signin #forgot_password.show {
-	opacity: 1;
+	display: inline-block;
+}
+
+#welcomebar {
+	position: fixed;
+	width: 100%;
+	background: #333;
+	display: block;
+	z-index: 9999;
+	color: #fff;
+	padding: 5px 10px;
+	font-size: 14px;
+}
+
+#welcomebar a {
+	color: #fff;
+}
+
+#welcomebar .right {
+	float: right;
+	padding-right: 20px;
 }
 

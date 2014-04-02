@@ -158,5 +158,6 @@ function forgotPassword() {
 
 function showSignin() {
 	showPopup(getTemplate('signin')());
+	_g('username').focus();
 }
 

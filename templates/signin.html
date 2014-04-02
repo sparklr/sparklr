@@ -1,10 +1,10 @@
 <div id='signin'>
-	<input type='text' id='username' placeholder='email or username' onkeyup='isEnter(event,forgotPassword);'>
-	<input type='password' id='password' placeholder='password'>
+	<input type='text' id='username' placeholder='email or username' onkeyup='isEnter(event,signin);'>
+	<input type='password' id='password' placeholder='password' onkeyup='isEnter(event,signin);'>
 	<input type='button' value='Sign in' onclick='signin()'>
-	<span id='forgot_password'>
-		Oops, that's not correct. Try again maybe?<br>
+	<div id='forgot_password'>
+		Oops, that's not right.<br>Try again maybe?<br>
 		<a href='javascript:;' onclick='forgotPassword();'>Forgot password</a>
-	</span>
+	</div>
 	<span id='login_callback'></span>
 </div>
