@@ -318,9 +318,6 @@ exports.post_settings = function(args, callback) {
 	}
 	
 	if (args.postObject.email) {
-		if (args.postObject.email != args.userobj.email) {
-			args.userobj.emailverified = 0;
-		}
 		args.userobj.email = args.postObject.email;
 	}
 
