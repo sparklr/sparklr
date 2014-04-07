@@ -1,3 +1,11 @@
+<% if (GUEST) %>
+	<div id='welcomebar'>
+		Welcome to Sparklr! Feel free to explore, post, settle in, and customize your profile. 
+		<a href='#/settings'>Add an email address to save your profile</a>.
+		<span class='right'><a href='javascript:showSignin();'>Already use Sparklr? Sign in</a>
+	</div>
+<% endif %>
+
 <div id='header'>
 	<div id='links'>
 		<a href='#/notifications' class='notifs' title='Notifications' id='notifs'></a>

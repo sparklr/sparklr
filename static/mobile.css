@@ -1073,3 +1073,56 @@ div.notification {
 	min-height: 60px;
 }
 
+#signin {
+	text-align: center;
+}
+
+#signin input {
+	width: 285px;
+	padding: 5px;
+	margin: 5px;
+	border: none;
+	font-size: 16px;
+}
+
+#signin input[type=button] {
+	margin: 5px;
+	width: 290px;
+	background: #fff;
+}
+
+#signin #forgot_password {
+	display: none;
+}
+
+#signin #forgot_password.show {
+	display: inline-block;
+}
+
+#welcomebar {
+	top: 0px;
+	position: absolute;
+	width: 100%;
+	background: #333;
+	display: block;
+	z-index: 9999;
+	color: #fff;
+	padding: 5px 10px;
+	font-size: 14px;
+}
+
+#welcomebar a {
+	color: #ede;
+	text-decoration: underline;
+}
+
+#welcomebar .right a {
+	color: #fff;
+	text-decoration: none;
+}
+
+#welcomebar .right {
+	float: right;
+	padding-right: 20px;
+}
+
