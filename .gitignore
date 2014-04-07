@@ -20,3 +20,5 @@ controllers/friends.js
 controllers/invite.js
 
 plus.txt
+
+node_modules/
