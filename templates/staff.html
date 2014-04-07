@@ -1,22 +1,22 @@
 <div class='contentwrapper'>
-	<h2>Administrators<span class='admin' title='Administrators'></h2>
+	<h2>Administrators<span class='admin' title='Administrators'></span></h2>
 	<p style='padding: 0 5px;margin-top:0;'>The Administrators of Sparklr are the creators, but are still just everyday people. The Administrators cannot always be online, however, feel free to message either one if something comes up or you just want to talk! We are nice, I promise. c:</p>
-	<? for(var i = 0; i< 2; i++) { ?>
+	<? for(var i = 0; i < 2; i++) { ?>
 	<div style='width: 280px;display:inline-block;padding: 5px;'>
-		<img src='{getAvatar(data[i].id)}' class='avatar'>
-		<a href='/#/user/{data[i].id}' class='person'>{getDisplayName(data[i].id)}</a>
+		<img src='{getAvatar($data[i].id)}' class='avatar'>
+		<a href='/#/user/{$data[i].id}' class='person'>{getDisplayName($data[i].id)}</a>
 		<br>
-		<a href='/#/chat/{data[i].id}'>Message</a>
+		<a href='/#/chat/{$data[i].id}'>Message</a>
 	</div>
 	<? } ?>
 	<h2>Community Moderators<span class='mod' title='Community Moderators'></span></h2>
 	<p style='padding: 0 5px;margin-top:0;'>These are users who encourage the use of the <a href='etiquette.html' target='_blank'>Sparklr Etiquette</a> to the users of Sparklr. The Community Moderators have the power to delete any posts they see as spam or too inappropriate. If you have any issues with another user or have questions about the site, feel free to message any of the Community Moderators.</p>
-	<? for(var j = 2; j< data.length; j++) { ?>
+	<? for(var j = 2; j < $data.length; j++) { ?>
 	<div style='width: 280px;display:inline-block;padding: 5px;'>
-		<img src='{getAvatar(data[j].id)}' class='avatar'>
-		<a href='/#/user/{data[j].id}' class='person'>{getDisplayName(data[j].id)}</a>
+		<img src='{getAvatar($data[j].id)}' class='avatar'>
+		<a href='/#/user/{$data[j].id}' class='person'>{getDisplayName($data[j].id)}</a>
 		<br>
-		<a href='/#/chat/{data[j].id}'>Message</a>
+		<a href='/#/chat/{$data[j].id}'>Message</a>
 	</div>
 	<? } ?>
 </div>
