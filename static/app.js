@@ -53,7 +53,8 @@ function app(payload) {
 	if (GUEST) {
 		_g("frame").className = "guest";
 		_g("header").className = "guest";
-		_g("sidepost_container").style.marginTop = "24px";
+		if (spc = _g("sidepost_container"))
+			spc.style.marginTop = "24px";
 	}
 
 	// Warn if using an old version of IE

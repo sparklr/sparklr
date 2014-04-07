@@ -7,19 +7,19 @@ blockquote{
 	margin: 0 0 10px 25px;
 }
 
-body { 
-    color: #333;
+body {
+	color: #333;
 	background: #efefef;
 	background-attachment: fixed;
-    margin: 0px;
-    padding: 0px;
+	margin: 0px;
+	padding: 0px;
 	font-family: Helvetica, sans-serif;
 	font-size: 18px;
 }
 
 img { outline: 0 }
 
-a { 
+a {
 	color: #4F3075;
 	text-decoration: none;
 	outline: 0;
@@ -30,12 +30,12 @@ a.person {
 }
 
 h2 {
-    color: #555;
-    font-weight: normal;
-    font-size: 40px;
-    padding: 3px;
-    margin-bottom: 8px;
-    margin-top: 0px;
+	color: #555;
+	font-weight: normal;
+	font-size: 40px;
+	padding: 3px;
+	margin-bottom: 8px;
+	margin-top: 0px;
 }
 
 hr {
@@ -48,19 +48,19 @@ hr {
 }
 
 #header {
-    font-size: 22px;
-    margin: 0px;
+	font-size: 22px;
+	margin: 0px;
 	top: 0px;
 	left: 0px;
 	right: 0px;
-    background: #454050;
+	background: #454050;
 	position: fixed;
 	z-index: 1000;
 	padding: 4px;
 }
 
 #logo {
-    cursor: pointer;
+	cursor: pointer;
 	display: inline-block;
 	width: 130px;
 	height: 150px;
@@ -74,31 +74,31 @@ hr {
 	float: right;
 }
 #links a {
-    margin: 0 8px;
-    display: inline-block;
-    margin-top: 7px;
-    color: #fff;
-    text-shadow: 0px 0px 2px #fff;
-    -webkit-transition: all 0.1s ease-in-out;
-    width: 32px;
-    height: 32px;
-    background-repeat: no-repeat;
-    opacity: 1;
+	margin: 0 8px;
+	display: inline-block;
+	margin-top: 7px;
+	color: #fff;
+	text-shadow: 0px 0px 2px #fff;
+	-webkit-transition: all 0.1s ease-in-out;
+	width: 32px;
+	height: 32px;
+	background-repeat: no-repeat;
+	opacity: 1;
 }
 #links a.people {
-    background-image: url(img/people.png);
+	background-image: url(img/people.png);
 }
 #links a.menu {
-    background-image: url(img/menu.png);
+	background-image: url(img/menu.png);
 }
 #links a.notifs {
-    background-image: url(img/notifs.png);
+	background-image: url(img/notifs.png);
 }
 #links a.notifs.jiggle {
-    background-image: url(img/notifs2.png);
+	background-image: url(img/notifs2.png);
 }
 #links a.inbox {
-    background-image: url(img/chat.png);
+	background-image: url(img/chat.png);
 }
 #links a.inbox.jiggle {
 	background-image: url(img/chat2.png);
@@ -112,10 +112,10 @@ hr {
 	margin-top: 5px;
 }
 #links a img {
-    box-shadow: 0px 0px 7px rgba(0,0,0,0.3),
-    inset 0px 0px 15px rgba(0,0,0,0.3);
-    width: 32px;
-    height: 32px;
+	box-shadow: 0px 0px 7px rgba(0,0,0,0.3),
+	inset 0px 0px 15px rgba(0,0,0,0.3);
+	width: 32px;
+	height: 32px;
 }
 
 #content {
@@ -133,32 +133,32 @@ div.contentwrapper {
 	margin: auto;
 }
 #friendslist {
-    -webkit-transition: all 1s ease;
-    position: relative;
+	-webkit-transition: all 1s ease;
+	position: relative;
 }
 div.fader {
-    display: inline-block;
-    position: fixed;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
-    background: rgba(0,0,0,0.7);
-    -webkit-transition: all 0.5s ease;
-    text-align: center;
+	display: inline-block;
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	background: rgba(0,0,0,0.7);
+	-webkit-transition: all 0.5s ease;
+	text-align: center;
 }
 
 div.popup {
-    position: absolute;
-    display: inline-block;
+	position: absolute;
+	display: inline-block;
 	-webkit-transition: all 0.7s ease-in-out;
 	opacity: 0;
-    background: #eaeaea;
-    width: 300px;
-    margin-left: -150px;
-    margin-top: -150px;    
-    left: 50%;
-    top: 50%;
+	background: #eaeaea;
+	width: 300px;
+	margin-left: -150px;
+	margin-top: -150px;    
+	left: 50%;
+	top: 50%;
 	border-radius: 5px;
 	padding: 10px;
 	box-shadow: 0px 0px 15px #000;
@@ -166,8 +166,8 @@ div.popup {
 	color: #555;
 }
 div.lightbox {
-    position: fixed;
-    top: 100px;
+	position: fixed;
+	top: 100px;
 	width: 100%;
 	text-align: center;
 }
@@ -175,13 +175,13 @@ div.lightbox {
 div.lightbox img {
 	opacity: 0;
 	-webkit-transition: all 1s ease;
-    box-shadow: 0px 0px 10px #000;
+	box-shadow: 0px 0px 10px #000;
 	max-height: 80%;
 }
 
 div.confirm {
-    background: #fff;
-    border-radius: 5px;
+	background: #fff;
+	border-radius: 5px;
 	padding: 10px;
 	box-shadow: 0px 0px 15px #000;
 	position: fixed;
@@ -197,7 +197,7 @@ div.confirm {
 }
 
 #friendslist {
-    display: inline-block;
+	display: inline-block;
 }
 
 #friendslist .names {
@@ -206,12 +206,12 @@ div.confirm {
 	display: table-cell;
 	padding-left: 3px;
 	font-size: 14px;
-	}
+}
 
 #friendslist a {
-    display: block;
-    height: 40px;
-    margin-top: 10px;
+	display: block;
+	height: 40px;
+	margin-top: 10px;
 	cursor: pointer;
 	-webkit-transition: all 0.2s ease;
 	color: rgba(255,255,255,0.8);
@@ -220,48 +220,48 @@ div.confirm {
 	-webkit-transition: all 0.2s ease;
 }
 #friendslist a.attn img {
-    -webkit-animation-name: jiggle;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-duration: 1s;
-    -webkit-animation-timing-function: ease-out;
-    -webkit-animation-delay: 0s;
+	-webkit-animation-name: jiggle;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-timing-function: ease-out;
+	-webkit-animation-delay: 0s;
 	box-shadow: 0px 0px 10px #fff;
 	margin-left: 9px;
 }
 .slideinfromright {
-    -webkit-animation-name: slideinfromright;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-duration: 0.3s;
-    -webkit-animation-timing-function: cubic-bezier;
-    -webkit-animation-delay: 0s;
+	-webkit-animation-name: slideinfromright;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-duration: 0.3s;
+	-webkit-animation-timing-function: cubic-bezier;
+	-webkit-animation-delay: 0s;
 }
 .jiggle {
-    -webkit-animation-name: jiggle;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-duration: 1s;
-    -webkit-animation-timing-function: ease-out;
+	-webkit-animation-name: jiggle;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-timing-function: ease-out;
 }
 @-webkit-keyframes jiggle {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-    13% {
-        -webkit-transform: rotate(8deg);
-    }
-    26% {
-        -webkit-transform: rotate(0deg);
-    }
-    50% {
-        -webkit-transform: rotate(8deg);
-    }
-    63% {
-        -webkit-transform: rotate(0deg);
-    }
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+	13% {
+		-webkit-transform: rotate(8deg);
+	}
+	26% {
+		-webkit-transform: rotate(0deg);
+	}
+	50% {
+		-webkit-transform: rotate(8deg);
+	}
+	63% {
+		-webkit-transform: rotate(0deg);
+	}
 }
 #friendslist img {
-    width: 40px;
-    height: 40px;
-    border-radius: 2px;
+	width: 40px;
+	height: 40px;
+	border-radius: 2px;
 	float: left;
 	margin-right: 5px;
 }
@@ -270,18 +270,18 @@ img { border: none }
 
 p { outline: none; }
 p[contenteditable=true] {
-    background: rgba(0,0,0,0.3);
+	background: rgba(0,0,0,0.3);
 }
 
 span.header {
-    font-size: 24px;
-    color: #444;
-    margin-top: 10px;
-    display: inline-block;
+	font-size: 24px;
+	color: #444;
+	margin-top: 10px;
+	display: inline-block;
 }
 
 div.timelineitem {
-    min-height: 50px;
+	min-height: 50px;
 	word-wrap: break-word;
 	border: solid 1px #ccc;
 	background: #fff;
@@ -291,32 +291,32 @@ div.timelineitem {
 	overflow: hidden;
 }
 div.timelineitem time {
-    opacity: 0.65;
+	opacity: 0.65;
 }
 div.timelineitem h2 {
-    font-size: 13px;
-    margin-bottom: 25px;
-    padding: 0px;
-    display: block;
+	font-size: 13px;
+	margin-bottom: 25px;
+	padding: 0px;
+	display: block;
 }
 img.littleavatar {
-    width: 24px;
-    height: 24px;
-    margin: 4px;
-    margin-top: -3px;
-    vertical-align: top;
-    border-radius: 15px;
+	width: 24px;
+	height: 24px;
+	margin: 4px;
+	margin-top: -3px;
+	vertical-align: top;
+	border-radius: 15px;
 	margin-right: 6px;
 }
 div.commentcount {
 	margin-left:6px;
 	margin-right:2px;
-    float: right;
-    background: #5d4c68;
-    padding: 5px;
-    color: white;
-    cursor: pointer;
-    border: solid 1px rgba(255,255,255,0.3);
+	float: right;
+	background: #5d4c68;
+	padding: 5px;
+	color: white;
+	cursor: pointer;
+	border: solid 1px rgba(255,255,255,0.3);
 	font-size: 16px;
 	display: inline-block;
 }
@@ -360,11 +360,11 @@ div.content{
 }
 
 div.picturepost {
-    background-repeat: no-repeat;
+	background-repeat: no-repeat;
 	background-position: center center;
-    margin: -5px;
-    margin-bottom: 10px;
-    cursor: pointer;
+	margin: -5px;
+	margin-bottom: 10px;
+	cursor: pointer;
 	padding: 0px;
 	text-align: center;
 }
@@ -382,32 +382,32 @@ div.contentwrapper div.picturepost {
 	margin-bottom: 10px;
 }
 div.picturepost h2 {
-    opacity: 0.5;
+	opacity: 0.5;
 }
 div.picturepost div.content {
-    opacity: 1;
-    -webkit-transition: all 0.3s ease;
+	opacity: 1;
+	-webkit-transition: all 0.3s ease;
 }
 div.picturepost div.commentcount {
-    background-color: rgba(54, 43, 61, 0.8);
+	background-color: rgba(54, 43, 61, 0.8);
 }
 div.rightcontrols {
-    float: right;
-    text-align: right;
+	float: right;
+	text-align: right;
 }
 div.rightcontrols time {
-    position: relative;
-    top: 0px;
+	position: relative;
+	top: 0px;
 }
 div.rightcontrols a.delete {
-    float: right;
-    margin: 2px;
-    color: #fff;
-    cursor: pointer;
+	float: right;
+	margin: 2px;
+	color: #fff;
+	cursor: pointer;
 	background-image: url(img/delete.png);
 	width: 16px;
 	height: 16px;
-    font-size: 14px;
+	font-size: 14px;
 	opacity: 0.3;
 }
 div.comment {
@@ -502,11 +502,11 @@ div.remaining {
 }
 
 img.avatar {
-    width: 50px;
-    height: 50px;
-    box-shadow: 0px 0px 1px #000;
-    float: left;
-    margin-right: 6px;
+	width: 50px;
+	height: 50px;
+	box-shadow: 0px 0px 1px #000;
+	float: left;
+	margin-right: 6px;
 }
 
 div.inlineimage {
@@ -524,7 +524,7 @@ div.photos {
 	margin: 2px;
 	width: 285px;
 	height: 200px;
-    display: inline-block;
+	display: inline-block;
 	position: relative;
 	padding: 0px;
 	background-size: cover !important;
@@ -540,15 +540,15 @@ div.photos {
 
 #profileheader {
 	margin: -5px;
-    height: 290px;
+	height: 290px;
 	width: 100%;
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 	margin-top: -10px;
-    padding: 10px 0 10px 9px;
-    background-position: 0% 30%;
-    background-size: cover;
-    opacity: 1;
-    position: relative;
+	padding: 10px 0 10px 9px;
+	background-position: 0% 30%;
+	background-size: cover;
+	opacity: 1;
+	position: relative;
 	overflow: hidden;
 	text-align: center;
 	color: #fff;
@@ -567,20 +567,20 @@ div.photos {
 }
 
 #profileheader #userDisplayName {
-    color: white;
-    font-size: 28px;
-    margin-top: 10px;
-    margin-bottom: 0px;
-    text-shadow: 0px 0px 5px #000;
+	color: white;
+	font-size: 28px;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	text-shadow: 0px 0px 5px #000;
 	padding: 0 0 0px 5px;
 	display: block;
 }
 
 #profileheader p {
 	display: block;
-    margin: 0px 10px 3px;
-    color: white;
-    text-shadow: 0px 0px 6px #000;
+	margin: 0px 10px 3px;
+	color: white;
+	text-shadow: 0px 0px 6px #000;
 	padding-left: 3px;
 	font-size: 18px;
 }
@@ -611,11 +611,11 @@ div.peoplebuttons{
 	margin-left: 5px;
 }
 div.peoplebuttons input[type=button]{
-	 background: #454050;
-	 padding: 8px;
-	 font-size: 18px;
-	 color: #fff;
-	 margin-right: 5px;
+	background: #454050;
+	padding: 8px;
+	font-size: 18px;
+	color: #fff;
+	margin-right: 5px;
 }
 
 div.friend {
@@ -645,70 +645,70 @@ div.friend input {
 }
 
 input[type=button], input[type=submit] {
-    border: solid 1px #9f9f9f;
-    background: rgba(255,255,255,1);
-    padding: 5px 5px;
-    font-size: 15px;
-    opacity: 1;
+	border: solid 1px #9f9f9f;
+	background: rgba(255,255,255,1);
+	padding: 5px 5px;
+	font-size: 15px;
+	opacity: 1;
 	font-family: 'PT Sans', sans-serif;
-    color: #444;
-    cursor: pointer;
-    -webkit-transition: all 0.2s ease-in-out;
+	color: #444;
+	cursor: pointer;
+	-webkit-transition: all 0.2s ease-in-out;
 	margin: 0px 1px;
 }
 
 input.s1 {
-    width: 50px;
-    height: 30px;
+	width: 50px;
+	height: 30px;
 	margin: 10px;
-    padding: 2px;
-    border-radius: 2px;
-    font-size: 22px;
-    background: rgba(255,255,255,1);
-    color: #444;
-    margin: 3px;
+	padding: 2px;
+	border-radius: 2px;
+	font-size: 22px;
+	background: rgba(255,255,255,1);
+	color: #444;
+	margin: 3px;
 }
 
 textarea {
-    width: 500px;
-    padding: 4px;
-    height: 40px;
-    vertical-align: top;
+	width: 500px;
+	padding: 4px;
+	height: 40px;
+	vertical-align: top;
 	font-family: 'PT Sans', sans-serif;
-    outline: none;
-    resize: none;
+	outline: none;
+	resize: none;
 	font-size: 15px;
 	overflow: hidden;
 }
 
 time {
-    font-size: 12px;
+	font-size: 12px;
 	color: #777;
 }
 
 time.float {
 	position: absolute;
-    bottom: 5px;
-    right: 0px;
-    margin-right: 5px;
+	bottom: 5px;
+	right: 0px;
+	margin-right: 5px;
 }
 
 div.chatmsg time {
-    position: relative;
-    opacity: 0.5;
+	position: relative;
+	opacity: 0.5;
 	text-align: right;
 }
 
 div.chatmsg {
 	margin-bottom: 15px;
-    display: block;
-    min-height: 27px;
+	display: block;
+	min-height: 27px;
 	margin-left: 5px;
 	word-wrap: break-word;
 }
 
 form.settings {
-    padding: 10px;
+	padding: 10px;
 }
 
 form.settings label {
@@ -730,7 +730,7 @@ form.settings input[type=radio] {
 }
 
 form.settings fieldset {
-    border: none;
+	border: none;
 }
 
 form.settings fieldset input {
@@ -744,40 +744,40 @@ form.settings label p {
 }
 
 span.ok {
-    color: #393;
+	color: #393;
 }
 
 span.error {
-    color: #c33;
+	color: #c33;
 }
 
 /* Bottom banner */
 div.banner {
-    position: fixed;
-    bottom:0px;
-    left: 0px;
-    right: 0px;
-    height: 20px;
-    padding: 4px;
-    padding-right: 10px;
-    text-align: center;
-    font-size: 15px;
-    background: rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 10px #000;
+	position: fixed;
+	bottom:0px;
+	left: 0px;
+	right: 0px;
+	height: 20px;
+	padding: 4px;
+	padding-right: 10px;
+	text-align: center;
+	font-size: 15px;
+	background: rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 10px #000;
 	color: #fff;
-    -webkit-animation-name: slideinfrombottom;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-duration: 0.5s;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-delay: 0s;
-    -webkit-transition: all 1s ease;
+	-webkit-animation-name: slideinfrombottom;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-duration: 0.5s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
+	-webkit-transition: all 1s ease;
 }
 div.banner a {
-    color: #aaa;
+	color: #aaa;
 }
 div.banner #dismiss {
-    float: right;
-    cursor: pointer;
+	float: right;
+	cursor: pointer;
 }
 div.popup textarea {
 	width: 290px;
@@ -795,28 +795,28 @@ div.popup textarea {
 }
 
 .pulse {
-  	-webkit-animation-name: pulse;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-duration: 2s;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-delay: 0s;
+	-webkit-animation-name: pulse;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
 }
 
 .flyout {
-    -webkit-animation-name: flyout;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-duration: 0.5s;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-delay: 0s;
-    position: relative;
+	-webkit-animation-name: flyout;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-duration: 0.5s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
+	position: relative;
 }
 
 .fadein {
-    -webkit-animation-name: fadein;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-duration: 0.4s;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-delay: 0s;
+	-webkit-animation-name: fadein;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-duration: 0.4s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
 }
 
 @-webkit-keyframes popin {
@@ -830,46 +830,46 @@ div.popup textarea {
 }
 
 @-webkit-keyframes fadein {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 @-webkit-keyframes flyout {
-    0% {
+	0% {
 
-    }
-    100% {
-        top: -10px;
-        opacity: 0;
-    }
+	}
+	100% {
+		top: -10px;
+		opacity: 0;
+	}
 }
 
 @-webkit-keyframes slideinfromright {
-    0% {
-        right: -200px;
-    }
-    100% {
+	0% {
+		right: -200px;
+	}
+	100% {
 
-    }
+	}
 }
 
 @-webkit-keyframes slideinfrombottom {
-    0% {
-        bottom: -100px;
-    }
-    100% {
+	0% {
+		bottom: -100px;
+	}
+	100% {
 
-    }
+	}
 }
 
 @-webkit-keyframes pulse {
-    0% { opacity: 0.5; }
-    50% { opacity: 0.8; }
-    100% { opacity: 0.5; }
+	0% { opacity: 0.5; }
+	50% { opacity: 0.8; }
+	100% { opacity: 0.5; }
 }
 
 /* Tag system */
@@ -944,15 +944,15 @@ span.admin, span.mod{
 	position:fixed;
 }
 #mobilesearchbox {
-    width: 180px;
-    border: solid 1px rgba(0,0,0,0.4);
-    color: #fff;
-    background: rgba(0,0,0,0.3);
-    outline: none;
-    padding: 8px;
-    font-size: 15px;
-    height: 15px;
-    vertical-align: top;
+	width: 180px;
+	border: solid 1px rgba(0,0,0,0.4);
+	color: #fff;
+	background: rgba(0,0,0,0.3);
+	outline: none;
+	padding: 8px;
+	font-size: 15px;
+	height: 15px;
+	vertical-align: top;
 	margin: 5px auto;
 }
 div.tabs{
@@ -986,7 +986,7 @@ div.tabs a.active {
 .bubbleout{
 	position: relative;
 	display: block;
-	
+
 }
 .bubble{
 	position: absolute;
@@ -1021,21 +1021,21 @@ div.scrollUpContent {
 }
 
 div.window div.scrollUpContent {
-    display: inline-block;
+	display: inline-block;
 	padding-bottom: 50px;
 	overflow: none;
 	height: inherit;
 }
 
 div.popup_post {
-    position: absolute;
-    display: inline-block;
+	position: absolute;
+	display: inline-block;
 	-webkit-transition: all 0.7s ease-in-out;
 	opacity: 0;
-    width: 580px;
-    margin-left: -390px;
-    margin-top: 100px;    
-    left: 50%;
+	width: 580px;
+	margin-left: -390px;
+	margin-top: 100px;    
+	left: 50%;
 	z-index: 100;
 	color: #555;
 }
@@ -1075,7 +1075,8 @@ div.notification {
 
 #signin {
 	text-align: center;
-	top: 90px;
+	top: 140px;
+	z-index: 999999;
 }
 
 #signin input {
@@ -1101,25 +1102,21 @@ div.notification {
 }
 
 #welcomebar {
-	top: 0px;
-	position: absolute;
+	position: relative;
+	top: 64px;
 	width: 100%;
 	background: #333;
 	display: block;
 	z-index: 9999;
 	color: #fff;
-	padding: 5px 10px;
 	font-size: 14px;
+	padding: 10px 0px;
+	text-align: center;
 }
 
 #welcomebar a {
 	color: #ede;
 	text-decoration: underline;
-}
-
-#welcomebar .right a {
-	color: #fff;
-	text-decoration: none;
 }
 
 #welcomebar .right {
