@@ -101,6 +101,7 @@ function processNotification(notification) {
 			addChatMessage({ from: notification.from, to: CURUSER, message: notification.body, time: notification.time }, false);
 			updatePageTitle();
 			body = " says: <br>" + notification.body;
+			console.log(notification);
 			setNewInbox(true);
 		break;
 	}
