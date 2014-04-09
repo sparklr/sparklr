@@ -109,6 +109,7 @@ function sendChatMessage(e) {
 function setNewInbox(value) {
 	var e = _g("inbox");
 	e.className = "inbox" + (value ? " jiggle" : "");
+	console.trace();
 }
 
 function chatWith(id) {
