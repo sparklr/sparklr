@@ -98,11 +98,13 @@ function processNotification(notification) {
 			body = " reposted your post.";
 		break;
 		case N_CHAT: //chat
-			addChatMessage({ from: notification.from, to: CURUSER, message: notification.body, time: notification.time }, false);
-			updatePageTitle();
-			body = " says: <br>" + notification.body;
-			console.log(notification);
-			setNewInbox(true);
+			if (!notification.read) {
+				addChatMessage({ from: notification.from, to: CURUSER, message: notification.body, time: notification.time }, false);
+				updatePageTitle();
+				body = " says: <br>" + notification.body;
+				console.log(notification);
+				setNewInbox(true);
+			}
 		break;
 	}
 
