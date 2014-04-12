@@ -64,8 +64,6 @@ hr {
 	display: inline-block;
 	width: 130px;
 	height: 150px;
-	background-image: url(img/logo.png);
-	background-repeat:no-repeat;
 	vertical-align: top;
 }
 
@@ -104,12 +102,16 @@ hr {
 	background-image: url(img/chat2.png);
 }
 #header #logo{
-	background-image: url(img/logo_sml.png);
 	display: inline-block;
 	width: 120px;
 	height: 44px;
 	margin: auto;
 	margin-top: 5px;
+	margin-left: 5px;
+	font-family: 'Courgette';
+	font-size: 30px;
+	color: #fff;
+	letter-spacing: -2px;
 }
 #links a img {
 	box-shadow: 0px 0px 7px rgba(0,0,0,0.3),

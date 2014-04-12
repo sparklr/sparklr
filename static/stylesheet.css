@@ -35,21 +35,6 @@ div::-webkit-scrollbar-track {
     background: #cecece;
 }
 
-/* Fonts */
-@font-face {
-  font-family: 'PT Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('PT Sans'), local('PTSans-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v5/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
-}
-
-@font-face {
-  font-family: 'PT Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local('PT Sans Bold'), local('PTSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/ptsans/v5/0XxGQsSc1g4rdRdjJKZrNBsxEYwM7FgeyaSgU71cLG0.woff) format('woff');
-}
-
 body { 
     color: #333;
 	background: #efefef;
@@ -96,8 +81,10 @@ hr {
 	display: inline-block;
 	width: 130px;
 	height: 150px;
-	background-image: url(img/logo.png);
-	background-repeat:no-repeat;
+	font-family: 'Courgette';
+	font-size: 32px;
+	color: #fff;
+	letter-spacing: -1px;
 }
 
 #header {
@@ -171,7 +158,6 @@ hr {
 }
 
 #header #logo{
-	background-image: url(img/logo_sml.png);
 	display: block;
 	width: 120px;
 	height: 44px;
