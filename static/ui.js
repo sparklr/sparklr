@@ -479,3 +479,13 @@ function makeInlineImage(thumb, img) {
 	return "<div style='background-image: url(" + thumb + ")' class='fadein inlineimage' onClick='showImage(\"" + img + "\");stopBubbling();'></div>";
 }
 
+function setWelcomeBar() {
+	if (!_g("welcomebar")) return;
+
+	_g("welcomebar").style.display = GUEST ? "" : "none";
+	_g("frame").className = GUEST ? "guest" : "";
+	_g("header").className = GUEST ? "guest" : "";
+	if (spc = _g("sidepost_container"))
+		spc.style.marginTop = GUEST ? "24px" : "";
+}
+

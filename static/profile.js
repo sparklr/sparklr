@@ -173,11 +173,12 @@ function updateAccountSettings() {
 			if (result.password === false) {
 				message = "Sorry, your current password does not match the one on file.";
 			}
-			updateSettingsCallback(result,message);
+			updateSettingsCallback(result, message);
 
-			if (GUEST) {
-				window.location = location.href;
-			}
+			GUEST = obj.email && (obj.email.indexOf("@sparklr.me") !== -1)
+
+			setWelcomeBar();
+
 		});
 
 	_g("savesettings").value = "Saving...";

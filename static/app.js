@@ -50,12 +50,7 @@ function app(payload) {
 		spc.addEventListener("mousewheel", h);
 	}
 
-	if (GUEST) {
-		_g("frame").className = "guest";
-		_g("header").className = "guest";
-		if (spc = _g("sidepost_container"))
-			spc.style.marginTop = "24px";
-	}
+	setWelcomeBar();
 
 	// Warn if using an old version of IE
 	if (!(MOBILE)) {
