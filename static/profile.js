@@ -174,6 +174,10 @@ function updateAccountSettings() {
 				message = "Sorry, your current password does not match the one on file.";
 			}
 			updateSettingsCallback(result,message);
+
+			if (GUEST) {
+				window.location = location.href;
+			}
 		});
 
 	_g("savesettings").value = "Saving...";
