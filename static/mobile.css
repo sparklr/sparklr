@@ -59,14 +59,6 @@ hr {
 	padding: 4px;
 }
 
-#logo {
-	cursor: pointer;
-	display: inline-block;
-	width: 130px;
-	height: 150px;
-	vertical-align: top;
-}
-
 #links {
 	display: inline-block;
 	float: right;
@@ -101,6 +93,7 @@ hr {
 #links a.inbox.jiggle {
 	background-image: url(img/chat2.png);
 }
+
 #header #logo{
 	display: inline-block;
 	width: 120px;
@@ -112,7 +105,11 @@ hr {
 	font-size: 30px;
 	color: #fff;
 	letter-spacing: -2px;
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: top;
 }
+
 #links a img {
 	box-shadow: 0px 0px 7px rgba(0,0,0,0.3),
 	inset 0px 0px 15px rgba(0,0,0,0.3);

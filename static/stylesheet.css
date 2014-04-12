@@ -75,18 +75,6 @@ hr {
 	margin-top: 15px;
 }
 
-#logo {
-	position: relative;
-    cursor: pointer;
-	display: inline-block;
-	width: 130px;
-	height: 150px;
-	font-family: 'Courgette';
-	font-size: 32px;
-	color: #fff;
-	letter-spacing: -1px;
-}
-
 #header {
     font-size: 22px;
     margin: 0px;
@@ -164,6 +152,13 @@ hr {
 	margin: auto;
 	margin-bottom: 15px;
 	margin-top: 5px;
+	position: relative;
+    cursor: pointer;
+	display: inline-block;
+	font-family: 'Courgette';
+	font-size: 32px;
+	color: #fff;
+	letter-spacing: -1px;
 }
 
 #header .useravatar {
