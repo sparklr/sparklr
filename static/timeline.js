@@ -109,14 +109,16 @@ function renderTags(item) {
 
 function fetchOlderPosts() {
 	if (currentPageType !== "STREAM") return;
-	console.log('getting some old posts');
 	if (subscribedStream == null) return;
+	console.log(oldestPost);
 	var query = streamUrl(0,oldestPost);
 
 	ajax(query,null,function(data) {
 		var items = data.timeline || data;
+		console.log(data);
 		addTimelineArray(items,subscribedStream,true);
 		for (var i = items.length - 1; i > 0 ; i--) {
+			console.log(items[i].time);
 			addTimelineEvent(items[i], true);
 		}
 	});
