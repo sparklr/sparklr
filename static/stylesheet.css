@@ -847,11 +847,10 @@ div.friend:hover input {
 }
 
 input[type=button], input[type=submit] {
-    border: solid 1px #9f9f9f;
-    background: rgba(255,255,255,1);
+    border: solid 1px #999;
+    background: #fff;
     padding: 5px 5px;
     font-size: 15px;
-    opacity: 0.9;
 	font-family: 'PT Sans', sans-serif;
     color: #444;
     cursor: pointer;
