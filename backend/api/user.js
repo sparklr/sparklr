@@ -351,23 +351,16 @@ exports.post_settings = function(args, callback) {
 }
 
 /* @url api/password
- * @args { password, newpassword }
+ * @args { newpassword }
  * @returns authkey string if true, false if validation fails
  */
 exports.post_password = function(args, callback) {
-	bcrypt.compare(args.postObject.password, args.userobj.password, function(err, match) {
-		if (err) callback(500, false);
-		if (match) {
-			User.generatePass(args.postObject.newpassword, function(err, newpass) {
-				args.userobj.password = newpass;
+	User.generatePass(args.postObject.newpassword, function(err, newpass) {
+		args.userobj.password = newpass;
 
-				// should we reset the authkey here???
-				Database.updateObject("users", args.userobj);
-				callback(200, args.userobj.authkey);
-			});
-		} else {
-			callback(200, { result: false, password: false });
-		}
+		// should we reset the authkey here???
+		Database.updateObject("users", args.userobj);
+		callback(200, args.userobj.authkey);
 	});
 }
 
