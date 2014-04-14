@@ -6,7 +6,7 @@
 var currentPageType;
 
 // Pages the server allows us to navigate to
-var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "inbox", "notifications", "explore", "staff", "signin"];
+var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat", "invite", "search", "photos", "tag", "repost", "inbox", "notifications", "explore", "staff"];
 
 // The sidebar networks we define
 var networks = {

@@ -158,7 +158,7 @@ function forgotPassword() {
 
 function showSignin() {
 	if (MOBILE) {
-		location.href='/#/signin';
+		renderTemplate("signin", "content", false);
 	} else {
 		showPopup(getTemplate('signin')());
 		_g('username').focus();

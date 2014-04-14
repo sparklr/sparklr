@@ -14,7 +14,7 @@ function renderPageFromTemplate() {
 
 function renderTemplate(page,destination,callback) {
 	var fragments = page.split("/");
-	ajax(page, null, function(data) {
+	var cb = function(data) {
 		if (data && data.error === true) return;
 
 		if (spc = _g("sidepost_container"))
@@ -34,8 +34,13 @@ function renderTemplate(page,destination,callback) {
 		scrollHandler();
 		updateUI();
 
-		callback();
-	});
+		if (callback)
+			callback();
+	}
+	if (callback !== false)
+		ajax(page, null, cb);
+	else
+		cb();
 }
 
 function getTemplate(id) {
