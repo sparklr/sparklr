@@ -157,7 +157,11 @@ function forgotPassword() {
 }
 
 function showSignin() {
-	showPopup(getTemplate('signin')());
-	_g('username').focus();
+	if (MOBILE) {
+		location.href='/#/signin';
+	} else {
+		showPopup(getTemplate('signin')());
+		_g('username').focus();
+	}
 }
 
