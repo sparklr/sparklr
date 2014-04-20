@@ -19,7 +19,7 @@ if (cluster.isMaster) {
 
 	var numCPUs = require('os').cpus().length;
 
-	for (var i = 0; i < numCPUs; i++) {
+	for (var i = 0; i < numCPUs / 2; i++) {
 		var w = cluster.fork();
 		w.on("message", handleMsg);
 	}
