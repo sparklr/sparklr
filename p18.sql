@@ -1,15 +1,27 @@
--- Adminer 3.6.1 MySQL dump
+-- MySQL dump 10.14  Distrib 5.5.36-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: p18
+-- ------------------------------------------------------
+-- Server version	5.5.36-MariaDB-1
 
-SET NAMES utf8;
-SET foreign_key_checks = 0;
-SET time_zone = 'SYSTEM';
-SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP DATABASE IF EXISTS `p18`;
-CREATE DATABASE `p18` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `p18`;
+--
+-- Table structure for table `comments`
+--
 
 DROP TABLE IF EXISTS `comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `postid` int(11) NOT NULL,
@@ -18,24 +30,69 @@ CREATE TABLE `comments` (
   `time` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `comments`
+--
+
+LOCK TABLES `comments` WRITE;
+/*!40000 ALTER TABLE `comments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `invites`
+--
 
 DROP TABLE IF EXISTS `invites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `invites` (
   `id` tinytext NOT NULL,
   `from` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `invites`
+--
+
+LOCK TABLES `invites` WRITE;
+/*!40000 ALTER TABLE `invites` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invites` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mentions`
+--
 
 DROP TABLE IF EXISTS `mentions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mentions` (
   `user` int(11) NOT NULL,
   `postid` int(11) NOT NULL,
   `time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `mentions`
+--
+
+LOCK TABLES `mentions` WRITE;
+/*!40000 ALTER TABLE `mentions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mentions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `messages`
+--
 
 DROP TABLE IF EXISTS `messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `from` int(11) NOT NULL,
@@ -44,23 +101,68 @@ CREATE TABLE `messages` (
   `message` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `messages`
+--
+
+LOCK TABLES `messages` WRITE;
+/*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `networks`
+--
 
 DROP TABLE IF EXISTS `networks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `networks` (
   `id` varchar(20) NOT NULL,
   `title` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `networks`
+--
+
+LOCK TABLES `networks` WRITE;
+/*!40000 ALTER TABLE `networks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `networks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `newsletter`
+--
 
 DROP TABLE IF EXISTS `newsletter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `newsletter` (
   `email` tinytext NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `newsletter`
+--
+
+LOCK TABLES `newsletter` WRITE;
+/*!40000 ALTER TABLE `newsletter` DISABLE KEYS */;
+/*!40000 ALTER TABLE `newsletter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notifications`
+--
 
 DROP TABLE IF EXISTS `notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notifications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `from` int(11) NOT NULL,
@@ -69,19 +171,50 @@ CREATE TABLE `notifications` (
   `time` int(11) NOT NULL,
   `body` text NOT NULL,
   `action` text NOT NULL,
+  `read` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `notifications`
+--
+
+LOCK TABLES `notifications` WRITE;
+/*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tags`
+--
 
 DROP TABLE IF EXISTS `tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tags` (
   `postid` int(11) NOT NULL,
   `tag` tinytext NOT NULL,
   `time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `tags`
+--
+
+LOCK TABLES `tags` WRITE;
+/*!40000 ALTER TABLE `tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `timeline`
+--
 
 DROP TABLE IF EXISTS `timeline`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `timeline` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `from` int(11) NOT NULL,
@@ -98,9 +231,24 @@ CREATE TABLE `timeline` (
   PRIMARY KEY (`id`),
   KEY `modified` (`modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `timeline`
+--
+
+LOCK TABLES `timeline` WRITE;
+/*!40000 ALTER TABLE `timeline` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
 
 DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` tinytext,
@@ -118,10 +266,26 @@ CREATE TABLE `users` (
   `emailverified` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`(30))
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `displayname`, `bio`, `avatarid`, `lastseen`, `following`, `blacklist`, `rank`, `networks`, `authkey`, `emailverified`) VALUES
-(4,	'jaxbot',	'jaxbot@gmail.com',	'$2a$11$PlUACuZyK7Oi/QNgT6wSPOC3B4Hv2Vwc29hnlyW5DM.h/xzexI6k.',	'Jonathan',	'Jonathan test account',	1390708388,	1378173008,	'55,57',	'',	50,	'0',	'4dab1a8afdfca30ed4492016f9db397df38353652',	NULL),
-(6,	'ivey',	'iveysaurrr@gmail.com',	'$2a$11$PlUACuZyK7Oi/QNgT6wSPOC3B4Hv2Vwc29hnlyW5DM.h/xzexI6k.',	'ivey',	'Ivey test account',	1389580622,	1377919665,	'4',	'',	0,	'0',	'$2a$11$eetQaY5qp3Z/9bW8aGofWuXMjHe4pgmKUJkgIPHzapBUNTwDfnVn2',	NULL);
+--
+-- Dumping data for table `users`
+--
 
--- 2014-01-28 21:20:46
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (4,'jaxbot','jaxbot@gmail.com','$2a$11$PlUACuZyK7Oi/QNgT6wSPOC3B4Hv2Vwc29hnlyW5DM.h/xzexI6k.','Jonathan','Jonathan test account',1390708388,1378173008,'55,57','',50,'0','4dab1a8afdfca30ed4492016f9db397df38353652',NULL),(6,'ivey','iveysaurrr@gmail.com','$2a$11$PlUACuZyK7Oi/QNgT6wSPOC3B4Hv2Vwc29hnlyW5DM.h/xzexI6k.','ivey','Ivey test account',1389580622,1377919665,'4','',0,'0','$2a$11$eetQaY5qp3Z/9bW8aGofWuXMjHe4pgmKUJkgIPHzapBUNTwDfnVn2',NULL);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2014-04-20 20:21:04
