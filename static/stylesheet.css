@@ -78,19 +78,17 @@ hr {
 #header {
     font-size: 22px;
     margin: 0px;
-    width: 240px;
-	padding: 15px 10px 8px 10px;
+	padding: 8px 10px 8px 10px;
 	top: 0px;
 	left: 0px;
+	right: 0px;
 	bottom: 0px;
     text-align: center;
     background: #454050;
-	position: fixed;
 	z-index: 1000;
-}
-
-#header.guest {
-	padding-top: 35px;
+	margin: -5px;
+	height: 46px;
+	margin-bottom: 5px;
 }
 
 #navigation {
@@ -100,6 +98,7 @@ hr {
 #links {
 	margin-bottom: 5px;
 	margin-left: -13px;
+	float: right;
 }
 
 #links a {
@@ -146,19 +145,21 @@ hr {
 }
 
 #header #logo{
-	display: block;
+	display: inline-block;
 	width: 120px;
 	height: 44px;
 	margin: auto;
 	margin-bottom: 15px;
 	margin-top: 5px;
-	position: relative;
+	position: absolute;
     cursor: pointer;
 	display: inline-block;
 	font-family: 'Courgette';
 	font-size: 32px;
 	color: #fff;
 	letter-spacing: -1px;
+	top: 7px;
+	left: 5px;
 }
 
 #header .useravatar {
@@ -201,11 +202,11 @@ hr {
     position: relative;
     padding: 5px;
     color: #333;
-	margin-left: 285px;
-}
-
-#frame.guest {
-	padding-top: 30px;
+	background: #fff;
+	width: 1000px;
+	margin-left: -500px;
+	left: 50%;
+	margin-top: 50px;
 }
 
 #content {
@@ -217,9 +218,16 @@ hr {
 }
 
 #sidebarwrapper {
+	position: absolute;
+	right: 0px;
+	top: 60px;
+	width: 175px;
+	height: 100%;
+
+	z-index: 10;
+
+	background: #454050;
 	display: block;
-	margin-left: -10px;
-	margin-right: -10px;
 }
 
 #sidebarwrapper a {
@@ -239,7 +247,7 @@ hr {
     color: #fff;
     display: block;
     padding: 5px;
-	padding-left: 59px;
+	padding-left: 25px;
     font-size: 16px;
     -webkit-transition: all 0.2s ease;
 	margin-bottom: 5px;
@@ -442,7 +450,6 @@ div.timelineitem {
 	word-wrap: break-word;
 	display: block;
 	width: 40%;
-	border: solid 1px #ccc;
 	background: #fff;
 	position: relative;
 }
@@ -723,6 +730,7 @@ img.avatar {
     width: 50px;
     height: 50px;
     box-shadow: 0px 0px 1px #000;
+	border-radius: 55px;
     float: left;
     margin-right: 6px;
 }
@@ -876,10 +884,6 @@ textarea {
 }
 
 time {
-    font-size: 14px;
-	color: #777;
-	position: relative;
-	top: -4px;
 }
 
 time.float {
@@ -1283,6 +1287,7 @@ div.inlineimage {
 	max-height: 100%;
 	overflow-x: hidden;
 	width: 42%;
+	display: none;
 }
 
 @media (max-width: 1279px) {

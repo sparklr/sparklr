@@ -6,20 +6,23 @@
 	</div>
 <% endif %>
 
+<div id='frame'>
 <div id='header'>
 	<a href='#' title='Home'>
 		<div id='logo'>sparklr*</div>
 	</a>
+	<!--
 	<a href="#/user/{CURUSER}" title='Me'>
 		<img class='useravatar' src='{getAvatar(CURUSER,false,true)}'>
 	</a>
+	-->
 	<div id='navigation'>
 		<div id='links'>
+			<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
 			<a href='#/friends' class='people' title='People'></a>
 			<a href='#/notifications' class='notifs' title='Notifications' id='notifs'></a>
 			<a href='#/inbox' class='inbox' title='Inbox' id='inbox'></a>
 		</div>
-		<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
 		<div id='sidebarwrapper'>
 			<div id='sidebar'></div>
 			<div id='networks'></div>
@@ -33,7 +36,6 @@
 	</div>
 </div>
 
-<div id='frame'>
 	<div id='content'></div>
 </div>
 
