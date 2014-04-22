@@ -155,11 +155,11 @@ hr {
     cursor: pointer;
 	display: inline-block;
 	font-family: 'Courgette';
-	font-size: 32px;
+	font-size: 36px;
 	color: #fff;
-	letter-spacing: -1px;
-	top: 7px;
-	left: 5px;
+	letter-spacing: -2px;
+	top: 3px;
+	left: 8px;
 }
 
 #header .useravatar {
@@ -203,8 +203,8 @@ hr {
     padding: 5px;
     color: #333;
 	background: #fff;
-	width: 1000px;
-	margin-left: -500px;
+	width: 1100px;
+	margin-left: -550px;
 	left: 50%;
 	margin-top: 50px;
 }
@@ -1282,12 +1282,12 @@ div.inlineimage {
 
 #sidepost_container {
 	position: fixed;
-	top: 0px;
-	right: 20px;
+	top: 105px;
+	left: 50%;
+	margin-left: -50px;
 	max-height: 100%;
 	overflow-x: hidden;
-	width: 42%;
-	display: none;
+	width: 420px;
 }
 
 @media (max-width: 1279px) {
@@ -1313,7 +1313,7 @@ div.inlineimage {
 }
 
 div.contentwrapper {
-	border: solid 1px #ccc;
+	border-left: solid 1px #ccc;
 	background: #fff;
 	padding: 6px;
 	position: relative;
