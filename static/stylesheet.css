@@ -209,6 +209,8 @@ hr {
 	left: 50%;
 	margin-top: 50px;
 	overflow-x: hidden;
+	overflow-y: inherit;
+	min-height: 800px;
 }
 
 #content {
@@ -224,7 +226,7 @@ hr {
 	right: 0px;
 	top: 60px;
 	width: 175px;
-	height: 100%;
+	bottom: 0px;
 
 	z-index: 20;
 
