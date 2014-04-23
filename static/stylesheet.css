@@ -80,16 +80,16 @@ hr {
     margin: 0px;
 	padding: 8px 10px 8px 10px;
 	top: 0px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
+	width: 1090px;
     text-align: center;
     background: #454050;
 	z-index: 1000;
-	margin: -5px;
 	height: 46px;
 	margin-bottom: 5px;
 	z-index: 9950;
+	position: fixed;
+	left: 50%;
+	margin-left: -550px;
 }
 
 #navigation {
@@ -202,12 +202,13 @@ hr {
     display: block;
     position: relative;
     padding: 5px;
+	padding-top: 65px;
     color: #333;
 	background: #fff;
 	width: 1100px;
 	margin-left: -550px;
 	left: 50%;
-	margin-top: 50px;
+	margin-top: 0px;
 	overflow-x: hidden;
 	overflow-y: inherit;
 	min-height: 800px;
@@ -222,7 +223,7 @@ hr {
 }
 
 #sidebarwrapper {
-	position: absolute;
+	position: fixed;
 	right: 0px;
 	top: 60px;
 	width: 175px;
@@ -232,6 +233,8 @@ hr {
 
 	background: #454050;
 	display: block;
+	right: 50%;
+	margin-right: -560px;
 }
 
 #sidebarwrapper a {
@@ -1041,6 +1044,10 @@ div.popup textarea {
     -webkit-animation-duration: 0.2s;
     -webkit-animation-timing-function: ease;
     -webkit-animation-delay: 0s;
+	font-size: 18px;
+}
+.popin time{
+	font-size: 12px;
 }
 
 @-webkit-keyframes popin {
@@ -1302,11 +1309,11 @@ div.inlineimage {
 }
 
 #sidepost_container {
-	position: absolute;
+	position: fixed;
 	top: 62px;
 	bottom: 0px;
 	left: 50%;
-	margin-left: -248px;
+	margin-left: -242px;
 	max-height: 100%;
 	overflow-x: hidden;
 	width: 620px;
