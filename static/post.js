@@ -7,9 +7,11 @@ var currentComments = [];
 var LIKE_CHAR = "\u261D";
 
 function showPost(id,args) {
-	if (typeof(args) === "undefined")
-		var args = "";
-	location.href = "#/post/" + id + "/" + args;
+	if (MOBILE) {
+		location.href = "#/post/" + id + "/" + args;
+	} else {
+		showSidepost(id);
+	}
 }
 
 function showSidepost(id) {
