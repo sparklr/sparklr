@@ -19,6 +19,8 @@ function showSidepost(id) {
 		renderTemplate("post/" + id, "sidepost_container", function(){});
 		subSubscribedStream = id;
 		subPageType = "POST";
+		_g("sidepost_container").className = "show";
+		_g("sidepost_fader").className = "show";
 		return true;
 	}
 	return false;

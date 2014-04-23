@@ -89,6 +89,7 @@ hr {
 	margin: -5px;
 	height: 46px;
 	margin-bottom: 5px;
+	z-index: 9950;
 }
 
 #navigation {
@@ -207,6 +208,7 @@ hr {
 	margin-left: -550px;
 	left: 50%;
 	margin-top: 50px;
+	overflow-x: hidden;
 }
 
 #content {
@@ -224,7 +226,7 @@ hr {
 	width: 175px;
 	height: 100%;
 
-	z-index: 10;
+	z-index: 20;
 
 	background: #454050;
 	display: block;
@@ -1280,14 +1282,48 @@ div.inlineimage {
 	overflow: hidden;
 }
 
+#sidepost_fader {
+	background: rgba(0,0,0,0.25);
+	left: 0px;
+	top: 61px;
+	bottom: 0px;
+	right: 175px;
+	z-index: -1;
+	display: block;
+	position:absolute;
+	opacity: 0;
+	-webkit-transition: all 0.5s ease;
+}
+
+#sidepost_fader.show {
+	opacity: 1;
+	z-index: 10;
+}
+
 #sidepost_container {
-	position: fixed;
-	top: 105px;
+	position: absolute;
+	top: 62px;
+	bottom: 0px;
 	left: 50%;
-	margin-left: -50px;
+	margin-left: -248px;
 	max-height: 100%;
 	overflow-x: hidden;
-	width: 420px;
+	width: 620px;
+	border-left: solid 2px #ccc;
+	background: #fff;
+	padding-left: 5px;
+	text-align: left;
+	z-index: 15;
+	box-shadow: -10px 0px 5px rgba(0,0,0,0.3);
+
+	-webkit-transition: all 0.5s ease;
+	-webkit-transform: translate(500px,0px);
+	opacity: 0;
+}
+
+#sidepost_container.show {
+	opacity: 1;
+	-webkit-transform: none;
 }
 
 @media (max-width: 1279px) {
@@ -1313,7 +1349,6 @@ div.inlineimage {
 }
 
 div.contentwrapper {
-	border-left: solid 1px #ccc;
 	background: #fff;
 	padding: 6px;
 	position: relative;
