@@ -452,7 +452,6 @@ div.timelineitem {
 	word-wrap: break-word;
 	display: block;
 	width: 40%;
-	background: #fff;
 	position: relative;
 }
 
@@ -1313,16 +1312,16 @@ div.inlineimage {
 	background: #fff;
 	padding-left: 5px;
 	text-align: left;
-	z-index: 15;
-	box-shadow: -10px 0px 5px rgba(0,0,0,0.3);
+	z-index: -1;
 
-	-webkit-transition: all 0.5s ease;
-	-webkit-transform: translate(500px,0px);
+	-webkit-transition: all 0.4s ease;
+	-webkit-transform: translate(200px,0px);
 	opacity: 0;
 }
 
 #sidepost_container.show {
 	opacity: 1;
+	z-index: 15;
 	-webkit-transform: none;
 }
 
