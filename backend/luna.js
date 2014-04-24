@@ -41,6 +41,7 @@ if (cluster.isMaster) {
 		}
 		log("Reloading app...");
 
+		require.cache = null;
 		delete require.cache;
 
 		var workersKilled = 0;

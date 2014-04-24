@@ -41,6 +41,9 @@ exports.run = function(request, response, uri, sessionid) {
 	var dataComplete = false;
 
 	if (request.method == "POST") {
+		setTimeout(function() {
+			postBody = null;
+		}, 90000);
 		request.on("data", function(data) {
 			postBody += data;
 			if (postBody.length > 15728640) {

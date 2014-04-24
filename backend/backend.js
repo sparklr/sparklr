@@ -17,6 +17,10 @@ var Api = require("./api");
 var Database = require("./database");
 var User = require("./user");
 
+var heapdump = require('heapdump')
+
+console.log(process.pid);
+
 Database.init();
 
 http.createServer(handleRequests).listen(8080);

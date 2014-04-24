@@ -2,7 +2,7 @@ var fs = require("fs");
 var os = require("os");
 var spawn = require("child_process").spawn;
 
-var start = ((new Date()).getTime() + Math.random() * 1000000000).toString(36);
+var start = (new Date()).getTime().toString(36) + "_" + Math.random() * 1000000000;
 var id = 0;
 
 exports.handleUpload = function(data, userobj, args, callback) {
@@ -25,7 +25,6 @@ exports.handleUpload = function(data, userobj, args, callback) {
 
 	var outthumb = outfile + "t" + imgid;
 	outfile += imgid;
-
 
 	fs.writeFile(tmpfile, data.substring(data.indexOf(",") + 1), "base64", function(err) {
 		data = null;
