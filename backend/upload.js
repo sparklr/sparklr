@@ -2,12 +2,12 @@ var fs = require("fs");
 var os = require("os");
 var spawn = require("child_process").spawn;
 
-var start = (new Date()).getTime().toString(36);
+var start = ((new Date()).getTime() + Math.random() * 1000000000).toString(36));
 var id = 0;
 
 exports.handleUpload = function(data, userobj, args, callback) {
 	id++;
-	var imgid = args.id || (userobj.id + "_" + start + "_" + id.toString(36));
+	var imgid = args.id || (userobj.id + "_" + start + "_" + id.toString(36) + (Math.random() * 1000000000).toString(36));
 
 	var tmpfile = os.tmpdir() + "/upload_" + imgid;
 
