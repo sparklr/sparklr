@@ -201,22 +201,11 @@ hr {
     position: relative;
     padding: 5px;
     color: #333;
-<<<<<<< Updated upstream
 	margin-left: 285px;
 }
 
 #frame.guest {
 	padding-top: 30px;
-=======
-	background: #fff;
-	width: 1100px;
-	margin-left: -550px;
-	left: 50%;
-	margin-top: 0px;
-	overflow-x: hidden;
-	overflow-y: inherit;
-	min-height: 900px;
->>>>>>> Stashed changes
 }
 
 #content {
