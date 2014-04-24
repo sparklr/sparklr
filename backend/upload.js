@@ -2,7 +2,7 @@ var fs = require("fs");
 var os = require("os");
 var spawn = require("child_process").spawn;
 
-var start = ((new Date()).getTime() + Math.random() * 1000000000).toString(36));
+var start = ((new Date()).getTime() + Math.random() * 1000000000).toString(36);
 var id = 0;
 
 exports.handleUpload = function(data, userobj, args, callback) {
