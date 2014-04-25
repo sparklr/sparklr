@@ -459,9 +459,11 @@ function scrollHandler() {
 		newPageToFetch = true;
 	}
 
+	/*
 	if (s = _g("sidepost_container")) { 
 		s.className = ~~subscribedStream === subscribedStream && doctop < 300 ? 'user' : '';
 	}
+	*/
 }
 
 function preventDefaultScroll(e) {
@@ -487,5 +489,10 @@ function setWelcomeBar() {
 	_g("header").className = GUEST ? "guest" : "";
 	if (spc = _g("sidepost_container"))
 		spc.style.marginTop = GUEST ? "24px" : "";
+}
+
+function hideFader() {
+	_g("sidepost_container").className = "";
+	_g("sidepost_fader").className = "";
 }
 

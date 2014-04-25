@@ -7,9 +7,11 @@ var currentComments = [];
 var LIKE_CHAR = "\u261D";
 
 function showPost(id,args) {
-	if (typeof(args) === "undefined")
-		var args = "";
-	location.href = "#/post/" + id + "/" + args;
+	if (MOBILE) {
+		location.href = "#/post/" + id + "/" + args;
+	} else {
+		showSidepost(id);
+	}
 }
 
 function showSidepost(id) {
@@ -19,6 +21,8 @@ function showSidepost(id) {
 		renderTemplate("post/" + id, "sidepost_container", function(){});
 		subSubscribedStream = id;
 		subPageType = "POST";
+		_g("sidepost_container").className = "show";
+		_g("sidepost_fader").className = "show";
 		return true;
 	}
 	return false;

@@ -12,7 +12,6 @@
 <div class='commentcount like icon' onClick='likePost("{$id}","{$from}", this);stopBubbling();'></div>
 
 <img class='avatar left' src='{ getAvatar($from) }'>
-<time class='float' datetime='{$time}'></time>
 	
 <a href='#/user/{ $from }' class='person'>{ getDisplayName($from) }</a>
 
@@ -24,6 +23,6 @@
  in <a href='#/{$network}'>/{$network}</a>
 <% endif %>
 
-<h2>@{getUserHandle($from)}</h2>
+<h2>@{getUserHandle($from)} - <time datetime='{$time}'></time></h2>
 <div class='content' id='postcontent_{$id}'>{$originalMessage}{$formattedMessage}</div>
 

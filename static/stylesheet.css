@@ -1,6 +1,7 @@
 html, body {
 	overflow-x: hidden;
 	overflow-y: auto;
+	height: 100%;
 }
 
 blockquote {
@@ -78,19 +79,18 @@ hr {
 #header {
     font-size: 22px;
     margin: 0px;
-    width: 240px;
-	padding: 15px 10px 8px 10px;
+	padding: 8px 10px 8px 10px;
 	top: 0px;
-	left: 0px;
-	bottom: 0px;
+	width: 1090px;
     text-align: center;
     background: #454050;
-	position: fixed;
 	z-index: 1000;
-}
-
-#header.guest {
-	padding-top: 35px;
+	height: 46px;
+	margin-bottom: 5px;
+	z-index: 9950;
+	position: fixed;
+	left: 50%;
+	margin-left: -550px;
 }
 
 #navigation {
@@ -100,6 +100,7 @@ hr {
 #links {
 	margin-bottom: 5px;
 	margin-left: -13px;
+	float: right;
 }
 
 #links a {
@@ -146,27 +147,21 @@ hr {
 }
 
 #header #logo{
-	display: block;
+	display: inline-block;
 	width: 120px;
 	height: 44px;
 	margin: auto;
 	margin-bottom: 15px;
 	margin-top: 5px;
-	position: relative;
+	position: absolute;
     cursor: pointer;
 	display: inline-block;
 	font-family: 'Courgette';
-	font-size: 32px;
+	font-size: 36px;
 	color: #fff;
-	letter-spacing: -1px;
-}
-
-#header .useravatar {
-	display: block;
-	margin-bottom: 15px;
-	cursor: pointer;
-	width: 120px;
-	height: 120px;
+	letter-spacing: -2px;
+	top: 3px;
+	left: 8px;
 }
 
 .useravatar{
@@ -174,6 +169,16 @@ hr {
 	width: 100px;
 	height: 100px;
 	margin: auto;
+}
+
+#header .useravatar {
+	display: block;
+	margin-bottom: 15px;
+	cursor: pointer;
+	width: 32px;
+	height: 32px;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 #links a img {
@@ -193,23 +198,29 @@ hr {
     font-size: 15px;
     height: 15px;
     vertical-align: top;
-	margin: 5px auto;
+	margin: 5px 5px;
+	margin-left: 12px;
 }
 
 #frame {
     display: block;
     position: relative;
     padding: 5px;
+	padding-top: 65px;
     color: #333;
-	margin-left: 285px;
-}
-
-#frame.guest {
-	padding-top: 30px;
+	background: #fff;
+	width: 1100px;
+	margin-left: -545px;
+	left: 50%;
+	margin-top: 0px;
+	overflow-x: hidden;
+	overflow-y: inherit;
+	min-height: 100%;
 }
 
 #content {
     margin-right: 20px;
+	width: 940px;
 }
 
 .content{
@@ -217,9 +228,18 @@ hr {
 }
 
 #sidebarwrapper {
+	position: fixed;
+	right: 0px;
+	top: 60px;
+	width: 175px;
+	bottom: 0px;
+
+	z-index: 20;
+
+	background: #454050;
 	display: block;
-	margin-left: -10px;
-	margin-right: -10px;
+	right: 50%;
+	margin-right: -560px;
 }
 
 #sidebarwrapper a {
@@ -239,7 +259,7 @@ hr {
     color: #fff;
     display: block;
     padding: 5px;
-	padding-left: 59px;
+	padding-left: 25px;
     font-size: 16px;
     -webkit-transition: all 0.2s ease;
 	margin-bottom: 5px;
@@ -273,11 +293,11 @@ a.network.active {
 
 #fader.show {
 	opacity: 1;
-	z-index: 100;
+	z-index: 9999;
 }
 
 div.popup {
-    position: absolute;
+    position: fixed;
     display: inline-block;
 	-webkit-transition: all 0.7s ease-in-out;
 	opacity: 0;
@@ -290,7 +310,7 @@ div.popup {
 	border-radius: 5px;
 	padding: 10px;
 	box-shadow: 0px 0px 15px #000;
-	z-index: 100;
+	z-index: 10000;
 	color: #555;
 }
 
@@ -441,9 +461,7 @@ div.timelineitem {
 	margin-bottom: 10px;
 	word-wrap: break-word;
 	display: block;
-	width: 40%;
-	border: solid 1px #ccc;
-	background: #fff;
+	width: 880px;
 	position: relative;
 }
 
@@ -556,13 +574,13 @@ div.picturepost {
 
 div.picturepost img {
 	max-width: 100%;
-	max-height: 540px;
+	max-height: 740px;
 	margin-bottom: -4px;
 }
 
 div.picturepost.full img {
 	max-width: 100%;
-	max-height: 520px;
+	max-height: 720px;
 }
 
 div.contentwrapper div.picturepost {
@@ -723,17 +741,15 @@ img.avatar {
     width: 50px;
     height: 50px;
     box-shadow: 0px 0px 1px #000;
+	border-radius: 55px;
     float: left;
     margin-right: 6px;
 }
 
 #profileheader {
-	margin-left: -30px;
-	margin-right: -25px;
-    margin-top: -5px;
     height: 290px;
-    margin-bottom: 15px;
-    padding: 10px 0 10px 10px;
+    padding: 10px 0 0 0;
+	margin: -5px 0 0 -5px;
     background-position: 0% 30%;
     background-size: cover;
     opacity: 1;
@@ -741,6 +757,7 @@ img.avatar {
 	overflow: hidden;
 	text-align: center;
 	color: #fff;
+	width: 100%;
 }
 
 #profileheader a {
@@ -876,10 +893,6 @@ textarea {
 }
 
 time {
-    font-size: 14px;
-	color: #777;
-	position: relative;
-	top: -4px;
 }
 
 time.float {
@@ -994,7 +1007,7 @@ div.popup textarea {
 #footer {
 	position: absolute;
 	bottom: 5px;
-	left: 20px;
+	left: 45px;
 	font-size: 11px;
 	color: #fff;
 }
@@ -1034,6 +1047,10 @@ div.popup textarea {
     -webkit-animation-duration: 0.2s;
     -webkit-animation-timing-function: ease;
     -webkit-animation-delay: 0s;
+	font-size: 18px;
+}
+.popin time{
+	font-size: 12px;
 }
 
 @-webkit-keyframes popin {
@@ -1276,13 +1293,48 @@ div.inlineimage {
 	overflow: hidden;
 }
 
+#sidepost_fader {
+	background: rgba(0,0,0,0.25);
+	left: 0px;
+	top: 61px;
+	bottom: 0px;
+	right: 175px;
+	z-index: -1;
+	display: block;
+	position:absolute;
+	opacity: 0;
+	-webkit-transition: all 0.5s ease;
+}
+
+#sidepost_fader.show {
+	opacity: 1;
+	z-index: 10;
+}
+
 #sidepost_container {
 	position: fixed;
-	top: 0px;
-	right: 20px;
+	top: 62px;
+	bottom: 0px;
+	left: 50%;
+	margin-left: -242px;
 	max-height: 100%;
 	overflow-x: hidden;
-	width: 42%;
+	width: 620px;
+	border-left: solid 2px #ccc;
+	background: #fff;
+	padding-left: 5px;
+	text-align: left;
+	z-index: -1;
+
+	-webkit-transition: all 0.4s ease;
+	-webkit-transform: translate(200px,0px);
+	opacity: 0;
+}
+
+#sidepost_container.show {
+	opacity: 1;
+	z-index: 15;
+	-webkit-transform: none;
 }
 
 @media (max-width: 1279px) {
@@ -1308,7 +1360,6 @@ div.inlineimage {
 }
 
 div.contentwrapper {
-	border: solid 1px #ccc;
 	background: #fff;
 	padding: 6px;
 	position: relative;
@@ -1359,14 +1410,15 @@ div.contentwrapper {
 }
 
 #welcomebar {
-	position: fixed;
-	width: 100%;
-	background: #333;
+	position: relative;
+	width: 915px;
+	background: #6a5f80;
 	display: block;
-	z-index: 9999;
 	color: #fff;
 	padding: 5px 10px;
 	font-size: 14px;
+	margin: -5px;
+	margin-bottom: 15px;
 }
 
 #welcomebar a {
