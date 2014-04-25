@@ -84,6 +84,7 @@ function updatePages(loaded) {
 	handleNotifications();
 
 	hideAllPopups();
+	hideFader();
 
 	//Page reload, thus scroll height has changed
 	scrollHandler();
