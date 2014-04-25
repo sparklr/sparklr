@@ -1,6 +1,7 @@
 html, body {
 	overflow-x: hidden;
 	overflow-y: auto;
+	height: 100%;
 }
 
 blockquote {
@@ -163,19 +164,21 @@ hr {
 	left: 8px;
 }
 
-#header .useravatar {
-	display: block;
-	margin-bottom: 15px;
-	cursor: pointer;
-	width: 120px;
-	height: 120px;
-}
-
 .useravatar{
 	border-radius: 60px;
 	width: 100px;
 	height: 100px;
 	margin: auto;
+}
+
+#header .useravatar {
+	display: block;
+	margin-bottom: 15px;
+	cursor: pointer;
+	width: 32px;
+	height: 32px;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 #links a img {
@@ -195,7 +198,8 @@ hr {
     font-size: 15px;
     height: 15px;
     vertical-align: top;
-	margin: 5px auto;
+	margin: 5px 5px;
+	margin-left: 12px;
 }
 
 #frame {
@@ -206,7 +210,7 @@ hr {
     color: #333;
 	background: #fff;
 	width: 1100px;
-	margin-left: -550px;
+	margin-left: -545px;
 	left: 50%;
 	margin-top: 0px;
 	overflow-x: hidden;
@@ -216,6 +220,7 @@ hr {
 
 #content {
     margin-right: 20px;
+	width: 940px;
 }
 
 .content{
@@ -743,8 +748,8 @@ img.avatar {
 
 #profileheader {
     height: 290px;
-    margin-bottom: 15px;
-    padding: 10px 0 0px 0px;
+    padding: 10px 0 0 0;
+	margin: -5px 0 0 -5px;
     background-position: 0% 30%;
     background-size: cover;
     opacity: 1;
@@ -752,6 +757,7 @@ img.avatar {
 	overflow: hidden;
 	text-align: center;
 	color: #fff;
+	width: 100%;
 }
 
 #profileheader a {
@@ -1404,14 +1410,15 @@ div.contentwrapper {
 }
 
 #welcomebar {
-	position: fixed;
-	width: 100%;
-	background: #333;
+	position: relative;
+	width: 915px;
+	background: #6a5f80;
 	display: block;
-	z-index: 9999;
 	color: #fff;
 	padding: 5px 10px;
 	font-size: 14px;
+	margin: -5px;
+	margin-bottom: 15px;
 }
 
 #welcomebar a {

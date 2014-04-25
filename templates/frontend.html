@@ -1,11 +1,3 @@
-<% if (GUEST) %>
-	<div id='welcomebar'>
-		Welcome to Sparklr! Feel free to explore, post, settle in, and customize your profile. 
-		<a href='#/settings'>Add an email address to save your profile</a>.
-		<span class='right'><a href='javascript:showSignin();'>Already use Sparklr? Sign in</a>
-	</div>
-<% endif %>
-
 <div id='frame'>
 <div id='sidepost_fader' onclick='hideFader()'></div>
 <div id='sidepost_container'></div>
@@ -13,17 +5,15 @@
 	<a href='#' title='Home'>
 		<div id='logo'>sparklr*</div>
 	</a>
-	<!--
-	<a href="#/user/{CURUSER}" title='Me'>
-		<img class='useravatar' src='{getAvatar(CURUSER,false,true)}'>
-	</a>
-	-->
 	<div id='navigation'>
 		<div id='links'>
-			<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
+			<a href="#/user/{CURUSER}" title='Me'>
+				<img class='useravatar' src='{getAvatar(CURUSER,false,true)}'>
+			</a>
 			<a href='#/friends' class='people' title='People'></a>
 			<a href='#/notifications' class='notifs' title='Notifications' id='notifs'></a>
 			<a href='#/inbox' class='inbox' title='Inbox' id='inbox'></a>
+			<input type='text' id='searchbox' placeholder='search' onblur='showSuggestionBox(false)' onkeyup='search_Keydown(event)'>
 		</div>
 		<div id='sidebarwrapper'>
 			<div id='sidebar'></div>
@@ -35,7 +25,13 @@
 		</div>
 	</div>
 </div>
-
+	<% if (GUEST) %>
+		<div id='welcomebar'>
+			Welcome to Sparklr! Feel free to explore, post, and customize your profile. 
+			<a href='#/settings'>Save your profile</a>.
+			<span class='right'><a href='javascript:showSignin();'>Already use Sparklr? Sign in</a>
+		</div>
+	<% endif %>
 	<div id='content'></div>
 </div>
 
