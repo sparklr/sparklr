@@ -211,7 +211,7 @@ hr {
 	margin-top: 0px;
 	overflow-x: hidden;
 	overflow-y: inherit;
-	min-height: 800px;
+	min-height: 100%;
 }
 
 #content {
@@ -456,7 +456,7 @@ div.timelineitem {
 	margin-bottom: 10px;
 	word-wrap: break-word;
 	display: block;
-	width: 40%;
+	width: 880px;
 	position: relative;
 }
 
@@ -569,13 +569,13 @@ div.picturepost {
 
 div.picturepost img {
 	max-width: 100%;
-	max-height: 540px;
+	max-height: 740px;
 	margin-bottom: -4px;
 }
 
 div.picturepost.full img {
 	max-width: 100%;
-	max-height: 520px;
+	max-height: 720px;
 }
 
 div.contentwrapper div.picturepost {
@@ -742,12 +742,9 @@ img.avatar {
 }
 
 #profileheader {
-	margin-left: -30px;
-	margin-right: -25px;
-    margin-top: -5px;
     height: 290px;
     margin-bottom: 15px;
-    padding: 10px 0 10px 10px;
+    padding: 10px 0 0px 0px;
     background-position: 0% 30%;
     background-size: cover;
     opacity: 1;
