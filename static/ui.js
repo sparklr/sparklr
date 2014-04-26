@@ -492,7 +492,9 @@ function setWelcomeBar() {
 }
 
 function hideFader() {
-	_g("sidepost_container").className = "";
-	_g("sidepost_fader").className = "";
+	if (_g("sidepost_fader") && _g("sidepost_container")) {
+		_g("sidepost_container").className = "";
+		_g("sidepost_fader").className = "";
+	}
 }
 
