@@ -430,7 +430,7 @@ div.confirm {
 
 .notification {
 	margin-bottom: 2px;
-	max-height: 70px;
+	min-height: 70px;
 	overflow: hidden;
 }
 
