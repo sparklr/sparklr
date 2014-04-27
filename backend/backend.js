@@ -17,7 +17,8 @@ var Api = require("./api");
 var Database = require("./database");
 var User = require("./user");
 
-var heapdump = require('heapdump')
+var heapdump = require('heapdump');
+var memwatch = require('memwatch');
 
 console.log(process.pid);
 
@@ -78,4 +79,6 @@ process.on('uncaughtException', function(err) {
 	console.log(err.stack);
 	process.exit(1);
 });
+
+setInterval(memwatch.gc, 60000);
 
