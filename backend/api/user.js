@@ -186,24 +186,6 @@ exports.get_user = function(args, callback) {
 	});
 }
 
-/* @url api/invite
- * @returns String of invite ID
- */
-exports.get_invite = function(args, callback) {
-	Database.query("SELECT * FROM `invites` WHERE `from` = " + (~~args.userobj.id),
-		function(err,rows) {
-			if (err) return callback(500, false);
-			if (rows.length > 0) {
-				callback(200,rows[0].id);
-			} else {
-				var id = Toolbox.hash(args.userobj.id + args.userobj.email + args.userobj.authkey);
-				Database.query("INSERT INTO `invites` (`id`,`from`) VALUES ('" + id + "','" + (~~args.userobj.id) + "')");
-				callback(200,id);
-			}
-		}
-	);
-}
-
 /* @url api/random
  * @returns Returns a random userid
  */
@@ -279,19 +261,12 @@ exports.get_unfollow = function(args, callback) {
 /* @url api/sendinvite/:email
  * @returns true
  */
-exports.post_sendinvite = function(args, callback) {
-	var inviteid = Toolbox.hash((Math.random() * 1e5) + args.userobj.id + args.fragments[3]);
-	Database.postObject("invites", {
-		id: inviteid,
-		from: args.userobj.id
-	}, function(err, rows) {
-		if (err) return callback(err);
-		Mail.sendMessageToEmail(args.fragments[3], "invite", {
-			invite: inviteid,
-			from: args.userobj.displayname
-		});
-		callback(err, true);
+exports.get_sendinvite = function(args, callback) {
+	Mail.sendMessageToEmail(args.fragments[3], "invite", {
+		from: args.userobj.displayname,
+		fromid: args.userobj.id
 	});
+	callback(null, true);
 }
 
 /* @url api/settings

@@ -103,7 +103,7 @@ function signOff() {
 }
 
 function inviteFriend() {
-	location.href="/#/invite";
+	renderTemplate("invite", "content", false);
 }
 
 function inviteUser(to,cb) {
