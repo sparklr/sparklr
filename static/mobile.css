@@ -1072,6 +1072,10 @@ div.notification {
 	min-height: 60px;
 }
 
+.notification.read {
+	opacity: 0.5;
+}
+
 #signin {
 	text-align: center;
 	top: 140px;
