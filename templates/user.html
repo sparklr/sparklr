@@ -13,7 +13,7 @@
 	<div class='controls'>
 <% if ($user != CURUSER) %>
 	<% if ($following) %>	
-		<input type='button' onclick='unfollow("{$user}");' value='Unfollow'>
+		<input type='button' class='red' onclick='unfollow("{$user}");' value='Unfollow'>
 	<% else %>
 		<input type='button' onclick='follow("{$user}");' value='Follow'>
 	<% endelse %>

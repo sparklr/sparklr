@@ -874,6 +874,26 @@ input[type=button], input[type=submit] {
     -webkit-transition: all 0.2s ease-in-out;
 	margin: 5px 0px;
 }
+input[type=button]{
+	margin: 5px -6px;
+	padding: 7px;
+}
+input[type=button]:first-child{
+	border-radius: 10px 0 0 10px;
+	margin-left: 6px;
+}
+input[type=button].red:first-child:hover{
+	background-color: #d0635e;
+	border: 1px solid #742b22;
+	color: #fff;
+}
+input[type=button]:last-child{
+	border-radius: 0 10px 10px 0;
+}
+input[type=button]#editBtn{
+	border-radius: 10px;
+	margin-left: 6px;
+}
 
 input[type=button]:hover, input[type=submit]:hover {
     box-shadow: 0px 0px 10px rgba(200,200,250,0.7);
