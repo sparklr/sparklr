@@ -1,9 +1,3 @@
-<% if ($type == 1) %>
-<div class='picturepost' id='picturepost_{$id}'>
-	<img src='{imgUrl($img)}'>
-</div>
-<% endif %>
-
 <div id='commentcount_{ $id }' class='commentcount'>{$commentcount}</div>
 <div class='commentcount repost icon' style='display:none;opacity: 0;' onClick='showPost("{$id}","repost");stopBubbling();'></div>
 <% if ($from != CURUSER) %>
@@ -25,4 +19,10 @@
 
 <h2>@{getUserHandle($from)} - <time datetime='{$time}'></time></h2>
 <div class='content' id='postcontent_{$id}'>{$originalMessage}{$formattedMessage}</div>
+
+<% if ($type == 1) %>
+<div class='picturepost' id='picturepost_{$id}'>
+	<img src='{imgUrl($img)}'>
+</div>
+<% endif %>
 
