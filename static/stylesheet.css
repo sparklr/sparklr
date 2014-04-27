@@ -1,6 +1,4 @@
 html, body {
-	overflow-x: hidden;
-	overflow-y: auto;
 	height: 100%;
 }
 
@@ -205,12 +203,11 @@ hr {
 #frame {
     display: block;
     position: relative;
-    padding: 5px;
-	padding-top: 65px;
     color: #333;
 	background: #fff;
+	padding-top: 1px;
 	width: 1100px;
-	margin-left: -545px;
+	margin-left: -550px;
 	left: 50%;
 	margin-top: 0px;
 	overflow-x: hidden;
@@ -219,6 +216,7 @@ hr {
 }
 
 #content {
+	padding-top: 65px;
     margin-right: 20px;
 	width: 940px;
 }
