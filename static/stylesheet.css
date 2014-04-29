@@ -815,12 +815,12 @@ img.avatar {
 	margin-right: 5px;
 }
 
+
 div.peoplebuttons{
 	top: 80px;
 	position: absolute;
 	right: 185px;
 }
-
 div.peoplebuttons input[type=button]{
 	background: #454050;
 	padding: 8px;
