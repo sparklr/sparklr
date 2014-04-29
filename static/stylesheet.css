@@ -817,9 +817,9 @@ img.avatar {
 
 
 div.peoplebuttons{
-	top: 80px;
 	position: absolute;
 	right: 185px;
+	margin-top: -53px
 }
 div.peoplebuttons input[type=button]{
 	background: #454050;
@@ -1437,14 +1437,15 @@ div.contentwrapper {
 
 #welcomebar {
 	position: relative;
-	width: 915px;
+	width: 920px;
 	background: #6a5f80;
 	display: block;
 	color: #fff;
 	padding: 5px 10px;
 	font-size: 14px;
 	margin: -5px;
-	margin-bottom: 15px;
+	margin-bottom: 6px;
+	top: 66px;
 }
 
 #welcomebar a {
