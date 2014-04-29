@@ -36,7 +36,7 @@ function ajax(url, data, callback) {
 					eval(getTemplate("404"));
 					_g("content").innerHTML = html;
 				} else {
-					showBanner("Uh oh, an error occured when attempting to talk to the server", "statusmsg_ajaxerror");
+					showBanner("Uh oh, an error occurred when attempting to talk to the server", "statusmsg_ajaxerror");
 				}
 			} else {
 				hideBanner("statusmsg_ajaxerror");
