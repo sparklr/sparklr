@@ -26,6 +26,10 @@ function addTimelineEvent(item,append,overrideMissing) {
 		if (item.message)
 			_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
+	} else if (item.time < oldestPost && !append) {
+		// do not show posts that do not exist if 
+		// they are ancient
+		return;
 	}
 	if (!item.message && item.type !== 1) return;
 
