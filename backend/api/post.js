@@ -169,13 +169,13 @@ exports.get_deletecomment = function(args, callback) {
 }
 
 /* @url api/post
- * @args { message: string <= 500, [network: networkstring], [img: 1] }
+ * @args { body: string <= 500, [network: networkstring], [img: 1] }
  * @post [base64 encoded image]
  * @returns 200, true if successful, 400 if message too long, the int 2
  * if there are too many posts too frequently
  */
 exports.post_post = function(args, callback) {
-	if (args.postObject.body.length > 500)
+	if (!args.postObject.body || args.postObject.body.length > 500)
 		return callback(400, false);
 
 	var data = args.postObject;

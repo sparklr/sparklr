@@ -6,6 +6,7 @@ var User = require("./user");
 var Notification = require("./notification");
 var Toolbox = require("./toolbox");
 var Upload = require("./upload");
+var log = require("./log");
 
 var api = {};
 
