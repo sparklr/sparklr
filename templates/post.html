@@ -7,12 +7,12 @@
 
 	<div id='post_{$id}' class='post'>
 		<% if ($from == CURUSER || ISMOD) %>
-		<div class='commentcount delete icon' onClick='deletePost("{$id}");stopBubbling();'></div>
+		<div class='commentcount icon-remove icon' onClick='deletePost("{$id}");stopBubbling();'></div>
 		<% else %>
-		<div class='commentcount delete icon' onClick='hidePost({$id},{$from});stopBubbling();'></div>
+		<div class='commentcount icon-eye-blocked icon' onClick='hidePost({$id},{$from});stopBubbling();'></div>
 		<% endelse %>
-		<div class='commentcount repost icon' onClick='repost("{$id}");stopBubbling();'></div>
-		<div class='commentcount like icon' id='likebtn_{$id}' onClick='likePost("{$id}","{$from}", this);stopBubbling();'></div>
+		<div class='commentcount icon-loop icon' onClick='repost("{$id}");stopBubbling();'></div>
+		<div class='commentcount icon-heart icon' id='likebtn_{$id}' onClick='likePost("{$id}","{$from}", this);stopBubbling();'></div>
 		<img class='avatar' src='{getAvatar($from)}'>
 		<a href='#/user/{$from}' class='person'>{getDisplayName($from)}</a><br>
 		<time datetime='{$time}'></time><br>

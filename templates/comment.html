@@ -5,7 +5,7 @@
 	<time class='float' style='opacity:0.5' datetime='{$time}'></time>
 	<% if ($canEdit) %>
 		<br>
-		<a class='delete' onClick='deleteComment("{$id}", "{$postid}");'></a>
+		<a class='icon-remove' onClick='deleteComment("{$id}", "{$postid}");'></a>
 	<% endif %>
 </div>
 <a class='person' href='#/user/{$from}'>{getDisplayName($from)}</a>

@@ -20,7 +20,6 @@ html, body {
 	font-weight: normal;
 	font-variant: normal;
 	text-transform: none;
-	line-height: 1;
 
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
@@ -35,6 +34,9 @@ html, body {
 }
 .icon-bubbles:before {
 	content: "\e602";
+}
+.icon-bubbles.active:before {
+	color: #7463AC;
 }
 .icon-users:before {
 	content: "\e603";
@@ -530,13 +532,19 @@ div.commentcount {
 	margin-right:2px;
     float: right;
     background: #5d4c68;
-    padding: 5px;
+    padding: 8px;
+	height: 18px;
     color: #fff;
     cursor: pointer;
     -webkit-transition: all 0.2s ease-in-out;
     border: solid 1px rgba(255,255,255,0.3);
 	font-size: 16px;
+	line-height: 20px
 	display: inline-block;
+}
+
+div.timelineitem .commentcount {
+	opacity: 0;
 }
 
 div.timelineitem:hover div.commentcount {
@@ -559,14 +567,6 @@ div.post div.commentcount.icon{
 	opacity: 1;
 }
 
-div.commentcount.icon {
-	padding:0px;
-	background-repeat: no-repeat;
-	width: 28px;
-	height: 30px;
-	opacity: 0;
-}
-
 a.tag {
 	display: inline-block;
 	background: #594e64;
@@ -578,19 +578,7 @@ a.tag {
 	border: solid 1px #76648b;
 }
 
-div.delete {
-	background-image: url(img/delete_white.png);
-}
-
-div.repost {
-	background-image: url(img/repost.png);
-}
-
-div.like {
-	background-image: url(img/like.png);
-}
-
-div.like.liked {
+div.icon.liked {
 	background-color: #7e5a82;
 }
 
@@ -649,12 +637,10 @@ div.rightcontrols time {
 	position: absolute;
 }
 
-div.rightcontrols a.delete {
+div.rightcontrols a.icon-remove {
     float: right;
     margin: 2px;
-    color: #fff;
     cursor: pointer;
-	background-image: url(img/delete.png);
 	width: 16px;
 	height: 16px;
     -webkit-transition: all 0.2s ease-in-out;
@@ -662,7 +648,7 @@ div.rightcontrols a.delete {
     font-size: 14px;
 }
 
-div.rightcontrols:hover a.delete {
+div.rightcontrols:hover a.icon-remove {
     opacity: 0.6 !important;
 }
 

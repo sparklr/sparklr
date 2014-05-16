@@ -54,7 +54,7 @@ function addNotification(notification) {
 	notificationCount++;
 
 	if (notification.type != N_CHAT)
-		_g("notifs").className = "icon-bubbles active";
+		_g("notifs").className = "icon-bubbles active jiggle";
 
 	updatePageTitle();
 
@@ -136,7 +136,7 @@ function removeNotification(id) {
 	if (notificationCount > 0)
 		notificationCount--;
 
-	_g("notifs").className = "notifs";
+	_g("notifs").className = "icon-bubbles";
 	updatePageTitle();
 }
 
