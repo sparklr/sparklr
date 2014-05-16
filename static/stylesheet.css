@@ -2,6 +2,62 @@ html, body {
 	height: 100%;
 }
 
+@font-face {
+	font-family: 'icomoon';
+	src:url('fonts/icomoon.eot?-4amuz6');
+	src:url('fonts/icomoon.eot?#iefix-4amuz6') format('embedded-opentype'),
+		url('fonts/icomoon.woff?-4amuz6') format('woff'),
+		url('fonts/icomoon.ttf?-4amuz6') format('truetype'),
+		url('fonts/icomoon.svg?-4amuz6#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-envelope:before {
+	content: "\e600";
+}
+.icon-bell:before {
+	content: "\e601";
+}
+.icon-bubbles:before {
+	content: "\e602";
+}
+.icon-users:before {
+	content: "\e603";
+}
+.icon-gift:before {
+	content: "\e604";
+}
+.icon-remove:before {
+	content: "\e605";
+}
+.icon-flag:before {
+	content: "\e606";
+}
+.icon-eye-blocked:before {
+	content: "\e607";
+}
+.icon-heart:before {
+	content: "\e608";
+}
+.icon-loop:before {
+	content: "\e609";
+}
+
 blockquote {
 	margin: 0 0 10px 25px;
 }
@@ -99,45 +155,23 @@ hr {
 	margin-bottom: 5px;
 	margin-left: -13px;
 	float: right;
+	font-size: 28px;
 }
 
 #links a {
     margin: 0 18px;
     display: inline-block;
-    margin-top: 7px;
+    margin-top: -8px;
+	margin-right: 6px;
     color: #fff;
-    text-shadow: 0px 0px 2px #fff;
     -webkit-transition: all 0.1s ease-in-out;
-    width: 32px;
-    height: 32px;
     background-repeat: no-repeat;
     opacity: 1;
-	margin-right: 5px;
+	vertical-align: middle;
 }
 
-#links a.people {
-    background-image: url(img/people.png);
-}
-
-#links a.menu {
-    background-image: url(img/menu.png);
-	display: none;
-}
-
-#links a.notifs {
-    background-image: url(img/notifs.png);
-}
-
-#links a.notifs.jiggle {
-    background-image: url(img/notifs2.png);
-}
-
-#links a.inbox {
-    background-image: url(img/chat.png);
-}
-
-#links a.inbox.jiggle {
-	background-image: url(img/chat2.png);
+#links img {
+	margin-top: 14px;
 }
 
 #header img {
