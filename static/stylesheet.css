@@ -29,6 +29,9 @@ html, body {
 .icon-envelope:before {
 	content: "\e600";
 }
+.icon-envelope.jiggle:before {
+	color: #7463AC;
+}
 .icon-bell:before {
 	content: "\e601";
 }

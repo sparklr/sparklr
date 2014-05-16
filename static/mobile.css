@@ -1,3 +1,67 @@
+@font-face {
+	font-family: 'icomoon';
+	src:url('fonts/icomoon.eot?-4amuz6');
+	src:url('fonts/icomoon.eot?#iefix-4amuz6') format('embedded-opentype'),
+		url('fonts/icomoon.woff?-4amuz6') format('woff'),
+		url('fonts/icomoon.ttf?-4amuz6') format('truetype'),
+		url('fonts/icomoon.svg?-4amuz6#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-envelope:before {
+	content: "\e600";
+}
+.icon-envelope.jiggle:before {
+	color: #7463AC;
+}
+.icon-bell:before {
+	content: "\e601";
+}
+.icon-bubbles:before {
+	content: "\e602";
+}
+.icon-bubbles.active:before {
+	color: #7463AC;
+}
+.icon-users:before {
+	content: "\e603";
+}
+.icon-gift:before {
+	content: "\e604";
+}
+.icon-remove:before {
+	content: "\e605";
+}
+.icon-flag:before {
+	content: "\e606";
+}
+.icon-eye-blocked:before {
+	content: "\e607";
+}
+.icon-heart:before {
+	content: "\e608";
+}
+.icon-loop:before {
+	content: "\e609";
+}
+.icon-menu:before {
+	content: "\e60a";
+}
+
 html {
 	overflow-x: none;
 	overflow-y: scroll;
@@ -57,6 +121,27 @@ hr {
 	position: fixed;
 	z-index: 1000;
 	padding: 4px;
+	color: #fff;
+}
+
+#links {
+	margin-bottom: 5px;
+	margin-left: -20px;
+	margin-right: 5px;
+	float: right;
+	font-size: 30px;
+}
+
+#links a {
+    margin: 0 18px;
+    display: inline-block;
+    margin-top: -8px;
+	margin-right: 6px;
+    color: #fff;
+    -webkit-transition: all 0.1s ease-in-out;
+    background-repeat: no-repeat;
+    opacity: 1;
+	vertical-align: middle;
 }
 
 #links {
@@ -74,24 +159,6 @@ hr {
 	height: 32px;
 	background-repeat: no-repeat;
 	opacity: 1;
-}
-#links a.people {
-	background-image: url(img/people.png);
-}
-#links a.menu {
-	background-image: url(img/menu.png);
-}
-#links a.icon-bubbles {
-	background-image: url(img/notifs.png);
-}
-#links a.icon-bubbles.jiggle {
-	background-image: url(img/notifs2.png);
-}
-#links a.inbox {
-	background-image: url(img/chat.png);
-}
-#links a.inbox.jiggle {
-	background-image: url(img/chat2.png);
 }
 
 #header #logo{
@@ -312,19 +379,15 @@ div.commentcount {
 	margin-right:2px;
 	float: right;
 	background: #5d4c68;
-	padding: 5px;
 	color: white;
 	cursor: pointer;
 	border: solid 1px rgba(255,255,255,0.3);
 	font-size: 16px;
 	display: inline-block;
-}
-
-div.commentcount.icon {
-	padding:0px;
-	background-repeat: no-repeat;
-	width: 28px;
-	height: 30px;
+    padding: 8px;
+	height: 16px;
+	line-height: 20px
+	display: inline-block;
 }
 
 a.tag {
@@ -336,18 +399,6 @@ a.tag {
 	-webkit-border-bottom-left-radius: 12px;
 	-webkit-border-top-left-radius: 12px;
 	border: solid 1px #76648b;
-}
-
-div.icon-remove {
-	background-image: url(img/delete_white.png);
-}
-
-div.icon-loop {
-	background-image: url(img/repost.png);
-}
-
-div.icon-heart {
-	background-image: url(img/like.png);
 }
 
 div.icon.liked {
