@@ -81,10 +81,10 @@ hr {
 #links a.menu {
 	background-image: url(img/menu.png);
 }
-#links a.notifs {
+#links a.icon-bubbles {
 	background-image: url(img/notifs.png);
 }
-#links a.notifs.jiggle {
+#links a.icon-bubbles.jiggle {
 	background-image: url(img/notifs2.png);
 }
 #links a.inbox {
@@ -338,19 +338,19 @@ a.tag {
 	border: solid 1px #76648b;
 }
 
-div.delete {
+div.icon-remove {
 	background-image: url(img/delete_white.png);
 }
 
-div.repost {
+div.icon-loop {
 	background-image: url(img/repost.png);
 }
 
-div.like {
+div.icon-heart {
 	background-image: url(img/like.png);
 }
 
-div.like.liked {
+div.icon.liked {
 	background-color: #7e5a82;
 }
 
