@@ -8,7 +8,7 @@ var cleanCSS = require("clean-css");
 exports.build = function(callback) {
 	console.log("Building CSS...");
 
-	buildCSSFromFile(["stylesheet", "common", "fonts"], "app", function(cssHash) {
+	buildCSSFromFile(["common", "desktop", "fonts"], "app", function(cssHash) {
 		global.buildData.cssHash_frontend = cssHash;
 		buildCSSFromFile(["common", "mobile", "fonts"], "mobile", function(cssHash) {
 			global.buildData.cssHash_mobile = cssHash;
