@@ -958,10 +958,6 @@ div.friend:hover input {
 	opacity: 1;
 }
 
-#networkheader input {
-	margin: 4px;
-}
-
 div.popup_post {
     position: absolute;
     display: inline-block;
@@ -974,3 +970,8 @@ div.popup_post {
 	z-index: 100;
 	color: #555;
 }
+
+input {
+	-webkit-appearance: none;
+}
+

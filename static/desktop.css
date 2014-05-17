@@ -24,10 +24,6 @@ body {
 	margin-left: -550px;
 }
 
-#navigation {
-    text-align: center;
-}
-
 #links {
 	margin-bottom: 5px;
 	margin-left: -13px;
@@ -61,7 +57,7 @@ body {
 	left: 8px;
 }
 
-.useravatar{
+.useravatar {
 	border-radius: 60px;
 	width: 100px;
 	height: 100px;
@@ -76,13 +72,6 @@ body {
 	height: 32px;
 	margin-left: 0px;
 	margin-right: 0px;
-}
-
-#links a img {
-    box-shadow: 0px 0px 7px rgba(0,0,0,0.3),
-    inset 0px 0px 15px rgba(0,0,0,0.3);
-    width: 32px;
-    height: 32px;
 }
 
 #navigation input {
@@ -349,18 +338,6 @@ div.inlineimage {
 	opacity: 1;
 	z-index: 15;
 	-webkit-transform: none;
-}
-
-@media (max-width: 1279px) {
-	#sidepost_container {
-		display: none;
-	}
-	#timeline_container {
-		left: 0px;
-	}
-	div.timelineitem {
-		width: 95%;
-	}
 }
 
 #sidepost_container .contentwrapper {
