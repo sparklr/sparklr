@@ -19,7 +19,7 @@ img {
 a {
 	text-decoration: none;
 
-	color: #4F3075;
+	color: #4f3075;
 	outline: 0;
 }
 
@@ -30,7 +30,7 @@ a.person {
 }
 
 .active:before {
-	color: #7463AC;
+	color: #7463ac;
 }
 
 h2 {
@@ -49,7 +49,7 @@ hr {
 	height: 1px;
 	margin-top: 15px;
 
-	opacity: 0.1;
+	opacity: .1;
 	border: 0;
 	background: #333;
 }
@@ -61,7 +61,7 @@ hr {
 	margin-top: -8px;
 	margin-right: 6px;
 
-	-webkit-transition: all 0.1s ease-in-out;
+	-webkit-transition: all .1s ease-in-out;
 	vertical-align: middle;
 
 	opacity: 1;
@@ -164,7 +164,7 @@ div.tabs a.active {
 	width: 0;
 	height: 5px;
 
-	-webkit-transition: all 0.2s ease;
+	-webkit-transition: all .2s ease;
 
 	background: #756c88;
 }
@@ -199,14 +199,14 @@ cite {
 }
 
 @-webkit-keyframes pulse {
-	0% { opacity: 0.5; }
-	50% { opacity: 0.8; }
-	100% { opacity: 0.5; }
+	0% { opacity: .5; }
+	50% { opacity: .8; }
+	100% { opacity: .5; }
 }
 
 @-webkit-keyframes popin {
 	0% {
-		-webkit-transform: translate(-105px, 0) scale(0.9);
+		-webkit-transform: translate(-105px, 0) scale(.9);
 
 		opacity: 0;
 	}
@@ -261,7 +261,7 @@ cite {
 	position: relative;
 
 	-webkit-animation-name: flyout;
-	-webkit-animation-duration: 0.5s;
+	-webkit-animation-duration: .5s;
 	-webkit-animation-timing-function: linear;
 	-webkit-animation-delay: 0s;
 	-webkit-animation-iteration-count: 1;
@@ -269,14 +269,14 @@ cite {
 
 .fadein {
 	-webkit-animation-name: fadein;
-	-webkit-animation-duration: 0.4s;
+	-webkit-animation-duration: .4s;
 	-webkit-animation-timing-function: linear;
 	-webkit-animation-delay: 0s;
 	-webkit-animation-iteration-count: 1;
 }
 .popin {
 	-webkit-animation-name: popin;
-	-webkit-animation-duration: 0.2s;
+	-webkit-animation-duration: .2s;
 	-webkit-animation-timing-function: ease;
 	-webkit-animation-delay: 0s;
 	-webkit-animation-iteration-count: 1;
@@ -291,7 +291,7 @@ cite {
 div.banner {
 	position: fixed;
 	right: 0;
-	bottom:0px;
+	bottom:0;
 	left: 0;
 
 	height: 20px;
@@ -300,14 +300,14 @@ div.banner {
 
 	-webkit-transition: all 1s ease;
 	-webkit-animation-name: slideinfrombottom;
-	-webkit-animation-duration: 0.5s;
+	-webkit-animation-duration: .5s;
 	-webkit-animation-timing-function: linear;
 	-webkit-animation-delay: 0s;
 	-webkit-animation-iteration-count: 1;
 	text-align: center;
 
 	color: #fff;
-	background: rgba(0,0,0,0.75);
+	background: rgba(0,0,0,.75);
 	box-shadow: 0 0 10px #000;
 
 	font-size: 15px;
@@ -400,7 +400,7 @@ div.chatmsg time {
 
 	text-align: right;
 
-	opacity: 0.5;
+	opacity: .5;
 }
 
 time.float {
@@ -411,7 +411,7 @@ time.float {
 
 	margin-right: 5px;
 
-	-webkit-transition: all 0.1s ease-in-out;
+	-webkit-transition: all .1s ease-in-out;
 
 	font-size: 12px;
 }
@@ -443,7 +443,7 @@ input[type=button], input[type=submit] {
 	padding: 5px 5px;
 
 	cursor: pointer;
-	-webkit-transition: all 0.2s ease-in-out;
+	-webkit-transition: all .2s ease-in-out;
 
 	color: #444;
 	border: solid 1px #999;
@@ -475,7 +475,7 @@ input[type=button]#editBtn{
 	border-radius: 10px;
 }
 .confirm input[type=button]{
-	margin: -1px
+	margin: -1px;
 }
 
 div.friend {
@@ -500,7 +500,7 @@ div.friend b {
 	padding: 5px;
 
 	color: #fff;
-	background: rgba(0,0,0,0.5);
+	background: rgba(0,0,0,.5);
 
 	font-weight: normal;
 }
@@ -526,7 +526,7 @@ div.popup {
 	margin-left: -150px;
 	padding: 10px;
 
-	-webkit-transition: all 0.7s ease-in-out;
+	-webkit-transition: all .7s ease-in-out;
 
 	opacity: 0;
 	color: #555;
@@ -568,7 +568,7 @@ div.confirm {
 	margin-left: -250px;
 	padding: 10px;
 
-	-webkit-transition: all 0.3s ease-in-out;
+	-webkit-transition: all .3s ease-in-out;
 
 	color: #333;
 	border-radius: 5px;
@@ -626,7 +626,7 @@ div.confirm {
 }
 
 #notificationlist div:hover {
-	opacity: 0.8;
+	opacity: .8;
 }
 
 #notificationlist div .exit {
@@ -674,14 +674,14 @@ div.confirm {
 }
 
 .notification.read {
-	opacity: 0.5;
+	opacity: .5;
 }
 
-img { border: none }
+img { border: none; }
 
 p { outline: none; }
 p[contenteditable=true] {
-	background: rgba(0,0,0,0.3);
+	background: rgba(0,0,0,.3);
 }
 
 span.header {
@@ -708,7 +708,7 @@ div.timelineitem {
 }
 
 div.timelineitem time {
-	opacity: 0.65;
+	opacity: .65;
 }
 
 div.timelineitem h1 {
@@ -750,10 +750,10 @@ div.commentcount {
 	padding: 8px;
 
 	cursor: pointer;
-	-webkit-transition: all 0.2s ease-in-out;
+	-webkit-transition: all .2s ease-in-out;
 
 	color: #fff;
-	border: solid 1px rgba(255,255,255,0.3);
+	border: solid 1px rgba(255,255,255,.3);
 	background: #5d4c68;
 
 	font-size: 16px;
@@ -833,21 +833,21 @@ div.contentwrapper div.picturepost {
 }
 
 div.picturepost h2 {
-	opacity: 0.5;
+	opacity: .5;
 }
 
 div.picturepost div.content {
-	-webkit-transition: all 0.3s ease;
+	-webkit-transition: all .3s ease;
 
 	opacity: 1;
 }
 
 div.picturepost:hover div.content {
-	opacity: 0.05;
+	opacity: .05;
 }
 
 div.picturepost div.commentcount {
-	background-color: rgba(54, 43, 61, 0.8);
+	background-color: rgba(54, 43, 61, .8);
 }
 
 div.rightcontrols {
@@ -873,15 +873,15 @@ div.rightcontrols a.icon-remove {
 	margin: 2px;
 
 	cursor: pointer;
-	-webkit-transition: all 0.2s ease-in-out;
+	-webkit-transition: all .2s ease-in-out;
 
-	opacity: 0.3;
+	opacity: .3;
 
 	font-size: 14px;
 }
 
 div.rightcontrols:hover a.icon-remove {
-	opacity: 0.6 !important;
+	opacity: .6 !important;
 }
 
 div.comment {
@@ -917,12 +917,12 @@ div.attachment div, div.picturepost div {
 	height: 22px;
 	padding: 4px;
 
-	-webkit-transition: all 0.1s ease;
+	-webkit-transition: all .1s ease;
 
-	opacity: 0.4;
+	opacity: .4;
 	color: #fff;
 	outline: 0;
-	background: rgba(0,0,0,0.2);
+	background: rgba(0,0,0,.2);
 }
 
 div.attachment div:focus {
@@ -965,7 +965,7 @@ div.attachment:hover div, div.picturepost:hover div {
 #composerframe textarea {
 	width: calc(100% - 70px);
 
-	-webkit-transition: all 0.3s ease;
+	-webkit-transition: all .3s ease;
 
 	border: none;
 }
@@ -984,7 +984,7 @@ div.composercontrols {
 	width: 32px;
 	height: 32px;
 
-	-webkit-transition: all 0.5s ease;
+	-webkit-transition: all .5s ease;
 
 	opacity: 0;
 	background-image: url(img/photos.png);
@@ -998,13 +998,13 @@ div.composercontrols input {
 }
 
 div.composer:hover div.composercontrols {
-	opacity: 0.3;
+	opacity: .3;
 }
 
 div.remaining {
 	margin-top: 20px;
 
-	-webkit-transition: all 0.3s ease;
+	-webkit-transition: all .3s ease;
 
 	opacity: 1;
 }
@@ -1034,7 +1034,7 @@ img.avatar {
 
 	opacity: 1;
 	color: #fff;
-	background-position: 0% 30%;
+	background-position: 0 30%;
 	background-size: cover;
 }
 
@@ -1118,7 +1118,7 @@ div.popup_post {
 	margin-top: 100px;
 	margin-left: -390px;
 
-	-webkit-transition: all 0.7s ease-in-out;
+	-webkit-transition: all .7s ease-in-out;
 
 	opacity: 0;
 	color: #555;
@@ -1127,4 +1127,3 @@ div.popup_post {
 input {
 	-webkit-appearance: none;
 }
-
