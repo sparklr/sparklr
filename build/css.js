@@ -10,7 +10,7 @@ exports.build = function(callback) {
 
 	buildCSSFromFile(["stylesheet", "common", "fonts"], "app", function(cssHash) {
 		global.buildData.cssHash_frontend = cssHash;
-		buildCSSFromFile(["mobile", "fonts", "common"], "mobile", function(cssHash) {
+		buildCSSFromFile(["common", "mobile", "fonts"], "mobile", function(cssHash) {
 			global.buildData.cssHash_mobile = cssHash;
 			buildCSSFromFile(["external"], "external", function(cssHash) {
 				global.buildData.cssHash_external = cssHash;
