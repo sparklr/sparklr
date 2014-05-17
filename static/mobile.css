@@ -262,11 +262,15 @@ div.notification {
 
 div.composercontrols {
 	opacity: 0.5;
-	top: 8px;
+	bottom: 10px;
 }
 
 div.composercontrols input {
 	position:absolute;
 	right: 40px;
+}
+
+div.timelineitem .commentcount {
+	opacity: 1 !important;
 }
 
