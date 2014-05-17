@@ -442,5 +442,20 @@ div.contentwrapper {
 	top: 66px;
 }
 
-
+div.peoplebuttons{
+	position: absolute;
+	right: 185px;
+	margin-top: -53px
+}
+div.peoplebuttons input[type=button]{
+	background: #454050;
+	padding: 8px;
+	font-size: 18px;
+	color: #fff;
+	margin: 0 -1px;
+	border: 1px solid #302c37;
+}
+div.peoplebuttons input[type=button]:hover{
+	background-color: #605774;
+}
 

@@ -11,6 +11,7 @@ blockquote{
 body {
 	font-family: Helvetica, sans-serif;
 	font-size: 18px;
+	background: #fff;
 }
 
 #header {
@@ -22,13 +23,13 @@ body {
 	background: #454050;
 	position: fixed;
 	z-index: 1000;
-	padding: 4px;
+	padding: 8px;
 	color: #fff;
 }
 
 #links {
 	margin-bottom: 5px;
-	margin-left: -20px;
+	margin-left: -30px;
 	margin-right: 5px;
 	float: right;
 	font-size: 30px;
@@ -39,14 +40,11 @@ body {
 	float: right;
 }
 #links a {
-	margin: 0 8px;
+	margin: 0 10px;
 	display: inline-block;
 	margin-top: 7px;
 	color: #fff;
-	text-shadow: 0px 0px 2px #fff;
 	-webkit-transition: all 0.1s ease-in-out;
-	width: 32px;
-	height: 32px;
 	background-repeat: no-repeat;
 	opacity: 1;
 }
@@ -54,12 +52,12 @@ body {
 #header #logo{
 	display: inline-block;
 	width: 120px;
-	height: 44px;
+	height:52px;
 	margin: auto;
 	margin-top: 5px;
 	margin-left: 5px;
 	font-family: 'Courgette';
-	font-size: 30px;
+	font-size: 32px;
 	color: #fff;
 	letter-spacing: -2px;
 	cursor: pointer;
@@ -68,26 +66,17 @@ body {
 }
 
 #links a img {
-	box-shadow: 0px 0px 7px rgba(0,0,0,0.3),
-	inset 0px 0px 15px rgba(0,0,0,0.3);
 	width: 32px;
 	height: 32px;
 }
 
 #content {
-	margin: 4px;
+	margin: 8px;
 	margin-top: 67px;
 	padding: 0px;
+	position: relative;
 }
 
-div.contentwrapper {
-	border: solid 1px #ccc;
-	background: #fff;
-	padding: 6px;
-	position: relative;
-	top: 10px;
-	margin: auto;
-}
 #friendslist {
 	-webkit-transition: all 1s ease;
 	position: relative;
@@ -206,6 +195,11 @@ div.window div.scrollUpContent {
 	height: inherit;
 }
 
+div.timelineitem {
+	width: 100%;
+	margin-bottom: 30px;
+}
+
 #newposts {
 	color: #fff;
 	text-align: center;
@@ -262,5 +256,17 @@ div.notification {
 	text-align: center;
 }
 
+#composerframe textarea {
+	width: 85%;
+}
 
+div.composercontrols {
+	opacity: 0.5;
+	top: 8px;
+}
+
+div.composercontrols input {
+	position:absolute;
+	right: 40px;
+}
 

@@ -610,7 +610,6 @@ span.header {
 
 div.timelineitem {
     min-height: 50px;
-    padding: 6px;
 	margin: 4px;
 	margin-bottom: 10px;
 	word-wrap: break-word;
@@ -914,7 +913,6 @@ img.avatar {
     font-size: 38px;
     margin-top: 10px;
     margin-bottom: 0px;
-    text-shadow: 0px 0px 5px #000;
 	padding: 0 0 0px 5px;
 	display: block;
 }
@@ -953,24 +951,6 @@ img.avatar {
 
 #profileheader input {
 	margin-right: 5px;
-}
-
-
-div.peoplebuttons{
-	position: absolute;
-	right: 185px;
-	margin-top: -53px
-}
-div.peoplebuttons input[type=button]{
-	background: #454050;
-	padding: 8px;
-	font-size: 18px;
-	color: #fff;
-	margin: 0 -1px;
-	border: 1px solid #302c37;
-}
-div.peoplebuttons input[type=button]:hover{
-	background-color: #605774;
 }
 
 
