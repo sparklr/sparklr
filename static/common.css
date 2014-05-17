@@ -1,15 +1,10 @@
-
 blockquote {
 	margin: 0 0 10px 25px;
 }
 
-.active:before {
-	color: #7463AC;
-}
-
 body {
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 
 	color: #333;
 	background: #efefef;
@@ -17,7 +12,9 @@ body {
 	font-size: 18px;
 }
 
-img { outline: 0 }
+img {
+	outline: 0;
+}
 
 a {
 	text-decoration: none;
@@ -32,8 +29,12 @@ a.person {
 	font-weight: 700;
 }
 
+.active:before {
+	color: #7463AC;
+}
+
 h2 {
-	margin-top: 0px;
+	margin-top: 0;
 	margin-bottom: 8px;
 	padding: 3px;
 
@@ -73,7 +74,6 @@ hr {
 	top: 3px;
 	left: 8px;
 
-	display: inline-block;
 	display: inline-block;
 
 	width: 120px;
@@ -156,12 +156,12 @@ div.tabs a.active {
 #loading {
 	position: fixed;
 	z-index: 1000;
-	top: 0px;
-	left: 0px;
+	top: 0;
+	left: 0;
 
 	display: block;
 
-	width: 0px;
+	width: 0;
 	height: 5px;
 
 	-webkit-transition: all 0.2s ease;
@@ -190,7 +190,7 @@ h2 a.tag {
 
 	border: solid 1px #43394f;
 	background: #2b2533;
-	box-shadow: inset 0px 0px 3px #000;
+	box-shadow: inset 0 0 3px #000;
 }
 
 cite {
@@ -206,7 +206,7 @@ cite {
 
 @-webkit-keyframes popin {
 	0% {
-		-webkit-transform: translate(-105px, 0px) scale(0.9);
+		-webkit-transform: translate(-105px, 0) scale(0.9);
 
 		opacity: 0;
 	}
@@ -290,9 +290,9 @@ cite {
 /* Bottom banner */
 div.banner {
 	position: fixed;
-	right: 0px;
+	right: 0;
 	bottom:0px;
-	left: 0px;
+	left: 0;
 
 	height: 20px;
 	padding: 4px;
@@ -308,7 +308,7 @@ div.banner {
 
 	color: #fff;
 	background: rgba(0,0,0,0.75);
-	box-shadow: 0px 0px 10px #000;
+	box-shadow: 0 0 10px #000;
 
 	font-size: 15px;
 }
@@ -406,7 +406,7 @@ div.chatmsg time {
 time.float {
 	position: absolute;
 	top: inherit;
-	right: 0px;
+	right: 0;
 	bottom: 5px;
 
 	margin-right: 5px;
@@ -439,7 +439,7 @@ input[type=button]:hover, input[type=submit]:hover {
 }
 
 input[type=button], input[type=submit] {
-	margin: 5px 0px;
+	margin: 5px 0;
 	padding: 5px 5px;
 
 	cursor: pointer;
@@ -532,14 +532,14 @@ div.popup {
 	color: #555;
 	border-radius: 5px;
 	background: #eaeaea;
-	box-shadow: 0px 0px 15px #000;
+	box-shadow: 0 0 15px #000;
 }
 
 div.lightbox {
 	position: fixed;
 	z-index: 10000;
 	top: 100px;
-	left: 0px;
+	left: 0;
 
 	width: 100%;
 
@@ -553,7 +553,7 @@ div.lightbox img {
 	-webkit-transition: all 1s ease;
 
 	opacity: 0;
-	box-shadow: 0px 0px 10px #000;
+	box-shadow: 0 0 10px #000;
 }
 
 div.confirm {
@@ -573,7 +573,7 @@ div.confirm {
 	color: #333;
 	border-radius: 5px;
 	background: #fff;
-	box-shadow: 0px 0px 15px #000;
+	box-shadow: 0 0 15px #000;
 }
 
 .jiggle {
@@ -651,7 +651,7 @@ div.confirm {
 }
 
 #notificationlist div .littleavatar {
-	margin-left: 0px;
+	margin-left: 0;
 }
 
 #notificationlist div a {
@@ -715,7 +715,7 @@ div.timelineitem h1 {
 	display: block;
 
 	margin: 3px;
-	padding: 0px;
+	padding: 0;
 
 	font-size: 26px;
 }
@@ -724,7 +724,7 @@ div.timelineitem h2 {
 	display: block;
 
 	margin-bottom: 25px;
-	padding: 0px;
+	padding: 0;
 
 	font-size: 13px;
 }
@@ -790,7 +790,7 @@ div.post div.commentcount.icon{
 a.tag {
 	display: inline-block;
 
-	padding: 0px 5px;
+	padding: 0 5px;
 
 	color: #fff;
 	border: solid 1px #76648b;
@@ -807,7 +807,7 @@ div.icon.liked {
 div.picturepost {
 	margin: -5px;
 	margin-bottom: 10px;
-	padding: 0px;
+	padding: 0;
 
 	cursor: pointer;
 	text-align: center;
@@ -828,7 +828,7 @@ div.picturepost.full img {
 }
 
 div.contentwrapper div.picturepost {
-	margin: 0px;
+	margin: 0;
 	margin-bottom: 10px;
 }
 
@@ -862,7 +862,7 @@ div.rightcontrols {
 
 div.rightcontrols time {
 	position: absolute;
-	top: 0px;
+	top: 0;
 }
 
 div.rightcontrols a.icon-remove {
@@ -1017,7 +1017,7 @@ img.avatar {
 	margin-right: 6px;
 
 	border-radius: 55px;
-	box-shadow: 0px 0px 1px #000;
+	box-shadow: 0 0 1px #000;
 }
 
 #profileheader {
@@ -1055,8 +1055,8 @@ img.avatar {
 	display: block;
 
 	margin-top: 10px;
-	margin-bottom: 0px;
-	padding: 0 0 0px 5px;
+	margin-bottom: 0;
+	padding: 0 0 0 5px;
 
 	color: white;
 
@@ -1066,11 +1066,11 @@ img.avatar {
 #profileheader p {
 	display: block;
 
-	margin: 0px 10px 3px;
+	margin: 0 10px 3px;
 	padding-left: 3px;
 
 	color: white;
-	text-shadow: 0px 0px 6px #000;
+	text-shadow: 0 0 6px #000;
 
 	font-size: 18px;
 }

@@ -9,14 +9,13 @@ body {
 
 #header {
 	position: fixed;
-	z-index: 1000;
 	z-index: 9950;
-	top: 0px;
+	top: 0;
 	left: 50%;
 
 	width: 1090px;
 	height: 46px;
-	margin: 0px;
+	margin: 0;
 	margin-bottom: 5px;
 	margin-left: -550px;
 	padding: 8px 10px 8px 10px;
@@ -45,29 +44,6 @@ body {
 	vertical-align: baseline;
 }
 
-#header #logo{
-	position: absolute;
-	top: 3px;
-	left: 8px;
-
-	display: inline-block;
-	display: inline-block;
-
-	width: 120px;
-	height: 44px;
-	margin: auto;
-	margin-top: 5px;
-	margin-bottom: 15px;
-
-	cursor: pointer;
-	letter-spacing: -2px;
-
-	color: #fff;
-
-	font-family: 'Courgette';
-	font-size: 36px;
-}
-
 .useravatar {
 	width: 100px;
 	height: 100px;
@@ -81,9 +57,9 @@ body {
 
 	width: 32px;
 	height: 32px;
-	margin-right: 0px;
+	margin-right: 0;
 	margin-bottom: 15px;
-	margin-left: 0px;
+	margin-left: 0;
 
 	cursor: pointer;
 }
@@ -115,7 +91,7 @@ body {
 
 	width: 1100px;
 	min-height: 100%;
-	margin-top: 0px;
+	margin-top: 0;
 	margin-left: -550px;
 	padding-top: 1px;
 
@@ -137,9 +113,9 @@ body {
 	position: fixed;
 	z-index: 20;
 	top: 60px;
-	right: 0px;
+	right: 0;
 	right: 50%;
-	bottom: 0px;
+	bottom: 0;
 
 	display: block;
 
@@ -196,10 +172,10 @@ a.network.active {
 #fader {
 	position: fixed;
 	z-index: -1;
-	top: 0px;
-	right: 0px;
-	bottom: 0px;
-	left: 0px;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 
 	display: inline-block;
 
@@ -216,21 +192,20 @@ a.network.active {
 	opacity: 1;
 }
 
-
 #windowcontainer {
 	position: fixed;
-	right: 0px;
-	bottom: 0px;
-	left: 0px;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 
 div.window {
 	position: absolute;
-	bottom: 0px;
+	bottom: 0;
 
 	display: inline-block;
 
-	margin: 0px 10px;
+	margin: 0 10px;
 
 	-webkit-transition: left 0.1s ease;
 
@@ -250,7 +225,7 @@ div.window div.title {
 div.window div.title a {
 	float: right;
 
-	margin: 0px;
+	margin: 0;
 	padding-right: 5px;
 
 	cursor: pointer;
@@ -266,12 +241,12 @@ div.windowcontent {
 
 	width: 360px;
 	height: 400px;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 }
 
 div.window div.contentwrapper {
-	margin: 0px;
+	margin: 0;
 
 	border: none;
 }
@@ -290,8 +265,8 @@ div.scrollUpContent {
 
 	width: 340px;
 	height: 320px;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 
 	word-wrap: break-word;
 }
@@ -301,7 +276,7 @@ div.chatcomposer {
 
 	width: 340px;
 	margin-top: 5px;
-	padding: 0px;
+	padding: 0;
 }
 
 #newposts {
@@ -359,8 +334,8 @@ div.inlineimage {
 	z-index: -1;
 	top: 61px;
 	right: 175px;
-	bottom: 0px;
-	left: 0px;
+	bottom: 0;
+	left: 0;
 
 	display: block;
 
@@ -380,7 +355,7 @@ div.inlineimage {
 	position: fixed;
 	z-index: -1;
 	top: 62px;
-	bottom: 0px;
+	bottom: 0;
 	left: 50%;
 
 	overflow-x: hidden;
@@ -470,6 +445,7 @@ div.peoplebuttons{
 
 	margin-top: -53px
 }
+
 div.peoplebuttons input[type=button]{
 	margin: 0 -1px;
 	padding: 8px;
@@ -480,6 +456,7 @@ div.peoplebuttons input[type=button]{
 
 	font-size: 18px;
 }
+
 div.peoplebuttons input[type=button]:hover{
 	background-color: #605774;
 }
