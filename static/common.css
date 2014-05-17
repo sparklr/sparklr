@@ -3,6 +3,10 @@ blockquote {
 	margin: 0 0 10px 25px;
 }
 
+.active:before {
+	color: #7463AC;
+}
+
 body { 
     color: #333;
 	background: #efefef;
