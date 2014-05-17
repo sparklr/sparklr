@@ -1,0 +1,992 @@
+
+blockquote {
+	margin: 0 0 10px 25px;
+}
+
+body { 
+    color: #333;
+	background: #efefef;
+    margin: 0px;
+    padding: 0px;
+	font-size: 18px;
+}
+
+img { outline: 0 }
+
+a { 
+	color: #4F3075;
+	text-decoration: none;
+	outline: 0;
+}
+
+a.person { 
+	color: #3a3a3a;
+	font-weight: 700;
+}
+
+h2 {
+	color: #555;
+	font-weight: normal;
+	font-size: 40px;
+	padding: 3px;
+	margin-bottom: 8px;
+	margin-top: 0px;
+}
+
+hr {
+	border: 0;
+	height: 1px;
+	background: #333;
+	opacity: 0.1;
+	width: 94%;
+	margin-top: 15px;
+}
+
+#links a {
+    margin: 0 18px;
+    display: inline-block;
+    margin-top: -8px;
+	margin-right: 6px;
+    color: #fff;
+    -webkit-transition: all 0.1s ease-in-out;
+    background-repeat: no-repeat;
+    opacity: 1;
+	vertical-align: middle;
+}
+
+#header #logo{
+	display: inline-block;
+	width: 120px;
+	height: 44px;
+	margin: auto;
+	margin-bottom: 15px;
+	margin-top: 5px;
+	position: absolute;
+    cursor: pointer;
+	display: inline-block;
+	font-family: 'Courgette';
+	font-size: 36px;
+	color: #fff;
+	letter-spacing: -2px;
+	top: 3px;
+	left: 8px;
+}
+
+#signin input {
+	width: 285px;
+	padding: 5px;
+	margin: 5px;
+	border: none;
+	font-size: 16px;
+}
+
+#signin input[type=button] {
+	margin: 5px;
+	width: 290px;
+	background: #fff;
+}
+
+#signin #forgot_password {
+	display: none;
+}
+
+#signin #forgot_password.show {
+	display: inline-block;
+}
+
+#welcomebar .right {
+	float: right;
+	padding-right: 20px;
+}
+
+#welcomebar a {
+	color: #ede;
+	text-decoration: underline;
+}
+
+#welcomebar .right a {
+	color: #fff;
+	text-decoration: none;
+}
+
+div.tabs{
+	text-align: center;
+}
+
+div.tabs a {
+	padding: 4px 20px;
+	margin-left: 2px;
+	color: #555;
+	background: #fff;
+	display: inline-block;
+	min-width: 95px;
+}
+div.tabs a.active {
+	background: #444;
+	color: #fff;
+}
+
+#loading {
+	position: fixed;
+	display: block;
+	top: 0px;
+	left: 0px;
+	width: 0px;
+	height: 5px;
+	background: #756c88;
+	-webkit-transition: all 0.2s ease;
+	z-index: 1000;
+}
+
+span.admin, span.mod{
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	margin-left: 3px;
+}
+
+span.admin {
+	background-image: url(img/adsta.png);
+}
+span.mod{
+	background-image: url(img/babysta.png);
+}
+
+/* Tag system */
+h2 a.tag {
+	background: #2b2533;
+	border: solid 1px #43394f;
+	box-shadow: inset 0px 0px 3px #000;
+	padding: 3px 6px;
+}
+
+cite {
+	font-style: inherit;
+	font-weight: inherit;
+}
+
+@-webkit-keyframes pulse {
+	0% { opacity: 0.5; }
+	50% { opacity: 0.8; }
+	100% { opacity: 0.5; }
+}
+
+@-webkit-keyframes popin {
+	0% {
+		-webkit-transform: translate(-105px, 0px) scale(0.9);
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes flyout {
+    0% {
+
+    }
+    100% {
+        top: -10px;
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes slideinfromright {
+    0% {
+        right: -200px;
+    }
+    100% {
+
+    }
+}
+
+@-webkit-keyframes slideinfrombottom {
+    0% {
+        bottom: -100px;
+    }
+    100% {
+
+    }
+}
+.pulse {
+	-webkit-animation-name: pulse;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
+}
+
+.flyout {
+	-webkit-animation-name: flyout;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-duration: 0.5s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
+	position: relative;
+}
+
+.fadein {
+	-webkit-animation-name: fadein;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-duration: 0.4s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
+}
+.popin {
+    -webkit-animation-name: popin;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-duration: 0.2s;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-delay: 0s;
+	font-size: 18px;
+}
+.popin time{
+	font-size: 12px;
+}
+
+/* Bottom banner */
+div.banner {
+    position: fixed;
+    bottom:0px;
+    left: 0px;
+    right: 0px;
+    height: 20px;
+    padding: 4px;
+    padding-right: 10px;
+    text-align: center;
+    font-size: 15px;
+    background: rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px #000;
+	color: #fff;
+    -webkit-animation-name: slideinfrombottom;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-delay: 0s;
+    -webkit-transition: all 1s ease;
+}
+
+div.banner a {
+	color: #aaa;
+}
+div.banner #dismiss {
+	float: right;
+	cursor: pointer;
+}
+div.popup textarea {
+	width: 290px;
+	height: 140px;
+	margin: 2px;
+}
+#footer {
+	position: absolute;
+	bottom: 5px;
+	font-size: 11px;
+	color: #fff;
+}
+#footer a {
+	color: #fff;
+}
+
+span.ok {
+    color: #393;
+}
+
+span.error {
+    color: #c33;
+}
+
+div.chatmsg {
+	margin-bottom: 15px;
+    display: block;
+    min-height: 27px;
+	margin-left: 5px;
+	word-wrap: break-word;
+}
+
+form.settings {
+    padding: 10px;
+}
+
+form.settings label {
+	padding: 2px;
+	float: left;
+	display: block;
+	width: 200px;
+	height: 40px;
+}
+
+form.settings label.radio {
+	width: 600px;
+	float: none;
+	height: inherit;
+}
+
+form.settings input[type=radio] {
+	float: left;
+}
+
+form.settings fieldset {
+    border: none;
+}
+
+form.settings fieldset input {
+	padding: 5px;
+	font-size: 18px;
+}
+
+form.settings label p {
+	margin: 5px;
+	margin-left: 15px;
+}
+
+div.chatmsg time {
+	position: relative;
+	opacity: 0.5;
+	text-align: right;
+}
+
+time.float {
+	position: absolute;
+    bottom: 5px;
+    right: 0px;
+	top: inherit;
+    margin-right: 5px;
+    font-size: 12px;
+    -webkit-transition: all 0.1s ease-in-out;
+}
+
+textarea {
+    width: 500px;
+    padding: 4px;
+    height: 40px;
+    vertical-align: top;
+	font-family: 'PT Sans', sans-serif;
+    outline: none;
+    resize: none;
+	font-size: 15px;
+	overflow: hidden;
+}
+
+input[type=button]:hover, input[type=submit]:hover {
+	background-color: #454050;
+	color: #fff;
+	border: 1px solid #302c37;
+}
+
+input[type=button], input[type=submit] {
+    border: solid 1px #999;
+    background: #fff;
+    padding: 5px 5px;
+    font-size: 15px;
+	font-family: 'PT Sans', sans-serif;
+    color: #444;
+    cursor: pointer;
+    -webkit-transition: all 0.2s ease-in-out;
+	margin: 5px 0px;
+}
+input[type=button]{
+	margin: 5px -6px;
+	padding: 7px;
+}
+input[type=button]:first-child{
+	border-radius: 10px 0 0 10px;
+	margin-left: 6px;
+}
+input[type=button].red:first-child:hover{
+	background-color: #d0635e;
+	border: 1px solid #742b22;
+	color: #fff;
+}
+input[type=button]:last-child{
+	border-radius: 0 10px 10px 0;
+}
+input[type=button]#editBtn{
+	border-radius: 10px;
+	margin-left: 6px;
+}
+.confirm input[type=button]{
+	margin: -1px
+}
+
+div.friend {
+	width: 200px;
+	height: 200px;
+	display: inline-block;
+	background-size: cover;
+	border: solid 1px #aaa;
+	margin: 6px;
+	margin-right: 26px;
+	position: relative;
+}
+
+div.friend b {
+	background: rgba(0,0,0,0.5);
+	color: #fff;
+	display: inline-flex;
+	width: 100%;
+	padding: 5px;
+	font-weight: normal;
+	box-sizing: border-box;
+}
+
+div.friend input {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	opacity: 0;
+}
+
+div.popup {
+    position: fixed;
+    display: inline-block;
+	-webkit-transition: all 0.7s ease-in-out;
+	opacity: 0;
+    background: #eaeaea;
+    width: 300px;
+    margin-left: -150px;
+    margin-top: -150px;    
+    left: 50%;
+    top: 50%;
+	border-radius: 5px;
+	padding: 10px;
+	box-shadow: 0px 0px 15px #000;
+	z-index: 10000;
+	color: #555;
+}
+
+div.lightbox {
+    position: fixed;
+    top: 100px;
+	width: 100%;
+	left: 0px;
+	text-align: center;
+	z-index: 10000;
+}
+
+div.lightbox img {
+	opacity: 0;
+	-webkit-transition: all 1s ease;
+    box-shadow: 0px 0px 10px #000;
+	max-height: 80%;
+	max-width: 80%;
+}
+
+div.confirm {
+    background: #fff;
+    border-radius: 5px;
+	padding: 10px;
+	box-shadow: 0px 0px 15px #000;
+	position: fixed;
+	left: 50%;
+	top: 45%;
+	width: 500px;
+	max-height: 450px;
+	margin-left: -250px;
+	margin-top: -125px;
+	z-index: 15000;
+	-webkit-transition: all 0.3s ease-in-out;
+	color: #333;
+}
+
+.jiggle {
+    -webkit-animation-name: jiggle;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-timing-function: ease-out;
+}
+
+@-webkit-keyframes jiggle {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    13% {
+        -webkit-transform: rotate(8deg);
+    }
+    26% {
+        -webkit-transform: rotate(0deg);
+    }
+    50% {
+        -webkit-transform: rotate(8deg);
+    }
+    63% {
+        -webkit-transform: rotate(0deg);
+    }
+}
+
+#notificationlist {
+    position: fixed;
+    right: 10px;
+    width: 220px;
+    bottom: 5px;
+	z-index: 10000;
+}
+
+#notificationlist div {
+    border: solid 1px #333;
+	background: #454050;
+    color: #fff;
+    padding: 4px;
+	padding-top: 7px;
+    margin: 20px 10px;
+    cursor: pointer;
+    font-size: 13px;
+	word-wrap: break-word;
+}
+
+#notificationlist div:hover {
+	opacity: 0.8;
+}
+
+#notificationlist div .exit {
+    opacity: 0;
+    padding: 2px;
+    float: right;
+}
+
+#notificationlist div:hover .exit {
+    opacity: 1;
+}
+
+#notificationlist div:hover .exit:hover {
+    background: #d2b8d4;
+}
+
+#notificationlist div.inlineimage {
+	width: 155px;
+	height: 100px;
+}
+
+#notificationlist div .littleavatar {
+	margin-left: 0px;
+}
+
+#notificationlist div a {
+	color: #fff;
+}
+
+#notifications > div {
+	position: relative;
+	cursor: pointer;
+	min-height: 60px;
+}
+
+.notification {
+	margin-bottom: 2px;
+	min-height: 70px;
+	overflow: hidden;
+}
+
+.notification.read {
+	opacity: 0.5;
+}
+
+img { border: none }
+
+p { outline: none; }
+p[contenteditable=true] {
+    background: rgba(0,0,0,0.3);
+}
+
+span.header {
+    font-size: 24px;
+    color: #444;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+div.timelineitem {
+    min-height: 50px;
+    padding: 6px;
+	margin: 4px;
+	margin-bottom: 10px;
+	word-wrap: break-word;
+	display: block;
+	width: 880px;
+	position: relative;
+}
+
+div.timelineitem time {
+    opacity: 0.65;
+}
+
+div.timelineitem h1 {
+    font-size: 26px;
+	margin: 3px;
+    padding: 0px;
+    display: block;
+}
+
+div.timelineitem h2 {
+    font-size: 13px;
+    margin-bottom: 25px;
+    padding: 0px;
+    display: block;
+}
+
+img.littleavatar {
+    width: 24px;
+    height: 24px;
+    margin: 4px;
+    margin-top: -3px;
+    vertical-align: top;
+    border-radius: 15px;
+	margin-right: 6px;
+}
+
+div.commentcount {
+	margin-left:6px;
+	margin-right:2px;
+    float: right;
+    background: #5d4c68;
+    padding: 8px;
+	height: 18px;
+    color: #fff;
+    cursor: pointer;
+    -webkit-transition: all 0.2s ease-in-out;
+    border: solid 1px rgba(255,255,255,0.3);
+	font-size: 16px;
+	line-height: 20px
+	display: inline-block;
+}
+
+div.timelineitem .commentcount {
+	opacity: 0;
+}
+
+div.timelineitem:hover div.commentcount {
+    opacity: 1 !important;
+}
+
+div.post {
+	padding: 7px;
+	margin: -5px;
+	word-wrap: break-word;
+}
+
+div.post div.user {
+	display:inline-block;
+	float:left; 
+	height:100%;
+}
+
+div.post div.commentcount.icon{
+	opacity: 1;
+}
+
+a.tag {
+	display: inline-block;
+	background: #594e64;
+	color: #fff;
+	padding: 0px 5px;
+	border-radius: 4px;
+	-webkit-border-bottom-left-radius: 12px;
+	-webkit-border-top-left-radius: 12px;
+	border: solid 1px #76648b;
+}
+
+div.icon.liked {
+	background-color: #7e5a82;
+}
+
+div.picturepost {
+    background-repeat: no-repeat;
+	background-position: center center;
+    margin: -5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+	padding: 0px;
+	text-align: center;
+}
+
+div.picturepost img {
+	max-width: 100%;
+	max-height: 740px;
+	margin-bottom: -4px;
+}
+
+div.picturepost.full img {
+	max-width: 100%;
+	max-height: 720px;
+}
+
+div.contentwrapper div.picturepost {
+	margin: 0px;
+	margin-bottom: 10px;
+}
+
+div.picturepost h2 {
+    opacity: 0.5;
+}
+
+div.picturepost div.content {
+    opacity: 1;
+    -webkit-transition: all 0.3s ease;
+}
+
+div.picturepost:hover div.content {
+    opacity: 0.05;
+}
+
+div.picturepost div.commentcount {
+    background-color: rgba(54, 43, 61, 0.8);
+}
+
+div.rightcontrols {
+    float: right;
+    text-align: right;
+	position: relative;
+	width: 100px;
+}
+
+div.rightcontrols time {
+    top: 0px;
+	position: absolute;
+}
+
+div.rightcontrols a.icon-remove {
+    float: right;
+    margin: 2px;
+    cursor: pointer;
+	width: 16px;
+	height: 16px;
+    -webkit-transition: all 0.2s ease-in-out;
+    opacity: 0.3;
+    font-size: 14px;
+}
+
+div.rightcontrols:hover a.icon-remove {
+    opacity: 0.6 !important;
+}
+
+div.comment {
+	margin-bottom: 12px;
+	word-wrap: break-word;
+}
+
+div.minipreview {
+	display: none;
+	margin-bottom: 5px;
+	height: 325px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+div.attachment {
+	display: none;
+	height: 325px;
+	background-size: contain;
+}
+
+div.attachment div, div.picturepost div {
+	position: absolute;
+	background: rgba(0,0,0,0.2);
+	height: 22px;
+	display: block;
+	color: #fff;
+	outline: 0;
+	opacity: 0.4;
+	-webkit-transition: all 0.1s ease;
+	padding: 4px;
+}
+
+div.attachment div:focus {
+	opacity: 1;
+}
+
+div.attachment:hover div, div.picturepost:hover div {
+	opacity: 1;
+}
+
+#suggestionbox {
+	position: absolute;
+	display: none;
+	z-index: 99999999;
+	background: #fff;
+	border: solid 1px #333;
+	color: #333;
+}
+
+#suggestionbox div {
+	padding: 5px;
+	cursor: pointer;
+}
+
+#suggestionbox div:hover, #suggestionbox div.hover {
+	background: #594e64;
+	color: #fff;
+}
+
+#composerframe {
+	border: solid 1px #bbb;
+	margin-left: 55px;
+	background: #fff;
+}
+
+#composerframe textarea {
+	border: none;
+	width: calc(100% - 70px);
+	-webkit-transition: all 0.3s ease;
+}
+
+div.composer div.controls {
+	float: left;
+}
+
+div.composercontrols {
+	position:absolute;
+	right: 18px;
+	bottom:16px;
+	opacity: 0;
+	-webkit-transition: all 0.5s ease;
+	background-image: url(img/photos.png);
+	display: block;
+	width: 32px;
+	height: 32px;
+}
+
+div.composercontrols input {
+	width: 32px;
+	height: 32px;
+	opacity: 0;
+}
+
+div.composer:hover div.composercontrols {
+	opacity: 0.3;
+}
+
+div.remaining {
+	opacity: 1;
+	margin-top: 20px;
+	-webkit-transition: all 0.3s ease;
+}
+
+img.avatar {
+    width: 50px;
+    height: 50px;
+    box-shadow: 0px 0px 1px #000;
+	border-radius: 55px;
+    float: left;
+    margin-right: 6px;
+}
+
+#profileheader {
+    height: 290px;
+    padding: 10px 0 0 0;
+	margin: -5px 0 0 -5px;
+    background-position: 0% 30%;
+    background-size: cover;
+    opacity: 1;
+    position: relative;
+	overflow: hidden;
+	text-align: center;
+	color: #fff;
+	width: 100%;
+}
+
+#profileheader a {
+	color: #fff;
+}
+
+#profileheader img.avatar {
+	float: none;
+	top: 10px;
+	position: relative;
+	border-radius: 30px;
+}
+
+#profileheader #userDisplayName {
+    color: white;
+    font-size: 38px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    text-shadow: 0px 0px 5px #000;
+	padding: 0 0 0px 5px;
+	display: block;
+}
+
+#profileheader p {
+	display: block;
+    margin: 0px 10px 3px;
+    color: white;
+    text-shadow: 0px 0px 6px #000;
+	padding-left: 3px;
+	font-size: 18px;
+}
+
+#profileheader #editBtn{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+#profileheader div.controls {
+	position:absolute;
+	bottom: 10px;
+	left: 9px;
+}
+
+#profileheader div.settings {
+	position: absolute;
+	top: 10px;
+	right: 5px;
+}
+
+#profileheader div.actions {
+	position:absolute;
+	bottom:5px;
+}
+
+#profileheader input {
+	margin-right: 5px;
+}
+
+
+div.peoplebuttons{
+	position: absolute;
+	right: 185px;
+	margin-top: -53px
+}
+div.peoplebuttons input[type=button]{
+	background: #454050;
+	padding: 8px;
+	font-size: 18px;
+	color: #fff;
+	margin: 0 -1px;
+	border: 1px solid #302c37;
+}
+div.peoplebuttons input[type=button]:hover{
+	background-color: #605774;
+}
+
+
+div.friend:hover input {
+	opacity: 1;
+}
+
+#networkheader input {
+	margin: 4px;
+}
+
+div.popup_post {
+    position: absolute;
+    display: inline-block;
+	-webkit-transition: all 0.7s ease-in-out;
+	opacity: 0;
+    width: 580px;
+    margin-left: -390px;
+    margin-top: 100px;    
+    left: 50%;
+	z-index: 100;
+	color: #555;
+}
