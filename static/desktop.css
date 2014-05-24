@@ -5,6 +5,7 @@ html, body {
 body {
 	font-family: 'PT Sans', sans-serif;
 	font-size: 18px;
+	background: #111;
 }
 
 #header {
