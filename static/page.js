@@ -22,6 +22,8 @@ var networks = {
 
 var previousPage = "";
 
+var suppressHashChange = false;
+
 function showStreamPage(posts) {
 	defaultSidebar();
 
@@ -69,6 +71,9 @@ function defaultSidebar() {
 function updatePages(loaded) {
 	document.body.ondrop = document.body.ondragover = document.body.ondragenter = function (e) { dropPrevent(e); }
 	window.onload = null;
+
+	if (suppressHashChange)
+		return suppressHashChange = false;
 
 	var e = _g("network_" + subscribedStream);
 	if (e) {

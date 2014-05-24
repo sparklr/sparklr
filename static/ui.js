@@ -496,8 +496,14 @@ function hideFader() {
 		_g("sidepost_container").className = "";
 		_g("sidepost_fader").className = "";
 
+		if (previousPage && subSubscribedStream && subPageType) {
+			suppressHashChange = true;
+			location.hash = previousPage.join('/');
+		}
+
 		subSubscribedStream = 0;
 		subPageType = "";
+
 	}
 }
 
