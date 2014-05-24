@@ -307,21 +307,6 @@ input.t1 {
 	border: solid 1px #ccc;
 }
 
-div.inlineimage {
-	display: block;
-
-	width: 200px;
-	height: 200px;
-	margin: 5px;
-
-	cursor: pointer;
-
-	border: none !important;
-	background-repeat: no-repeat !important;
-	background-position: center center !important;
-	background-size: contain !important;
-}
-
 #timeline_container {
 	position: relative;
 	left: 1%;

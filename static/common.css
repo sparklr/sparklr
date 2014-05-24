@@ -1130,3 +1130,18 @@ input {
 	-webkit-appearance: none;
 }
 
+div.inlineimage {
+	display: block;
+
+	width: 200px;
+	height: 200px;
+	margin: 5px;
+
+	cursor: pointer;
+
+	border: none !important;
+	background-repeat: no-repeat !important;
+	background-position: center center !important;
+	background-size: contain !important;
+}
+
