@@ -50,6 +50,8 @@ exports.run = function(request, response, uri, sessionid) {
 			if (postBody.length > 15728640) {
 				postBody = null;
 				response.writeHead(413);
+				request.removeAllListeners("data");
+				request.removeAllListeners("end");
 				request.connection.destroy();
 			}
 		});
