@@ -51,7 +51,7 @@ function closeWindow(e,id) {
 }
 
 function positionWindows() {
-	var x = 280;
+	var x = 40;
 	for (i in activeWindows) {
 		_g("windowc_"+activeWindows[i]).style.left = x + "px";
 		x += 380;
