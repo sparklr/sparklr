@@ -54,14 +54,19 @@ if (cluster.isMaster) {
 				return;
 			}
 
-			log("Debug: Disconnecting " + workerIds[workersKilled]);
-
-			cluster.workers[workerIds[workersKilled]].send('DIE');
-			cluster.workers[workerIds[workersKilled]].disconnect();
-
 			var newWorker = cluster.fork();
 			newWorker.once("listening", function() {
 				log("Debug: Replacement online.");
+
+				log("Debug: Disconnecting " + workerIds[workersKilled]);
+
+				var prevWorker = cluster.workers[workerIds[workersKilled]];
+				prevWorker.send('DIE');
+				prevWorker.disconnect();
+				setTimeout(function() {
+					prevWorker.kill();
+				}, 60000);
+
 				workersKilled++;
 				shutdownWorker();
 			});
