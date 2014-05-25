@@ -17,14 +17,11 @@ var Api = require("./api");
 var Database = require("./database");
 var User = require("./user");
 
-var heapdump = require('heapdump');
-var memwatch = require('memwatch');
-
 console.log(process.pid);
 
 Database.init();
 
-http.createServer(handleRequests).listen(8080);
+http.createServer(handleRequests).listen(global.port);
 
 function handleRequests(request,response) {
 	var requesturi = url.parse(request.url, true);
@@ -79,6 +76,4 @@ process.on('uncaughtException', function(err) {
 	console.log(err.stack);
 	process.exit(1);
 });
-
-setInterval(memwatch.gc, 60000);
 

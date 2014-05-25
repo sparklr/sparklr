@@ -1,0 +1,17 @@
+{
+  "name": "SparklrBackend",
+  "version": "0.0.0",
+  "description": "Backend for the Sparklr.me website",
+  "main": "luna.js",
+  "dependencies": {
+    "bcrypt": "^0.7.8",
+    "emailjs": "^0.3.8",
+    "mysql-libmysqlclient": "^1.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jonathan Warner, Ivey Padgett",
+  "license": "GNU GPL"
+}
