@@ -77,3 +77,10 @@ process.on('uncaughtException', function(err) {
 	process.exit(1);
 });
 
+process.on('message', function(message) {
+	if (message == "DIE") {
+		console.log("I was told to die.");
+		process.disconnect();
+	}
+});
+

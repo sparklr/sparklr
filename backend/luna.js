@@ -56,7 +56,9 @@ if (cluster.isMaster) {
 
 			log("Debug: Disconnecting " + workerIds[workersKilled]);
 
+			cluster.workers[workerIds[workersKilled]].send('DIE');
 			cluster.workers[workerIds[workersKilled]].disconnect();
+
 			var newWorker = cluster.fork();
 			newWorker.once("listening", function() {
 				log("Debug: Replacement online.");
