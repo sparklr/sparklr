@@ -61,10 +61,13 @@ exports.get_stream = function(args, callback) {
 
 	var query = {};
 
-	if (stream === "following") {
+	if (stream === "front") {
+		Database.query("SELECT * FROM `timeline` WHERE `modified` > " + (Toolbox.time() - 93200) + " ORDER BY `commentcount` DESC LIMIT 30", callback);
+		return;
+	} else if (stream === "following") {
 		query.from = args.userobj.following.slice(0); // get a copy, not a reference
 		query.from.push(args.userobj.id);
-	} else if (stream === "everything") {
+	} else if (stream === "rightnow") {
 		query.since = 1;
 	} else if (args.uri.query.network) {
 		query.networks = [stream.toString()];

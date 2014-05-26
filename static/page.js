@@ -10,7 +10,8 @@ var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat
 
 // The sidebar networks we define
 var networks = {
-	"everything": "Everything",
+	"front": "Front page",
+	"rightnow": "Right now",
 	"following": "Following",
 	"music": "Music",
 	"funny": "Funny",
@@ -55,8 +56,6 @@ function showStreamPage(posts) {
 		addTimelineArray(data,subscribedStream);
 	});
 
-	if (window.localStorage)
-		window.localStorage.setItem("lastnetwork", subscribedStream);
 }
 
 function defaultSidebar() {
@@ -130,9 +129,6 @@ function updatePages(loaded) {
 }
 
 function changeLocation(){
-	if (window.localStorage && (n = window.localStorage.getItem("lastnetwork")))
-		location.href = '/#/' + n;
-	else
-		location.href = '/#/everything';
+	location.href = '/#/front';
 }
 
