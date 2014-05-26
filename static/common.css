@@ -399,10 +399,17 @@ form.settings label p {
 
 div.chatmsg time {
 	position: relative;
+	float: right;
+	opacity: 0;
+}
 
-	text-align: right;
+div.chatmsg:hover time {
+	opacity: 0.5;
+}
 
-	opacity: .5;
+time {
+	font-size: 12px;
+	vertical-align: top;
 }
 
 time.float {
@@ -415,7 +422,6 @@ time.float {
 
 	-webkit-transition: all .1s ease-in-out;
 
-	font-size: 12px;
 }
 
 textarea {

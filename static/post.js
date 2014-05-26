@@ -12,11 +12,15 @@ function showPost(id,args) {
 
 function showSidepost(id) {
 	var maxwidth = (window.innerWidth || document.documentElement.clientWidth);
+
+	_g("sidepost_container").innerHTML = "";
 	
 	if (!MOBILE && maxwidth >= 1280) {
-		renderTemplate("post/" + id, "sidepost_container", function(){});
+		renderTemplate("post/" + id, "sidepost_container", function() {});
+
 		subSubscribedStream = id;
 		subPageType = "POST";
+
 		_g("sidepost_container").className = "show";
 		_g("sidepost_fader").className = "show";
 		return true;
