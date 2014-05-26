@@ -39,7 +39,7 @@ function app(payload) {
 		addNotification(payload.notifications[i]);
 	}
 
-	setInterval(handleNotifications,1000);
+	setInterval(handleNotifications,1500);
 	
 	if (spc = _g("sidepost_container")) {
 		var h = function(e) {
