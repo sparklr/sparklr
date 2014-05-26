@@ -215,11 +215,6 @@ function renderTimeline(prehtml) {
 
 	document.body.ondrop = function (e) { dropImage(e, uploadStreamImageCallback); }
 	
-	setTimeout(function() {
-	renderTemplate("trending/" + subscribedStream, "sidepost_container", function() {
-	});
-	},10);
-	
 	currentPageType = "STREAM";	
 }
 
