@@ -98,7 +98,7 @@ function updateAvatar(user, avatarid) {
 
 function signOff() {
 	showConfirm("Sign off", "Are you sure you want to sign off?", function() {
-		ajax("signoff", null, function() { location.href='/'; });
+		ajax("signoff", null, function() { location.href='/#/signoff'; });
 	});
 }
 
