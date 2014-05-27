@@ -129,6 +129,6 @@ function updatePages(loaded) {
 }
 
 function changeLocation(){
-	location.href = '/#/front';
+	location.href = '/#/following';
 }
 
