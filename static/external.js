@@ -145,6 +145,7 @@ function forgotPassword() {
 
 function newAccount() {
 	ajax("resetcookie", null, function(data) {
+		location.href = './';
 	});
 }
 
