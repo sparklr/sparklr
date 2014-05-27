@@ -10,9 +10,9 @@ var definedPages = ["me", "post", "user", "settings", "friends", "nearby", "chat
 
 // The sidebar networks we define
 var networks = {
-	"front": "Front page",
-	"rightnow": "Right now",
 	"following": "Following",
+	"popular": "Popular",
+	"everything": "Everything",
 	"music": "Music",
 	"funny": "Funny",
 	"tech": "Tech",
