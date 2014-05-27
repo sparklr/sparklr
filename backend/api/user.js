@@ -56,7 +56,7 @@ exports.public_signoff = function(args, callback) {
  */
 exports.public_resetcookie = function(args, callback) {
 	callback(200, true, {
-		"Set-Cookie": "D=new; Path=/; Expires=Wed, 09 Jun 1981 10:18:14 GMT",
+		"Set-Cookie": "D=new; Path=/; Expires=Wed, 09 Jun 2181 10:18:14 GMT",
 		"Cache-Control": "no-cache"
 	});
 }
