@@ -41,7 +41,7 @@ function handleRequests(request,response) {
 		Api.run(request,response,requesturi,sessionid);
 	} else {
 		if (sessionid != null && sessionid !== "new") {
-			if (sessionid === "")
+			if (sessionid === "" || sessionid === "signoff")
 				return Frontend.showExternalPage(request, response);
 
 			var s = sessionid.split(",");

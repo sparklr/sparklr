@@ -45,7 +45,7 @@ exports.public_signin = function(args,callback) {
  */
 exports.public_signoff = function(args, callback) {
 	callback(200, true, {
-		"Set-Cookie": "D=; Path=/",
+		"Set-Cookie": "D=signoff; Path=/",
 		"Cache-Control": "no-cache"
 	});
 }
