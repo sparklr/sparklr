@@ -10,9 +10,6 @@ function updatePages(loaded) {
 	var html = "";
 	var pages = _g("pages");
 	
-	if (loaded && args[1] == "thankyou")
-		return location.href = "#";
-
 	for (var i = 0; i < pages.childNodes.length; i++) {
 		if (pages.childNodes[i].getAttribute("data-page") == args[1]) {
 			html = pages.childNodes[i].innerHTML;
@@ -20,7 +17,7 @@ function updatePages(loaded) {
 	}
 	
 	if (html == "")
-		html = _g("page_default").innerHTML;
+		html = _g("loginform").innerHTML;
 
 	if (!loaded) {
 		_g("content").style.opacity = 0;
@@ -83,16 +80,6 @@ function setContent(html) {
 	walk(content);
 }
 
-function requestInvite(email) {
-	if (email.value != "email address" && email.value != "") {
-		ajax("requestinvite/" + email.value, null, function() {
-			location.href = "#/thankyou";
-		});
-	} else {
-		callback("Please enter an email address");
-	}
-}
-
 function trySignin(username, password, redir) {
 	var xhr = new XMLHttpRequest();
 	
@@ -110,8 +97,6 @@ function trySignin(username, password, redir) {
 				case "false":
 					password.value = "";
 					_g("content").className = "shake";
-					_g("forgot").style.display = "block";
-					setTimeout('_g("forgot").style.opacity = 1;', 10);
 					callback("Incorrect username or password");
 				break;
 				default:
@@ -158,46 +143,8 @@ function forgotPassword() {
 	}
 }
 
-function signUp(username,email,password,errors) {
-	var s = location.hash.split("/");
-
-	if (errors.value != "") return;
-
-	ajax("signup/" + s[2] + "/" + username.value + "/" + email.value + "/" + encodeURIComponent(password.value), null, function(data) {
-		if (data === 1) {
-			trySignin(username,password,"http://sparklr.me/welcome");
-		} else {
-			if (data === 3) {
-				callback("Your IP address has been disabled for abuse reasons. Please contact app@sparklr.me to have this corrected. Sorry about that. Spammers suck and make everyone's lives harder.");
-			}
-			if (data === 2) {
-				callback("It appears that your email is already in use.");
-			} else {
-				callback("Uh oh! It appears that your invite ID is invalid.<br>Contact jonathan@sparklr.me and we'll get this fixed.");
-			}
-		}
-	});
-}
-
-function checkSignupForm(username,password,errors) {
-	if (username.value != username.value.replace(/[^A-Za-z0-9]/g, "")) {
-		callback("Usernames may only contain letters or numbers");
-		errors.value = 1;
-		return;
-	}
-	if (username.value.length > 25) {
-		callback("That username is a tad long... longer isn't always better.");
-		errors.value = 1;
-		return;
-	}
-	ajax("checkusername/" + username.value, null, function(data) {
-		if (data) {
-			callback("Sorry, that username has already been taken.");
-			errors.value = 1;
-		} else {
-			callback("");
-			errors.value = "";
-		}
+function newAccount() {
+	ajax("resetcookie", null, function(data) {
 	});
 }
 

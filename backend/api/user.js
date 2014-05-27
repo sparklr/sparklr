@@ -50,6 +50,17 @@ exports.public_signoff = function(args, callback) {
 	});
 }
 
+/* @url api/resetcookie
+ * @returns true
+ * Completely resets the user cookie
+ */
+exports.public_resetcookie = function(args, callback) {
+	callback(200, true, {
+		"Set-Cookie": "D=new; Path=/; Expires=Wed, 09 Jun 1981 10:18:14 GMT",
+		"Cache-Control": "no-cache"
+	});
+}
+
 /* @url api/forgot
  * @returns 200, 1 if successful, 200, 0 if user not found
  * Resets the user's password and emails a reset token to the user

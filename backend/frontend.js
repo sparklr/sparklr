@@ -120,3 +120,4 @@ exports.showExternalPage = function(request, response) {
 	response.write(externalTemplate);
 	response.end();
 }
+

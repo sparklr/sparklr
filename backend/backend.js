@@ -40,7 +40,7 @@ function handleRequests(request,response) {
 	if (requesturi.pathname.indexOf("/api") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		Api.run(request,response,requesturi,sessionid);
 	} else {
-		if (sessionid != null) {
+		if (sessionid != null && sessionid !== "new") {
 			if (sessionid === "")
 				return Frontend.showExternalPage(request, response);
 

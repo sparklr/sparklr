@@ -18,10 +18,13 @@
 	var STATICHOST = "{global.staticHost}";
 	var IMGHOST = "{global.imgHost}";
 	var AUTHKEY, CURUSER;
-	(function(i,s,o,g,r,a,m){
-	 i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-42747905-1', 'sparklr.me'); ga('send', 'pageview');
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-XXXXXX-XX', 'example.com');
+	ga('require', 'displayfeatures');
+	ga('send', 'pageview');
 </script>
 </head>
 <body>
@@ -50,33 +53,14 @@
 			<input type='submit' value='&gt;' name='go' class='s1'>
 		</form>
 		<div id='forgot'><a href='javascript:forgotPassword();'>Forgot?</a></div>
-		<a href='#'>Don't have an account?</a>
-	</div>
-	<div data-page="thankyou">
-		<h1>You're on the list!</h1><br><br>
-		We'll let you know once it's your time to shine.<br><br>
-		<br><a href='https://twitter.com/intent/tweet?via=sparklrme&url=https://sparklr.me/&text=Sparklr,%20the%20new%20place%20to%20connect%20with%20friends:%20' target='_blank'>Tweet about Sparklr</a>
-	</div>
-	<div data-page="signup">
-		<h1>Welcome to Sparklr</h1><br><br>
-		Let's get started.
-		<form onSubmit='signUp(username,email,password,errors); return false;'>
-			<input type='text' name='username' onblur='checkSignupForm(username,password,errors);' placeholder='username' class='t1' autofocus='autofocus'><br>
-			<input type='email' name='email' id='signupemail' placeholder='email' class='t1'><br>
-			<input type='password' name='password' placeholder='password' class='t1'><br>
-			<input type='submit' value='Sign up' name='go' class='s1'>
-			<input type='hidden' name='errors'>
-		</form>
+		<a href='#' onclick='newAccount()'>Don't have an account?</a>
 		<br><br>
-		By signing up for Sparklr,<br> you agree to our <a href='tos.html' target="_blank">Terms of Service</a>.
+		Trouble signing in? Contact t<!-- ea -->ea<!-- am -->m@sparklr.me for help.
 	</div>
-	<div id='page_default' data-page="info">
-		<h1>The new place to connect.</h1><br><br>
-		<form onSubmit='requestInvite(email); return false;'>
-			<input type='email' name='email' id='email' placeholder='email address' class='t1' autofocus='autofocus'>
-			<input type='submit' value='Get Invited' name='go' class='s1'>
-		</form>
-		<br>
+	<div data-page="signoff">
+		<h1>You have been signed out</h1><br><br>
+		Come back soon, kay?<br><br>
+		<a href='/#/signin'>I'm back, sign me in!</a>
 	</div>
 </div>
 </body>
