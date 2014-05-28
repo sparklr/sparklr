@@ -709,8 +709,7 @@ div.timelineitem {
 
 	width: 880px;
 	min-height: 50px;
-	margin: 4px;
-	margin-bottom: 10px;
+	margin-bottom: 18px;
 
 	word-wrap: break-word;
 }
@@ -964,6 +963,8 @@ div.attachment:hover div, div.picturepost:hover div {
 }
 
 #composerframe {
+	position: relative;
+
 	margin-left: 55px;
 
 	border: solid 1px #bbb;
@@ -980,12 +981,13 @@ div.attachment:hover div, div.picturepost:hover div {
 
 div.composer div.controls {
 	float: left;
+	cursor: pointer;
 }
 
 div.composercontrols {
 	position:absolute;
 	right: 18px;
-	bottom:16px;
+	top: 8px;
 
 	display: block;
 
@@ -994,13 +996,17 @@ div.composercontrols {
 
 	-webkit-transition: all .5s ease;
 
-	opacity: 0;
+	opacity: 1;
 	background-image: url(img/photos.png);
+
+	cursor: pointer;
 }
 
 div.composercontrols input {
 	width: 32px;
 	height: 32px;
+
+	cursor: pointer;
 
 	opacity: 0;
 }
