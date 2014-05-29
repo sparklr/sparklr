@@ -54,6 +54,8 @@ function app(payload) {
 
 	// Warn if using an old version of IE
 	if (!(MOBILE)) {
+		document.addEventListener("click", hideFader);
+
 		// Nasty UA matching 
 		if (navigator.userAgent.match(/MSIE/i)) {
 			var ver = ua.match(/MSIE ([\d.]+)/)[1];
