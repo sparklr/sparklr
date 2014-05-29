@@ -342,11 +342,15 @@ exports.post_settings = function(args, callback) {
  */
 exports.post_password = function(args, callback) {
 	User.generatePass(args.postObject.newpassword, function(err, newpass) {
+		if (err) {
+			return callback(200, false);
+		}
+
 		args.userobj.password = newpass;
 
 		// should we reset the authkey here???
 		Database.updateObject("users", args.userobj);
-		callback(200, args.userobj.authkey);
+		callback(200, true);
 	});
 }
 

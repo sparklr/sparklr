@@ -170,9 +170,10 @@ function updateAccountSettings() {
 			if (result.deleted) {
 				location.href="./";
 			}
-			if (result.password === false) {
-				message = "Sorry, your current password does not match the one on file.";
-			}
+
+			if (type == "password" && result === false)
+				message = "Something went wrong when saving password.";
+
 			updateSettingsCallback(result, message);
 
 			GUEST = obj.email && (obj.email.indexOf("@sparklr.me") !== -1)
