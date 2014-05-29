@@ -323,7 +323,7 @@ input.t1 {
 #sidepost_fader {
 	position: absolute;
 	z-index: 1;
-	top: 91px;
+	top: 40px;
 	right: 165px;
 	bottom: 0;
 	left: 0;
@@ -341,7 +341,7 @@ input.t1 {
 
 #sidepost_container {
 	position: fixed;
-	top: 68px;
+	top: 63px;
 	bottom: 0;
 	left: 50%;
 
@@ -349,7 +349,7 @@ input.t1 {
 
 	width: 620px;
 	max-height: 100%;
-	margin-left: -242px;
+	margin-left: -240px;
 	padding-left: 5px;
 
 	text-align: left;
@@ -421,6 +421,8 @@ div.contentwrapper {
 	background: #6a5f80;
 
 	font-size: 14px;
+
+	z-index: 15;
 }
 
 div.peoplebuttons {
