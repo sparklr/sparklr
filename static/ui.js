@@ -31,7 +31,7 @@ function showPopup(content,classname) {
 	else 
 	{
 		popup.className = classname;
-		popup.onclick = function() { hideAllPopups() };
+		popup.onclick = function(e) { hideAllPopups(); stopBubbling(e); return false; };
 	}
 
 	popup.id = "popup_" + Math.random();
@@ -68,7 +68,7 @@ function hideAllPopups() {
 function fadeOutPage() {
 	var f = _g('fader');
 	f.className = 'show';
-	f.onclick = function() { hideAllPopups(); }
+	f.onclick = function(e) { hideAllPopups(); stopBubbling(e); return false; }
 }
 
 function showConfirm(caption, message, action) {

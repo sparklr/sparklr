@@ -388,8 +388,13 @@ div.contentwrapper {
 	background: #fff;
 }
 
+div.timelineitem {
+	cursor: pointer;
+}
+
 #sidepost_container div.timelineitem {
 	width: 95%;
+	cursor: default;
 }
 
 #blacklist {
@@ -452,6 +457,6 @@ div.peoplebuttons input[type=button]:hover {
 }
 
 #composerframe textarea {
-	width: calc(100% - 10px);
+	width: calc(100% - 50px);
 }
 
