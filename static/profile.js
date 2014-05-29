@@ -173,6 +173,8 @@ function updateAccountSettings() {
 
 			if (type == "password" && result === false)
 				message = "Something went wrong when saving password.";
+			if (type == "settings" && result === false)
+				message = "Another account already uses either that email address or username.";
 
 			updateSettingsCallback(result, message);
 
