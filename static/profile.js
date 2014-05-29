@@ -137,7 +137,7 @@ function updateAccountSettings() {
 
 	switch (s[2]) {
 		case "password":
-			obj = { password: form.currentpassword.value, newpassword: form.password1.value }
+			obj = { newpassword: form.password1.value }
 			type = "password";
 			break;
 		case "blacklist":
