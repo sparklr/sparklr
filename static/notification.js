@@ -109,9 +109,9 @@ function processNotification(notification) {
 	}
 
 	if (notification.type == N_CHAT)
-		action = function() { chatWith(notification.from); }
+		action = function(e) { chatWith(notification.from); stopBubbling(e); }
 	else
-		action = function() { showPost(notification.action); }
+		action = function(e) { showPost(notification.action); stopBubbling(e); }
 
 
 	body = processMedia(body);
