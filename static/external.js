@@ -3,7 +3,7 @@ window.addEventListener("load", function() { updatePages(true) });
 
 function updatePages(loaded) {
 	if (location.href.indexOf("/forgot/") != -1 && location.hash == "") {
-		location.href = "/#" + location.href.substring(location.href.indexOf("/forgot"));
+		location.href = "/forgot/#" + location.href.substring(location.href.indexOf("/forgot"));
 		return;
 	}
 	var args = location.hash.split("/");
