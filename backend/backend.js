@@ -41,7 +41,7 @@ function handleRequests(request,response) {
 		Api.run(request,response,requesturi,sessionid);
 	} else {
 		if (requesturi.pathname.indexOf("/forgot") !== -1)
-				return Frontend.showExternalPage(request, response);
+			return Frontend.showExternalPage(request, response);
 
 		if (sessionid != null && sessionid !== "new") {
 			if (sessionid === "" || sessionid === "signoff")
