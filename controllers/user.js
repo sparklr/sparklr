@@ -11,9 +11,10 @@ CONTROLLERS['user'].after = function(data, fragments) {
 	var arr = data.timeline;
 
 	missingPostsList = [];
+	console.log(arr);
 
-	for(var i = arr.length-1; i >= 0; i--) {
-		addTimelineEvent(arr[i]);
+	for(var i = 0; i < arr.length; i--) {
+		addTimelineEvent(arr[i], true);
 	}
 
 	addTimelineArray(arr,subscribedStream);

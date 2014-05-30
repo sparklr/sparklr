@@ -36,6 +36,7 @@ function addTimelineEvent(item,append,overrideMissing) {
 	if (!append && !overrideMissing && doctop > 10) {
 		missingPostsList.push(item);
 		newPosts(missingPostsList.length);
+		console.log("NEWPO");
 		return;
 	} else {
 		if (!overrideMissing && missingPostsList.length > 0)
