@@ -40,8 +40,11 @@ function handleRequests(request,response) {
 	if (requesturi.pathname.indexOf("/api") !== -1 || requesturi.pathname.indexOf("/beacon") !== -1) {
 		Api.run(request,response,requesturi,sessionid);
 	} else {
+		if (requesturi.pathname.indexOf("/forgot") !== -1)
+				return Frontend.showExternalPage(request, response);
+
 		if (sessionid != null && sessionid !== "new") {
-			if (sessionid === "" || sessionid === "signoff" || requesturi.pathname.indexOf("/forgot") !== -1)
+			if (sessionid === "" || sessionid === "signoff")
 				return Frontend.showExternalPage(request, response);
 
 			var s = sessionid.split(",");
