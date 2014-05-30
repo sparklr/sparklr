@@ -44,7 +44,7 @@ function ajax(url, data, callback) {
 		}
 	}
 
-	xhr.open((isPosting ? "POST" : "GET"), 'api/' + url);
+	xhr.open((isPosting ? "POST" : "GET"), '/api/' + url);
 	xhr.setRequestHeader("X-X", AUTHKEY);
 
 	var postData;
