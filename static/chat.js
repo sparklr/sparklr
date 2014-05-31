@@ -108,8 +108,7 @@ function sendChatMessage(e) {
 
 function setNewInbox(value) {
 	var e = _g("inbox");
-	e.className = "icon-envelope" + (value ? " jiggle" : "");
-	console.trace();
+	e.className = "icon-envelope" + (value ? " active jiggle" : "");
 }
 
 function chatWith(id) {
