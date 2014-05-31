@@ -3,7 +3,7 @@
  */
 
 // Store the events on the stream. TODO: how much is this really used?
-var timelineEvents = [[]];
+var timelineEvents = {};
 
 var imgAttachments = null;
 
