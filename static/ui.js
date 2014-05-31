@@ -485,10 +485,6 @@ function setWelcomeBar() {
 	if (!_g("welcomebar")) return;
 
 	_g("welcomebar").style.display = GUEST ? "" : "none";
-	_g("frame").className = GUEST ? "guest" : "";
-	_g("header").className = GUEST ? "guest" : "";
-	if (spc = _g("sidepost_container"))
-		spc.style.marginTop = GUEST ? "24px" : "";
 }
 
 function hideFader() {

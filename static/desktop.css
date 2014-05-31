@@ -322,7 +322,7 @@ input.t1 {
 
 #sidepost_fader {
 	position: absolute;
-	z-index: 1;
+	z-index: 16;
 	top: 40px;
 	right: 165px;
 	bottom: 0;
@@ -331,6 +331,8 @@ input.t1 {
 	display: none;
 
 	background: rgba(0,0,0,0.5);
+
+	cursor: pointer;
 }
 
 #sidepost_fader.show {
@@ -359,7 +361,7 @@ input.t1 {
 }
 
 #sidepost_container.show {
-	z-index: 15;
+	z-index: 16;
 
 	-webkit-animation: popin 0.3s;
 
