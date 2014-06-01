@@ -86,6 +86,9 @@ function sendChatMessage(e) {
 	if (imgAttachments) {
 		vars.postData = imgAttachments.target.result;
 		vars.img = 1;
+
+		imgAttachments = null;
+
 		_g("attachment"+id).style.display = "none";
 	}
 
@@ -102,7 +105,6 @@ function sendChatMessage(e) {
 		if (data.error && data.info == "Blocked") {
 			showBanner("Sorry, that user has blocked you.", "bannerblocked", 4000);
 		}
-		imgAttachments = null;
 	});
 }
 

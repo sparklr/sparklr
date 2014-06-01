@@ -290,19 +290,17 @@ function postToTimeline() {
 	});
 }
 
-function uploadStreamImageCallback(e, id, instant) {
+function uploadStreamImageCallback(e, id) {
 	var res = e.target.result;
 	if (res.indexOf("data:base64") != -1) {
 		res = "data:image/jpeg;" + res.substring(5);
 	}
 
-	imgAttachments = e;
-
-	if (instant)
-		return instant();
-
 	id = id || "attachment";
 	_g(id).style.display = "block";
 	_g(id).style.backgroundImage = 'url(' + res + ')';
+
+	imgAttachments = e;
+
 }
 
