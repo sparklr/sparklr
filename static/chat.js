@@ -44,7 +44,7 @@ function addChatMessage(msg, prepend, unconfirmed) {
 	else 
 		convoid = msg.from + "," + msg.to;
 
-	var sc = _g("scrollUpContent_"+convoid);
+	var sc = _g("chat_"+convoid);
 	if (!sc)
 		return;
 
@@ -65,8 +65,8 @@ function addChatMessage(msg, prepend, unconfirmed) {
 		chatTimes[convoid].unshift(msg.time);
 	} else {
 		sc.appendChild(ele);
-		if (sc.scrollHeight - (sc.scrollTop + 350) < 50) 
-			setTimeout(function() { _g('scrollUpContent_'+convoid).scrollTop = 0xFFFFFF; },5);
+		if (sc.scrollHeight - (sc.scrollTop + 590) < 50) 
+			setTimeout(function() { _g('chat_'+convoid).scrollTop = 0xFFFFFF; },5);
 
 		updateUI();
 

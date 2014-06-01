@@ -260,16 +260,16 @@ div.window div.windowhidden {
 	display:none;
 }
 
-div.scrollUpContent img.littleavatar {
+div.chat-content img.littleavatar {
 	margin-top: 0;
 }
 
-div.scrollUpContent {
+div.chat-content {
 	overflow-x: hidden;
 	overflow-y: auto;
 
-	width: 340px;
-	height: 320px;
+	width: 350px;
+	height: 335px;
 	margin: 0;
 	padding: 0;
 
@@ -460,5 +460,22 @@ div.peoplebuttons input[type=button]:hover {
 
 #composerframe textarea {
 	width: calc(100% - 50px);
+}
+
+.chatcomposer .minipreview {
+	position: absolute;
+	right: 20px;
+	bottom: 0px;
+	width: 50px;
+	height: 50px;
+	z-index: 10;
+}
+
+.chatcomposer .controls {
+	display: none;
+}
+
+.chatcomposer #composerframe {
+	margin-left: 0;
 }
 

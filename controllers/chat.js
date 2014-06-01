@@ -11,12 +11,12 @@ CONTROLLERS['chat'].after = function(data, fragments) {
 		addChatMessage(data[i], false);
 	}
 
-	var e = _g('scrollUpContent_'+data.convoid);
+	var e = _g('chat_'+data.convoid);
 	e.addEventListener("DOMMouseScroll", scrollUpHandler);
 	e.addEventListener("mousewheel", scrollUpHandler);
 	_g("composer_chat_"+data.user).focus();
 	window.onload = function() {
-		_g("scrollUpContent_"+data.convoid).scrollTop = 0xFFFFFF; 
+		_g("chat_"+data.convoid).scrollTop = 0xFFFFFF; 
 	};
 
 	setWindowTitle('m'+data.convoid, getDisplayName(data.user));

@@ -159,11 +159,11 @@ body {
 	font-size: 15px;
 }
 
-div.scrollUpContent img.littleavatar{
+div.chat-content img.littleavatar{
 	margin-top: 0;
 }
 
-div.scrollUpContent {
+div.chat-content {
 	overflow-x: hidden;
 	overflow-y: auto;
 
@@ -175,7 +175,7 @@ div.scrollUpContent {
 	word-wrap: break-word;
 }
 
-div.window div.scrollUpContent {
+div.window div.chat-content {
 	display: inline-block;
 	overflow: none;
 

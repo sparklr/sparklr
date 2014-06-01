@@ -139,7 +139,7 @@ function renderComposer(caption, keydown, minipreview, id) {
 			var items = data.items;
 			for (var i = 0; i < items.length; i++) {
 				if (items[i].type.indexOf("image") === 0) {
-					loadImage(items[i].getAsFile(), uploadStreamImageCallback,"attachment"+(id||''));
+					loadImage(items[i].getAsFile(), uploadStreamImageCallback, "attachment"+(id||''), instant);
 				}
 			}
 		}
@@ -290,14 +290,19 @@ function postToTimeline() {
 	});
 }
 
-function uploadStreamImageCallback(e,id) {
+function uploadStreamImageCallback(e, id, instant) {
 	var res = e.target.result;
 	if (res.indexOf("data:base64") != -1) {
 		res = "data:image/jpeg;" + res.substring(5);
 	}
+
+	imgAttachments = e;
+
+	if (instant)
+		return instant();
+
 	id = id || "attachment";
 	_g(id).style.display = "block";
 	_g(id).style.backgroundImage = 'url(' + res + ')';
-	imgAttachments = e;
 }
 
