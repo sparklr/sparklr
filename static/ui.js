@@ -75,6 +75,8 @@ function showConfirm(caption, message, action) {
 	var popup = document.createElement("div");
 	popup.className = "confirm fadein";
 	popup.id = "popup_" + Math.random();
+
+	fadeOutPage();
 	
 	//TODO
 	popup.innerHTML = "<h2>" + caption + "</h2>" + message + "<br><div style='float:right'><input type='button' id='confirmdialog_yes' value='Yes'><input type='button' onClick='hideAllPopups();' value='No'></div>";

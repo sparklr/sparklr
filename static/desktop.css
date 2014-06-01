@@ -182,17 +182,19 @@ a.network.active {
 
 	display: inline-block;
 
-	-webkit-transition: all .5s ease;
 	text-align: center;
 
 	opacity: 0;
 	background: rgba(0,0,0,.7);
+
+	-webkit-transition: all .25s ease;
 }
 
 #fader.show {
 	z-index: 9999;
-
 	opacity: 1;
+
+	-webkit-transition: opacity .25s ease;
 }
 
 #windowcontainer {

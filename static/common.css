@@ -576,12 +576,11 @@ div.confirm {
 	margin-left: -250px;
 	padding: 10px;
 
-	-webkit-transition: all .3s ease-in-out;
+	-webkit-transition: all .2s ease-in-out;
 
 	color: #333;
-	border-radius: 5px;
 	background: #fff;
-	box-shadow: 0 0 15px #000;
+	border: solid 1px #000;
 }
 
 .jiggle {
