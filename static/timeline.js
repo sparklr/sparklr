@@ -139,7 +139,7 @@ function renderComposer(caption, keydown, minipreview, id) {
 			var items = data.items;
 			for (var i = 0; i < items.length; i++) {
 				if (items[i].type.indexOf("image") === 0) {
-					loadImage(items[i].getAsFile(), uploadStreamImageCallback, "attachment"+(id||''), instant);
+					loadImage(items[i].getAsFile(), uploadStreamImageCallback, "attachment"+(id||''));
 				}
 			}
 		}
