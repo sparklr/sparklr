@@ -61,12 +61,16 @@ hr {
 	margin-top: -8px;
 	margin-right: 6px;
 
-	-webkit-transition: all .1s ease-in-out;
+	-webkit-transition: all .05s ease-in-out;
 	vertical-align: middle;
 
 	opacity: 1;
 	color: #fff;
 	background-repeat: no-repeat;
+}
+
+#links a:hover {
+	color: #ADACBE;
 }
 
 #header #logo{
@@ -759,8 +763,7 @@ div.commentcount {
 	-webkit-transition: all .2s ease-in-out;
 
 	color: #fff;
-	border: solid 1px rgba(255,255,255,.3);
-	background: #5d4c68;
+	background: #52515D;
 
 	font-size: 16px;
 	line-height: 20px

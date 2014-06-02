@@ -5,6 +5,7 @@ html, body {
 body {
 	font-family: 'PT Sans', sans-serif;
 	font-size: 18px;
+	background: #363F4B;
 }
 
 #header {
@@ -22,7 +23,7 @@ body {
 
 	text-align: center;
 
-	background: #454050;
+	background: #69677C;
 
 	font-size: 22px;
 }
@@ -69,14 +70,14 @@ body {
 	height: 15px;
 	margin: 5px 5px;
 	margin-left: 12px;
-	padding: 8px;
+	padding: 10px;
 
 	vertical-align: top;
 
 	color: #fff;
-	border: solid 1px rgba(0,0,0,.4);
+	border: none;
 	outline: none;
-	background: rgba(0,0,0,.3);
+	background: rgba(0,0,0,.1);
 
 	font-size: 15px;
 }
@@ -97,8 +98,6 @@ body {
 
 	color: #333;
 	background: #fff;
-
-	border-left: solid 1px #ccc;
 
 }
 
@@ -125,7 +124,7 @@ body {
 	width: 175px;
 	margin-right: -560px;
 
-	background: #454050;
+	background: #69677C;
 }
 
 #sidebarwrapper a {
@@ -161,11 +160,11 @@ body {
 }
 
 #sidebar > a:hover, #sidebar div > a:hover, #networks a:hover {
-	background-color: #6a5f80;
+	background: rgba(0,0,0,.25);
 }
 
 a.network.active {
-	background: rgba(0,0,0,.35);
+	background: rgba(0,0,0,.15);
 }
 
 #sidebar a:hover {
