@@ -96,11 +96,11 @@ hr {
 }
 
 #signin input {
-	width: 285px;
+	width: 278px;
 	margin: 5px;
 	padding: 5px;
 
-	border: none;
+	border: 1px solid #ccc;
 
 	font-size: 16px;
 }
@@ -110,6 +110,13 @@ hr {
 	margin: 5px;
 
 	background: #fff;
+
+	-webkit-transition: all 0.1s ease;
+}
+
+#signin input[type=button]:hover {
+	color: #eee;
+	background: #69677C;
 }
 
 #signin #forgot_password {
@@ -538,13 +545,13 @@ div.popup {
 	margin-left: -150px;
 	padding: 10px;
 
-	-webkit-transition: all .7s ease-in-out;
+	-webkit-transition: all .2s ease-in-out;
 
 	opacity: 0;
 	color: #555;
-	border-radius: 5px;
-	background: #eaeaea;
-	box-shadow: 0 0 15px #000;
+	background: #fff;
+
+	font-family: 12px;
 }
 
 div.lightbox {

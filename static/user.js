@@ -140,6 +140,7 @@ function signin() {
 			location.href = '.';
 		} else {
 			_g('forgot_password').className = 'show';
+			_g('login_callback').innerHTML = '';
 		}
 	});
 }
@@ -148,10 +149,11 @@ function forgotPassword() {
 	if (_g("username").value != "") {
 		ajax("forgot/" + _g("username").value, null, function(result) {
 			if (result) {
-				_g('login_callback').innerHTML = "Your password has successfully been reset.<br>Please check your email for further instructions.";
+				_g('login_callback').innerHTML = "Your password has been reset.<br>Please check your email.";
 			} else {
 				_g('login_callback').innerHTML = "That email or username does not appear to be registered to anyone.";
 			}
+			_g('forgot_password').className = ''
 		});
 	}
 }
