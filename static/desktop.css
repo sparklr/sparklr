@@ -364,7 +364,7 @@ input.t1 {
 #sidepost_container.show {
 	z-index: 16;
 
-	-webkit-animation: popin 0.3s;
+	-webkit-animation: popin 0.1s;
 
 	opacity: 1;
 }
