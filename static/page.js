@@ -54,6 +54,9 @@ function showStreamPage(posts) {
 			addTimelineEvent(data[i],true);
 		}
 		addTimelineArray(data,subscribedStream);
+
+		if (c = _g("cssloader"))
+			c.style.display = "none";
 	});
 
 }

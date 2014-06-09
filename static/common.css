@@ -1166,6 +1166,10 @@ div.inlineimage {
 	background-size: contain !important;
 }
 
+#timeline_container #cssloader {
+	left: 46%;
+}
+
 #cssloader {
 	position: relative;
 	width: 62px;
