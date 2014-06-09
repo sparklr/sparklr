@@ -35,7 +35,6 @@ function showStreamPage(posts) {
 	oldestPost = Number.MAX_VALUE;
 
 	var args = location.hash.split("/");
-	var prehtml = "";
 
 	if (args[1] && args[1] != "") {
 		subscribedStream = args[1];
@@ -47,7 +46,8 @@ function showStreamPage(posts) {
 		e.className = "network active";
 	}
 
-	renderTimeline(prehtml);
+	renderTimeline();
+
 	ajax("stream/" + subscribedStream, null, function(data) {
 		timelineEvents[subscribedStream] = [];
 		for (var i = 0; i < data.length; i++) {
