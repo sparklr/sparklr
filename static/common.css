@@ -1166,3 +1166,88 @@ div.inlineimage {
 	background-size: contain !important;
 }
 
+#cssloader {
+	position: relative;
+	width: 62px;
+	height: 77px;
+}
+
+.blockG {
+	position: absolute;
+	background-color: #FFFFFF;
+	width: 10px;
+	height: 24px;
+	-webkit-border-radius: 8px 8px 0 0;
+	-webkit-transform: scale(0.4);
+	-webkit-animation-name: fadeG;
+	-webkit-animation-duration: 0.96s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: linear;
+}
+
+#rotateG_01{
+	left: 0;
+	top: 28px;
+	-webkit-animation-delay: 0.36s;
+	-webkit-transform: rotate(-90deg);
+}
+
+#rotateG_02{
+	left: 8px;
+	top: 10px;
+	-webkit-animation-delay: 0.48s;
+	-webkit-transform: rotate(-45deg);
+}
+
+#rotateG_03{
+	left: 26px;
+	top: 3px;
+	-webkit-animation-delay: 0.6s;
+	-webkit-transform: rotate(0deg);
+}
+
+#rotateG_04{
+	right: 8px;
+	top: 10px;
+	-webkit-animation-delay: 0.72s;
+	-webkit-transform: rotate(45deg);
+}
+
+#rotateG_05{
+	right: 0;
+	top: 28px;
+	-webkit-animation-delay: 0.84s;
+	-webkit-transform: rotate(90deg);
+}
+
+#rotateG_06{
+	right: 8px;
+	bottom: 7px;
+	-webkit-animation-delay: 0.96s;
+	-webkit-transform: rotate(135deg);
+}
+
+#rotateG_07{
+	bottom: 0;
+	left: 26px;
+	-webkit-animation-delay: 1.08s;
+	-webkit-transform: rotate(180deg);
+}
+
+#rotateG_08{
+	left: 8px;
+	bottom: 7px;
+	-webkit-animation-delay: 1.2s;
+	-webkit-transform: rotate(-135deg);
+}
+
+@-webkit-keyframes fadeG{
+	0% {
+		background-color: #544A6B;
+	}
+
+	100% {
+		background-color: #FFFFFF;
+	}
+}
+
