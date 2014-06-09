@@ -46,14 +46,16 @@ function showStreamPage(posts) {
 		e.className = "network active";
 	}
 
+	oldestPost = Number.MAX_VALUE;
+	lastModified = Number.MIN_VALUE;
+	sinceID = Number.MIN_VALUE;
+
 	renderTimeline();
 
 	ajax("stream/" + subscribedStream, null, function(data) {
-		timelineEvents[subscribedStream] = [];
 		for (var i = 0; i < data.length; i++) {
 			addTimelineEvent(data[i],true);
 		}
-		addTimelineArray(data,subscribedStream);
 
 		if (c = _g("cssloader"))
 			c.style.display = "none";

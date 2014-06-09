@@ -78,6 +78,9 @@ exports.get_stream = function(args, callback) {
 		query.since = args.uri.query.since;
 		query.modified = args.uri.query.since;
 	}
+	if (args.uri.query.sinceid) {
+		query.sinceID = args.uri.query.sinceid;
+	}
 	if (args.uri.query.starttime) {
 		query.starttime = args.uri.query.starttime;
 	}

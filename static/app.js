@@ -33,8 +33,6 @@ function app(payload) {
 	var html = getTemplate(((MOBILE) ? "mobilefrontend" : "frontend"))();
 	document.write(html);
 
-	addTimelineArray(payload.timelineStream, 0);
-
 	for (var i = 0; i < payload.notifications.length; i++) {
 		addNotification(payload.notifications[i]);
 	}

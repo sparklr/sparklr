@@ -79,7 +79,7 @@ function hideProgress() {
 	e.opacity = 0;
 }
 
-function streamUrl(since,start) {
+function streamUrl(sinceID, since, start) {
 	var query = "";
 	var part = "stream/";
 
@@ -88,7 +88,10 @@ function streamUrl(since,start) {
 	if (currentPageType == "MENTIONS")
 		part = "mentions/";
 
-	query += part + subscribedStream + "?since=" + since;
+	query += part + subscribedStream + "?sinceid=" + sinceID;
+	
+	if (since)
+		query += "&since=" + since;
 
 	if (start)
 		query += "&starttime=" + start;
@@ -108,9 +111,9 @@ function pollData() {
 		case "MENTIONS":
 		case "TAG":
 		case "STREAM":
-			query = streamUrl(getLastStreamTime(subscribedStream));
+			query = streamUrl(sinceID, lastModified);
 			callback = function(data,xhr) {
-				if (query != streamUrl(getLastStreamTime(subscribedStream))) {
+				if (query != streamUrl(sinceID)) {
 					// TODO
 				}
 				var items = data.data || data;
@@ -118,7 +121,6 @@ function pollData() {
 				for (var i = items.length - 1; i >= 0; i--) {
 					addTimelineEvent(items[i], 0);
 				}
-				addTimelineArray(items,subscribedStream);
 			}
 		break;
 		case "POST":

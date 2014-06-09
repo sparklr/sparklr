@@ -12,16 +12,15 @@ var hiddenPostList = [];
 var missingPostsList = [];
 
 var oldestPost = Number.MAX_VALUE;
+var lastModified = Number.MIN_VALUE;
+var sinceID = Number.MIN_VALUE;
 
 function addTimelineEvent(item,append,overrideMissing) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (_g("post_" + item.id)) {
 		if (item.commentcount != null) {
-			if (item.delta)
-				updateCommentCount(item.id, commentCounts[item.id] + item.commentcount);
-			else
-				updateCommentCount(item.id, item.commentcount);
+			updateCommentCount(item.id, item.commentcount);
 		}
 		if (item.message)
 			_g("postcontent_" + item.id).innerHTML = processPost(item);
@@ -37,7 +36,6 @@ function addTimelineEvent(item,append,overrideMissing) {
 	if (!append && !overrideMissing && doctop > 10) {
 		missingPostsList.push(item);
 		newPosts(missingPostsList.length);
-		console.log("NEWPO");
 		return;
 	} else {
 		if (!overrideMissing && missingPostsList.length > 0)
@@ -79,21 +77,10 @@ function addTimelineEvent(item,append,overrideMissing) {
 
 	if (item.time < oldestPost)
 		oldestPost = item.time;
-}
-
-function addTimelineArray(arr, timeline, append) {
-	if (!timelineEvents[timeline])
-		timelineEvents[timeline] = [];
-
-	if (append) {
-		for (var i = 0; i < arr.length; i++) {
-			timelineEvents[timeline].unshift(arr[i]);
-		}
-	} else {
-		for (var i = arr.length - 1; i >= 0; i--) {
-			timelineEvents[timeline].push(arr[i]);
-		}
-	}
+	if (item.id > sinceID)
+		sinceID = item.id;
+	if (item.modified > lastModified)
+		lastModified = item.modified;
 }
 
 function renderTags(item) {
@@ -116,15 +103,11 @@ function renderTags(item) {
 function fetchOlderPosts() {
 	if (currentPageType !== "STREAM") return;
 	if (subscribedStream == null) return;
-	console.log(oldestPost);
-	var query = streamUrl(0,oldestPost);
+	var query = streamUrl(0, 0, oldestPost);
 
 	ajax(query,null,function(data) {
 		var items = data.timeline || data;
-		console.log(data);
-		addTimelineArray(items,subscribedStream,true);
 		for (var i = items.length - 1; i > 0 ; i--) {
-			console.log(items[i].time);
 			addTimelineEvent(items[i], true);
 		}
 	});

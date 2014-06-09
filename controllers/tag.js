@@ -7,6 +7,4 @@ CONTROLLERS['tag'].after = function(data, fragments) {
 	for(var i = 0; i < arr.length; i++) {
 		addTimelineEvent(arr[i], true);
 	}
-
-	addTimelineArray(arr,subscribedStream);
 }

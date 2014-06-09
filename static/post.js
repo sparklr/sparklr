@@ -108,12 +108,6 @@ function getLastCommentTime() {
 	return currentComments[currentComments.length - 1].time;
 }
 
-function getLastStreamTime(stream) {
-	if (!timelineEvents[stream] || timelineEvents[stream].length == 0)
-		return 0;
-	return timelineEvents[stream][timelineEvents[stream].length - 1].modified;
-}
-
 function addComments(comments) {
 	comments = comments.data || comments;
 	if (!comments.length) return;

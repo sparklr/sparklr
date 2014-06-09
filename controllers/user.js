@@ -17,7 +17,6 @@ CONTROLLERS['user'].after = function(data, fragments) {
 		addTimelineEvent(arr[i], true);
 	}
 
-	addTimelineArray(arr,subscribedStream);
 	updateHeader(data.user,data.avatarid); 
 
 	subscribedStream = data.user;
