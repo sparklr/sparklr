@@ -81,6 +81,11 @@ function addTimelineEvent(item,append,overrideMissing) {
 		sinceID = item.id;
 	if (item.modified > lastModified)
 		lastModified = item.modified;
+
+	setTimeout(function() {
+		if (c = _g("cssloader"))
+			c.style.display = "none";
+	}, 10);
 }
 
 function renderTags(item) {
