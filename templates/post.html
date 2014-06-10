@@ -5,7 +5,7 @@
 	</div>
 	<% endif %>
 
-	<div id='post_{$id}' class='post'>
+	<div id='fullpost_{$id}' class='post'>
 		<% if ($from == CURUSER || ISMOD) %>
 		<div class='commentcount icon-remove icon' onClick='deletePost("{$id}");stopBubbling();'></div>
 		<% else %>
