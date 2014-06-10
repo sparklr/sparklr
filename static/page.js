@@ -47,12 +47,13 @@ function showStreamPage(posts) {
 	}
 
 	oldestPost = Number.MAX_VALUE;
-	lastModified = Number.MIN_VALUE;
-	sinceID = Number.MIN_VALUE;
+	lastModified = 0;
+	sinceID = 0;
 
 	renderTimeline();
 
 	ajax("stream/" + subscribedStream, null, function(data) {
+		console.log(data);
 		for (var i = 0; i < data.length; i++) {
 			addTimelineEvent(data[i],true);
 		}

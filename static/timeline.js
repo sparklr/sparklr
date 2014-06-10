@@ -12,13 +12,14 @@ var hiddenPostList = [];
 var missingPostsList = [];
 
 var oldestPost = Number.MAX_VALUE;
-var lastModified = Number.MIN_VALUE;
-var sinceID = Number.MIN_VALUE;
+var lastModified = 0;
+var sinceID = 0;
 
 function addTimelineEvent(item,append,overrideMissing) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (_g("post_" + item.id)) {
+		console.log("post exists");
 		if (item.commentcount != null) {
 			updateCommentCount(item.id, item.commentcount);
 		}
