@@ -134,16 +134,18 @@ exports.getStream = function(table, args, callback) {
 			query += "`time` > "+~~(args.since);
 		conditionExists = true;
 
-	}
-	if (args.sinceID) {
-		if (conditionExists) {
-			if (args.modified)
-				query += ") OR (";
-			else
-				query += ") AND (";
+		if (args.sinceID) {
+			query += " OR `id` > "+~~(args.sinceID);
 		}
-		query += "`id` > "+~~(args.sinceID);
-		conditionExists = true;
+
+	} else {
+		if (args.sinceID) {
+			if (conditionExists) {
+				query += ") AND (";
+			}
+			query += "`id` > "+~~(args.sinceID);
+			conditionExists = true;
+		}
 	}
 	if (args.starttime)
 	{
