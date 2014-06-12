@@ -34,6 +34,13 @@ function addTimelineEvent(item,append,overrideMissing) {
 	}
 	if (!item.message && item.type !== 1) return;
 
+	if (item.time < oldestPost)
+		oldestPost = item.time;
+	if (item.id > sinceID)
+		sinceID = item.id;
+	if (item.modified > lastModified)
+		lastModified = item.modified;
+
 	if (!append && !overrideMissing && doctop > 10) {
 		missingPostsList.push(item);
 		newPosts(missingPostsList.length);
@@ -75,13 +82,6 @@ function addTimelineEvent(item,append,overrideMissing) {
 	} else {
 		item.commentcount = 0;
 	}
-
-	if (item.time < oldestPost)
-		oldestPost = item.time;
-	if (item.id > sinceID)
-		sinceID = item.id;
-	if (item.modified > lastModified)
-		lastModified = item.modified;
 
 	setTimeout(function() {
 		if (c = _g("cssloader"))
