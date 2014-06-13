@@ -139,6 +139,8 @@ function pollData() {
 			}
 		}
 		callback(data,xhr);
+
+		updateUI();
 	});
 
 	if (subPageType == "POST") {

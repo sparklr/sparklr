@@ -221,7 +221,7 @@ function updateUI() {
 		arr[i].innerHTML = getRelativeTime(parseInt(arr[i].getAttribute("datetime")));
 	}
 }
-setInterval("updateUI();", 1000);
+setInterval("updateUI();", 30000);
 
 // calculate how far we are from the bottom
 function scrollDistanceFromBottom() {

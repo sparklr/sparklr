@@ -53,9 +53,7 @@ function showStreamPage(posts) {
 	renderTimeline();
 
 	ajax("stream/" + subscribedStream, null, function(data) {
-		for (var i = 0; i < data.length; i++) {
-			addTimelineEvent(data[i],true);
-		}
+		addTimelineItems(data);
 
 		if (c = _g("cssloader"))
 			c.style.display = "none";

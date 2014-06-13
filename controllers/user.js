@@ -12,9 +12,7 @@ CONTROLLERS['user'].after = function(data, fragments) {
 
 	missingPostsList = [];
 
-	for(var i = 0; i < arr.length; i++) {
-		addTimelineEvent(arr[i], true);
-	}
+	addTimelineItems(arr);
 
 	updateHeader(data.user,data.avatarid); 
 

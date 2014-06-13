@@ -87,6 +87,14 @@ function addTimelineEvent(item,append,overrideMissing) {
 	}, 10);
 }
 
+function addTimelineItems(arr) {
+	for(var i = 0; i < arr.length; i++) {
+		addTimelineEvent(arr[i], true);
+	}
+
+	updateUI();
+}
+
 function renderTags(item) {
 	if (!item.tags) return;
 
