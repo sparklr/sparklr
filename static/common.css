@@ -61,7 +61,6 @@ hr {
 	margin-top: -8px;
 	margin-right: 6px;
 
-	-webkit-transition: all .05s ease-in-out;
 	vertical-align: middle;
 
 	opacity: 1;
@@ -110,8 +109,6 @@ hr {
 	margin: 5px;
 
 	background: #fff;
-
-	-webkit-transition: all 0.1s ease;
 }
 
 #signin input[type=button]:hover {
@@ -434,9 +431,6 @@ time.float {
 	bottom: 5px;
 
 	margin-right: 5px;
-
-	-webkit-transition: all .1s ease-in-out;
-
 }
 
 textarea {
@@ -466,7 +460,6 @@ input[type=button], input[type=submit] {
 	padding: 5px 5px;
 
 	cursor: pointer;
-	-webkit-transition: all .2s ease-in-out;
 
 	color: #444;
 	border: solid 1px #999;
@@ -591,7 +584,6 @@ div.confirm {
 	margin-left: -250px;
 	padding: 10px;
 
-	-webkit-transition: all .2s ease-in-out;
 
 	color: #333;
 	background: #fff;
@@ -771,7 +763,6 @@ div.commentcount {
 	padding: 8px;
 
 	cursor: pointer;
-	-webkit-transition: all .2s ease-in-out;
 
 	color: #fff;
 	background: #52515D;
@@ -786,7 +777,7 @@ div.timelineitem .commentcount {
 }
 
 div.timelineitem:hover div.commentcount {
-	opacity: 1 !important;
+	opacity: 1;
 }
 
 div.post {
@@ -857,7 +848,6 @@ div.picturepost h2 {
 }
 
 div.picturepost div.content {
-	-webkit-transition: all .3s ease;
 
 	opacity: 1;
 }
@@ -893,7 +883,6 @@ div.rightcontrols a.icon-remove {
 	margin: 2px;
 
 	cursor: pointer;
-	-webkit-transition: all .2s ease-in-out;
 
 	opacity: .3;
 
@@ -937,7 +926,6 @@ div.attachment div, div.picturepost div {
 	height: 22px;
 	padding: 4px;
 
-	-webkit-transition: all .1s ease;
 
 	opacity: .4;
 	color: #fff;
@@ -987,7 +975,6 @@ div.attachment:hover div, div.picturepost:hover div {
 #composerframe textarea {
 	width: calc(100% - 70px);
 
-	-webkit-transition: all .3s ease;
 
 	border: none;
 }
@@ -1007,7 +994,6 @@ div.composercontrols {
 	width: 32px;
 	height: 32px;
 
-	-webkit-transition: all .5s ease;
 
 	opacity: 0;
 	background-image: url(img/photos.png);
@@ -1030,8 +1016,6 @@ div.composer:hover div.composercontrols {
 
 div.remaining {
 	margin-top: 20px;
-
-	-webkit-transition: all .3s ease;
 
 	opacity: 1;
 }
