@@ -11,7 +11,6 @@ CONTROLLERS['user'].after = function(data, fragments) {
 	var arr = data.timeline;
 
 	missingPostsList = [];
-	console.log(arr);
 
 	for(var i = 0; i < arr.length; i++) {
 		addTimelineEvent(arr[i], true);

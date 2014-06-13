@@ -19,7 +19,6 @@ function addTimelineEvent(item,append,overrideMissing) {
 	if (hiddenPostList.indexOf(item.id) !== -1) return;
 
 	if (_g("post_" + item.id)) {
-		console.log("post exists");
 		if (item.commentcount != null) {
 			updateCommentCount(item.id, item.commentcount);
 		}
@@ -29,7 +28,6 @@ function addTimelineEvent(item,append,overrideMissing) {
 	} else if (item.time < oldestPost && !append) {
 		// do not show posts that do not exist if 
 		// they are ancient
-		console.log("ancient");
 		return;
 	}
 	if (!item.message && item.type !== 1) return;

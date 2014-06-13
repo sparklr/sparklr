@@ -102,7 +102,6 @@ function processNotification(notification) {
 			if (!notification.read) {
 				addChatMessage({ from: notification.from, to: CURUSER, message: notification.body, time: notification.time }, false);
 				updatePageTitle();
-				console.log(notification);
 				setNewInbox(true);
 			}
 		break;
