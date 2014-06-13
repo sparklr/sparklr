@@ -420,7 +420,11 @@ div.chatmsg:hover time {
 
 time {
 	font-size: 12px;
+}
+
+.post time {
 	vertical-align: top;
+	color: #999;
 }
 
 time.float {
