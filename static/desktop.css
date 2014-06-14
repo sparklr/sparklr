@@ -14,11 +14,11 @@ body {
 	top: 0;
 	left: 50%;
 
-	width: 1090px;
+	width: 1000px;
 	height: 46px;
 	margin: 0;
 	margin-bottom: 5px;
-	margin-left: -550px;
+	margin-left: -510px;
 	padding: 8px 10px 8px 10px;
 
 	text-align: center;
@@ -90,10 +90,10 @@ body {
 	overflow-x: hidden;
 	overflow-y: inherit;
 
-	width: 1100px;
+	width: 1000px;
 	min-height: 100%;
 	margin-top: 0;
-	margin-left: -550px;
+	margin-left: -510px;
 	padding-top: 1px;
 
 	color: #333;
@@ -102,7 +102,7 @@ body {
 }
 
 #content {
-	width: 940px;
+	width: 840px;
 	margin-right: 20px;
 	padding-top: 65px;
 }
@@ -122,7 +122,7 @@ body {
 	display: block;
 
 	width: 175px;
-	margin-right: -560px;
+	margin-right: -510px;
 
 	background: #69677C;
 }
@@ -380,7 +380,7 @@ input.t1 {
 div.contentwrapper {
 	position: relative;
 
-	max-width: 700px;
+	max-width: 600px;
 	margin: auto;
 	margin-top: 10px;
 	margin-bottom: 30px;
@@ -391,6 +391,7 @@ div.contentwrapper {
 
 div.timelineitem {
 	cursor: pointer;
+	width: 800px;
 }
 
 #sidepost_container div.timelineitem {
@@ -418,7 +419,7 @@ div.timelineitem {
 
 	display: block;
 
-	width: 920px;
+	width: 800px;
 	margin: -5px;
 	margin-bottom: 6px;
 	padding: 5px 10px;
