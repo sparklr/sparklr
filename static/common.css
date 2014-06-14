@@ -633,20 +633,20 @@ div.confirm {
 	word-wrap: break-word;
 
 	color: #fff;
-	border: solid 1px #333;
-	background: #454050;
+	background: #00C2FF;
 
 	font-size: 13px;
 }
 
 #notificationlist div:hover {
-	opacity: .8;
+	background: #22D2EE;
 }
 
 #notificationlist div .exit {
 	float: right;
 
 	padding: 2px;
+	margin-top: -2px;
 
 	opacity: 0;
 }
@@ -656,7 +656,8 @@ div.confirm {
 }
 
 #notificationlist div:hover .exit:hover {
-	background: #d2b8d4;
+	background: #fff;
+	color: #000;
 }
 
 #notificationlist div.inlineimage {
