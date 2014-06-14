@@ -89,18 +89,6 @@ function showConfirm(caption, message, action) {
 	};
 }
 
-//TODO: buggy. get rid of it, honestly.
-function htmlToPost(html) {
-	html = html.replace(/\<img src=\".*\/t([A-Za-z0-9_]+).*\"(^\>)*\>/, function(match, img) {
-		return "[IMG"+img+"]";
-	});
-	html = html.replace(/\<a href=[\"\']([^\"\']*)[\"\'](.*)<\/a\>/, function(match, href) {
-		return href;
-	});
-	html = html.replace(/\<br\>/g, "");
-	return html;
-}
-
 // Handle the repost via: stuff.
 function processPost(post) {
 	var message = processMedia(escapeHTML(post.message));

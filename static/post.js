@@ -5,6 +5,7 @@
 var commentCounts = {};
 var currentComments = [];
 var LIKE_CHAR = "\u261D";
+var cachedPosts = {};
 
 function showPost(id,args) {
 	location.href = "#/post/" + id + "/" + (args || '');
@@ -29,6 +30,8 @@ function showSidepost(id) {
 }
 
 function processPostMeta(data) {
+	cachedPosts[data.id] = data;
+
 	if (data.type == 1) {
 		data.img = data.meta.split(",")[0];
 		if (data.meta.indexOf(",") != -1) {
@@ -170,14 +173,15 @@ function showImage(img) {
 function editPostStart(e) {
 	e = e || window.event;
 	if (e.target.getAttribute('contenteditable') == 'true') return;
+	e.target.innerHTML = cachedPosts[~~e.target.getAttribute("data-id")].message
 
 	e.target.setAttribute('contenteditable', true);
 }
 
 function editPost(e) {
 	e = e || window.event;
-	ajax("editpost", { id: e.target.getAttribute('data-id'), body: htmlToPost(e.target.innerHTML) }, function() {
-		e.target.innerHTML = processPostMeta({ message: htmlToPost(e.target.innerHTML), from: CURUSER }).formattedMessage;
+	ajax("editpost", { id: e.target.getAttribute('data-id'), body: e.target.textContent }, function() {
+		e.target.innerHTML = processPostMeta({ message: e.target.textContent, from: CURUSER }).formattedMessage;
 	});
 	e.target.setAttribute('data-message', e.target.textContent);
 	e.target.setAttribute('contenteditable', false);
