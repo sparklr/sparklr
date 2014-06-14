@@ -214,8 +214,7 @@ div.window {
 	-webkit-transition: left .1s ease;
 
 	color: #333;
-	border: solid 1px #999;
-	background: #fff;
+	background: #D3DDE7;
 }
 
 div.window div.title {
@@ -223,7 +222,7 @@ div.window div.title {
 	padding: 2px;
 
 	color: #fff;
-	background: #454050;
+	background: #A78FAD;
 }
 
 div.window div.title a {
@@ -350,7 +349,7 @@ input.t1 {
 
 	width: 620px;
 	max-height: 100%;
-	margin-left: -290px;
+	margin-left: -240px;
 	padding-left: 5px;
 
 	text-align: left;
@@ -386,7 +385,6 @@ div.contentwrapper {
 	margin-bottom: 30px;
 	padding: 6px;
 
-	background: #fff;
 }
 
 div.timelineitem {
@@ -419,7 +417,7 @@ div.timelineitem {
 
 	display: block;
 
-	width: 830px;
+	width: 800px;
 	margin: -5px;
 	margin-bottom: 6px;
 	padding: 5px 10px;
