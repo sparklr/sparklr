@@ -122,18 +122,6 @@ exports.public_reset = function(args, callback) {
 	});
 }
 
-/* @url api/requestinvite/:email
- * @returns 200, true
- * Requests an invitation to the Sparklr beta
- */
-exports.public_requestinvite = function(args, callback) {
-	if (!args.fragments[3]) return callback(400, false);
-
-	Database.postObject("newsletter", {
-		email: args.fragments[3]
-	}, callback);
-}
-
 /* @url api/checkusername/:user
  * @returns 200, true or false
  * Returns whether or not the username is in use
@@ -415,24 +403,5 @@ exports.post_delete_user = function(args, callback) {
 			});
 		});
 	});
-	/*
-	var result = {};
-	User.deleteUser(userobj, postObject, function(err,res) {
-		if (err) {
-			result.result = false;
-			result.message = "An unknown error occurred";
-		} else {
-			if (res) {
-				result.deleted = true;
-				result.message = "Your account has been deleted.";
-				result.result = true;
-			} else {
-				result.result = false;
-				result.message = "Incorrect current password.";
-			}
-		}
-		sendObject(response, result);
-	});
-	*/
 }
 
