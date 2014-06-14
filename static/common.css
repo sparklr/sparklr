@@ -232,16 +232,6 @@ cite {
 	}
 }
 
-@-webkit-keyframes flyout {
-	0% {
-	}
-	100% {
-		top: -10px;
-
-		opacity: 0;
-	}
-}
-
 @-webkit-keyframes slideinfromright {
 	0% {
 		right: -200px;
@@ -257,22 +247,13 @@ cite {
 	100% {
 	}
 }
+
 .pulse {
 	-webkit-animation-name: pulse;
 	-webkit-animation-duration: 2s;
 	-webkit-animation-timing-function: linear;
 	-webkit-animation-delay: 0s;
 	-webkit-animation-iteration-count: infinite;
-}
-
-.flyout {
-	position: relative;
-
-	-webkit-animation-name: flyout;
-	-webkit-animation-duration: .5s;
-	-webkit-animation-timing-function: linear;
-	-webkit-animation-delay: 0s;
-	-webkit-animation-iteration-count: 1;
 }
 
 .fadein {

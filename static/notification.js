@@ -126,10 +126,7 @@ function removeNotification(id) {
 	var e = _g("notification_" + id);
 
 	if (e) {
-		e.className = "flyout";
-		setTimeout(function() {
-			_g("notificationlist").removeChild(_g("notification_" + id));
-		}, 510);
+		_g("notificationlist").removeChild(_g("notification_" + id));
 	}
 
 	if (notificationCount > 0)
