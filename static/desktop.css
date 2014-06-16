@@ -214,7 +214,7 @@ div.window {
 	-webkit-transition: left .1s ease;
 
 	color: #333;
-	background: #D3DDE7;
+	background: #DDE4E9;
 }
 
 div.window div.title {
@@ -236,6 +236,10 @@ div.window div.title a {
 	color: #fff;
 
 	font-weight: bold;
+}
+
+div.window .composerframe {
+	border: none;
 }
 
 div.windowcontent {
@@ -277,7 +281,7 @@ div.chat-content {
 div.chatcomposer {
 	display: inline-block;
 
-	width: 340px;
+	width: 345px;
 	margin-top: 5px;
 	padding: 0;
 }
@@ -456,7 +460,7 @@ div.peoplebuttons input[type=button]:hover {
 	background-color: #605774;
 }
 
-#composerframe textarea {
+.composerframe textarea {
 	width: calc(100% - 50px);
 }
 
@@ -473,7 +477,7 @@ div.peoplebuttons input[type=button]:hover {
 	display: none;
 }
 
-.chatcomposer #composerframe {
+.chatcomposer .composerframe {
 	margin-left: 0;
 }
 

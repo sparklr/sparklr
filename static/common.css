@@ -944,7 +944,7 @@ div.attachment:hover div, div.picturepost:hover div {
 	background: #594e64;
 }
 
-#composerframe {
+.composerframe {
 	position: relative;
 
 	margin-left: 55px;
@@ -953,7 +953,7 @@ div.attachment:hover div, div.picturepost:hover div {
 	background: #fff;
 }
 
-#composerframe textarea {
+.composerframe textarea {
 	width: calc(100% - 70px);
 
 

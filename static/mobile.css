@@ -257,7 +257,7 @@ div.notification {
 	font-size: 14px;
 }
 
-#composerframe textarea {
+.composerframe textarea {
 	width: 85%;
 }
 

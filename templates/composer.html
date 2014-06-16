@@ -6,7 +6,7 @@
 		<a href='#/user/{CURUSER}'><img src='{getAvatar(CURUSER)}' class='avatar'></a>
 		<div class='remaining' id='remaining_composer_{($id || 'composer')}'></div>
 	</div>
-	<div id='composerframe'>
+	<div class='composerframe'>
 		<textarea data-id='{$id}' id='composer_{($id || 'composer')}' placeholder='{$caption}' onkeydown='isEnter(event, {$keydown});expandTextarea(event);' maxlength=500></textarea>
 		<div class='composercontrols'>
 			<input id='attachfile' data-target='attachment{($id || '')}' onchange='attachfile_changed(event,"attachment{($id || '')}")' type='file'>
