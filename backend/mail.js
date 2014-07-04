@@ -14,7 +14,7 @@ exports.sendMessage = function(to, email, data) {
 }
 
 exports.sendMessageToEmail = function(to, email, data, user) {
-	try { 
+	try {
 		var template = Templates.getTemplate("mail/" + email);
 		eval(Templates.parse(template));
 

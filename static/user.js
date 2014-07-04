@@ -44,7 +44,7 @@ function fetchUserHandle(id) {
 	}
 	handlesToFetch.push(id);
 	clearTimeout(fetchTaskAsync);
-	fetchTaskAsync = setTimeout(pullHandlesFromServer, 1); //defer this 
+	fetchTaskAsync = setTimeout(pullHandlesFromServer, 1); //defer this
 }
 
 function pullHandlesFromServer() {
@@ -75,7 +75,7 @@ function pullHandlesFromServerCallback(handles) {
 }
 
 function follow(id,redir) {
-	ajax("follow/"+id, null, function() { if (!redir) location.href += "/#"; });	
+	ajax("follow/"+id, null, function() { if (!redir) location.href += "/#"; });
 }
 
 function unfollow(id) {

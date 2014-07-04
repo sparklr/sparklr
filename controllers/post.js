@@ -10,10 +10,10 @@ CONTROLLERS['post'] = {
 
 		currentComments = data.comments;
 
-		if (location.hash.indexOf("new") != -1) 
+		if (location.hash.indexOf("new") != -1)
 			_g('composer_'+data.id).focus();
 
-		if (location.hash.indexOf("repost") != -1) 
+		if (location.hash.indexOf("repost") != -1)
 			repost(data.id);
 
 		renderTags(data);

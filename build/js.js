@@ -24,7 +24,7 @@ var buildJSFromHeaderFile = function(headerFile, name, prepend, callback) {
 
 	// Store the concatenated JS
 	var jsData = prepend;
-	
+
 	var scriptRegex = new RegExp("\\<script src=('|\")\{global.staticHost\}/?(.*)('|\")", "g");
 
 	while (match = scriptRegex.exec(header)) {
@@ -40,6 +40,7 @@ var buildJSFromHeaderFile = function(headerFile, name, prepend, callback) {
 
 	fs.writeFileSync("out/"+name+".js", result.code);
 	console.log("JS written: " + jsHash);
-	
+
 	callback(jsHash);
 }
+

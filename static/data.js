@@ -40,7 +40,7 @@ function ajax(url, data, callback) {
 				}
 			} else {
 				hideBanner("statusmsg_ajaxerror");
-			}	
+			}
 		}
 	}
 
@@ -60,7 +60,7 @@ function ajax(url, data, callback) {
 
 		xhr.setRequestHeader("X-DATA", encodeURIComponent(JSON.stringify(data)));
 	}
-	
+
 	xhr.send(postData || null);
 	ajaxCooldown[url] = 1;
 }
@@ -89,7 +89,7 @@ function streamUrl(sinceID, since, start) {
 		part = "mentions/";
 
 	query += part + subscribedStream + "?sinceid=" + sinceID;
-	
+
 	if (since)
 		query += "&since=" + since;
 
@@ -134,7 +134,7 @@ function pollData() {
 
 	ajax("beacon/" + query + "&n=" + lastNotificationTime, null, function(data,xhr) {
 		if (data.notifications) {
-		 	for (var i=0;i<data.notifications.length;i++) {
+			for (var i=0;i<data.notifications.length;i++) {
 				addNotification(data.notifications[i]);
 			}
 		}

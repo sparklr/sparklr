@@ -68,7 +68,7 @@ exports.run = function(user, request, response, sessionid) {
 	var from = user.following;
 	from.push(user.id);
 
-	var payload = { 
+	var payload = {
 		private: user.private, avatarid: user.avatarid, blacklist: user.blacklist,
 		following: user.following,
 		user: user.id,

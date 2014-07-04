@@ -51,7 +51,7 @@ exports.query = function(query, callback, args) {
 			}
 			if (res.fetchAll) {
 				res.fetchAll(function(err,res) {
-					if (err) { 
+					if (err) {
 						log("err: " + query);
 						log(res);
 					}
@@ -112,10 +112,10 @@ exports.getStream = function(table, args, callback) {
 		query += ") ";
 		conditionExists = true;
 	}
-	
+
 	if (args.id) {
 		query += "`id` IN (";
-		for (var i = 0; i < args.id.length -1; i++) 
+		for (var i = 0; i < args.id.length -1; i++)
 			query += ~~(args.id[i]) + ",";
 		query += ~~(args.id[args.id.length - 1]) + ") ";
 		conditionExists = true;
@@ -153,7 +153,7 @@ exports.getStream = function(table, args, callback) {
 			query += ") AND (";
 		query += "`time` < "+~~(args.starttime);
 	}
-	
+
 	query += ") ORDER BY " + (args.sortby ? exports.escapeId(args.sortby) : "`time`") + " DESC LIMIT 30";
 	exports.query(query, callback);
 }
@@ -169,7 +169,7 @@ exports.postObject = function(table, obj, callback) {
 		if (!obj.hasOwnProperty(key)) continue;
 		if (obj[key] == null)
 			query += "null,\n";
-		else 
+		else
 			query += exports.escape(obj[key].toString()) + ",\n";
 	}
 	query = query.substring(0,query.length - 2) + ")";

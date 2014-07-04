@@ -1,4 +1,4 @@
-// A series of useful tools 
+// A series of useful tools
 //
 
 exports.time = function() {

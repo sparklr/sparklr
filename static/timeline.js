@@ -26,7 +26,7 @@ function addTimelineEvent(item,append,overrideMissing) {
 			_g("postcontent_" + item.id).innerHTML = processPost(item);
 		return;
 	} else if (item.time < oldestPost && !append) {
-		// do not show posts that do not exist if 
+		// do not show posts that do not exist if
 		// they are ancient
 		return;
 	}
@@ -47,14 +47,14 @@ function addTimelineEvent(item,append,overrideMissing) {
 		if (!overrideMissing && missingPostsList.length > 0)
 			showMissingPosts();
 	}
-	
+
 	if (HIDDEN_USERS.indexOf(item.from.toString()) != -1) return;
 
 	var ev = document.createElement("div");
 
 	ev.className = "timelineitem fadein";
 	ev.id = "post_" + item.id;
-	ev.onclick = function(e) { 
+	ev.onclick = function(e) {
 		if (!e) e = window.event;
 		if (!e.target.onclick || e.target == ev)
 			showPost(item.id);
@@ -189,7 +189,7 @@ function renderTimeline(prehtml) {
 				var items = getUserSuggestions(region.textContent);
 
 				showSuggestionBox(items.length,(e.clientX),(e.clientY + 30),items);
-				suggestionBoxCallback = function(id,title) { 
+				suggestionBoxCallback = function(id,title) {
 					region.innerHTML = "<img class='littleavatar' src='" + getAvatar(id) + "'>" +title;
 					region.setAttribute("data-userid", id);
 					region.setAttribute("data-tag", title);
@@ -211,8 +211,8 @@ function renderTimeline(prehtml) {
 	currentComments = [];
 
 	document.body.ondrop = function (e) { dropImage(e, uploadStreamImageCallback); }
-	
-	currentPageType = "STREAM";	
+
+	currentPageType = "STREAM";
 }
 
 function newPosts(num) {
@@ -252,15 +252,16 @@ function postToTimeline() {
 			//return;
 		}
 		_g("attachment").className += " pulse";
-		vars.img = true; 
+		vars.img = true;
 		vars.tags = [];
 		var a = _g("attachment").children;
 		for (var i = 0; i < a.length; i++) {
 			if (a[i].src) continue; // img element
-			vars.tags.push({ x: a[i].style.left.replace("px",""), 
-						   y: a[i].style.top.replace("px",""),
-						   tag: a[i].getAttribute("data-tag"),
-						   userid: a[i].getAttribute("data-userid"), });
+			vars.tags.push({ x: a[i].style.left.replace("px",""),
+				y: a[i].style.top.replace("px",""),
+				tag: a[i].getAttribute("data-tag"),
+				userid: a[i].getAttribute("data-userid"),
+			});
 		}
 	} else {
 		if (!vars.body) return;

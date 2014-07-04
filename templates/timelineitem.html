@@ -6,7 +6,7 @@
 <div class='commentcount icon-heart icon' onClick='likePost("{$id}","{$from}", this);stopBubbling();'></div>
 
 <img class='avatar left' src='{ getAvatar($from) }'>
-	
+
 <a href='#/user/{ $from }' class='person'>{ getDisplayName($from) }</a>
 
 <% if ($via !== null) %>

@@ -43,6 +43,6 @@ exports.getTemplate = function(template) {
 		var data = fs.readFileSync("templates/" + template + ".html");
 		templates[template] = data;
 	}
-	
+
 	return templates[template];
 }

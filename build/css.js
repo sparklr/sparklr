@@ -29,7 +29,7 @@ var buildCSSFromFile = function(files, name, callback) {
 		css += fs.readFileSync("../static/" + files[i] + ".css").toString();
 	}
 
-	// Generate a sha1 hash for the file name 
+	// Generate a sha1 hash for the file name
 	var cssHash = toolbox.sha1(css);
 
 	// regex for: background-image: url(someimage.png)
@@ -127,7 +127,7 @@ var buildCSSFromFile = function(files, name, callback) {
 				var l = i;
 				while (parens != 0) {
 					l++;
-					for (var c = 0; c < lines[l].length; c++) { // never gets old 
+					for (var c = 0; c < lines[l].length; c++) { // never gets old
 						if (lines[l][c] == "{")
 							parens += 1;
 						if (lines[l][c] == "}")
@@ -151,7 +151,7 @@ var buildCSSFromFile = function(files, name, callback) {
 				for (var c = i; c <= l; c++) {
 					lines[c] = "";
 				}
-				
+
 				lines[i] = newdata;
 			} else {
 				if (propertyRegex.exec(lines[i])) {
@@ -164,13 +164,13 @@ var buildCSSFromFile = function(files, name, callback) {
 				}
 			}
 		}
-		css = lines.join("\n");	
+		css = lines.join("\n");
 
 		writeCSS(name);
 	};
 
 	var writeCSS = function() {
-		// Last step: minify it 
+		// Last step: minify it
 		css = cleanCSS.process(css);
 
 		fs.writeFileSync("out/" + name + ".css", css);

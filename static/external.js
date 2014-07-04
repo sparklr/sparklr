@@ -9,13 +9,13 @@ function updatePages(loaded) {
 	var args = location.hash.split("/");
 	var html = "";
 	var pages = _g("pages");
-	
+
 	for (var i = 0; i < pages.childNodes.length; i++) {
 		if (pages.childNodes[i].getAttribute("data-page") == args[1]) {
 			html = pages.childNodes[i].innerHTML;
 		}
 	}
-	
+
 	if (html == "")
 		html = _g("loginform").innerHTML;
 
@@ -82,10 +82,10 @@ function setContent(html) {
 
 function trySignin(username, password, redir) {
 	var xhr = new XMLHttpRequest();
-	
+
 	_g("loginform").className = "";
 	if (username.value == "")
-		return;	
+		return;
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) {
@@ -105,14 +105,14 @@ function trySignin(username, password, redir) {
 			}
 		}
 	}
-	
+
 	xhr.open("POST", "api/signin/" + username.value + "/" + password.value);
 	xhr.send(null);
 }
 
 function resetPassword(password) {
 	var args = location.hash.split("/");
-	
+
 	ajax("reset/" + args[2] + "/" + args[3] + "/" + password.value, null, function(data) {
 		switch (data) {
 			case 0:

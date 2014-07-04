@@ -17,7 +17,7 @@ function showSidepost(id) {
 	if (!MOBILE && maxwidth >= 1280) {
 		_g("sidepost_fader").className = "show";
 		_g("sidepost_container").innerHTML = "";
-	
+
 		renderTemplate("post/" + id, "sidepost_container", function() {});
 
 		subSubscribedStream = id;
@@ -79,7 +79,7 @@ function renderComment(comment,scroll) {
 	e.id = 'comment_' + comment.id;
 	e.className = "comment";
 
-	comment.like = comment.message == LIKE_CHAR;	
+	comment.like = comment.message == LIKE_CHAR;
 
 	if (comment.like) {
 		var likeid = "like_" + comment.postid + "_" + comment.from;
@@ -88,13 +88,13 @@ function renderComment(comment,scroll) {
 
 		e.id = likeid;
 
-		if (comment.from == CURUSER) 
+		if (comment.from == CURUSER)
 			_g("likebtn_"+comment.postid).className += " liked";
 	}
-	
+
 	comment.canEdit = ISMOD || comment.from == CURUSER;
 	var html = getTemplate("comment")(comment);
-	
+
 	e.innerHTML += html;
 	commentlist.appendChild(e);
 
@@ -127,7 +127,7 @@ function addComments(comments) {
 
 function updateCommentCount(id, count) {
 	var ele = _g("commentcount_" + id);
-	if (ele == null) return; 
+	if (ele == null) return;
 
 	ele.style.display = (count != 0 && count != '+') ? "" : "none";
 	ele.innerHTML = count || "+";

@@ -111,7 +111,7 @@ function updatePages(loaded) {
 			currentPageType = "POST";
 		}
 	}
-	previousPage = s;	
+	previousPage = s;
 
 	for (i = 0; i < definedPages.length; i++) {
 		if (definedPages[i] == s[1]) {

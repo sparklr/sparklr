@@ -33,7 +33,7 @@ if (cluster.isMaster) {
 	});
 
 	function handleMsg(data) {
-		if (data != "R:" + rbkey) { 
+		if (data != "R:" + rbkey) {
 			for (id in cluster.workers) {
 				cluster.workers[id].send(data);
 			}

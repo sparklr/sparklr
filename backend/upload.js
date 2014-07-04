@@ -40,7 +40,7 @@ exports.handleUpload = function(data, userobj, args, callback) {
 					makeThumb(tmpfile, outthumb, args, function() {
 						callback(null,imgid);
 					});
-				} else 
+				} else
 					callback(null,imgid);
 			});
 		}
@@ -50,8 +50,8 @@ exports.handleUpload = function(data, userobj, args, callback) {
 function resizeImage(input, output, args, callback) {
 	var parameters = [input];
 	if (args.fill) {
-		parameters.push("-gravity"); 
-		parameters.push("center"); 
+		parameters.push("-gravity");
+		parameters.push("center");
 	}
 	parameters.push("-resize");
 	parameters.push((args.fullWidth || 1920) + "x" + (args.fullHeight || 1080) + ">" + (args.fill ? "^" : ""));
@@ -65,7 +65,7 @@ function resizeImage(input, output, args, callback) {
 	parameters.push(output);
 
 	var process = spawn("convert", parameters);
-	
+
 	process.stderr.on("data", function(data) {
 		console.log("UploadErr: " + data);
 	});

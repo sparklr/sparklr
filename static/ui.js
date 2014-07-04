@@ -28,34 +28,34 @@ function showPopup(content,classname) {
 	var popup = document.createElement("div");
 	if (typeof(classname) == "undefined")
 		popup.className = "popup";
-	else 
+	else
 	{
 		popup.className = classname;
 		popup.onclick = function(e) { hideAllPopups(); stopBubbling(e); return false; };
 	}
 
 	popup.id = "popup_" + Math.random();
-	
+
 	setTimeout(function() { popup.style.opacity = 1; }, 10);
-	
+
 	popup.innerHTML = content;
 
-	document.body.appendChild(popup);	
+	document.body.appendChild(popup);
 
 	return popup.id;
 }
 
 function hidePopup(id) {
 	var popup = _g(id);
-	
+
 	popup.style.opacity = 0;
-	
+
 	setTimeout(function() { _g(id).parentNode.removeChild(popup); }, 800);
 }
 
 function hideAllPopups() {
 	var divs = document.getElementsByTagName("div");
-	
+
 	for(var i = 0; i < divs.length; i++) {
 		if (divs[i].id.substring(0,6) == "popup_") {
 			hidePopup(divs[i].id);
@@ -77,7 +77,7 @@ function showConfirm(caption, message, action) {
 	popup.id = "popup_" + Math.random();
 
 	fadeOutPage();
-	
+
 	//TODO
 	popup.innerHTML = "<h2>" + caption + "</h2>" + message + "<br><div style='float:right'><input type='button' id='confirmdialog_yes' value='Yes'><input type='button' onClick='hideAllPopups();' value='No'></div>";
 
@@ -105,7 +105,7 @@ function processPost(post) {
 			}
 			line += text;
 			return line;
-			}); 
+			});
 		} else {
 			result += lines[i];
 		}
@@ -123,7 +123,7 @@ function processMedia(text,noImages) {
 
 		if (match.indexOf("http") == -1)
 			url = "http://" + match;
-		
+
 		if (match.length > 40) {
 			match = match.substring(0, 40) + "...";
 		}
@@ -149,7 +149,7 @@ function processMedia(text,noImages) {
 	text = text.replace(REGEX_IMG, function(match, img) {
 		return makeInlineImage(imgUrl(img), imgUrl(img,true));
 	});
-	
+
 	// emoji
 	text = text.replace(REGEX_EMOJI, function(match, b1, b2) {
 		var cp = (b1.charCodeAt(0) - 0xD800) * 0x400 + (b2.charCodeAt(0) - 0xDC00) + 0x10000;
@@ -162,10 +162,10 @@ function processMedia(text,noImages) {
 		countnewlines++;
 		if (countnewlines < 8)
 			return "<br>\n";
-		else 
+		else
 			return "\n";
 	});
-	
+
 	return text;
 }
 
@@ -198,12 +198,12 @@ function getRelativeTime(time) {
 	if (str == "1 minutes") {
 		str = "one minute";
 	}
-	
+
 	return str + " ago";
 }
 
 // scans DOM, updates time elements
-function updateUI() { 
+function updateUI() {
 	var arr = document.getElementsByTagName("time");
 	for (i=0;i<arr.length;i++) {
 		arr[i].innerHTML = getRelativeTime(parseInt(arr[i].getAttribute("datetime")));
@@ -219,23 +219,23 @@ function scrollDistanceFromBottom() {
 
 function scrollToTop() {
 	var element = document.body.scrollTop ? document.body : document.documentElement;
-    var initial = element.scrollTop,
-        delta = -initial,
-        curtime = 0,
-        step = 20,
-		duration = 500
+	var initial = element.scrollTop,
+		delta = -initial,
+		curtime = 0,
+		step = 20,
+		duration = 500;
 
 	animate = function() {
 		curtime += step;
-	   
+
 		if (curtime == duration)
 			return element.scrollTop = initial + delta;
 		else
 			element.scrollTop = initial + delta * (1 - Math.pow(2.5, -10 * curtime / duration));
-	   
+
 		setTimeout(animate, step);
 	};
-    animate();
+	animate();
 }
 
 function isEnter(e,callback) {
@@ -262,7 +262,7 @@ function expandTextarea(e) {
 function stopBubbling(e) {
 	if (!e)
 		e = window.event;
-	
+
 	e.cancelBubble = true;
 	if (e.stopPropagation)
 		e.stopPropagation();
@@ -285,11 +285,11 @@ function escapeHTML(text) {
 
 function dropImage(e, callback) {
 	if (!e) e = window.event;
-	
+
 	e.preventDefault();
 	if (e.stopPropagation)
 		e.stopPropagation();
-	
+
 	loadImage(e.dataTransfer.files[0], callback);
 
 	return false;
@@ -297,7 +297,7 @@ function dropImage(e, callback) {
 
 function loadImage(f, callback, additionalargs) {
 	var reader = new FileReader();
-	reader.onload = function(e) { 
+	reader.onload = function(e) {
 		callback(e,additionalargs);
 	}
 	reader.readAsDataURL(f);
@@ -305,7 +305,7 @@ function loadImage(f, callback, additionalargs) {
 
 function dropPrevent(e) {
 	if (!e) e = window.event;
-	
+
 	e.dataTransfer.dropEffect = 'move';
 	e.preventDefault();
 	if (e.stopPropagation)
@@ -382,7 +382,7 @@ function showSuggestionBoxBelowElement(e) {
 		return suggestionBoxNextItem();
 	if (e.keyCode == 13) {
 		stopBubbling(e);
-		
+
 		var selected = selectedSuggestionBoxItem();
 		var userid = selected ? selected.getAttribute("data-id") : "";
 		var title = selected ? selected.textContent : e.target.value;
@@ -410,7 +410,7 @@ function search_Keydown(e) {
 	if (!e)
 		e = window.event;
 
-	var result = showSuggestionBoxBelowElement(e); 
+	var result = showSuggestionBoxBelowElement(e);
 
 	suggestionBoxCallback = function(id) {
 			return location.href="/#/user/" + id;
@@ -448,12 +448,6 @@ function scrollHandler() {
 	} else {
 		newPageToFetch = true;
 	}
-
-	/*
-	if (s = _g("sidepost_container")) { 
-		s.className = ~~subscribedStream === subscribedStream && doctop < 300 ? 'user' : '';
-	}
-	*/
 }
 
 function preventDefaultScroll(e) {
@@ -461,8 +455,8 @@ function preventDefaultScroll(e) {
 
 	var ele = e.currentTarget;
 
-	if (e.wheelDelta < 0 && ele.scrollTop >= ele.scrollHeight - ele.clientHeight) 
-		e.preventDefault(); 
+	if (e.wheelDelta < 0 && ele.scrollTop >= ele.scrollHeight - ele.clientHeight)
+		e.preventDefault();
 	if (e.wheelDelta > 0 && ele.scrollTop == 0)
 		e.preventDefault();
 }

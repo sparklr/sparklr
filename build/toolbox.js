@@ -5,3 +5,4 @@ exports.sha1 = function(str) {
 	hash.update(str);
 	return hash.digest("hex");
 }
+

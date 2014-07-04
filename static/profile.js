@@ -27,14 +27,14 @@ function editProfile() {
 		bio.setAttribute("contenteditable", false);
 
 		_g("editContainer").style.display = "none";
-	
-		var data = { 
+
+		var data = {
 			"displayname": _g("userDisplayName").textContent,
 			"bio": _g("userBio").textContent
 		};
 
 		ajax("settings", data);
-	
+
 		_g("editBtn").value = "Edit";
 	}
 }
@@ -61,7 +61,7 @@ function addUserToList_Keydown(e, list) {
 	if (!e)
 		e = window.event;
 
-	var result = showSuggestionBoxBelowElement(e); 
+	var result = showSuggestionBoxBelowElement(e);
 	if (e.keyCode == 13) {
 		for (id in DISPLAYNAMES) {
 			if (DISPLAYNAMES[id].toLowerCase() == e.target.value.toLowerCase()) {
@@ -81,12 +81,12 @@ function addUserToList(list,user) {
 
 function addUserToServerList(type, id, action) {
 	ajax("list", { type: type, action: action, user: id }, function() {
-		  if (!action) {
-				HIDDEN_USERS.splice(HIDDEN_USERS.indexOf(id),1);
-				location.href = location.href + "/#";
-		  } else {
-			  showBanner(getDisplayName(id) + " has been added to your blacklist and will no longer appear in any feed.", "bannerblacklisted", 5000);
-		  }
+		if (!action) {
+			HIDDEN_USERS.splice(HIDDEN_USERS.indexOf(id),1);
+			location.href = location.href + "/#";
+		} else {
+			showBanner(getDisplayName(id) + " has been added to your blacklist and will no longer appear in any feed.", "bannerblacklisted", 5000);
+		}
 	});
 }
 
@@ -96,7 +96,7 @@ function checkPasswords(password1,password2) {
 
 	if (password1 != password2) {
 		result.innerHTML = "The passwords do not match";
-		result.className = "error";		
+		result.className = "error";
 		button.disabled = true;
 	} else {
 		result.innerHTML = "";

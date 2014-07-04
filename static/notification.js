@@ -30,7 +30,7 @@ function addNotification(notification) {
 
 	if (parseInt(notification.time) > lastNotificationTime)
 		lastNotificationTime = parseInt(notification.time);
-	
+
 	// if handleNotifications removed it, stop adding it
 	if (currentNotifications[notification.id] == null)
 		return;
@@ -43,7 +43,7 @@ function addNotification(notification) {
 		n.innerHTML = html;
 		n.className = "fadein";
 		n.onclick = notification.click;
-	
+
 		var parent = _g("notificationlist");
 		if (parent.children.length < 1)
 			parent.appendChild(n);
@@ -71,7 +71,7 @@ function addNotificationToPage(notification){
 	n.onclick = notification.click;
 	var html = getTemplate("notificationbody")(notification);
 	n.innerHTML = html;
-	
+
 	var parent = _g("notifications");
 	if (parent.children.length < 1)
 		parent.appendChild(n);
@@ -85,8 +85,8 @@ function processNotification(notification) {
 	var action = "";
 	notification.body = escapeHTML(notification.body);
 	switch (parseInt(notification.type)) {
-		case N_EVENT: //commented on post 
-			if (notification.body == LIKE_CHAR) 
+		case N_EVENT: //commented on post
+			if (notification.body == LIKE_CHAR)
 				body = " likes your post.";
 			else
 				body = " commented:<br>" + notification.body;
@@ -116,7 +116,7 @@ function processNotification(notification) {
 	body = processMedia(body);
 	notification.body = body;
 	notification.click = action;
-	
+
 	return notification;
 }
 
@@ -140,7 +140,7 @@ function handleNotifications() {
 	if (!pageActive) return;
 
 	var s = location.hash.split("/");
-	
+
 	notificationLoop:
 	for (id in currentNotifications) {
 		if (!currentNotifications[id]) continue;
@@ -151,14 +151,14 @@ function handleNotifications() {
 		}
 		if (!(MOBILE)) {
 			if (subPageType == "POST" && subSubscribedStream && subSubscribedStream == currentNotifications[id].action) {
-				dismissNotification(id);				
+				dismissNotification(id);
 				continue;
 			}
 			for (i in activeWindows) {
 				if (activeWindows[i] == "m" + currentNotifications[id].from + "," + CURUSER) {
 					var g = _g("window_"+activeWindows[i]);
 					if (g.scrollHeight - g.scrollTop < 500) {
-						dismissNotification(id);				
+						dismissNotification(id);
 						setNewInbox(false);
 						continue notificationLoop;
 					}
@@ -167,7 +167,7 @@ function handleNotifications() {
 		}
 		if (currentNotifications[id].type == N_CHAT) {
 			if (s[1] == "chat" && ~~s[2] == currentNotifications[id].from) {
-				dismissNotification(id);				
+				dismissNotification(id);
 				setNewInbox(false);
 			}
 		}

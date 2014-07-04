@@ -36,10 +36,10 @@ exports.postComment = function(user, data, callback) {
 		var postfrom = rows[0].from;
 		Database.query(query, function(err,rows) {
 			var notified = {};
-			
+
 			// notify the poster
 			rows.push({from: postfrom});
-			
+
 			for (i in rows) {
 				if (notified[rows[i].from]) continue;
 				Notification.addUserNotification(rows[i].from, data.comment, data.id, user, 1);
@@ -117,12 +117,12 @@ exports.getPostRowsFromKeyQuery = function(table, key, value, since, starttime, 
 
 		if (rows.length < 1) {
 			callback(null, []);
-			return; 
+			return;
 		}
 		var postids = [];
 		for (id in rows)
 			postids.push(rows[id].postid);
-		
+
 		Database.getStream("timeline", { id: postids }, callback);
 	});
 }

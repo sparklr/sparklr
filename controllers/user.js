@@ -14,7 +14,7 @@ CONTROLLERS['user'] = {
 
 		addTimelineItems(arr);
 
-		updateHeader(data.user,data.avatarid); 
+		updateHeader(data.user,data.avatarid);
 
 		subscribedStream = data.user;
 		_g("content").style.minHeight = 0;
@@ -26,7 +26,7 @@ CONTROLLERS['user'] = {
 		if (pageType == "mentions")
 			currentPageType = "MENTIONS";
 		if (pageType == "step2")
-			editProfile(); 
+			editProfile();
 	}
 };
 

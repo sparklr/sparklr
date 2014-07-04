@@ -87,7 +87,7 @@ exports.run = function(request, response, uri, sessionid) {
 				log(e);
 				return apiResponse(response, false, 500);
 			}
-				
+
 			args.postObject = postObject;
 
 			if (postObject.img) {
@@ -96,11 +96,11 @@ exports.run = function(request, response, uri, sessionid) {
 					var s = uri.pathname.split("/");
 					if (s[2] == "post")
 						imgArgs.width = 900;
-					if (s[2] == "avatar") 
+					if (s[2] == "avatar")
 						imgArgs = { fullWidth: 200, fullHeight: 200, width: 50, height: 50, fill: true, id: userobj.id };
-					if (s[2] == "header") 
+					if (s[2] == "header")
 						imgArgs = { noThumb: true, fill: true, id: userobj.id, category: "b" };
-					
+
 					Upload.handleUpload(postBody, userobj, imgArgs, function(err, id) {
 						postBody = null;
 
@@ -112,7 +112,7 @@ exports.run = function(request, response, uri, sessionid) {
 						postObject.img = id;
 
 						endpoint(args, callback);
-						
+
 						f = null;
 					});
 				};
@@ -153,7 +153,7 @@ function beaconNotifCallback(err, rows, args) {
 }
 
 function apiResponse(response, err, obj, headers) {
-	var status = err || 200;	
+	var status = err || 200;
 	if (typeof(status) !== 'number') {
 		status = 500;
 		obj = false;
