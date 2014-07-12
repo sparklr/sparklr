@@ -160,7 +160,8 @@ exports.get_user = function(args, callback) {
 			avatarid: profile.avatarid,
 			following: (args.userobj.following.indexOf(profile.id.toString()) != -1),
 			name: profile.displayname,
-			bio: profile.bio
+			bio: profile.bio,
+			mutetime: profile.mutetime
 		};
 
 		var table = "timeline";
@@ -266,6 +267,18 @@ exports.get_sendinvite = function(args, callback) {
 		fromid: args.userobj.id
 	});
 	callback(null, true);
+}
+
+exports.get_mute = function(args, callback) {
+	if (args.userobj.rank < 50) return callback(403, false);
+
+	Database.query("UPDATE `users` SET `mutetime` = " + Toolbox.time() + " WHERE `id` = " + ~~(args.fragments[3]), callback);
+}
+
+exports.get_unmute = function(args, callback) {
+	if (args.userobj.rank < 50) return callback(403, false);
+
+	Database.query("UPDATE `users` SET `mutetime` = 0 WHERE `id` = " + ~~(args.fragments[3]), callback);
 }
 
 /* @url api/settings

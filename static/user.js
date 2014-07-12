@@ -167,3 +167,11 @@ function showSignin() {
 	}
 }
 
+function mute(user) {
+	ajax("mute/" + user);
+}
+
+function unmute(user) {
+	ajax("unmute/" + user);
+}
+
