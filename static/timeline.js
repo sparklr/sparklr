@@ -274,6 +274,10 @@ function postToTimeline() {
 			showBanner("You've been posting a lot lately.. wait a few seconds. It'll keep people from being mad at you. ;)", "ratelimit", 5000);
 			return;
 		}
+		if (data === 3) {
+			showPopup("You are currently muted by a moderator.<br><br>You should be able to post again in less than 5 minutes.");
+		}
+
 		//Complete
 		_g("attachment").style.display = "none";
 		_g("attachment").className = "attachment picturepost";

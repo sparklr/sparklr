@@ -183,6 +183,8 @@ exports.get_deletecomment = function(args, callback) {
 exports.post_post = function(args, callback) {
 	if (!args.postObject.body || args.postObject.body.length > 500)
 		return callback(400, false);
+	if (Toolbox.time() - args.userobj.mutetime < 60 * 5)
+		return callback(200, 3);
 
 	var data = args.postObject;
 	var user = args.userobj.id;

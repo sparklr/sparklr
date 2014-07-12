@@ -54,7 +54,8 @@ exports.signup = function(callback) {
 			following: following,
 			networks: "0",
 			authkey: exports.generateAuthkey(username),
-			bio: ""
+			bio: "",
+			mutetime: 0
 		};
 
 		Database.postObject("users", obj, function(err, rows) {
