@@ -6,40 +6,40 @@
 	<meta charset='utf-8'>
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic|Courgette' rel='stylesheet' type='text/css'>
 	<script>
-		var IMGHOST = "{global.imgHost}";
-		var STATICHOST = "{global.staticHost}";
+		var IMGHOST = "{{global.imgHost}}";
+		var STATICHOST = "{{global.staticHost}}";
 		var POLL_INTERVAL = 5000;
 		var MOBILE = true;
-		var LIVE = {global.liveSite};
+		var LIVE = {{global.liveSite}};
 	</script>
 	<% if (global.liveSite) %>
-		<link rel='stylesheet' href='{global.staticHost}/mobile.css?{buildData.cssHash_mobile}'>
-		<script data-live src='{global.staticHost}/mobile.js?{buildData.jsHash_mobile}'></script>
+		<link rel='stylesheet' href='{{global.staticHost}}/mobile.css?{{buildData.cssHash_mobile}}'>
+		<script data-live src='{{global.staticHost}}/mobile.js?{{buildData.jsHash_mobile}}'></script>
 	<% else %>
-		<script src='{global.staticHost}/templates.js'></script>
-		<script src='{global.staticHost}/page.js'></script>
-		<script src='{global.staticHost}/data.js'></script>
-		<script src='{global.staticHost}/timeline.js'></script>
-		<script src='{global.staticHost}/post.js'></script>
-		<script src='{global.staticHost}/user.js'></script>
-		<script src='{global.staticHost}/chat.js'></script>
-		<script src='{global.staticHost}/ui.js'></script>
-		<script src='{global.staticHost}/mobile/ui.js'></script>
-		<script src='{global.staticHost}/notification.js'></script>
-		<script src='{global.staticHost}/profile.js'></script>
-		<script src='{global.staticHost}/app.js'></script>
-		<script src='{global.staticHost}/bugs.js'></script>
+		<script src='{{global.staticHost}}/templates.js'></script>
+		<script src='{{global.staticHost}}/page.js'></script>
+		<script src='{{global.staticHost}}/data.js'></script>
+		<script src='{{global.staticHost}}/timeline.js'></script>
+		<script src='{{global.staticHost}}/post.js'></script>
+		<script src='{{global.staticHost}}/user.js'></script>
+		<script src='{{global.staticHost}}/chat.js'></script>
+		<script src='{{global.staticHost}}/ui.js'></script>
+		<script src='{{global.staticHost}}/mobile/ui.js'></script>
+		<script src='{{global.staticHost}}/notification.js'></script>
+		<script src='{{global.staticHost}}/profile.js'></script>
+		<script src='{{global.staticHost}}/app.js'></script>
+		<script src='{{global.staticHost}}/bugs.js'></script>
 		<!-- CONTROLLERS -->
-		<script src='{global.staticHost}../controllers/chat.js'></script>
-		<script src='{global.staticHost}../controllers/notifications.js'></script>
-		<script src='{global.staticHost}../controllers/post.js'></script>
-		<script src='{global.staticHost}../controllers/search.js'></script>
-		<script src='{global.staticHost}../controllers/settings.js'></script>
-		<script src='{global.staticHost}../controllers/tag.js'></script>
-		<script src='{global.staticHost}../controllers/user.js'></script>
-		<link rel='stylesheet' href='{global.staticHost}/common.css'>
-		<link rel='stylesheet' href='{global.staticHost}/mobile.css'>
-		<link rel='stylesheet' href='{global.staticHost}/fonts.css'>
+		<script src='{{global.staticHost}}../controllers/chat.js'></script>
+		<script src='{{global.staticHost}}../controllers/notifications.js'></script>
+		<script src='{{global.staticHost}}../controllers/post.js'></script>
+		<script src='{{global.staticHost}}../controllers/search.js'></script>
+		<script src='{{global.staticHost}}../controllers/settings.js'></script>
+		<script src='{{global.staticHost}}../controllers/tag.js'></script>
+		<script src='{{global.staticHost}}../controllers/user.js'></script>
+		<link rel='stylesheet' href='{{global.staticHost}}/common.css'>
+		<link rel='stylesheet' href='{{global.staticHost}}/mobile.css'>
+		<link rel='stylesheet' href='{{global.staticHost}}/fonts.css'>
 		<script src='http://127.0.0.1:9001/socket.js' async></script>
 	<% endelse %>
 	<meta name="apple-mobile-web-app-capable" content="yes" />

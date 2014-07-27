@@ -3,7 +3,7 @@
 	<% if (subscribedStream != "0" && subscribedStream != "popular") %>
 	<div class='timelineitem'>
 		<div class='picturepost attachment' id='attachment'></div>
-		{ renderComposer('Post something...', 'postToTimeline', false) }
+		{{ renderComposer('Post something...', 'postToTimeline', false) }}
 	</div>
 	<% else %>
 	<div><!-- empty node --></div>

@@ -7,12 +7,12 @@
 			var msg = it[i];
 			msg.img = imgUrl(msg.from.toString());
 	?>
-	<div style='position:relative;cursor:pointer;' onClick='chatWith("{msg.from}");'>
+	<div style='position:relative;cursor:pointer;' onClick='chatWith("{{msg.from}}");'>
 		<div class='rightcontrols'>
-			<time class='float' datetime='{msg.time}'></time>
+			<time class='float' datetime='{{msg.time}}'></time>
 		</div>
-		<img src='{msg.img}' class='avatar'><b>{getDisplayName(msg.from)}</b><br>
-		{escapeHTML(msg.message)}<br><br>
+		<img src='{{msg.img}}' class='avatar'><b>{{getDisplayName(msg.from)}}</b><br>
+		{{escapeHTML(msg.message)}}<br><br>
 	</div>
 	<?
 		}

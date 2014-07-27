@@ -1,37 +1,37 @@
 <div class='contentwrapper' onclick='stopBubbling()'>
 	<% if ($type == 1) %>
-	<div class='picturepost full' id='picturepost_{$id}' onClick='showImage("{ imgUrl($img,true) }");'>
-		<img src='{imgUrl($img)}'>
+	<div class='picturepost full' id='picturepost_{{$id}}' onClick='showImage("{{ imgUrl($img,true) }}");'>
+		<img src='{{imgUrl($img)}}'>
 	</div>
 	<% endif %>
 
-	<div id='fullpost_{$id}' class='post'>
+	<div id='fullpost_{{$id}}' class='post'>
 		<% if ($from == CURUSER || ISMOD) %>
-		<div class='commentcount icon-remove icon' onClick='deletePost("{$id}");stopBubbling();'></div>
+		<div class='commentcount icon-remove icon' onClick='deletePost("{{$id}}");stopBubbling();'></div>
 		<% else %>
-		<div class='commentcount icon-eye-blocked icon' onClick='hidePost({$id},{$from});stopBubbling();'></div>
+		<div class='commentcount icon-eye-blocked icon' onClick='hidePost({{$id}},{{$from}});stopBubbling();'></div>
 		<% endelse %>
-		<div class='commentcount icon-loop icon' onClick='repost("{$id}");stopBubbling();'></div>
-		<div class='commentcount icon-heart icon' id='likebtn_{$id}' onClick='likePost("{$id}","{$from}", this);stopBubbling();'></div>
-		<img class='avatar' src='{getAvatar($from)}'>
-		<a href='#/user/{$from}' class='person'>{getDisplayName($from)}</a><br>
-		<time datetime='{$time}'></time><br>
-		{$originalMessage}
-		<span data-id='{$id}' <% if ($from == CURUSER) %> onclick='editPostStart(event)' onblur='editPost(event);'<% endif %>>
-			{$formattedMessage}
+		<div class='commentcount icon-loop icon' onClick='repost("{{$id}}");stopBubbling();'></div>
+		<div class='commentcount icon-heart icon' id='likebtn_{{$id}}' onClick='likePost("{{$id}}","{{$from}}", this);stopBubbling();'></div>
+		<img class='avatar' src='{{getAvatar($from)}}'>
+		<a href='#/user/{{$from}}' class='person'>{{getDisplayName($from)}}</a><br>
+		<time datetime='{{$time}}'></time><br>
+		{{$originalMessage}}
+		<span data-id='{{$id}}' <% if ($from == CURUSER) %> onclick='editPostStart(event)' onblur='editPost(event);'<% endif %>>
+			{{$formattedMessage}}
 		</span>
 		<br>
 	</div>
 	<hr>
-	<div id='responseholder_{$id}' class='commentholder'>
-		<div id='comments_{$id}'></div>
+	<div id='responseholder_{{$id}}' class='commentholder'>
+		<div id='comments_{{$id}}'></div>
 		<div class='fadein'>
-			{ renderComposer('Respond...', 'postComment', true, $id) }
+			{{ renderComposer('Respond...', 'postComment', true, $id) }}
 		</div>
 	</div>
-	<div id='reblogholder_{$id}' class='fadein' style='display:none'>
+	<div id='reblogholder_{{$id}}' class='fadein' style='display:none'>
 		<div class='fadein'>
-			{ renderComposer('Share something (optional)', 'publishRepost', true, 'r' + $id) }
+			{{ renderComposer('Share something (optional)', 'publishRepost', true, 'r' + $id) }}
 		</div>
 	</div>
 </div>

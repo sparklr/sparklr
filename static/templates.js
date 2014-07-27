@@ -78,7 +78,7 @@ function t(data) {
 
 	obj = obj.replace(/\$/g, "it.");
 
-	obj = obj.replace(/\{([^\n}]*)\}/g, function(match,m1) {
+	obj = obj.replace(/\{\{([^\n}]*)\}\}/g, function(match,m1) {
 		return "\"+" + m1 + "+\"";
 	});
 

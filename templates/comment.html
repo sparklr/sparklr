@@ -1,19 +1,19 @@
 <div style='display:inline-block;float:left;height:100%;margin-top:2px;' class='fadein'>
-	<a href='#/user/{$from}'><img class='littleavatar' src='{getAvatar($from)}'></a>
+	<a href='#/user/{{$from}}'><img class='littleavatar' src='{{getAvatar($from)}}'></a>
 </div>
 <div class='rightcontrols'>
-	<time class='float' style='opacity:0.5' datetime='{$time}'></time>
+	<time class='float' style='opacity:0.5' datetime='{{$time}}'></time>
 	<% if ($canEdit) %>
 		<br>
-		<a class='icon-remove' onClick='deleteComment("{$id}", "{$postid}");'></a>
+		<a class='icon-remove' onClick='deleteComment("{{$id}}", "{{$postid}}");'></a>
 	<% endif %>
 </div>
-<a class='person' href='#/user/{$from}'>{getDisplayName($from)}</a>
+<a class='person' href='#/user/{{$from}}'>{{getDisplayName($from)}}</a>
 <% if ($like) %>
 	 likes this<br><br>
 <% else %>
-<div style='margin-left: 50px;'<% if ($canEdit) %> data-id='{$id}'<% endif %>>
-	{processMedia(escapeHTML($message))}
+<div style='margin-left: 50px;'<% if ($canEdit) %> data-id='{{$id}}'<% endif %>>
+	{{processMedia(escapeHTML($message))}}
 </div>
 <% endelse %>
 </div>

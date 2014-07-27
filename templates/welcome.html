@@ -2,10 +2,10 @@
 	<h2>Step 1: Follow</h2>
 	To help you get started, here are some accounts we recommend.<br><br>
 	<? for (i in data) { ?>
-	<input type='button' style='float:right;' value='Follow' onClick='follow({data[i].id},true);this.style.opacity=0'>
-	<img src="{ imgUrl(data[i].id.toString()) }" class='avatar'>
-	<b>{data[i].displayname}</b><br>
-	<i>{data[i].bio}</i>
+	<input type='button' style='float:right;' value='Follow' onClick='follow({{data[i].id}},true);this.style.opacity=0'>
+	<img src="{{ imgUrl(data[i].id.toString()) }}" class='avatar'>
+	<b>{{data[i].displayname}}</b><br>
+	<i>{{data[i].bio}}</i>
 	<br><br>
 	<? } ?>
 	<br><br>

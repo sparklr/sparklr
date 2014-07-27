@@ -1,6 +1,12 @@
 <? if (lastMessageFrom[$convoid] != $from || $prepend && lastMessageFrom[$convoid] == $from) { ?>
-	<img class='littleavatar' onClick='location.href="#/user/{$from}";' src='{getAvatar($from)}'>
+<img class='littleavatar' onClick='location.href="#/user/{{$from}}";' src='{{getAvatar($from)}}'>
 <? } ?>
-<time datetime='{$time}'></time>
-<div style='display:block;margin-left: 25px'>{($unconfirmed ? $message : processMedia(escapeHTML($message)))}</div>
+<time datetime='{{$time}}'></time>
+<div style='display:block;margin-left: 25px'>
+	<% if ($unconfirmed) %>
+		$message
+	<% else %>
+		processMedia(escapeHTML($message))
+	<% endelse %>
+</div>
 

@@ -1,9 +1,9 @@
 <div class='notification<% if ($read) %> read<% endif %>'>
 	<div class='rightcontrols'>
-		<time class='float' datetime='{$time}'></time>
+		<time class='float' datetime='{{$time}}'></time>
 	</div>
-	<img src='{getAvatar($from)}' class='avatar'>
-	<b>{getDisplayName($from)}</b>
-	{$body}
+	<img src='{{getAvatar($from)}}' class='avatar'>
+	<b>{{getDisplayName($from)}}</b>
+	{{$body}}
 </div>
 

@@ -1,28 +1,28 @@
-<div id='commentcount_{ $id }' class='commentcount' style='opacity:1'>{$commentcount}</div>
-<div class='commentcount repost icon' style='display:none;opacity: 0;' onClick='showPost("{$id}","repost");stopBubbling();'></div>
+<div id='commentcount_{{ $id }}' class='commentcount' style='opacity:1'>{{$commentcount}}</div>
+<div class='commentcount repost icon' style='display:none;opacity: 0;' onClick='showPost("{{$id}}","repost");stopBubbling();'></div>
 <% if ($from != CURUSER) %>
-<div class='commentcount icon-eye-blocked icon' onClick='hidePost({$id},{$from});stopBubbling();'></div>
+<div class='commentcount icon-eye-blocked icon' onClick='hidePost({{$id}},{{$from}});stopBubbling();'></div>
 <% endif %>
-<div class='commentcount icon-heart icon' onClick='likePost("{$id}","{$from}", this);stopBubbling();'></div>
+<div class='commentcount icon-heart icon' onClick='likePost("{{$id}}","{{$from}}", this);stopBubbling();'></div>
 
-<img class='avatar left' src='{ getAvatar($from) }'>
+<img class='avatar left' src='{{ getAvatar($from) }}'>
 
-<a href='#/user/{ $from }' class='person'>{ getDisplayName($from) }</a>
+<a href='#/user/{{ $from }}' class='person'>{{ getDisplayName($from) }}</a>
 
 <% if ($via !== null) %>
- via <a href='#/user/{ $via }'>@{ getUserHandle($via) }</a>
+via <a href='#/user/{{ $via }}'>@{{ getUserHandle($via) }}</a>
 <% endif %>
 
 <% if ($network !== null && $network != 0 && $network != 'everything' && $network != 'following') %>
- in <a href='#/{$network}'>/{$network}</a>
+in <a href='#/{{$network}}'>/{{$network}}</a>
 <% endif %>
 
-<h2>@{getUserHandle($from)} - <time datetime='{$time}'></time></h2>
-<div class='content' id='postcontent_{$id}'>{$originalMessage}{$formattedMessage}</div>
+<h2>@{{getUserHandle($from)}} - <time datetime='{{$time}}'></time></h2>
+<div class='content' id='postcontent_{{$id}}'>{{$originalMessage}}{{$formattedMessage}}</div>
 
 <% if ($type == 1) %>
-<div class='picturepost' id='picturepost_{$id}'>
-	<img src='{imgUrl($img)}'>
+<div class='picturepost' id='picturepost_{{$id}}'>
+	<img src='{{imgUrl($img)}}'>
 </div>
 <% endif %>
 
