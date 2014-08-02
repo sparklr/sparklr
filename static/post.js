@@ -260,3 +260,31 @@ function likePost(id, to, callback) {
 		pollData();
 	});
 }
+
+function postACat() {
+	document.getElementById("postcat").innerHTML = "Loading...";
+	convertImgToBase64("http://jaxbot.me/cat.php", function (dataURL) {
+		uploadStreamImageCallback({ target: { result: dataURL }}, "attachment");
+
+		document.getElementById("postcat").innerHTML = "Post a cat";
+	});
+}
+
+// Source: http://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
+function convertImgToBase64(url, callback, outputFormat){
+    var canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d'),
+        img = new Image;
+    img.crossOrigin = 'Anonymous';
+    img.onload = function(){
+        var dataURL;
+        canvas.height = img.height;
+        canvas.width = img.width;
+        ctx.drawImage(img, 0, 0);
+        dataURL = canvas.toDataURL(outputFormat);
+        callback.call(this, dataURL);
+        canvas = null; 
+    };
+    img.src = url;
+}
+
