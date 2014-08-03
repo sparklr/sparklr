@@ -68,7 +68,7 @@ function addTimelineEvent(item,append,overrideMissing) {
 	if (append || parent.children.length < 1) {
 		parent.appendChild(ev);
 	} else {
-		parent.insertBefore(ev, parent.children[2]);
+		parent.insertBefore(ev, parent.children[1]);
 	}
 
 	if (item.tags) {
