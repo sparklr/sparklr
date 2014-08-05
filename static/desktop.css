@@ -481,3 +481,14 @@ div.peoplebuttons input[type=button]:hover {
 	margin-left: 0;
 }
 
+.sale {
+	position: absolute;
+	font-size: 11px;
+	top: 10px;
+	margin-left: 15px;
+	background: #ee3333;
+	padding: 4px;
+	color: #fff;
+	opacity: 0.9;
+}
+
