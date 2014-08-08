@@ -138,12 +138,22 @@ function beaconNotifCallback(err, rows, args) {
 
 	var obj = {}, endpoint = null;
 
+	args.timeoutCount = args.timeoutCount ? args.timeoutCount + 1 : 1;
+
 	if (rows.length > 0)
 		obj.notifications = rows;
 
 	if ((endpoint = api["get_"+args.fragments[3]])) {
 		args.fragments.shift();
 		endpoint(args, function(status, data, headers) {
+			if (data.length < 1 && !obj.notifications && args.timeoutCount < 25) {
+				setTimeout(function() {
+					args.fragments.unshift("beacon");
+					Notification.getUserNotifications(args.userobj.id, args.uri.query.n, beaconNotifCallback, args);
+				}, 1000);
+				return;
+			}
+
 			obj.data = data;
 			apiResponse(args.response, status, obj, headers);
 		});
