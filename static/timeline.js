@@ -119,7 +119,7 @@ function fetchOlderPosts() {
 
 	ajax(query,null,function(data) {
 		var items = data.timeline || data;
-		for (var i = items.length - 1; i > 0 ; i--) {
+		for (var i = 0; i < items.length; i++) {
 			addTimelineEvent(items[i], true);
 		}
 	});
