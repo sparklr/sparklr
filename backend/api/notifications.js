@@ -23,3 +23,11 @@ exports.get_dismiss = function(args, callback) {
 	Database.query("UPDATE `notifications` SET `read` = 1 WHERE `id` = " + (~~args.fragments[3] || 0) + " AND `to` = " + (args.userobj.id),callback);
 }
 
+/* @url api/dismissall
+ * Dismisses all notifications
+ * @returns MySQL result
+ * @structure { affectedRows, insertId }
+ */
+exports.get_dismissall = function(args, callback) {
+	Database.query("UPDATE `notifications` SET `read` = 1 WHERE `to` = " + (args.userobj.id), callback);
+}

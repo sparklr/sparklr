@@ -179,6 +179,15 @@ function dismissNotification(id) {
 	removeNotification(id);
 }
 
+function dismissAll() {
+	ajax("dismissall", null, function () {
+		for (id in currentNotifications) {
+			removeNotification(id);
+		}
+		location.href += '/#'
+	});
+}
+
 function showBanner(text, id, timeout) {
 	if (_g(id) != null) return; //notification already exists
 
