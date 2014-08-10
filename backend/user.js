@@ -43,15 +43,18 @@ exports.signup = function(request, callback) {
 	// make sure they arent gobbling up accounts
 	var ip = Database.escape(request.headers['x-real-ip']);
 	Database.query("SELECT `id` FROM `users` WHERE `ip` = " + ip + " AND `created` > " + (Toolbox.time() - 3600), function (err, rows) {
-		console.log(rows);
 		// no more than 3 accounts per hour
 		if (rows && rows.length > 2) {
+			console.log("Too many IPs: " + ip);
 			return callback(2);
 		}
 
 		Database.query("SELECT `expires` FROM `ipbans` WHERE `ip` = " + ip + " AND `expires` > " + Toolbox.time(), function (err, rows) {
 			if (err) return callback(false);
-			if (rows && rows.length > 0) return callback(3);
+			if (rows && rows.length > 0) {
+				console.log("IP banned: " + ip);
+				callback(3);
+			}
 
 			var username = "newbie" + (Toolbox.time() - 1396396552) + (Math.round(Math.random() * 100)).toString();
 			exports.generatePass("guest", function(err,pass) {
