@@ -7,6 +7,7 @@ var User = require("../user");
 var Post = require("../post");
 var Toolbox = require("../toolbox");
 var Mail = require("../mail");
+var Log = require("../log");
 
 var bcrypt = require("bcrypt");
 var crypto = require("crypto");
@@ -284,11 +285,15 @@ exports.get_unmute = function(args, callback) {
 exports.get_ipban = function(args, callback) {
 	if (args.userobj.rank < 50) return callback(403, false);
 
+	Log(args.userobj.id + " banned " + args.fragments[3]);
+
 	Database.query("INSERT INTO `ipbans` (`ip`, `expires`) VALUES ((SELECT `ip` FROM `users` WHERE `id` = " + ~~(args.fragments[3]) + "), " + (Toolbox.time() + 60 * 60 * 24) + ")", callback);
 }
 
 exports.get_ipunban = function(args, callback) {
 	if (args.userobj.rank < 50) return callback(403, false);
+
+	Log(args.userobj.id + " unbanned " + args.fragments[3]);
 
 	Database.query("DELETE FROM `ipbans` WHERE `ip` = (SELECT `ip` FROM `users` WHERE `id` = " + ~~(args.fragments[3]) + ")", callback);
 }
