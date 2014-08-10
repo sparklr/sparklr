@@ -281,6 +281,18 @@ exports.get_unmute = function(args, callback) {
 	Database.query("UPDATE `users` SET `mutetime` = 0 WHERE `id` = " + ~~(args.fragments[3]), callback);
 }
 
+exports.get_ipban = function(args, callback) {
+	if (args.userobj.rank < 50) return callback(403, false);
+
+	Database.query("INSERT INTO `ipbans` (`ip`, `expires`) VALUES ((SELECT `ip` FROM `users` WHERE `id` = " + ~~(args.fragments[3]) + "), " + (Toolbox.time() + 60 * 60 * 24) + ")", callback);
+}
+
+exports.get_ipunban = function(args, callback) {
+	if (args.userobj.rank < 50) return callback(403, false);
+
+	Database.query("DELETE FROM `ipbans` WHERE `ip` = (SELECT `ip` FROM `users` WHERE `id` = " + ~~(args.fragments[3]) + ")", callback);
+}
+
 /* @url api/settings
  * @args { [username], [bio], [email], displayname }
  * @returns true if successful, false if validation fails

@@ -1,5 +1,6 @@
 var Database = require("./database");
 var Toolbox = require("./toolbox");
+var log = require("./log");
 var bcrypt = require("bcrypt");
 var crypto = require("crypto");
 
@@ -45,14 +46,14 @@ exports.signup = function(request, callback) {
 	Database.query("SELECT `id` FROM `users` WHERE `ip` = " + ip + " AND `created` > " + (Toolbox.time() - 3600), function (err, rows) {
 		// no more than 3 accounts per hour
 		if (rows && rows.length > 2) {
-			console.log("Too many IPs: " + ip);
+			log("Too many IPs: " + ip);
 			return callback(2);
 		}
 
 		Database.query("SELECT `expires` FROM `ipbans` WHERE `ip` = " + ip + " AND `expires` > " + Toolbox.time(), function (err, rows) {
 			if (err) return callback(false);
 			if (rows && rows.length > 0) {
-				console.log("IP banned: " + ip);
+				log("IP banned: " + ip);
 				callback(3);
 			}
 

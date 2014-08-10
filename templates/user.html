@@ -27,6 +27,8 @@
 		<% else %>
 			<input type='button' onclick='mute({$user});' value='Mute'>
 		<% endelse %>
+		<input type='button' onclick='ajax("ipban/{$user}")' value='IP Ban'>
+		<input type='button' onclick='ajax("ipunban/{$user}")' value='IP Unban'>
 	<% endif %>
 	</div>
 <% if ($user == CURUSER) %> 
