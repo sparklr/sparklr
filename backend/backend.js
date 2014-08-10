@@ -59,7 +59,7 @@ function handleRequests(request,response) {
 		} else {
 			User.signup(request, function(userobj) {
 				if (userobj === 2)
-					return response.end("Too many registrations from your IP address recently. Try again soon.\nThis message is to prevent spammers from hammering our network.\n\nSorry about this.\nContact team@sparklr.me if you see this regularly.");
+					return Frontend.showExternalPage(request, response, true);
 
 				if (userobj === 3)
 					return response.end("You, or someone on the same network as you, was IP banned.\n\nSorry about this.\nContact team@sparklr.me believe this is an error.");

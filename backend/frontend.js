@@ -105,7 +105,7 @@ exports.run = function(user, request, response, sessionid) {
 	});
 }
 
-exports.showExternalPage = function(request, response) {
+exports.showExternalPage = function(request, response, ipbanned) {
 	if (request.headers['x-scheme'] == "http") {
 		response.writeHead(302, { "Location" : "https://sparklr.me/" });
 		response.end();
@@ -118,6 +118,9 @@ exports.showExternalPage = function(request, response) {
 	}
 	response.writeHead(200);
 	response.write(externalTemplate);
+	if (ipbanned) {
+		response.write("<script>window.ipbanned = true;</script>");
+	}
 	response.end();
 }
 

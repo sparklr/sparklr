@@ -147,6 +147,9 @@ function forgotPassword() {
 }
 
 function newAccount() {
+	if (ipbanned) {
+		return alert("Too many registrations from your IP address recently. Try again soon.\nThis message is to prevent spammers from hammering our network.\n\nSorry about this.\nContact team@sparklr.me if you see this regularly.");
+	}
 	ajax("resetcookie", null, function(data) {
 		location.href = './';
 	});
