@@ -39,29 +39,46 @@ exports.getMassUserDisplayName = function(users,callback) {
 	Database.query("SELECT `displayname`, `username`, `id`, `avatarid` FROM `users` WHERE `id` IN (" + users.join(",")+")", callback);
 }
 
-exports.signup = function(callback) {
-	var username = "newbie" + (Toolbox.time() - 1396396552) + (Math.round(Math.random() * 100)).toString();
-	exports.generatePass("guest", function(err,pass) {
-		var following = [68,4,6,24,36,25];
+exports.signup = function(request, callback) {
+	// make sure they arent gobbling up accounts
+	var ip = Database.escape(request.headers['x-real-ip']);
+	Database.query("SELECT `id` FROM `users` WHERE `ip` = " + ip + " AND `created` > " + (Toolbox.time() - 3600), function (err, rows) {
+		console.log(rows);
+		// no more than 3 accounts per hour
+		if (rows && rows.length > 2) {
+			return callback(2);
+		}
 
-		following = following.join(",");
-
-		var obj = {
-			username: username,
-			password: pass,
-			email: username + "@sparklr.me",
-			displayname: username,
-			following: following,
-			networks: "0",
-			authkey: exports.generateAuthkey(username),
-			bio: "",
-			mutetime: 0
-		};
-
-		Database.postObject("users", obj, function(err, rows) {
+		Database.query("SELECT `expires` FROM `ipbans` WHERE `ip` = " + ip + " AND `expires` > " + Toolbox.time(), function (err, rows) {
 			if (err) return callback(false);
-			obj.id = rows && rows.insertId;
-			callback(obj);
+			if (rows && rows.length > 0) return callback(3);
+
+			var username = "newbie" + (Toolbox.time() - 1396396552) + (Math.round(Math.random() * 100)).toString();
+			exports.generatePass("guest", function(err,pass) {
+				var following = [68,4,6,24,36,25];
+
+				following = following.join(",");
+
+				var obj = {
+					username: username,
+					password: pass,
+					email: username + "@sparklr.me",
+					displayname: username,
+					following: following,
+					networks: "0",
+					authkey: exports.generateAuthkey(username),
+					bio: "",
+					mutetime: 0,
+					ip: request.headers['x-real-ip'],
+					created: Toolbox.time()
+				};
+
+				Database.postObject("users", obj, function(err, rows) {
+					if (err) return callback(false);
+					obj.id = rows && rows.insertId;
+					callback(obj);
+				});
+			});
 		});
 	});
 }
