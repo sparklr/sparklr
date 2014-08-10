@@ -40,19 +40,24 @@ exports.getMassUserDisplayName = function(users,callback) {
 	Database.query("SELECT `displayname`, `username`, `id`, `avatarid` FROM `users` WHERE `id` IN (" + users.join(",")+")", callback);
 }
 
+exports.getUserBanned = function (ip, callback) {
+	Database.query("SELECT `expires` FROM `ipbans` WHERE `ip` = " + Database.escape(ip) + " AND `expires` > " + Toolbox.time(), function (err, rows) {
+		callback(rows && rows.length > 0);
+	});
+}
+
 exports.signup = function(request, callback) {
 	// make sure they arent gobbling up accounts
-	var ip = Database.escape(request.headers['x-real-ip']);
-	Database.query("SELECT `id` FROM `users` WHERE `ip` = " + ip + " AND `created` > " + (Toolbox.time() - 3600), function (err, rows) {
+	var ip = request.headers['x-real-ip'];
+	Database.query("SELECT `id` FROM `users` WHERE `ip` = " + Database.escape(ip) + " AND `created` > " + (Toolbox.time() - 3600), function (err, rows) {
 		// no more than 3 accounts per hour
 		if (rows && rows.length > 2) {
 			log("Too many IPs: " + ip);
 			return callback(2);
 		}
 
-		Database.query("SELECT `expires` FROM `ipbans` WHERE `ip` = " + ip + " AND `expires` > " + Toolbox.time(), function (err, rows) {
-			if (err) return callback(false);
-			if (rows && rows.length > 0) {
+		exports.getUserBanned(ip, function (result) {
+			if (result) {
 				log("IP banned: " + ip);
 				callback(3);
 			}

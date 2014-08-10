@@ -22,20 +22,28 @@ exports.public_signin = function(args,callback) {
 	var user = args.fragments[3];
 	var pass = args.fragments[4];
 
-	Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(user) + " OR `email` = " + Database.escape(user), function(err,rows) 
-	{
-		if (rows.length < 1 || err) return callback(200, false);
+	var ip = args.request.headers['x-real-ip'];
+	User.getUserBanned(ip, function (result) {
+		if (result) {
+			Log("User is banned: " + ip);
+			return callback(200, -1);
+		}
 
-		bcrypt.compare(pass, rows[0].password, function(err,match) {
-			if (err || !match) {
-				callback(200, false);
-			} else {
-				var sessionid = rows[0].id + "," + rows[0].authkey;
-				return callback(200, true, {
-					"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT",
-					"Cache-Control": "no-cache"
-				});
-			}
+		Database.query("SELECT * FROM `users` WHERE `username` = " + Database.escape(user) + " OR `email` = " + Database.escape(user), function(err,rows) 
+		{
+			if (rows.length < 1 || err) return callback(200, false);
+
+			bcrypt.compare(pass, rows[0].password, function(err,match) {
+				if (err || !match) {
+					callback(200, false);
+				} else {
+					var sessionid = rows[0].id + "," + rows[0].authkey;
+					return callback(200, true, {
+						"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT",
+						"Cache-Control": "no-cache"
+					});
+				}
+			});
 		});
 	});
 }

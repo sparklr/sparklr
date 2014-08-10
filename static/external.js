@@ -99,6 +99,9 @@ function trySignin(username, password, redir) {
 					_g("content").className = "shake";
 					callback("Incorrect username or password");
 				break;
+				case "-1":
+					alert("Your IP address has been banned. If you think this is a mistake, please contact te" + "am@spa" + "rklr.me");
+				break;
 				default:
 					callback("Failed to contact the server. Try again.");
 				break;
