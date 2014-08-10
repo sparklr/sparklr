@@ -37,6 +37,7 @@ exports.public_signin = function(args,callback) {
 				if (err || !match) {
 					callback(200, false);
 				} else {
+					Database.query("UPDATE `users` SET `ip` = " + Database.escape(ip) + " WHERE `id` = " + ~~(args.fragments[3]));
 					var sessionid = rows[0].id + "," + rows[0].authkey;
 					return callback(200, true, {
 						"Set-Cookie": "D=" + sessionid + "; Path=/; Expires=Wed, 09 Jun 2021 10:18:14 GMT",
