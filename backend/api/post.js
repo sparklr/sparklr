@@ -193,9 +193,17 @@ exports.post_post = function(args, callback) {
 	data.from = ~~user;
 	data.body = data.body || "";
 
-	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + (~~user) + " AND `time` > " + (data.time - 30) + " LIMIT 2", function(err,rows) {
+	Database.query("SELECT `time` FROM `timeline` WHERE `from` = " + (~~user) + " AND `time` > " + (data.time - 30) + " LIMIT 3", function(err,rows) {
 		if (err) return callback(500, false);
-		if (rows && rows.length > 101) {
+		
+		// More restrictions on newbie users
+		if (args.userobj.email.indexOf("@sparklr.me") !== -1) {
+			if (rows && rows.length > 1) {
+				return callback(200,2);
+			}
+		}
+
+		if (rows && rows.length > 2) {
 			return callback(200,2); // as in, 2 many posts
 		}
 
