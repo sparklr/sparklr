@@ -295,6 +295,9 @@ exports.get_ipban = function(args, callback) {
 
 	Log(args.userobj.id + " banned " + args.fragments[3]);
 
+	// destroy session
+	Database.query("UPDATE `users` SET `authkey` = " + Database.escape(User.generateAuthkey("banned")) + " WHERE `id` = " + ~~(args.fragments[3]));
+
 	Database.query("INSERT INTO `ipbans` (`ip`, `expires`) VALUES ((SELECT `ip` FROM `users` WHERE `id` = " + ~~(args.fragments[3]) + "), " + (Toolbox.time() + 60 * 60 * 24) + ")", callback);
 }
 
