@@ -324,6 +324,8 @@ exports.post_editpost = function(args, callback) {
 		} else {
 			message = args.postObject.body;
 		}
+		Post.processPostTags(args.postObject.body, ~~args.postObject.id);		
+		Post.processMentions(args.postObject.body, args.userobj.id, ~~args.postObject.id);
 		Database.query("UPDATE `timeline` SET `message` = " + Database.escape(message) + ", `modified` = '" + Toolbox.time() + "' WHERE `id` = " + ~~(args.postObject.id) + (args.userobj.rank >= 50 ? "" : " AND `from` = " + ~~(args.userobj.id)), callback);
 	});
 }
