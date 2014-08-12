@@ -1,13 +1,15 @@
+var Toolbox = require("./toolbox");
+
 var fs = require("fs");
 var os = require("os");
 var spawn = require("child_process").spawn;
 
-var start = (new Date()).getTime().toString(36) + "_" + Math.random() * 1000000000;
+var start = (new Date()).getTime().toString(36) + "_" + (Math.random() * 1000000000000000000).toString(36);
 var id = 0;
 
 exports.handleUpload = function(data, userobj, args, callback) {
 	id++;
-	var imgid = args.id || (userobj.id + "_" + start + "_" + id.toString(36) + (Math.random() * 1000000000).toString(36));
+	var imgid = args.id || (userobj.id + "_" + start + "_" + Toolbox.uniq().toString(36) + "_" + Math.round(Math.random() * 1000));
 
 	var tmpfile = os.tmpdir() + "/upload_" + imgid;
 

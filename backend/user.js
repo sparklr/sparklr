@@ -62,7 +62,7 @@ exports.signup = function(request, callback) {
 				callback(3);
 			}
 
-			var username = "newbie" + (Toolbox.time() - 1396396552) + (Math.round(Math.random() * 100)).toString();
+			var username = "newbie" + (Toolbox.uniq());
 			exports.generatePass("guest", function(err,pass) {
 				var following = [68,4,6,24,36,25];
 
