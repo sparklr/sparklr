@@ -15,6 +15,9 @@ function renderPageFromTemplate() {
 function renderTemplate(page,destination,callback) {
 	var fragments = page.split("/");
 	var cb = function(data) {
+		if (!data) {
+			return _g(destination).innerHTML = getTemplate("404")();
+		}
 		if (data && data.error === true) return;
 
 		if (spc = _g("sidepost_container"))

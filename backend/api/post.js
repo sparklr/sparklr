@@ -30,7 +30,7 @@ exports.get_post = function(args, callback) {
 				callback(err, obj, { "Cache-Control": "max-age: 60" });
 			});
 		} else {
-			callback(404);
+			callback(404, false);
 		}
 	});
 }

@@ -30,11 +30,12 @@ function ajax(url, data, callback) {
 			try {
 				callback(JSON.parse(data),xhr);
 			} catch (e) {
+				callback(null);
+				return;
 			}
 			if (xhr.status != 200) {
 				if (xhr.status == 404) {
-					eval(getTemplate("404"));
-					_g("content").innerHTML = html;
+
 				} else {
 					showBanner("Uh oh, an error occurred when attempting to talk to the server", "statusmsg_ajaxerror");
 				}
