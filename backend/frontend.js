@@ -97,7 +97,8 @@ exports.run = function(user, request, response, sessionid) {
 
 			Notification.getUserNotifications(user.id, 0, function(err,rows) {
 				payload.notifications = rows;
-				html += "<script>app(" + JSON.stringify(payload) + ");</script></body></html>";
+				var str = JSON.stringify(payload).replace(/\<\/script/g, ""); 
+				html += "<script>app(" + str + ");</script></body></html>";
 				response.write(html);
 				response.end();
 			});
