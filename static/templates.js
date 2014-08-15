@@ -14,8 +14,8 @@ function renderPageFromTemplate() {
 
 function renderTemplate(page,destination,callback) {
 	var fragments = page.split("/");
-	var cb = function(data) {
-		if (!data) {
+	var cb = function(data, xhr) {
+		if (xhr.status === 404) {
 			return _g(destination).innerHTML = getTemplate("404")();
 		}
 		if (data && data.error === true) return;

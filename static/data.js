@@ -28,9 +28,9 @@ function ajax(url, data, callback) {
 
 			var data = xhr.responseText;
 			try {
-				callback(JSON.parse(data),xhr);
+				callback(JSON.parse(data), xhr);
 			} catch (e) {
-				callback(null);
+				callback(null, xhr);
 				return;
 			}
 			if (xhr.status != 200) {
