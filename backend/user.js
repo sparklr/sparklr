@@ -41,14 +41,14 @@ exports.getMassUserDisplayName = function(users,callback) {
 }
 
 exports.getUserBanned = function (ip, callback) {
-	Database.query("SELECT `expires` FROM `ipbans` WHERE `ip` = " + Database.escape(ip) + " AND `expires` > " + Toolbox.time(), function (err, rows) {
+	Database.query("SELECT `expires` FROM `ipbans` WHERE `ip` = " + Database.escape(ip || "") + " AND `expires` > " + Toolbox.time(), function (err, rows) {
 		callback(rows && rows.length > 0);
 	});
 }
 
 exports.signup = function(request, callback) {
 	// make sure they arent gobbling up accounts
-	var ip = request.headers['x-real-ip'];
+	var ip = request.headers['x-real-ip'] || "";
 	Database.query("SELECT `id` FROM `users` WHERE `ip` = " + Database.escape(ip) + " AND `created` > " + (Toolbox.time() - 3600), function (err, rows) {
 		// no more than 3 accounts per hour
 		if (rows && rows.length > 2) {
@@ -78,7 +78,7 @@ exports.signup = function(request, callback) {
 					authkey: exports.generateAuthkey(username),
 					bio: "",
 					mutetime: 0,
-					ip: request.headers['x-real-ip'],
+					ip: ip,
 					created: Toolbox.time()
 				};
 
