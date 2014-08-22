@@ -139,7 +139,7 @@ exports.public_reset = function(args, callback) {
 exports.public_checkusername = function(args, callback) {
 	User.getUserProfileByUsername(args.fragments[3], function(err, rows) {
 		if (err) return callback(500, false);
-		callback(200, rows && rows.length > 0 && rows[0].id != args.userobj.id);
+		callback(200, rows && rows.length > 0 && rows[0] && rows[0].id != args.userobj.id);
 	});
 }
 
