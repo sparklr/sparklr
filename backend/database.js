@@ -27,7 +27,7 @@ exports.init = function() {
 }
 
 exports.escape = function(str) {
-	return "'" + connection.escapeSync(str) + "'";
+	return "'" + connection.escapeSync(str || "") + "'";
 }
 
 exports.escapeId = function(str) {
