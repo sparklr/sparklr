@@ -39,6 +39,8 @@ exports.run = function(user, request, response, sessionid) {
 		response.end();
 		return;
 	}
+	if (!request.headers['user-agent'])
+		return response.end("Sparklr.me, by Jonathan Warner and Ivey Padgett");
 
 	var html;
 
