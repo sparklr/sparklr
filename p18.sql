@@ -1,8 +1,8 @@
--- MySQL dump 10.14  Distrib 5.5.36-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.15  Distrib 10.0.11-MariaDB, for osx10.9 (i386)
 --
 -- Host: localhost    Database: p18
 -- ------------------------------------------------------
--- Server version	5.5.36-MariaDB-1
+-- Server version	10.0.11-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +29,7 @@ CREATE TABLE `comments` (
   `message` text NOT NULL,
   `time` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,6 +61,28 @@ CREATE TABLE `invites` (
 LOCK TABLES `invites` WRITE;
 /*!40000 ALTER TABLE `invites` DISABLE KEYS */;
 /*!40000 ALTER TABLE `invites` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ipbans`
+--
+
+DROP TABLE IF EXISTS `ipbans`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ipbans` (
+  `expires` int(11) NOT NULL,
+  `ip` tinytext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ipbans`
+--
+
+LOCK TABLES `ipbans` WRITE;
+/*!40000 ALTER TABLE `ipbans` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ipbans` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -100,7 +122,7 @@ CREATE TABLE `messages` (
   `time` int(11) NOT NULL,
   `message` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -173,7 +195,7 @@ CREATE TABLE `notifications` (
   `action` text NOT NULL,
   `read` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,7 +252,7 @@ CREATE TABLE `timeline` (
   `modified` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `modified` (`modified`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,9 +286,12 @@ CREATE TABLE `users` (
   `networks` tinytext,
   `authkey` tinytext,
   `emailverified` tinyint(4) DEFAULT NULL,
+  `mutetime` int(11) DEFAULT NULL,
+  `created` int(11) DEFAULT NULL,
+  `ip` tinytext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`(30))
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +300,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,'jaxbot','jaxbot@gmail.com','$2a$11$PlUACuZyK7Oi/QNgT6wSPOC3B4Hv2Vwc29hnlyW5DM.h/xzexI6k.','Jonathan','Jonathan test account',1390708388,1378173008,'55,57','',50,'0','4dab1a8afdfca30ed4492016f9db397df38353652',NULL),(6,'ivey','iveysaurrr@gmail.com','$2a$11$PlUACuZyK7Oi/QNgT6wSPOC3B4Hv2Vwc29hnlyW5DM.h/xzexI6k.','ivey','Ivey test account',1389580622,1377919665,'4','',0,'0','$2a$11$eetQaY5qp3Z/9bW8aGofWuXMjHe4pgmKUJkgIPHzapBUNTwDfnVn2',NULL);
+INSERT INTO `users` VALUES (4,'jaxbot','jaxbot@gmail.com','$2a$11$PlUACuZyK7Oi/QNgT6wSPOC3B4Hv2Vwc29hnlyW5DM.h/xzexI6k.','Jonathan','Jonathan test account',1402009681,1378173008,'55,57','',50,'0','4dab1a8afdfca30ed4492016f9db397df38353652',NULL,1405183164,NULL,'127.0.0.1'),(6,'ivey','iveysaurrr@gmail.com','$2a$11$PlUACuZyK7Oi/QNgT6wSPOC3B4Hv2Vwc29hnlyW5DM.h/xzexI6k.','ivey','Ivey test account',1389580622,1377919665,'4','',0,'0','$2a$11$eetQaY5qp3Z/9bW8aGofWuXMjHe4pgmKUJkgIPHzapBUNTwDfnVn2',NULL,NULL,NULL,'127.0.0.1');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -288,4 +313,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-04-20 20:21:04
+-- Dump completed on 2014-08-24 16:52:22
