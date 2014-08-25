@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+var exec = require('child_process').exec;
+var FREEZE_CMD = "mysqldump -d -uroot p18 > p18.sql";
+var RESTORE_CMD = "mysql -uroot p18 < p18.sql";
+
+switch (process.argv[2]) {
+        case "freeze":
+                freeze();
+                break;
+        case "restore":
+                restore();
+                test();
+                break;
+        case "raw":
+                restore();
+                break;
+        default:
+                console.log("Tacky - Pronounced 'tasky'\n" +
+                "  freeze - dumps current table structure into SQL file\n" +
+                "  restore - restores structure and populates mock data through tests\n" +
+                "  raw - restores only the structure, no mocking\n");
+}
+
+function freeze() {
+        console.log("Freezing...");
+        exec(FREEZE_CMD, output);
+}
+
+function restore() {
+        console.log("Restoring...");
+        exec(RESTORE_CMD, output);
+}
+
+function test() {
+        console.log("Not implemented");
+}
+
+function output(err, stdout, stderr) {
+        if (err)
+                console.log(err);
+        if (stdout)
+                console.log(stdout);
+        if (stderr)
+                console.log(stderr);
+}
