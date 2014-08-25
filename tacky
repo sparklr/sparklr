@@ -2,6 +2,7 @@
 var exec = require('child_process').exec;
 var FREEZE_CMD = "mysqldump -d -uroot p18 > p18.sql";
 var RESTORE_CMD = "mysql -uroot p18 < p18.sql";
+var TEST_CMD = "casperjs test tests/casper.js";
 
 switch (process.argv[2]) {
         case "freeze":
@@ -32,7 +33,8 @@ function restore() {
 }
 
 function test() {
-        console.log("Not implemented");
+        console.log("Testing...");
+        exec(TEST_CMD, output);
 }
 
 function output(err, stdout, stderr) {
