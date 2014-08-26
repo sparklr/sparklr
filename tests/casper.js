@@ -1,4 +1,6 @@
-casper.test.begin('Sparklr.dev loads a new user', 5, function suite(test) {
+var mockStrings = require("./mockstrings");
+
+casper.test.begin('Sparklr.dev loads a new user', 7, function suite(test) {
         casper.start("http://sparklr.dev:8080/", function() {
                 test.assertTitle("Sparklr", "Page has correct title");
                 this.click("#welcomebar a");
@@ -31,6 +33,29 @@ casper.test.begin('Sparklr.dev loads a new user', 5, function suite(test) {
                 this.waitForText("Saved", function() {
                         test.assertFieldCSS("#savesettings", "Saved", "Settings button changes to saved (Passwords)");
                 });
+        });
+        casper.then(function() {
+                this.click('#logo');
+        });
+        casper.then(function() {
+                test.assertExists("#composer_composer", "Composer box exists");
+                this.sendKeys('#composer_composer', mockStrings[0], { keepFocus: true });
+                this.sendKeys('#composer_composer', casper.page.event.key.Enter, { keepFocus: true });
+        });
+        casper.then(function() {
+                this.waitForResource(function(resource) {
+                        return (resource.status == 200) && (resource.url.indexOf("/api/post") !== -1);
+                }, function() {
+                        this.waitForResource(function(resource) {
+                                return (resource.status == 200) && (resource.url.indexOf("/api/beacon") !== -1);
+                        }, function() {
+                        });
+                });
+        });
+        casper.thenOpen("http://sparklr.dev:8080/", function() {
+                this.waitForText(mockStrings[0], function() {
+                        test.assert(true, "Mock string inserted");
+                }, null, 10000);
         });
         casper.run(function() {
                 test.done();
