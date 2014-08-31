@@ -1,6 +1,6 @@
 var mockStrings = require("./mockstrings");
 
-casper.test.begin('Sparklr.dev loads a new user', 7, function suite(test) {
+casper.test.begin('Sparklr.dev loads a new user', 8, function suite(test) {
         casper.start("http://sparklr.dev:8080/", function() {
                 test.assertTitle("Sparklr", "Page has correct title");
                 this.click("#welcomebar a");
@@ -56,6 +56,17 @@ casper.test.begin('Sparklr.dev loads a new user', 7, function suite(test) {
                 this.waitForText(mockStrings[0], function() {
                         test.assert(true, "Mock string inserted");
                 }, null, 10000);
+        });
+        casper.then(function() {
+                this.click(".timelineitem.fadein");
+        });
+        casper.then(function() {
+                this.click(".composerframe textarea");
+                this.sendKeys('.composerframe textarea', mockStrings[1], { keepFocus: true });
+                this.sendKeys('.composerframe textarea', casper.page.event.key.Enter, { keepFocus: true });
+                this.waitForText(mockStrings[1], function() {
+                        test.assert(true, "Comment mock string inserted");
+                });
         });
         casper.run(function() {
                 test.done();
