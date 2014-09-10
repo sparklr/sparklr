@@ -14,8 +14,7 @@ var CHARMOD = '\u273B';
 var CHARADMIN = '\u273C';
 
 function getAvatar(id,plain,large) {
-	//return imgUrl(id + ".jpg" + (plain || !AVATAR_IDS[id] ? "" : "?" + AVATAR_IDS[id]),large);
-	return "http://d.sparklr.me/ajax-loader.gif";
+	return imgUrl(id + ".jpg" + (plain || !AVATAR_IDS[id] ? "" : "?" + AVATAR_IDS[id]),large);
 }
 
 function getDisplayName(id) {
