@@ -9,7 +9,7 @@ var newPageToFetch = false;
 
 var doctop = 0;
 
-var REGEX_URL = new RegExp('https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)', 'i');
+var REGEX_URL = new RegExp('https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)', 'gi');
 
 var REGEX_MENTIONS = /\B@([\w-]+)/gi;
 
